@@ -1,4 +1,6 @@
-﻿using System.Windows.Forms;
+﻿using System;
+using System.Windows.Media;
+using MessageBox = PowerPointLabs.Views.WPFMessageBox;
 
 namespace PowerPointLabs.Utils
 {
@@ -37,28 +39,82 @@ namespace PowerPointLabs.Utils
         Information = 64
     }
 
-    public class WPFMessageBox
+    public class MessageBoxUtil
     {
-        public static DialogResult Show(string text)
+        public static DialogResult Show(string text, string caption = "",
+            MessageBoxButtons buttons = MessageBoxButtons.OK, MessageBoxIcon icon = MessageBoxIcon.None)
         {
-            return (DialogResult)(int)MessageBox.Show(text);
+            MessageBox messageBox = new MessageBox();
+            messageBox.Title = caption;
+            messageBox.Message.Text = text;
+            messageBox.SetButton(MessageBox.ButtonPos.Left, LeftButtonResult(buttons));
+            messageBox.SetButton(MessageBox.ButtonPos.Middle, MiddleButtonResult(buttons));
+            messageBox.SetButton(MessageBox.ButtonPos.Right, RightButtonResult(buttons));
+            // Set the image source!
+            //messageBox.Icon = GetImageSource(icon);
+            return messageBox.CustomShowDialog();
         }
 
-        public static DialogResult Show(string text, string caption)
+        //private static ImageSource GetImageSource(MessageBoxIcon icon)
+        //{
+        //    switch (icon)
+        //    {
+        //        case MessageBoxIcon.Asterisk:
+        //            break;
+        //        case MessageBoxIcon.None:
+        //        default:
+        //            break;
+        //    }
+        //}
+
+        private static DialogResult LeftButtonResult(MessageBoxButtons buttons)
         {
-            return (DialogResult)(int)MessageBox.Show(text, caption);
+            switch (buttons)
+            {
+                case MessageBoxButtons.YesNo:
+                case MessageBoxButtons.YesNoCancel:
+                    return DialogResult.Yes;
+                case MessageBoxButtons.AbortRetryIgnore:
+                    return DialogResult.Abort;
+                default:
+                    return DialogResult.None;
+            }
+        }
+        private static DialogResult MiddleButtonResult(MessageBoxButtons buttons)
+        {
+            switch (buttons)
+            {
+                case MessageBoxButtons.OKCancel:
+                    return DialogResult.OK;
+                case MessageBoxButtons.RetryCancel:
+                case MessageBoxButtons.AbortRetryIgnore:
+                    return DialogResult.Retry;
+                case MessageBoxButtons.YesNo:
+                    return DialogResult.Yes;
+                case MessageBoxButtons.YesNoCancel:
+                    return DialogResult.No;
+                default:
+                    return DialogResult.None;
+            }
         }
 
-        public static DialogResult Show(string text, string caption, MessageBoxButtons buttons)
+        private static DialogResult RightButtonResult(MessageBoxButtons buttons)
         {
-            return (DialogResult)(int)MessageBox.Show(text, caption, (System.Windows.Forms.MessageBoxButtons)(int)buttons);
-        }
-
-        public static DialogResult Show(string text, string caption, MessageBoxButtons buttons, MessageBoxIcon icon)
-        {
-            return (DialogResult)(int)MessageBox.Show(text, caption,
-                (System.Windows.Forms.MessageBoxButtons)(int)buttons,
-                (System.Windows.Forms.MessageBoxIcon)(int)icon);
+            switch (buttons)
+            {
+                case MessageBoxButtons.AbortRetryIgnore:
+                    return DialogResult.Ignore;
+                case MessageBoxButtons.OK:
+                    return DialogResult.OK;
+                case MessageBoxButtons.YesNo:
+                    return DialogResult.No;
+                case MessageBoxButtons.OKCancel:
+                case MessageBoxButtons.RetryCancel:
+                case MessageBoxButtons.YesNoCancel:
+                    return DialogResult.Cancel;
+                default:
+                    return DialogResult.None;
+            }
         }
     }
 }

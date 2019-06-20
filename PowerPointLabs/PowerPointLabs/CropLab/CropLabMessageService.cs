@@ -17,7 +17,7 @@ namespace PowerPointLabs.CropLab
             }
             else
             {
-                WPFMessageBox.Show(content, TextCollection.CommonText.ErrorTitle);
+                MessageBoxUtil.Show(content, TextCollection.CommonText.ErrorTitle);
             }
         }
     }

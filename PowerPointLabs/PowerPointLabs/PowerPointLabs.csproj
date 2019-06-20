@@ -927,12 +927,14 @@
     <Compile Include="Views\ErrorDialogBox.xaml.cs">
       <DependentUpon>ErrorDialogBox.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Views\MessageBox.xaml.cs">
-      <DependentUpon>MessageBox.xaml</DependentUpon>
+    <Compile Include="Views\WPFMessageBox.xaml.cs">
+      <DependentUpon>WPFMessageBox.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ProcessingStatusForm.xaml.cs">
       <DependentUpon>ProcessingStatusForm.xaml</DependentUpon>
     </Compile>
+    <Compile Include="WPF\MessageBoxData.cs" />
+    <Compile Include="WPF\MessageButton.cs" />
     <Compile Include="XMLMisc\Data\AudioGenSpeechData.cs" />
     <Compile Include="ZoomLab\AutoZoom.cs" />
     <Compile Include="ColorsLab\HSLColor.cs" />
@@ -1720,7 +1722,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Views\MessageBox.xaml">
+    <Page Include="Views\WPFMessageBox.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

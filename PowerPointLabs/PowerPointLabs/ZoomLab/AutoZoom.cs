@@ -39,7 +39,7 @@ namespace PowerPointLabs.ZoomLab
             {
                 if (currentSlide == null || currentSlide.Index == PowerPointPresentation.Current.SlideCount)
                 {
-                    WPFMessageBox.Show(TextCollection.ZoomLabText.ErrorInvalidNextSlide, TextCollection.ZoomLabText.ErrorUnableToAddAnimationsCaption);
+                    MessageBoxUtil.Show(TextCollection.ZoomLabText.ErrorInvalidNextSlide, TextCollection.ZoomLabText.ErrorUnableToAddAnimationsCaption);
                     addedSlide = null;
                     return;
                 }
@@ -139,7 +139,7 @@ namespace PowerPointLabs.ZoomLab
             {
                 if (currentSlide == null || currentSlide.Index == 1)
                 {
-                    WPFMessageBox.Show(TextCollection.ZoomLabText.ErrorInvalidPreviousSlide, TextCollection.ZoomLabText.ErrorUnableToAddAnimationsCaption);
+                    MessageBoxUtil.Show(TextCollection.ZoomLabText.ErrorInvalidPreviousSlide, TextCollection.ZoomLabText.ErrorUnableToAddAnimationsCaption);
                     addedSlide = null;
                     return;
                 }

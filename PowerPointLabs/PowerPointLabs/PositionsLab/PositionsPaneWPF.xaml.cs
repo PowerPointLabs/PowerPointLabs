@@ -979,14 +979,14 @@ namespace PowerPointLabs.PositionsLab
 
             if (exception == null)
             {
-                WPFMessageBox.Show(content, PositionsLabText.ErrorDialogTitle);
+                MessageBoxUtil.Show(content, PositionsLabText.ErrorDialogTitle);
                 return;
             }
             
             string errorMessage = GetErrorMessage(exception.Message);
             if (!string.Equals(errorMessage, PositionsLabText.ErrorUndefined, StringComparison.Ordinal))
             {
-                WPFMessageBox.Show(content, PositionsLabText.ErrorDialogTitle);
+                MessageBoxUtil.Show(content, PositionsLabText.ErrorDialogTitle);
             }
             else
             {
@@ -1135,7 +1135,7 @@ namespace PowerPointLabs.PositionsLab
                             // either corrupted or non-corrupted, which is already handled before this try-catch block
                         }
                         // Ask user to undo the operation to remove any excess duplicates
-                        WPFMessageBox.Show(PositionsLabText.ErrorCorruptedSelection, PositionsLabText.ErrorCorruptedShapesTitle);
+                        MessageBoxUtil.Show(PositionsLabText.ErrorCorruptedSelection, PositionsLabText.ErrorCorruptedShapesTitle);
                     }
                 }
             }
@@ -1621,7 +1621,7 @@ namespace PowerPointLabs.PositionsLab
                             // either corrupted or non-corrupted, which is already handled before this try-catch block
                         }
                         // Ask user to undo the operation to remove any excess duplicates
-                        WPFMessageBox.Show(PositionsLabText.ErrorCorruptedSelection, PositionsLabText.ErrorCorruptedShapesTitle);
+                        MessageBoxUtil.Show(PositionsLabText.ErrorCorruptedSelection, PositionsLabText.ErrorCorruptedShapesTitle);
                     }
                 }
             }

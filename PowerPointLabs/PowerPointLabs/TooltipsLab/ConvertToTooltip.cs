@@ -20,7 +20,7 @@ namespace PowerPointLabs.TooltipsLab
         {
             if (selectedShapes.Count < 2)
             {
-                WPFMessageBox.Show(TooltipsLabText.ErrorLessThanTwoShapesSelected,
+                MessageBoxUtil.Show(TooltipsLabText.ErrorLessThanTwoShapesSelected,
                     TooltipsLabText.ErrorTooltipsDialogTitle);
 
                 return false;

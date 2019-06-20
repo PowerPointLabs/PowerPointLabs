@@ -26,7 +26,7 @@ namespace PowerPointLabs.AnimationLab
                 PowerPointSlide currentSlide = PowerPointCurrentPresentationInfo.CurrentSlide;
                 if (currentSlide == null || currentSlide.Index == PowerPointPresentation.Current.SlideCount)
                 {
-                    WPFMessageBox.Show(AnimationLabText.ErrorAutoAnimateWrongSlide,
+                    MessageBox.Show(AnimationLabText.ErrorAutoAnimateWrongSlide,
                                     AnimationLabText.ErrorAutoAnimateDialogTitle);
                     return;
                 }
@@ -34,7 +34,7 @@ namespace PowerPointLabs.AnimationLab
                 PowerPointSlide nextSlide = PowerPointPresentation.Current.Slides[currentSlide.Index];
                 if (!GetMatchingShapeDetails(currentSlide, nextSlide))
                 {
-                    WPFMessageBox.Show(AnimationLabText.ErrorAutoAnimateNoMatchingShapes,
+                    MessageBox.Show(AnimationLabText.ErrorAutoAnimateNoMatchingShapes,
                                     AnimationLabText.ErrorAutoAnimateDialogTitle);
                     return;
                 }

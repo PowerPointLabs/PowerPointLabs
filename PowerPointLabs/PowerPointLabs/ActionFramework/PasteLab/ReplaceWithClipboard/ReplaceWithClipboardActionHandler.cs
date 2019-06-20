@@ -19,7 +19,7 @@ namespace PowerPointLabs.ActionFramework.PasteLab
         {
             if (selectedShapes.Count <= 0)
             {
-                WPFMessageBox.Show(TextCollection.PasteLabText.ReplaceWithClipboardActionHandlerReminderText, TextCollection.CommonText.ErrorTitle);
+                MessageBoxUtil.Show(TextCollection.PasteLabText.ReplaceWithClipboardActionHandlerReminderText, TextCollection.CommonText.ErrorTitle);
                 return null;
             }
 
@@ -27,7 +27,7 @@ namespace PowerPointLabs.ActionFramework.PasteLab
             if (pastingShapes == null)
             {
                 Logger.Log("PasteLab: Could not paste clipboard contents.");
-                WPFMessageBox.Show(PasteLabText.ErrorPaste, PasteLabText.ErrorDialogTitle);
+                MessageBoxUtil.Show(PasteLabText.ErrorPaste, PasteLabText.ErrorDialogTitle);
                 return null;
             }
 

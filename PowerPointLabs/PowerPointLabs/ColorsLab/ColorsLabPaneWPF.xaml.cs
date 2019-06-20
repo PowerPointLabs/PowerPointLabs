@@ -265,7 +265,7 @@ namespace PowerPointLabs.ColorsLab
             Microsoft.Office.Tools.CustomTaskPane colorsLabPane = this.GetAddIn().GetActivePane(typeof(ColorsLabPane));
             if (colorsLabPane == null || !(colorsLabPane.Control is ColorsLabPane))
             {
-                WPFMessageBox.Show("Error: ColorsLabPane not opened.");
+                MessageBoxUtil.Show("Error: ColorsLabPane not opened.");
                 return;
             }
             ColorsLabPane colorsLab = colorsLabPane.Control as ColorsLabPane;
@@ -299,7 +299,7 @@ namespace PowerPointLabs.ColorsLab
         {
             if (this.GetCurrentSelection().Type == PowerPoint.PpSelectionType.ppSelectionNone)
             {
-                WPFMessageBox.Show(ColorsLabText.ErrorNoSelection, ColorsLabText.ErrorDialogTitle);
+                MessageBoxUtil.Show(ColorsLabText.ErrorNoSelection, ColorsLabText.ErrorDialogTitle);
                 return;
             }
 
@@ -680,7 +680,7 @@ namespace PowerPointLabs.ColorsLab
             {
                 Dispatcher.CurrentDispatcher.BeginInvoke(DispatcherPriority.Loaded, new Action(delegate
                 {
-                    WPFMessageBox.Show("To use this button, click and drag to desired color.", ColorsLabText.ErrorDialogTitle);
+                    MessageBoxUtil.Show("To use this button, click and drag to desired color.", ColorsLabText.ErrorDialogTitle);
                 }));
             }
         }

@@ -23,7 +23,7 @@ namespace PowerPointLabs.ActionFramework.ShortcutsLab
 
             if (!ShapeUtil.IsSelectionShape(selection) || selection.ShapeRange.Count < 2)
             {
-                WPFMessageBox.Show(TextCollection.ShortcutsLabText.AddIntoGroupActionHandlerReminderText, TextCollection.CommonText.ErrorTitle);
+                MessageBoxUtil.Show(TextCollection.ShortcutsLabText.AddIntoGroupActionHandlerReminderText, TextCollection.CommonText.ErrorTitle);
                 return;
             }
             

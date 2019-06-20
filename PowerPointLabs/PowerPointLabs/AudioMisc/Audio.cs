@@ -149,7 +149,7 @@ namespace PowerPointLabs.AudioMisc
             }
             else
             {
-                WPFMessageBox.Show(TextCollection.CommonText.ErrorSlideSelectionTitle);
+                MessageBoxUtil.Show(TextCollection.CommonText.ErrorSlideSelectionTitle);
             }
         }
     }

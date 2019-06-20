@@ -608,7 +608,7 @@ namespace PowerPointLabs.Models
             if ((shapeDuplicate || shapeLost || categoryInShapeGalleryLost || pngLost) &&
                 !IsImportedFile)
             {
-                WPFMessageBox.Show(ShapesLabText.ErrorShapeCorrupted);
+                MessageBoxUtil.Show(ShapesLabText.ErrorShapeCorrupted);
 
                 return false;
             }

@@ -100,7 +100,7 @@ namespace PowerPointLabs.ELearningLab.Views
             }
             catch (COMException)
             {
-                WPFMessageBox.Show(NarrationsLabText.InShowControlErrorInvalidRecCommand);
+                MessageBoxUtil.Show(NarrationsLabText.InShowControlErrorInvalidRecCommand);
                 return;
             }
 

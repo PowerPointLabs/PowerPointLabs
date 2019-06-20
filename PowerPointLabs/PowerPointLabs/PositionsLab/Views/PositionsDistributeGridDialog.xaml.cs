@@ -27,14 +27,14 @@ namespace PowerPointLabs.PositionsLab.Views
 
             if (exception == null)
             {
-                WPFMessageBox.Show(content, PositionsLabText.ErrorDialogTitle);
+                MessageBoxUtil.Show(content, PositionsLabText.ErrorDialogTitle);
                 return;
             }
 
             string errorMessage = GetErrorMessage(exception.Message);
             if (!string.Equals(errorMessage, PositionsLabText.ErrorUndefined, StringComparison.Ordinal))
             {
-                WPFMessageBox.Show(content, PositionsLabText.ErrorDialogTitle);
+                MessageBoxUtil.Show(content, PositionsLabText.ErrorDialogTitle);
             }
             else
             {

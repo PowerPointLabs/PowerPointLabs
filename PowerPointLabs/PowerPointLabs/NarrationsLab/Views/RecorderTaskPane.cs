@@ -441,14 +441,14 @@ namespace PowerPointLabs.ELearningLab.Views
                 catch (FormatException ex)
                 {
                     Logger.LogException(ex, "MapShapesWithAudio");
-                    WPFMessageBox.Show(ex.Message);
+                    MessageBoxUtil.Show(ex.Message);
                     continue;
                 }
 
                 if (audio.Type == Audio.AudioType.Unrecognized)
                 {
                     Logger.Log(String.Format("{0} in MapShapesWithAudio", NarrationsLabText.RecorderUnrecognizeAudio));
-                    WPFMessageBox.Show(NarrationsLabText.RecorderUnrecognizeAudio);
+                    MessageBoxUtil.Show(NarrationsLabText.RecorderUnrecognizeAudio);
                 }
 
                 // maintain a sorted audio list
@@ -1094,7 +1094,7 @@ namespace PowerPointLabs.ELearningLab.Views
             // check input device, abort if no input device connected
             if (!NInputDeviceExists())
             {
-                WPFMessageBox.Show(NarrationsLabText.RecorderNoInputDeviceMsg, NarrationsLabText.RecorderErrorNoInputDeviceTitle,
+                MessageBoxUtil.Show(NarrationsLabText.RecorderNoInputDeviceMsg, NarrationsLabText.RecorderErrorNoInputDeviceTitle,
                                 PowerPointLabs.Utils.MessageBoxButtons.OK, PowerPointLabs.Utils.MessageBoxIcon.Error);
 
                 return;
@@ -1236,14 +1236,14 @@ namespace PowerPointLabs.ELearningLab.Views
                 {
                     if (currentPlayback == null)
                     {
-                        result = WPFMessageBox.Show(NarrationsLabText.RecorderErrorSaveRecord,
+                        result = MessageBoxUtil.Show(NarrationsLabText.RecorderErrorSaveRecord,
                                                  NarrationsLabText.RecorderErrorSaveRecordTitle, MessageBoxButtons.YesNo,
                                                  MessageBoxIcon.Question);
                     }
                     else
                     {
                         result =
-                            WPFMessageBox.Show(
+                            MessageBoxUtil.Show(
                                 string.Format(NarrationsLabText.RecorderErrorReplaceRecordFormat, currentPlayback.Name),
                                 NarrationsLabText.RecorderErrorReplaceRecordTitle, MessageBoxButtons.YesNo,
                                 MessageBoxIcon.Question);
@@ -1440,7 +1440,7 @@ namespace PowerPointLabs.ELearningLab.Views
 
             if (playback == null)
             {
-                WPFMessageBox.Show(NarrationsLabText.RecorderErrorNoRecordToPlay);
+                MessageBoxUtil.Show(NarrationsLabText.RecorderErrorNoRecordToPlay);
             }
             else
             {
@@ -1534,7 +1534,7 @@ namespace PowerPointLabs.ELearningLab.Views
                     RecButtonPauseHandler();
                     break;
                 default:
-                    WPFMessageBox.Show(NarrationsLabText.RecorderErrorInvalidOperation);
+                    MessageBoxUtil.Show(NarrationsLabText.RecorderErrorInvalidOperation);
                     break;
             }
         }
@@ -1553,7 +1553,7 @@ namespace PowerPointLabs.ELearningLab.Views
             }
             else
             {
-                WPFMessageBox.Show(NarrationsLabText.RecorderErrorInvalidOperation);
+                MessageBoxUtil.Show(NarrationsLabText.RecorderErrorInvalidOperation);
             }
         }
 
@@ -1571,7 +1571,7 @@ namespace PowerPointLabs.ELearningLab.Views
                     PlayButtonPauseHandler();
                     break;
                 default:
-                    WPFMessageBox.Show(NarrationsLabText.RecorderErrorInvalidOperation);
+                    MessageBoxUtil.Show(NarrationsLabText.RecorderErrorInvalidOperation);
                     break;
             }
         }
@@ -1849,7 +1849,7 @@ namespace PowerPointLabs.ELearningLab.Views
                         ResetTrackbar(0);
                         break;
                     default:
-                        WPFMessageBox.Show(NarrationsLabText.RecorderWndMessageError);
+                        MessageBoxUtil.Show(NarrationsLabText.RecorderWndMessageError);
                         break;
                 }
             }

@@ -106,7 +106,7 @@ namespace PowerPointLabs.AgendaLab
 
                 if (AgendaPresent())
                 {
-                    DialogResult confirm = WPFMessageBox.Show(AgendaLabText.ErrorAgendaExist,
+                    DialogResult confirm = MessageBoxUtil.Show(AgendaLabText.ErrorAgendaExist,
                                                   AgendaLabText.ErrorAgendaExistTitle,
                                                   MessageBoxButtons.OKCancel);
                     if (confirm != DialogResult.OK)
@@ -302,7 +302,7 @@ namespace PowerPointLabs.AgendaLab
             else if (targetSlides.Count == 1)
             {
                 // If only one slide selected, ask whether the user wants to generate on all slides.
-                DialogResult confirmResult = WPFMessageBox.Show(AgendaLabText.BeamGenerateSingleSlideDialogContent,
+                DialogResult confirmResult = MessageBoxUtil.Show(AgendaLabText.BeamGenerateSingleSlideDialogContent,
                                                     AgendaLabText.BeamGenerateSingleSlideDialogTitle,
                                                     MessageBoxButtons.YesNo);
                 if (confirmResult == DialogResult.Yes)
@@ -866,7 +866,7 @@ namespace PowerPointLabs.AgendaLab
             }
 
 
-            DialogResult confirmResult = WPFMessageBox.Show(AgendaLabText.ReorganiseSidebarContent,
+            DialogResult confirmResult = MessageBoxUtil.Show(AgendaLabText.ReorganiseSidebarContent,
                                                 AgendaLabText.ReorganiseSidebarTitle,
                                                 MessageBoxButtons.YesNo);
             if (confirmResult == DialogResult.Yes)
@@ -1270,7 +1270,7 @@ namespace PowerPointLabs.AgendaLab
 
         private static void ShowErrorMessage(string message)
         {
-            WPFMessageBox.Show(message, AgendaLabText.ErrorDialogTitle);
+            MessageBoxUtil.Show(message, AgendaLabText.ErrorDialogTitle);
         }
 
         private static string CreateInDocHyperLink(PowerPointSlide slide)

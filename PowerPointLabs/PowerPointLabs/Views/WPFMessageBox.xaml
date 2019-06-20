@@ -1,0 +1,56 @@
+﻿<controls:MetroWindow x:Class="PowerPointLabs.Views.WPFMessageBox"
+                      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                      xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+                      xmlns:WPF="clr-namespace:PowerPointLabs.WPF"
+                      d:DataContext="{d:DesignInstance WPF:MessageBoxData}"
+                      mc:Ignorable="d"
+                      MinHeight="205"
+                      SizeToContent="Height"
+                      Width="405"
+                      BorderThickness="1"
+                      BorderBrush="#0070c0"
+                      ResizeMode="NoResize"
+                      Title="WPF Message Box"
+                      WindowStartupLocation="CenterScreen"
+                      WindowTransitionsEnabled="False">
+    <controls:MetroWindow.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Colors.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/blue.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/baselight.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </controls:MetroWindow.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="35"/>
+        </Grid.RowDefinitions>
+        <Grid Row="0"  HorizontalAlignment="Center" VerticalAlignment="Center" Margin="40">
+            <!--Message + Icon-->
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="50"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <Image x:Name="CustomIcon" Grid.Column="0" Height="50" Width="50" Source="{Binding IconSource}"></Image>
+            <TextBlock x:Name="Message" Grid.Column="1" Text="Insert Message Here" TextWrapping="Wrap" MinWidth="200"/>
+        </Grid>
+        <Grid Row="1" HorizontalAlignment="Right" VerticalAlignment="Center">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <WPF:MessageButton Grid.Column="0" x:Name="LeftButton" Content="Left Button" Width="80" Margin="5 0 5 0" Click="OnClick_MessageButton"/>
+            <WPF:MessageButton Grid.Column="1" x:Name="MiddleButton" Content="Middle Button" Width="80" Margin="5 0 5 0" Click="OnClick_MessageButton"/>
+            <WPF:MessageButton Grid.Column="2" x:Name="RightButton" Content="Right Button" Width="80" Margin="5 0 5 0" Click="OnClick_MessageButton"/>
+        </Grid>
+        <!--Row Of Buttons, hug the right-->
+    </Grid>
+</controls:MetroWindow>

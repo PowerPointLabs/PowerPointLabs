@@ -97,7 +97,7 @@ namespace PowerPointLabs.EffectsLab
             }
             catch (InvalidOperationException e)
             {
-                WPFMessageBox.Show(e.Message);
+                MessageBox.Show(e.Message);
                 return null;
             }
             catch (COMException)
@@ -107,7 +107,7 @@ namespace PowerPointLabs.EffectsLab
                     dupSlide.Delete();
                 }
 
-                WPFMessageBox.Show(TextCollection.EffectsLabText.ErrorSelectAtLeastOneShape);
+                MessageBox.Show(TextCollection.EffectsLabText.ErrorSelectAtLeastOneShape);
                 return null;
             }
             catch (Exception e)
@@ -143,7 +143,7 @@ namespace PowerPointLabs.EffectsLab
                 || content.Equals(EffectsLabText.ErrorBlurSelectedNoSelection)
                 || content.Equals(EffectsLabText.ErrorBlurSelectedNonShapeOrTextBox))
             {
-                WPFMessageBox.Show(content, EffectsLabText.ErrorDialogTitle);
+                MessageBoxUtil.Show(content, EffectsLabText.ErrorDialogTitle);
             }
             else
             {

@@ -32,7 +32,7 @@ namespace PowerPointLabs.ShortcutsLab
             }
             else
             {
-                WPFMessageBox.Show(ShortcutsLabText.ErrorTypeNotSupported, ShortcutsLabText.ErrorWindowTitle);
+                MessageBoxUtil.Show(ShortcutsLabText.ErrorTypeNotSupported, ShortcutsLabText.ErrorWindowTitle);
             }
         }
 
@@ -40,7 +40,7 @@ namespace PowerPointLabs.ShortcutsLab
         {
             if (!ShapeUtil.IsShapeRangeShapeOrText(selectedShapes))
             {
-                WPFMessageBox.Show(ShortcutsLabText.ErrorTypeNotSupported, ShortcutsLabText.ErrorWindowTitle);
+                MessageBoxUtil.Show(ShortcutsLabText.ErrorTypeNotSupported, ShortcutsLabText.ErrorWindowTitle);
                 return false;
             }
 
@@ -51,7 +51,7 @@ namespace PowerPointLabs.ShortcutsLab
             }
             catch (Exception e)
             {
-                WPFMessageBox.Show("Exception during export shapes: " + e.Message, ShortcutsLabText.ErrorWindowTitle);
+                MessageBoxUtil.Show("Exception during export shapes: " + e.Message, ShortcutsLabText.ErrorWindowTitle);
                 return false;
             }
         }

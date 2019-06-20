@@ -181,7 +181,7 @@ namespace PowerPointLabs
             {
                 // if the presentation gets some error during opening, and the error could not
                 // be resolved by consistency check, prompt the user about the error
-                WPFMessageBox.Show(CommonText.ErrorShapeGalleryInit);
+                MessageBoxUtil.Show(CommonText.ErrorShapeGalleryInit);
                 return;
             }
 
@@ -1467,7 +1467,7 @@ namespace PowerPointLabs
             }
             if (eventType == (uint)Native.Event.EVENT_SYSTEM_MENUEND)
             {
-                WPFMessageBox.Show(CommonText.ErrorTabActivate, CommonText.ErrorTabActivateTitle);
+                MessageBoxUtil.Show(CommonText.ErrorTabActivate, CommonText.ErrorTabActivateTitle);
             }
         }
 
