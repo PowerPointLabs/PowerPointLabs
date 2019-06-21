@@ -65,7 +65,10 @@ namespace Test.FunctionalTest
                         TestContext.TestName + "_" +
                         GetTestingSlideName()));
             }
-            PpOperations.ClosePresentation();
+            while (PpOperations.GetNumWindows() > 0)
+            {
+                PpOperations.ClosePresentation();
+            }
         }
 
         protected static void CheckIfClipboardIsRestored(Action action, int actualSlideNum, string shapeNameToBeCopied, int expSlideNum, string expShapeNameToDelete, string expCopiedShapeName)

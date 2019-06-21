@@ -246,7 +246,6 @@ namespace PowerPointLabs.ELearningLab.Views
         }
         private ObservableCollection<ClickItem> LoadItems(DoWorkEventArgs e)
         {
-            DateTime start = DateTime.Now;
             SelfExplanationTagService.Clear();
             int clickNo = FirstClickNumber;
             ObservableCollection<ClickItem> customItems = new ObservableCollection<ClickItem>();
@@ -307,17 +306,7 @@ namespace PowerPointLabs.ELearningLab.Views
                     e.Cancel = true;
                     return clickItems;
                 }
-                Dictionary<string, string> expItemDic = explanationItems.First();
-                ExplanationItem expItem = new ExplanationItem(expItemDic[ELearningLabText.CaptionTextIdentifier],
-                        expItemDic[ELearningLabText.CalloutTextIdentifier], expItemDic[ELearningLabText.VoiceLabel],
-                        expItemDic[ELearningLabText.CalloutIdentifier] == "Y", expItemDic[ELearningLabText.CaptionIdentifier] == "Y",
-                        expItemDic[ELearningLabText.AudioIdentifier] == "Y", tagNo: Convert.ToInt32(expItemDic[ELearningLabText.TagNoIdentifier]));
-                expItem.ClickNo = Convert.ToInt32(expItemDic[ELearningLabText.ClickNumIdentifier]);
-                expItem.TriggerIndex = expItemDic[ELearningLabText.TriggerOnClick] == "Y" ? (int)TriggerType.OnClick : (int)TriggerType.WithPrevious;
-                if (expItem.IsDummyItem)
-                {
-                    expItem.tagNo = SelfExplanationTagService.GenerateUniqueTag();
-                }
+                ExplanationItem expItem = CreateExpItemFromDictionary(explanationItems.First());
                 CustomItem customItem = customItems.ElementAt(0) as CustomItem;
                 if (customItem.ClickNo <= expItem.ClickNo)
                 {
@@ -337,11 +326,7 @@ namespace PowerPointLabs.ELearningLab.Views
                     e.Cancel = true;
                     return clickItems;
                 }
-                Dictionary<string, string> expItemDic = explanationItems.First();
-                ExplanationItem expItem = new ExplanationItem(expItemDic[ELearningLabText.CaptionTextIdentifier],
-                        expItemDic[ELearningLabText.CalloutTextIdentifier], expItemDic[ELearningLabText.VoiceLabel],
-                        expItemDic[ELearningLabText.CalloutIdentifier] == "Y", expItemDic[ELearningLabText.CaptionIdentifier] == "Y",
-                        expItemDic[ELearningLabText.AudioIdentifier] == "Y", tagNo: Convert.ToInt32(expItemDic[ELearningLabText.TagNoIdentifier]));
+                ExplanationItem expItem = CreateExpItemFromDictionary(explanationItems.First());
                 explanationItems.RemoveAt(0);
                 clickItems.Add(expItem);
             }
@@ -832,6 +817,21 @@ namespace PowerPointLabs.ELearningLab.Views
             eLLPane.Visibility = Visibility.Visible;
             createImage.Opacity = 1;
             syncImage.Opacity = 1;
+        }
+
+        private ExplanationItem CreateExpItemFromDictionary(Dictionary<string, string> expItemDic)
+        {
+            ExplanationItem expItem = new ExplanationItem(expItemDic[ELearningLabText.CaptionTextIdentifier],
+                                    expItemDic[ELearningLabText.CalloutTextIdentifier], expItemDic[ELearningLabText.VoiceLabel],
+                                    expItemDic[ELearningLabText.CalloutIdentifier] == "Y", expItemDic[ELearningLabText.CaptionIdentifier] == "Y",
+                                    expItemDic[ELearningLabText.AudioIdentifier] == "Y", tagNo: Convert.ToInt32(expItemDic[ELearningLabText.TagNoIdentifier]));
+            expItem.ClickNo = Convert.ToInt32(expItemDic[ELearningLabText.ClickNumIdentifier]);
+            expItem.TriggerIndex = expItemDic[ELearningLabText.TriggerOnClick] == "Y" ? (int)TriggerType.OnClick : (int)TriggerType.WithPrevious;
+            if (expItem.IsDummyItem)
+            {
+                expItem.tagNo = SelfExplanationTagService.GenerateUniqueTag();
+            }
+            return expItem;
         }
 
         #endregion
