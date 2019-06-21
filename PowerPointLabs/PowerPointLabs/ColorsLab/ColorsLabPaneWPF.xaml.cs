@@ -704,12 +704,10 @@ namespace PowerPointLabs.ColorsLab
         /// <param name="e"></param>
         private void SaveColorButton_Click(object sender, EventArgs e)
         {
-            WPFSaveFileDialog saveFileDialog = new WPFSaveFileDialog();
-            saveFileDialog.DefaultExt = "thm";
-            saveFileDialog.Filter = "PPTLabsFavorites|*.thm";
-            saveFileDialog.Title = "Save Favorite";
-            
-            DialogResult result = saveFileDialog.ShowDialog();
+            DialogResult result = SaveFileDialogUtil.Save(
+                title: "Save Favorite",
+                defaultExt: "thm",
+                filter: "PPTLabsFavorites|*.thm");
 
             if (result == DialogResult.OK &&
                 dataSource.SaveFavoriteColorsInFile(saveFileDialog.FileName))
