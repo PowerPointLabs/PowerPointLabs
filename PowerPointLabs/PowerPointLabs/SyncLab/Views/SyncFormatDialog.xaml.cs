@@ -6,7 +6,7 @@ using System.Windows.Controls;
 
 using PowerPointLabs.SyncLab.ObjectFormats;
 using PowerPointLabs.TextCollection;
-
+using PowerPointLabs.Utils.Windows;
 using Shape = Microsoft.Office.Interop.PowerPoint.Shape;
 
 namespace PowerPointLabs.SyncLab.Views
@@ -162,7 +162,7 @@ namespace PowerPointLabs.SyncLab.Views
             if (ShadowEffectFormat.MightHaveCustomPerspectiveShadow(shape) 
                 && shadowNodeIsChecked)
             {
-                MessageBox.Show(SyncLabText.WarningSyncPerspectiveShadow, SyncLabText.WarningDialogTitle);
+                MessageBoxUtil.Show(SyncLabText.WarningSyncPerspectiveShadow, SyncLabText.WarningDialogTitle);
             }
         }
 

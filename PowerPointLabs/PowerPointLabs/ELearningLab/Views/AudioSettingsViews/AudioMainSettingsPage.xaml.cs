@@ -9,7 +9,7 @@ using PowerPointLabs.ELearningLab.AudioGenerator.WatsonVoiceGenerator.Model;
 using PowerPointLabs.ELearningLab.Service;
 using PowerPointLabs.ELearningLab.Service.StorageService;
 using PowerPointLabs.TextCollection;
-
+using PowerPointLabs.Utils.Windows;
 
 namespace PowerPointLabs.ELearningLab.Views
 {
@@ -341,7 +341,7 @@ namespace PowerPointLabs.ELearningLab.Views
                 IVoice voice = voices[i];
                 if (voice.Rank != i + 1)
                 {
-                    MessageBox.Show("Please rank in sequence.");
+                    MessageBoxUtil.Show("Please rank in sequence.");
                     return false;
                 }
             }

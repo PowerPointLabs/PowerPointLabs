@@ -5,10 +5,9 @@ using System.Windows.Media;
 
 using PowerPointLabs.Utils;
 using PowerPointLabs.Utils.Windows;
-using Drawing = System.Drawing;
 
-using Forms = System.Windows.Forms;
 using DrawingColor = System.Drawing.Color;
+using Forms = System.Windows.Forms;
 
 namespace PowerPointLabs.HighlightLab.Views
 {

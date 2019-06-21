@@ -7,6 +7,7 @@ using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.Models;
 using PowerPointLabs.TextCollection;
 using PowerPointLabs.Utils;
+using PowerPointLabs.Utils.Windows;
 
 namespace PowerPointLabs.ActionFramework.PasteLab
 {
@@ -25,7 +26,7 @@ namespace PowerPointLabs.ActionFramework.PasteLab
                 if (shapes == null) 
                 {
                     Logger.Log("PasteLab: Could not paste clipboard contents.");
-                    MessageBox.Show(PasteLabText.ErrorPaste, PasteLabText.ErrorDialogTitle);
+                    MessageBoxUtil.Show(PasteLabText.ErrorPaste, PasteLabText.ErrorDialogTitle);
                 }
                 return shapes;
             }

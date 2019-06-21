@@ -3,6 +3,7 @@ using System.Windows;
 
 using PowerPointLabs.TextCollection;
 using PowerPointLabs.Utils;
+using PowerPointLabs.Utils.Windows;
 using PowerPointLabs.Views;
 
 namespace PowerPointLabs.PositionsLab.Views

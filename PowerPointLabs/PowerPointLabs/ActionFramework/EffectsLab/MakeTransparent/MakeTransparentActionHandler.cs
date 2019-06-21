@@ -8,7 +8,7 @@ using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.ActionFramework.Common.Interface;
 using PowerPointLabs.TextCollection;
 using PowerPointLabs.Utils;
-
+using PowerPointLabs.Utils.Windows;
 using Office = Microsoft.Office.Core;
 
 
@@ -25,7 +25,7 @@ namespace PowerPointLabs.ActionFramework.EffectsLab
 
             if (selection.Type != PpSelectionType.ppSelectionShapes)
             {
-                MessageBox.Show(TextCollection.EffectsLabText.ErrorSelectAtLeastOneShape);
+                MessageBoxUtil.Show(TextCollection.EffectsLabText.ErrorSelectAtLeastOneShape);
                 return;
             }
 

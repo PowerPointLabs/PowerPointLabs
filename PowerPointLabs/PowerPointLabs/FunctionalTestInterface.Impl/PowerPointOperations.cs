@@ -9,7 +9,7 @@ using Microsoft.Office.Interop.PowerPoint;
 
 using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.Utils;
-
+using PowerPointLabs.Utils.Windows;
 using TestInterface;
 
 using Shape = Microsoft.Office.Interop.PowerPoint.Shape;

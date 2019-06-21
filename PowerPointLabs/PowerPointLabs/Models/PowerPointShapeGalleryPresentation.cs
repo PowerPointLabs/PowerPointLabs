@@ -10,7 +10,7 @@ using Microsoft.Office.Interop.PowerPoint;
 
 using PowerPointLabs.TextCollection;
 using PowerPointLabs.Utils;
-
+using PowerPointLabs.Utils.Windows;
 using Office = Microsoft.Office.Core;
 
 namespace PowerPointLabs.Models

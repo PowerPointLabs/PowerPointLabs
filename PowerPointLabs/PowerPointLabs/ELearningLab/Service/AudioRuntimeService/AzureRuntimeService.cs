@@ -10,6 +10,7 @@ using PowerPointLabs.ELearningLab.AudioGenerator;
 using PowerPointLabs.ELearningLab.Views;
 using PowerPointLabs.Models;
 using PowerPointLabs.TextCollection;
+using PowerPointLabs.Utils.Windows;
 
 namespace PowerPointLabs.ELearningLab.Service
 {
@@ -39,7 +40,7 @@ namespace PowerPointLabs.ELearningLab.Service
                 Console.WriteLine(errorMessage);
                 if (showErrorMessage)
                 {
-                    MessageBox.Show(errorMessage);
+                    MessageBoxUtil.Show(errorMessage);
                 }
                 return false;
             }
@@ -229,7 +230,7 @@ namespace PowerPointLabs.ELearningLab.Service
             }
             catch
             {
-                MessageBox.Show("Error generating audio files. ");
+                MessageBoxUtil.Show("Error generating audio files. ");
             }
         }
 

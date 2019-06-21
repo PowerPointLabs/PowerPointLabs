@@ -5,6 +5,7 @@ using PowerPointLabs.ELearningLab.AudioGenerator;
 using PowerPointLabs.ELearningLab.AudioGenerator.WatsonVoiceGenerator.Model;
 using PowerPointLabs.ELearningLab.Service;
 using PowerPointLabs.ELearningLab.Service.StorageService;
+using PowerPointLabs.Utils.Windows;
 
 namespace PowerPointLabs.ELearningLab.Views.AudioSettingsViews
 {
@@ -43,7 +44,7 @@ namespace PowerPointLabs.ELearningLab.Views.AudioSettingsViews
             }
             catch
             {
-                MessageBox.Show("Key or Region cannot be empty!", "Invalid Input");
+                MessageBoxUtil.Show("Key or Region cannot be empty!", "Invalid Input");
                 return;
             }
 
@@ -63,7 +64,7 @@ namespace PowerPointLabs.ELearningLab.Views.AudioSettingsViews
             }
             else
             {
-                MessageBox.Show("Invalid Watson Account.\nIs your Watson account expired?\nAre you connected to Wifi?");
+                MessageBoxUtil.Show("Invalid Watson Account.\nIs your Watson account expired?\nAre you connected to Wifi?");
             }
         }
 

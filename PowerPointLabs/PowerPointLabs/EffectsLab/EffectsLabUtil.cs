@@ -8,6 +8,7 @@ using Microsoft.Office.Interop.PowerPoint;
 using PowerPointLabs.Models;
 using PowerPointLabs.TextCollection;
 using PowerPointLabs.Utils;
+using PowerPointLabs.Utils.Windows;
 using PowerPointLabs.Views;
 
 using Office = Microsoft.Office.Core;

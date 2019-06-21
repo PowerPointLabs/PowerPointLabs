@@ -38,9 +38,9 @@ namespace PowerPointLabs.ActionFramework.ShortcutsLab
             saveFileDialog.DefaultExt = ShortcutsLabConstants.ExportSlideSaveFileDialogExtension;
             saveFileDialog.Filter = ShortcutsLabConstants.ExportSlideSaveFileDialogFilter;
 
-            Utils.DialogResult result = saveFileDialog.ShowDialog();
+            Utils.Windows.DialogResult result = saveFileDialog.ShowDialog();
 
-            if (result == Utils.DialogResult.OK)
+            if (result == Utils.Windows.DialogResult.OK)
             {           
                 GraphicsUtil.ExportSlides(selectedSlides, saveFileDialog.FileName);
             }

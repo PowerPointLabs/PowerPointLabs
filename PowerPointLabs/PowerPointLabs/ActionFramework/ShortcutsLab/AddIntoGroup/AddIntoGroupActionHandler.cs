@@ -7,6 +7,7 @@ using PowerPointLabs.Models;
 using PowerPointLabs.ShortcutsLab;
 using PowerPointLabs.TextCollection;
 using PowerPointLabs.Utils;
+using PowerPointLabs.Utils.Windows;
 
 namespace PowerPointLabs.ActionFramework.ShortcutsLab
 {

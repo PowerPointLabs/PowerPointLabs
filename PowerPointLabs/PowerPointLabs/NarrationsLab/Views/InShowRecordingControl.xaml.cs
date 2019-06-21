@@ -10,7 +10,7 @@ using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.Models;
 using PowerPointLabs.TextCollection;
 using PowerPointLabs.Utils;
-
+using PowerPointLabs.Utils.Windows;
 using PPExtraEventHelper;
 
 using Forms = System.Windows.Forms;

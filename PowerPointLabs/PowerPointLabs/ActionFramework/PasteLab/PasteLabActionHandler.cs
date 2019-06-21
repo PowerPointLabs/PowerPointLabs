@@ -9,6 +9,7 @@ using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.Models;
 using PowerPointLabs.TextCollection;
 using PowerPointLabs.Utils;
+using PowerPointLabs.Utils.Windows;
 
 namespace PowerPointLabs.ActionFramework.PasteLab
 {
@@ -29,14 +30,14 @@ namespace PowerPointLabs.ActionFramework.PasteLab
             if (ClipboardUtil.IsClipboardEmpty())
             {
                 Logger.Log(ribbonId + " failed. Clipboard is empty.");
-                MessageBox.Show(PasteLabText.ErrorEmptyClipboard, PasteLabText.ErrorDialogTitle);
+                MessageBoxUtil.Show(PasteLabText.ErrorEmptyClipboard, PasteLabText.ErrorDialogTitle);
                 return;
             }
 
             if (slide == null)
             {
                 Logger.Log(ribbonId + " failed. Selection is empty.");
-                MessageBox.Show(PasteLabText.ErrorNoSelection, PasteLabText.ErrorDialogTitle);
+                MessageBoxUtil.Show(PasteLabText.ErrorNoSelection, PasteLabText.ErrorDialogTitle);
                 return;
             }
 

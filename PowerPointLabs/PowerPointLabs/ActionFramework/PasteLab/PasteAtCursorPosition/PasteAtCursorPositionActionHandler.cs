@@ -9,7 +9,7 @@ using PowerPointLabs.Models;
 using PowerPointLabs.PasteLab;
 using PowerPointLabs.TextCollection;
 using PowerPointLabs.Utils;
-
+using PowerPointLabs.Utils.Windows;
 using PPExtraEventHelper;
 
 namespace PowerPointLabs.ActionFramework.PasteLab
@@ -38,7 +38,7 @@ namespace PowerPointLabs.ActionFramework.PasteLab
             if (pastingShapes == null)
             {
                 Logger.Log("PasteLab: Could not paste clipboard contents.");
-                MessageBox.Show(PasteLabText.ErrorPaste, PasteLabText.ErrorDialogTitle);
+                MessageBoxUtil.Show(PasteLabText.ErrorPaste, PasteLabText.ErrorDialogTitle);
                 return null;
             }
 

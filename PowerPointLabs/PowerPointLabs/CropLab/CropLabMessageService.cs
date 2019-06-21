@@ -3,6 +3,7 @@ using System.Windows;
 
 using PowerPointLabs.CustomControls;
 using PowerPointLabs.Utils;
+using PowerPointLabs.Utils.Windows;
 using PowerPointLabs.Views;
 
 namespace PowerPointLabs.CropLab

@@ -4,6 +4,7 @@ using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.Models;
 using PowerPointLabs.TextCollection;
 using PowerPointLabs.Utils;
+using PowerPointLabs.Utils.Windows;
 using PowerPointLabs.Views;
 
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;

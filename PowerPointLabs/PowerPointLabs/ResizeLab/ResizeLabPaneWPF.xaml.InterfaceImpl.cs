@@ -3,6 +3,7 @@ using System.Windows;
 
 using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.Utils;
+using PowerPointLabs.Utils.Windows;
 using PowerPointLabs.Views;
 
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;

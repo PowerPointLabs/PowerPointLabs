@@ -13,6 +13,7 @@ using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.SyncLab.ObjectFormats;
 using PowerPointLabs.TextCollection;
 using PowerPointLabs.Utils;
+using PowerPointLabs.Utils.Windows;
 
 namespace PowerPointLabs.SyncLab.Views
 {
@@ -156,7 +157,7 @@ namespace PowerPointLabs.SyncLab.Views
             Shape formatShape = shapeStorage.GetShape(shapeKey);
             if (formatShape == null)
             {
-                MessageBox.Show(SyncLabText.ErrorShapeDeleted, SyncLabText.ErrorDialogTitle);
+                MessageBoxUtil.Show(SyncLabText.ErrorShapeDeleted, SyncLabText.ErrorDialogTitle);
                 parent.ClearInvalidFormats();
             }
             this.StartNewUndoEntry();

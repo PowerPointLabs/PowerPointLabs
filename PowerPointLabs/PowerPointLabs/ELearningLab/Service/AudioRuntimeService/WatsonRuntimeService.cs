@@ -12,6 +12,7 @@ using PowerPointLabs.ELearningLab.AudioGenerator.WatsonVoiceGenerator.SpeechEngi
 using PowerPointLabs.ELearningLab.Utility;
 using PowerPointLabs.ELearningLab.Views;
 using PowerPointLabs.TextCollection;
+using PowerPointLabs.Utils.Windows;
 
 namespace PowerPointLabs.ELearningLab.Service
 {
@@ -52,7 +53,7 @@ namespace PowerPointLabs.ELearningLab.Service
                 Console.WriteLine(errorMessage);
                 if (showErrorMessage)
                 {
-                    MessageBox.Show(errorMessage);
+                    MessageBoxUtil.Show(errorMessage);
                 }
                 return false;
             }

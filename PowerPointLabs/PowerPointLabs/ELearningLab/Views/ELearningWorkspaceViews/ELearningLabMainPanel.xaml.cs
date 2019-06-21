@@ -20,6 +20,7 @@ using PowerPointLabs.ELearningLab.Utility;
 using PowerPointLabs.Models;
 using PowerPointLabs.TextCollection;
 using PowerPointLabs.Utils;
+using PowerPointLabs.Utils.Windows;
 using PowerPointLabs.Views;
 
 namespace PowerPointLabs.ELearningLab.Views

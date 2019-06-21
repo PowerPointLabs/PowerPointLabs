@@ -15,6 +15,7 @@ using PowerPointLabs.ELearningLab.AudioGenerator;
 using PowerPointLabs.ELearningLab.ELearningWorkspace.Model;
 using PowerPointLabs.Models;
 using PowerPointLabs.Utils;
+using PowerPointLabs.Utils.Windows;
 using PowerPointLabs.Views;
 
 using OpenFileDialog = System.Windows.Forms.OpenFileDialog;

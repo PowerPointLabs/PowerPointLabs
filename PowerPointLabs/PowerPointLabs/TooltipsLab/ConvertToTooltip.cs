@@ -6,6 +6,7 @@ using Microsoft.Office.Interop.PowerPoint;
 using PowerPointLabs.Models;
 using PowerPointLabs.TextCollection;
 using PowerPointLabs.Utils;
+using PowerPointLabs.Utils.Windows;
 
 namespace PowerPointLabs.TooltipsLab
 {

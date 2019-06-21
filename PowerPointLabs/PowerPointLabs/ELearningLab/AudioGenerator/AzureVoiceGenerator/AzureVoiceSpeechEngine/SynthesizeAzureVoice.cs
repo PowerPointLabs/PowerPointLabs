@@ -6,6 +6,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Xml.Linq;
+using PowerPointLabs.Utils.Windows;
 
 namespace PowerPointLabs.ELearningLab.AudioGenerator
 {
@@ -72,7 +73,7 @@ namespace PowerPointLabs.ELearningLab.AudioGenerator
 
             for (int i = 0; i < 3 && !httpTask.Result.IsSuccessStatusCode; i++)
             {
-                MessageBox.Show("Too many requests, please wait for 20 seconds.");
+                MessageBoxUtil.Show("Too many requests, please wait for 20 seconds.");
                 Thread.Sleep(20000);
                 tuple = SendAsyncHttpRequest(inputOptions, genderValue, cancellationToken);
                 httpTask = tuple.Item1;

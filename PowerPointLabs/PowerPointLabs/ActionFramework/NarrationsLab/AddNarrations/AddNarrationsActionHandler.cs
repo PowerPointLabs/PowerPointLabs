@@ -12,6 +12,7 @@ using PowerPointLabs.ELearningLab.Service;
 using PowerPointLabs.ELearningLab.Views;
 using PowerPointLabs.Models;
 using PowerPointLabs.TextCollection;
+using PowerPointLabs.Utils.Windows;
 
 namespace PowerPointLabs.ActionFramework.NarrationsLab
 {
@@ -23,7 +24,7 @@ namespace PowerPointLabs.ActionFramework.NarrationsLab
             if (AudioSettingService.selectedVoiceType == VoiceType.AzureVoice
                 && AzureAccount.GetInstance().IsEmpty())
             {
-                MessageBox.Show("Invalid user account. Please log in again.");
+                MessageBoxUtil.Show("Invalid user account. Please log in again.");
                 return;
             }
 
@@ -45,7 +46,7 @@ namespace PowerPointLabs.ActionFramework.NarrationsLab
             }
             catch
             {
-                MessageBox.Show("Failed to generate audio files.");
+                MessageBoxUtil.Show("Failed to generate audio files.");
                 return;
             }
 

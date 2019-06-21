@@ -22,7 +22,7 @@ namespace PowerPointLabs.SaveLab
             saveFileDialog.Title = "Save Selected Slides";
             saveFileDialog.OverwritePrompt = true;
 
-            if (saveFileDialog.ShowDialog() == Utils.DialogResult.OK)
+            if (saveFileDialog.ShowDialog() == Utils.Windows.DialogResult.OK)
             {
                 // Copy the Current Presentation under a new name
                 currentPresentation.Presentation.SaveCopyAs(saveFileDialog.FileName, PpSaveAsFileType.ppSaveAsDefault);

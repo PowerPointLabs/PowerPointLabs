@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using PowerPointLabs.Utils.Windows;
 
 namespace PowerPointLabs.ResizeLab.Views
 {
@@ -98,7 +99,7 @@ namespace PowerPointLabs.ResizeLab.Views
                 }
                 else
                 {
-                    MessageBox.Show(string.Format(TextCollection.ResizeLabText.ErrorValueLessThanEqualsZeroWithShape, (i + 1)/2), TextCollection.CommonText.ErrorTitle);
+                    MessageBoxUtil.Show(string.Format(TextCollection.ResizeLabText.ErrorValueLessThanEqualsZeroWithShape, (i + 1)/2), TextCollection.CommonText.ErrorTitle);
                     return;
                 }
             }

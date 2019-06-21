@@ -12,6 +12,7 @@ using System.Windows.Media.Imaging;
 using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.TextCollection;
 using PowerPointLabs.Utils;
+using PowerPointLabs.Utils.Windows;
 
 namespace PowerPointLabs.ShapesLab.Views
 {
@@ -230,7 +231,7 @@ namespace PowerPointLabs.ShapesLab.Views
             // if the new name has been used, the new name is not allowed
             if (File.Exists(newPath))
             {
-                MessageBox.Show(CommonText.ErrorFileNameExist);
+                MessageBoxUtil.Show(CommonText.ErrorFileNameExist);
                 return true;
             }
             return false;
@@ -253,7 +254,7 @@ namespace PowerPointLabs.ShapesLab.Views
             }
             if (!IsValidName(newShapeName))
             {
-                MessageBox.Show(Utils.ShapeUtil.IsShapeNameOverMaximumLength(newShapeName)
+                MessageBoxUtil.Show(Utils.ShapeUtil.IsShapeNameOverMaximumLength(newShapeName)
                                     ? CommonText.ErrorNameTooLong
                                     : CommonText.ErrorInvalidCharacter);
                 textBox.Text = shapeName;

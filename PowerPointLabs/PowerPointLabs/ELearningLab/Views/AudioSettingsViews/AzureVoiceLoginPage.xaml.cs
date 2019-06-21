@@ -3,6 +3,7 @@ using System.Windows.Controls;
 
 using PowerPointLabs.ELearningLab.AudioGenerator;
 using PowerPointLabs.ELearningLab.Service;
+using PowerPointLabs.Utils.Windows;
 
 namespace PowerPointLabs.ELearningLab.Views
 {
@@ -41,7 +42,7 @@ namespace PowerPointLabs.ELearningLab.Views
             }
             catch
             {
-                MessageBox.Show("Key or Region cannot be empty!", "Invalid Input");
+                MessageBoxUtil.Show("Key or Region cannot be empty!", "Invalid Input");
                 return;
             }
 
@@ -59,7 +60,7 @@ namespace PowerPointLabs.ELearningLab.Views
             }
             else
             {
-                MessageBox.Show("Invalid Azure Account.\nIs your account expired?\nAre you connected to WiFi?");
+                MessageBoxUtil.Show("Invalid Azure Account.\nIs your account expired?\nAre you connected to WiFi?");
             }
         }
         #endregion

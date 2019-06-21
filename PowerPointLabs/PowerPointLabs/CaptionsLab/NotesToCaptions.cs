@@ -9,7 +9,7 @@ using Microsoft.Office.Interop.PowerPoint;
 using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.Models;
 using PowerPointLabs.TextCollection;
-
+using PowerPointLabs.Utils.Windows;
 using Shape = Microsoft.Office.Interop.PowerPoint.Shape;
 
 namespace PowerPointLabs.CaptionsLab
@@ -25,7 +25,7 @@ namespace PowerPointLabs.CaptionsLab
                 !PowerPointCurrentPresentationInfo.SelectedSlides.Any())
             {
                 Logger.Log(String.Format("{0} in EmbedCaptionsOnSelectedSlides", CaptionsLabText.ErrorNoSelectionLog));
-                MessageBox.Show(CaptionsLabText.ErrorNoSelection, CaptionsLabText.ErrorDialogTitle);
+                MessageBoxUtil.Show(CaptionsLabText.ErrorNoSelection, CaptionsLabText.ErrorDialogTitle);
                 return;
             }
             EmbedCaptionsOnSlides(PowerPointCurrentPresentationInfo.SelectedSlides.ToList());
@@ -40,7 +40,7 @@ namespace PowerPointLabs.CaptionsLab
                 if (!captionAdded && slides.Count == 1)
                 {
                     Logger.Log(String.Format("{0} in EmbedCaptionsOnSlides", CaptionsLabText.ErrorNoNotesLog));
-                    MessageBox.Show(CaptionsLabText.ErrorNoNotes, CaptionsLabText.ErrorDialogTitle);
+                    MessageBoxUtil.Show(CaptionsLabText.ErrorNoNotes, CaptionsLabText.ErrorDialogTitle);
                     ShowNotesPane();
                 }
             }
@@ -57,7 +57,7 @@ namespace PowerPointLabs.CaptionsLab
             else
             {
                 Logger.Log(String.Format("{0} in EmbedCaptionsOnCurrentSlide", CaptionsLabText.ErrorNoCurrentSlideLog));
-                MessageBox.Show(CaptionsLabText.ErrorNoSelection, CaptionsLabText.ErrorDialogTitle);
+                MessageBoxUtil.Show(CaptionsLabText.ErrorNoSelection, CaptionsLabText.ErrorDialogTitle);
             }
         }
 

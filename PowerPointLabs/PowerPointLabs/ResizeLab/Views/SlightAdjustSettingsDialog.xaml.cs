@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Input;
+using PowerPointLabs.Utils.Windows;
 
 namespace PowerPointLabs.ResizeLab.Views
 {
@@ -34,7 +35,7 @@ namespace PowerPointLabs.ResizeLab.Views
             }
             else
             {
-                MessageBox.Show(TextCollection.ResizeLabText.ErrorValueLessThanEqualsZero, TextCollection.CommonText.ErrorTitle);
+                MessageBoxUtil.Show(TextCollection.ResizeLabText.ErrorValueLessThanEqualsZero, TextCollection.CommonText.ErrorTitle);
             }
         }
 

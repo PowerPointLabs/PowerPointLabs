@@ -2,6 +2,7 @@
 
 using PowerPointLabs.TextCollection;
 using PowerPointLabs.Utils;
+using PowerPointLabs.Utils.Windows;
 using PowerPointLabs.Views;
 
 using Forms = System.Windows.Forms;
@@ -50,13 +51,13 @@ namespace PowerPointLabs.ShapesLab.Views
                 // this launcher will scroll the view to selected path
                 DialogResult folderDialogResult = FolderDialogLauncher.ShowFolderBrowser(folderDialog);
 
-                if (folderDialogResult == Utils.DialogResult.OK)
+                if (folderDialogResult == Utils.Windows.DialogResult.OK)
                 {
                     string newPath = folderDialog.SelectedPath;
 
                     if (!FileDir.IsDirectoryEmpty(newPath))
                     {
-                        System.Windows.MessageBox.Show(ShapesLabText.ErrorFolderNonEmpty);
+                        MessageBoxUtil.Show(ShapesLabText.ErrorFolderNonEmpty);
                     }
                     else
                     {

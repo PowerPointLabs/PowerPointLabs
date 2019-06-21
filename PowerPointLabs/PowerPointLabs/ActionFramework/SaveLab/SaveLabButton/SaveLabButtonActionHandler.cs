@@ -7,6 +7,7 @@ using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.SaveLab;
 using PowerPointLabs.TextCollection;
 using PowerPointLabs.Utils;
+using PowerPointLabs.Utils.Windows;
 
 namespace PowerPointLabs.ActionFramework.SaveLab
 {

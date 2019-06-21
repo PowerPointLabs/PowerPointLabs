@@ -8,7 +8,7 @@ using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.ActionFramework.Common.Interface;
 using PowerPointLabs.CropLab;
 using PowerPointLabs.TextCollection;
-
+using PowerPointLabs.Utils.Windows;
 using Office = Microsoft.Office.Core;
 
 namespace PowerPointLabs.ActionFramework.EffectsLab
@@ -30,14 +30,14 @@ namespace PowerPointLabs.ActionFramework.EffectsLab
             }
             catch (Exception)
             {
-                MessageBox.Show(TextCollection.EffectsLabText.ErrorMagnifyAction);
+                MessageBoxUtil.Show(TextCollection.EffectsLabText.ErrorMagnifyAction);
 
                 return;
             }
 
             if (shapeRange.Count > 1 || shapeRange[1].Type == Microsoft.Office.Core.MsoShapeType.msoGroup)
             {
-                MessageBox.Show(TextCollection.EffectsLabText.ErrorMagnifyOnlyOneArea);
+                MessageBoxUtil.Show(TextCollection.EffectsLabText.ErrorMagnifyOnlyOneArea);
 
                 return;
             }
@@ -53,7 +53,7 @@ namespace PowerPointLabs.ActionFramework.EffectsLab
                 string errorMessage = e.Message;
                 errorMessage = errorMessage.Replace("Crop To Shape", "Magnify");
 
-                MessageBox.Show(errorMessage);
+                MessageBoxUtil.Show(errorMessage);
             }
         }
 

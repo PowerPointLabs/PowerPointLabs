@@ -7,7 +7,7 @@ using System.Windows.Input;
 
 using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.Utils;
-
+using PowerPointLabs.Utils.Windows;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 using Shape = Microsoft.Office.Interop.PowerPoint.Shape;
 
@@ -1209,7 +1209,7 @@ namespace PowerPointLabs.TimerLab
         #region Error Handling
         private void ShowErrorMessageBox(string content)
         {
-            MessageBox.Show(content, TextCollection.CommonText.ErrorTitle);
+            MessageBoxUtil.Show(content, TextCollection.CommonText.ErrorTitle);
         }
 
         #endregion

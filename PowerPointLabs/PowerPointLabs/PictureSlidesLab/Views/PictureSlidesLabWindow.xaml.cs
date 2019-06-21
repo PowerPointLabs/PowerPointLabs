@@ -34,7 +34,7 @@ using DragEventArgs = System.Windows.DragEventArgs;
 using Forms = System.Windows.Forms;
 using KeyEventArgs = System.Windows.Input.KeyEventArgs;
 using ListBox = System.Windows.Controls.ListBox;
-using MessageBox = System.Windows.MessageBox;
+using MessageBox = PowerPointLabs.Utils.Windows.MessageBoxUtil;
 using Point = System.Windows.Point;
 
 namespace PowerPointLabs.PictureSlidesLab.Views

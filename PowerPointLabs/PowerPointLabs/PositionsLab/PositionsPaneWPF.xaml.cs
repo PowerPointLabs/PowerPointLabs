@@ -12,6 +12,7 @@ using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.PositionsLab.Views;
 using PowerPointLabs.TextCollection;
 using PowerPointLabs.Utils;
+using PowerPointLabs.Utils.Windows;
 using PowerPointLabs.Views;
 
 using PPExtraEventHelper;

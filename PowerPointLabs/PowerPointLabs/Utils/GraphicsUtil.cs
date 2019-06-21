@@ -13,7 +13,7 @@ using Microsoft.Office.Interop.PowerPoint;
 
 using PowerPointLabs.Models;
 using PowerPointLabs.TextCollection;
-
+using PowerPointLabs.Utils.Windows;
 using PPExtraEventHelper;
 
 using Drawing = System.Drawing;
