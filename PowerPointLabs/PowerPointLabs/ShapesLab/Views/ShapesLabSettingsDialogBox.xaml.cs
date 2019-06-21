@@ -27,7 +27,7 @@ namespace PowerPointLabs.ShapesLab.Views
         
         public ShapesLabSettingsDialogBox(string savePath) : this()
         {
-            savePathBrowserIconImage.Source = GraphicsUtil.CreateBitmapSource(Properties.Resources.Load_icon);
+            savePathBrowserIconImage.Source = GraphicsUtil.BitmapToImageSource(Properties.Resources.Load_icon);
             
             savePathInput.IsReadOnly = true;
             savePathInput.Text = savePath;

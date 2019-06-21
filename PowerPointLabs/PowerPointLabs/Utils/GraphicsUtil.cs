@@ -281,19 +281,20 @@ namespace PowerPointLabs.Utils
             return thumbnail;
         }
 
-        /// <summary>
-        /// Used to create a <seealso cref="BitmapSource"/> using a <seealso cref="Bitmap"/>,
-        /// which can be used to specify an <seealso cref="System.Windows.Controls.Image"/>'s source.
-        /// As the Bitmap image is used as-is, there is no need to specify a palette, rectangle or sizing options.
-        /// As such, the palette pointer is IntPtr.Zero.
-        /// </summary>
-        public static BitmapSource CreateBitmapSource(Bitmap image)
+        public static BitmapImage BitmapToImageSource(Bitmap bitmap)
         {
-            return Imaging.CreateBitmapSourceFromHBitmap(
-                image.GetHbitmap(),
-                IntPtr.Zero,
-                System.Windows.Int32Rect.Empty,
-                BitmapSizeOptions.FromEmptyOptions());
+            using (MemoryStream memory = new MemoryStream())
+            {
+                bitmap.Save(memory, System.Drawing.Imaging.ImageFormat.Png);
+                memory.Position = 0;
+                BitmapImage bitmapimage = new BitmapImage();
+                bitmapimage.BeginInit();
+                bitmapimage.StreamSource = memory;
+                bitmapimage.CacheOption = BitmapCacheOption.OnLoad;
+                bitmapimage.EndInit();
+
+                return bitmapimage;
+            }
         }
 
         #endregion

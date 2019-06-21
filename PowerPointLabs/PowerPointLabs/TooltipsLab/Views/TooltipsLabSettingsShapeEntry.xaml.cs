@@ -20,7 +20,7 @@ namespace PowerPointLabs.TooltipsLab.Views
         {
             InitializeComponent();
             Type = type;
-            imageBox.Source = GraphicsUtil.CreateBitmapSource(image);
+            imageBox.Source = GraphicsUtil.BitmapToImageSource(image);
         }
 
         #endregion

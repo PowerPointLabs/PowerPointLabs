@@ -39,9 +39,9 @@ namespace PowerPointLabs.SyncLab.Views
             this.shapeKey = shapeKey;
             this.shapeStorage = shapeStorage;
             this.formats = formats;
-            editImage.Source = GraphicsUtil.CreateBitmapSource(Properties.Resources.SyncLabEditButton);
-            pasteImage.Source = GraphicsUtil.CreateBitmapSource(Properties.Resources.SyncLabPasteButton);
-            deleteImage.Source = GraphicsUtil.CreateBitmapSource(Properties.Resources.SyncLabDeleteButton);
+            editImage.Source = GraphicsUtil.BitmapToImageSource(Properties.Resources.SyncLabEditButton);
+            pasteImage.Source = GraphicsUtil.BitmapToImageSource(Properties.Resources.SyncLabPasteButton);
+            deleteImage.Source = GraphicsUtil.BitmapToImageSource(Properties.Resources.SyncLabDeleteButton);
 
             UpdateToolTipBody();
         }
@@ -102,7 +102,7 @@ namespace PowerPointLabs.SyncLab.Views
             }
             else
             {
-                BitmapSource source = GraphicsUtil.CreateBitmapSource(image);
+                BitmapSource source = GraphicsUtil.BitmapToImageSource(image);
                 imageBox.Source = source;
                 imageBox.Visibility = Visibility.Visible;
                 col1.Width = new GridLength(60);

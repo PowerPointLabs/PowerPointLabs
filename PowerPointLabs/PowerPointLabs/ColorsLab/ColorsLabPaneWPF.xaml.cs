@@ -195,25 +195,25 @@ namespace PowerPointLabs.ColorsLab
         /// </summary>
         private void SetupImageSources()
         {
-            textColorIcon.Source = GraphicsUtil.CreateBitmapSource(Properties.Resources.TextColor_icon);
+            textColorIcon.Source = GraphicsUtil.BitmapToImageSource(Properties.Resources.TextColor_icon);
 
-            lineColorIcon.Source = GraphicsUtil.CreateBitmapSource(Properties.Resources.LineColor_icon);
+            lineColorIcon.Source = GraphicsUtil.BitmapToImageSource(Properties.Resources.LineColor_icon);
 
-            fillColorIcon.Source = GraphicsUtil.CreateBitmapSource(Properties.Resources.FillColor_icon);
+            fillColorIcon.Source = GraphicsUtil.BitmapToImageSource(Properties.Resources.FillColor_icon);
 
-            eyeDropperIcon.Source = GraphicsUtil.CreateBitmapSource(Properties.Resources.EyeDropper_icon);
+            eyeDropperIcon.Source = GraphicsUtil.BitmapToImageSource(Properties.Resources.EyeDropper_icon);
 
-            brightnessIcon.Source = GraphicsUtil.CreateBitmapSource(Properties.Resources.Brightness_icon_25x25);
+            brightnessIcon.Source = GraphicsUtil.BitmapToImageSource(Properties.Resources.Brightness_icon_25x25);
 
-            saturationIcon.Source = GraphicsUtil.CreateBitmapSource(Properties.Resources.Saturation_icon_18x18);
+            saturationIcon.Source = GraphicsUtil.BitmapToImageSource(Properties.Resources.Saturation_icon_18x18);
 
-            saveColorIcon.Source = GraphicsUtil.CreateBitmapSource(Properties.Resources.Save_icon);
+            saveColorIcon.Source = GraphicsUtil.BitmapToImageSource(Properties.Resources.Save_icon);
 
-            loadColorIcon.Source = GraphicsUtil.CreateBitmapSource(Properties.Resources.Load_icon);
+            loadColorIcon.Source = GraphicsUtil.BitmapToImageSource(Properties.Resources.Load_icon);
 
-            reloadColorIcon.Source = GraphicsUtil.CreateBitmapSource(Properties.Resources.Reload_icon);
+            reloadColorIcon.Source = GraphicsUtil.BitmapToImageSource(Properties.Resources.Reload_icon);
 
-            clearColorIcon.Source = GraphicsUtil.CreateBitmapSource(Properties.Resources.Clear_icon);
+            clearColorIcon.Source = GraphicsUtil.BitmapToImageSource(Properties.Resources.Clear_icon);
         }
 
         /// <summary>
