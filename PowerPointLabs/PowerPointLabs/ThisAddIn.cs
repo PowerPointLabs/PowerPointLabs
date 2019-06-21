@@ -32,6 +32,7 @@ using PowerPointLabs.SyncLab.Views;
 using PowerPointLabs.TextCollection;
 using PowerPointLabs.TimerLab;
 using PowerPointLabs.Utils;
+using PowerPointLabs.Utils.Windows;
 using PowerPointLabs.Views;
 
 using PPExtraEventHelper;

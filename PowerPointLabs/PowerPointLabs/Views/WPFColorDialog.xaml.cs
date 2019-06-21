@@ -1,10 +1,10 @@
 ﻿using System.Drawing;
-using PowerPointLabs.Utils;
+using PowerPointLabs.Utils.Windows;
 
 namespace PowerPointLabs.Views
 {
     /// <summary>
-    /// Interaction logic for UserControl1.xaml
+    /// Interaction logic for WPFColorDialog.xaml
     /// </summary>
     public partial class WPFColorDialog
     {

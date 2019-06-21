@@ -5,6 +5,7 @@
                       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
                       xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
                       xmlns:WPF="clr-namespace:PowerPointLabs.WPF"
+                      xmlns:Converter="clr-namespace:PowerPointLabs.WPF.Converter"
                       d:DataContext="{d:DesignInstance WPF:MessageBoxVM}"
                       mc:Ignorable="d"
                       MinHeight="205"
@@ -16,11 +17,9 @@
                       Title="{Binding Title}"
                       WindowStartupLocation="CenterScreen"
                       WindowTransitionsEnabled="False"
-                      Visibility="{Binding Visible, Converter=BooleanToVisibilityConverter}">
+                      Visibility="{Binding Visible, Mode=TwoWay}">
     <controls:MetroWindow.Resources>
-        <BooleanToVisibilityConverter x:Key="BooleanToVisibility"/>
-        
-        <ResourceDictionary x:Key="Style">
+        <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />
@@ -28,6 +27,9 @@
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/blue.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/baselight.xaml" />
             </ResourceDictionary.MergedDictionaries>
+            <Converter:EnumConverter x:Key="EnumConverter"/>
+            <Converter:DialogResultToVisbilityConverter x:Key="DialogResultToVisibility"/>
+            <Converter:MessageBoxIconConverter x:Key="MessageBoxIcon"/>
         </ResourceDictionary>
     </controls:MetroWindow.Resources>
     <Grid>
@@ -41,7 +43,7 @@
                 <ColumnDefinition Width="50"/>
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
-            <Image x:Name="CustomIcon" Grid.Column="0" Height="50" Width="50" Source="{Binding Icon}"></Image>
+            <Image x:Name="CustomIcon" Grid.Column="0" Height="50" Width="50" Source="{Binding Icon, Converter={StaticResource MessageBoxIcon}}"></Image>
             <TextBlock x:Name="Message" Grid.Column="1" Text="{Binding Message}" TextWrapping="WrapWithOverflow"/>
         </Grid>
         <Grid Row="1" HorizontalAlignment="Right" VerticalAlignment="Center">
@@ -50,9 +52,9 @@
                 <ColumnDefinition Width="Auto"/>
                 <ColumnDefinition Width="Auto"/>
             </Grid.ColumnDefinitions>
-            <WPF:MessageButton Grid.Column="0" x:Name="LeftButton" Content="{Binding LeftButton}" Width="80" Margin="5 0 5 0" Click="OnClick_MessageButton"/>
-            <WPF:MessageButton Grid.Column="1" x:Name="MiddleButton" Content="{Binding MiddleButton}" Width="80" Margin="5 0 5 0" Click="OnClick_MessageButton"/>
-            <WPF:MessageButton Grid.Column="2" x:Name="RightButton" Content="{Binding RightButton}" Width="80" Margin="5 0 5 0" Click="OnClick_MessageButton"/>
+            <WPF:MessageButton Grid.Column="0" x:Name="LeftButton" Content="{Binding LeftButton}" Visibility="{Binding LeftButton, Converter={StaticResource DialogResultToVisibility}}" Width="80" Margin="5 0 5 0" Click="OnClick_MessageButton"/>
+            <WPF:MessageButton Grid.Column="1" x:Name="MiddleButton" Content="{Binding MiddleButton}" Visibility="{Binding MiddleButton, Converter={StaticResource DialogResultToVisibility}}" Width="80" Margin="5 0 5 0" Click="OnClick_MessageButton"/>
+            <WPF:MessageButton Grid.Column="2" x:Name="RightButton" Content="{Binding RightButton}" Visibility="{Binding RightButton, Converter={StaticResource DialogResultToVisibility}}" Width="80" Margin="5 0 5 0" Click="OnClick_MessageButton"/>
         </Grid>
         <!--Row Of Buttons, hug the right-->
     </Grid>

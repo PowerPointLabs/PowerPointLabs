@@ -923,7 +923,7 @@
     <Compile Include="Utils\ClipboardUtil.cs" />
     <Compile Include="Utils\ShapeUtil.cs" />
     <Compile Include="Utils\SlideUtil.cs" />
-    <Compile Include="Utils\MessageBoxUtil.cs" />
+    <Compile Include="Utils\Windows\MessageBoxUtil.cs" />
     <Compile Include="Views\ErrorDialogBox.xaml.cs">
       <DependentUpon>ErrorDialogBox.xaml</DependentUpon>
     </Compile>
@@ -942,7 +942,9 @@
     <Compile Include="WPF\BaseNotificationClass.cs" />
     <Compile Include="WPF\ColorDialogVM.cs" />
     <Compile Include="WPF\Converter\BaseConverter.cs" />
-    <Compile Include="WPF\Converter\DialogResultToStringConverter.cs" />
+    <Compile Include="WPF\Converter\DialogResultToVisbilityConverter.cs" />
+    <Compile Include="WPF\Converter\EnumConverter.cs" />
+    <Compile Include="WPF\Converter\MessageBoxIconConverter.cs" />
     <Compile Include="WPF\MessageBoxVM.cs" />
     <Compile Include="WPF\MessageButton.cs" />
     <Compile Include="WPF\SaveFileDialogVM.cs" />

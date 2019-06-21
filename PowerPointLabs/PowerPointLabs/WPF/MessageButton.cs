@@ -1,6 +1,6 @@
 ﻿using System.Windows.Controls;
 
-using PowerPointLabs.Utils;
+using PowerPointLabs.Utils.Windows;
 
 namespace PowerPointLabs.WPF
 {

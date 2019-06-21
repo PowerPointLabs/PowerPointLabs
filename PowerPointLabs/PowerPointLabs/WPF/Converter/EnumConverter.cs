@@ -1,6 +1,5 @@
 ﻿using System;
 using System.ComponentModel;
-using System.Globalization;
 using System.Reflection;
 using System.Windows;
 using System.Windows.Data;
@@ -11,7 +10,10 @@ namespace PowerPointLabs.WPF.Converter
     {
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-            if (value == null) return DependencyProperty.UnsetValue;
+            if (value == null)
+            {
+                return DependencyProperty.UnsetValue;
+            }
 
             return GetDescription((Enum)value);
         }

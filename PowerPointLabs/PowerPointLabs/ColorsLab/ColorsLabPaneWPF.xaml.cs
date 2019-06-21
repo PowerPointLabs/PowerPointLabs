@@ -14,6 +14,7 @@ using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.DataSources;
 using PowerPointLabs.TextCollection;
 using PowerPointLabs.Utils;
+using PowerPointLabs.Utils.Windows;
 using PowerPointLabs.Views;
 
 using Color = System.Drawing.Color;
@@ -375,7 +376,6 @@ namespace PowerPointLabs.ColorsLab
         {
             System.Windows.Shapes.Rectangle rect = (System.Windows.Shapes.Rectangle)sender;
             rect.MouseUp -= SelectedColorRectangle_MouseUp;
-
             WPFColorDialog colorPickerDialog = new WPFColorDialog();
             colorPickerDialog.FullOpen = true;
 

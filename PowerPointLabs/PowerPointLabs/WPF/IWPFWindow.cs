@@ -1,4 +1,4 @@
-﻿using PowerPointLabs.Utils;
+﻿using PowerPointLabs.Utils.Windows;
 
 namespace PowerPointLabs.WPF
 {

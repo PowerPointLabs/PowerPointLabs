@@ -8,7 +8,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Forms;
 using System.Windows.Input;
-using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 
 using Microsoft.Office.Interop.PowerPoint;
@@ -20,8 +19,11 @@ using PowerPointLabs.TextCollection;
 using PowerPointLabs.Utils;
 using PowerPointLabs.Views;
 
+using DialogResult = PowerPointLabs.Utils.Windows.DialogResult;
 using MenuItem = System.Windows.Controls.MenuItem;
-using MessageBox = PowerPointLabs.Utils.MessageBoxUtil;
+using MessageBoxButtons = PowerPointLabs.Utils.Windows.MessageBoxButtons;
+using MessageBoxIcon = PowerPointLabs.Utils.Windows.MessageBoxIcon;
+using MessageBoxUtil = PowerPointLabs.Utils.Windows.MessageBoxUtil;
 using ShapeRange = Microsoft.Office.Interop.PowerPoint.ShapeRange;
 
 namespace PowerPointLabs.ShapesLab.Views
@@ -472,12 +474,12 @@ namespace PowerPointLabs.ShapesLab.Views
 
             if (isDefaultCategory)
             {
-                PowerPointLabs.Utils.DialogResult result =
+                DialogResult result =
                     MessageBoxUtil.Show(ShapesLabText.RemoveDefaultCategoryMessage,
                                     ShapesLabText.RemoveDefaultCategoryCaption,
-                                    PowerPointLabs.Utils.MessageBoxButtons.OKCancel);
+                                    MessageBoxButtons.OKCancel);
 
-                if (result == PowerPointLabs.Utils.DialogResult.Cancel)
+                if (result == DialogResult.Cancel)
                 {
                     return;
                 }
@@ -579,8 +581,8 @@ namespace PowerPointLabs.ShapesLab.Views
 
                 MessageBoxUtil.Show(
                     string.Format(ShapesLabText.SuccessSaveLocationChanged, newSavePath),
-                    ShapesLabText.SuccessSaveLocationChangedTitle, PowerPointLabs.Utils.MessageBoxButtons.OK,
-                    PowerPointLabs.Utils.MessageBoxIcon.Information);
+                    ShapesLabText.SuccessSaveLocationChangedTitle, MessageBoxButtons.OK,
+                    MessageBoxIcon.Information);
             };
             settingsDialog.ShowDialog();
         }

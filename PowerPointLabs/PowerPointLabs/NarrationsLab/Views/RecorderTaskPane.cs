@@ -20,15 +20,15 @@ using PowerPointLabs.AudioMisc;
 using PowerPointLabs.ELearningLab.Service;
 using PowerPointLabs.Models;
 using PowerPointLabs.TextCollection;
-using PowerPointLabs.Utils;
+using PowerPointLabs.Utils.Windows;
 using PowerPointLabs.Views;
 using PowerPointLabs.XMLMisc;
 
 using PPExtraEventHelper;
 
-using DialogResult = PowerPointLabs.Utils.DialogResult;
-using MessageBoxButtons = PowerPointLabs.Utils.MessageBoxButtons;
-using MessageBoxIcon = PowerPointLabs.Utils.MessageBoxIcon;
+using DialogResult = PowerPointLabs.Utils.Windows.DialogResult;
+using MessageBoxButtons = PowerPointLabs.Utils.Windows.MessageBoxButtons;
+using MessageBoxIcon = PowerPointLabs.Utils.Windows.MessageBoxIcon;
 
 namespace PowerPointLabs.ELearningLab.Views
 {
@@ -1095,7 +1095,7 @@ namespace PowerPointLabs.ELearningLab.Views
             if (!NInputDeviceExists())
             {
                 MessageBoxUtil.Show(NarrationsLabText.RecorderNoInputDeviceMsg, NarrationsLabText.RecorderErrorNoInputDeviceTitle,
-                                PowerPointLabs.Utils.MessageBoxButtons.OK, PowerPointLabs.Utils.MessageBoxIcon.Error);
+                                MessageBoxButtons.OK, MessageBoxIcon.Error);
 
                 return;
             }

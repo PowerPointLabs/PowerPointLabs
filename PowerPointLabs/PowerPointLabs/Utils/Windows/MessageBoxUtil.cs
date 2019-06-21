@@ -1,7 +1,7 @@
 ﻿using PowerPointLabs.WPF;
 using MessageBox = PowerPointLabs.WPF.MessageBoxVM;
 
-namespace PowerPointLabs.Utils
+namespace PowerPointLabs.Utils.Windows
 {
     public enum DialogResult
     {
@@ -43,27 +43,19 @@ namespace PowerPointLabs.Utils
         public static DialogResult Show(string text, string caption = "",
             MessageBoxButtons buttons = MessageBoxButtons.OK, MessageBoxIcon icon = MessageBoxIcon.None)
         {
-            MessageBox messageBox = new MessageBox();
+            MessageBox messageBox = MessageBox.CreateInstance();
             messageBox.Title = caption;
             messageBox.Message = text;
+            messageBox.LeftButton = LeftButtonResult(buttons);
+            messageBox.MiddleButton = MiddleButtonResult(buttons);
+            messageBox.RightButton = RightButtonResult(buttons);
+            messageBox.Icon = icon;
             //messageBox.SetButton(MessageBox.ButtonPos.Left, LeftButtonResult(buttons));
             //messageBox.SetButton(MessageBox.ButtonPos.Middle, MiddleButtonResult(buttons));
             //messageBox.SetButton(MessageBox.ButtonPos.Right, RightButtonResult(buttons));
-            messageBox.SetIcon(icon);
+            //messageBox.IconSource = icon;
             return messageBox.ShowDialog();
         }
-
-        //private static ImageSource GetImageSource(MessageBoxIcon icon)
-        //{
-        //    switch (icon)
-        //    {
-        //        case MessageBoxIcon.Asterisk:
-        //            break;
-        //        case MessageBoxIcon.None:
-        //        default:
-        //            break;
-        //    }
-        //}
 
         private static DialogResult LeftButtonResult(MessageBoxButtons buttons)
         {

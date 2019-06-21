@@ -2,6 +2,7 @@
 using System.Windows.Forms;
 
 using Microsoft.Office.Interop.PowerPoint;
+using PowerPointLabs.Views;
 
 namespace PowerPointLabs.SaveLab
 {
@@ -10,7 +11,7 @@ namespace PowerPointLabs.SaveLab
         public static void SaveFile(Models.PowerPointPresentation currentPresentation)
         {
             // Opens up a new Save File Dialog
-            SaveFileDialog saveFileDialog = new SaveFileDialog();
+            WPFSaveFileDialog saveFileDialog = new WPFSaveFileDialog();
             Models.PowerPointPresentation newPresentation;
 
             List<Models.PowerPointSlide> selectedSlides = currentPresentation.SelectedSlides;
@@ -21,7 +22,7 @@ namespace PowerPointLabs.SaveLab
             saveFileDialog.Title = "Save Selected Slides";
             saveFileDialog.OverwritePrompt = true;
 
-            if (saveFileDialog.ShowDialog() == DialogResult.OK)
+            if (saveFileDialog.ShowDialog() == Utils.DialogResult.OK)
             {
                 // Copy the Current Presentation under a new name
                 currentPresentation.Presentation.SaveCopyAs(saveFileDialog.FileName, PpSaveAsFileType.ppSaveAsDefault);

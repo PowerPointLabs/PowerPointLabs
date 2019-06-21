@@ -1,21 +1,101 @@
 ﻿using System;
 using System.ComponentModel;
 using System.Threading;
-using PowerPointLabs.Utils;
+using System.Windows;
+using System.Windows.Threading;
+using PowerPointLabs.Utils.Windows;
 using PowerPointLabs.Views;
 
 namespace PowerPointLabs.WPF
 {
     public class MessageBoxVM : BaseNotificationClass, IWPFWindow, INotifyPropertyChanged
     {
-        public string Title { get; set; }
-        public string Message { get; set; }
-        public DialogResult LeftButton { get; set; }
-        public DialogResult MiddleButton { get; set; }
-        public DialogResult RightButton { get; set; }
-        public string IconSource { get; set; }
-        public DialogResult Result { get; set; }
-        public bool Visible
+        public string Title
+        {
+            get
+            {
+                return _title;
+            }
+            set
+            {
+                _title = value;
+                OnPropertyChanged(nameof(Title));
+            }
+        }
+        public string Message
+        {
+            get
+            {
+                return _message;
+            }
+            set
+            {
+                _message = value;
+                OnPropertyChanged(nameof(Message));
+            }
+        }
+        public DialogResult LeftButton
+        {
+            get
+            {
+                return _leftButton;
+            }
+            set
+            {
+                _leftButton = value;
+                OnPropertyChanged(nameof(LeftButton));
+            }
+        }
+        public DialogResult MiddleButton
+        {
+            get
+            {
+                return _middleButton;
+            }
+            set
+            {
+                _middleButton = value;
+                OnPropertyChanged(nameof(MiddleButton));
+            }
+        }
+        public DialogResult RightButton
+        {
+            get
+            {
+                return _rightButton;
+            }
+            set
+            {
+                _rightButton = value;
+                OnPropertyChanged(nameof(RightButton));
+            }
+        }
+        public MessageBoxIcon Icon
+        {
+            get
+            {
+                return _icon;
+            }
+            set
+            {
+                _icon = value;
+                OnPropertyChanged(nameof(Icon));
+            }
+        }
+        public DialogResult Result
+        {
+            get
+            {
+                return _result;
+            }
+            set
+            {
+                _result = value;
+                OnPropertyChanged(nameof(Result));
+            }
+        }
+
+        public Visibility Visible
         {
             get
             {
@@ -24,7 +104,7 @@ namespace PowerPointLabs.WPF
             set
             {
                _visible = value;
-                if (_visible)
+                if (_visible == Visibility.Visible)
                 {
                     closed.Reset();
                 }
@@ -32,9 +112,18 @@ namespace PowerPointLabs.WPF
                 {
                     closed.Set();
                 }
+                OnPropertyChanged(nameof(Visible));
             }
         }
-        private bool _visible = false;
+
+        private string _title;
+        private string _message;
+        private DialogResult _leftButton;
+        private DialogResult _middleButton;
+        private DialogResult _rightButton;
+        private MessageBoxIcon _icon;
+        private DialogResult _result = DialogResult.None;
+        private Visibility _visible = Visibility.Hidden;
         private ManualResetEventSlim closed = new ManualResetEventSlim(false);
 
         public static MessageBoxVM CreateInstance()
@@ -45,18 +134,17 @@ namespace PowerPointLabs.WPF
             return data;
         }
 
-        // Obsolete
-        public void SetIcon(MessageBoxIcon icon)
+        private MessageBoxVM()
         {
-            IconSource = GetIcon(icon);
-            OnPropertyChanged(nameof(IconSource));
+
         }
 
         public DialogResult ShowDialog()
         {
             Result = DialogResult.None;
-            Visible = true;
-            closed.Wait();
+            Visible = Visibility.Visible;
+            Dispatcher.Run();
+            //closed.Wait(); No need for this anymore
             return Result;
         }
 
