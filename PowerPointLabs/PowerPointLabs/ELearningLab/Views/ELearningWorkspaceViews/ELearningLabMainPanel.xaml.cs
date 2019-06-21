@@ -58,8 +58,8 @@ namespace PowerPointLabs.ELearningLab.Views
         public ELearningLabMainPanel()
         {
             InitializeComponent();
-            syncImage.Source = CommonUtil.CreateBitmapSource(Properties.Resources.SyncExplanationIcon);
-            createImage.Source = CommonUtil.CreateBitmapSource(Properties.Resources.AddExplanationIcon);
+            syncImage.Source = GraphicsUtil.CreateBitmapSource(Properties.Resources.SyncExplanationIcon);
+            createImage.Source = GraphicsUtil.CreateBitmapSource(Properties.Resources.AddExplanationIcon);
             isSynced = true;          
             InitializeBackgroundWorker();
             slide = this.GetCurrentSlide();

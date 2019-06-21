@@ -22,14 +22,14 @@ namespace PowerPointLabs.ELearningLab.Converters
             switch ((AnimationType)value)
             {
                 case AnimationType.Emphasis:
-                    return CommonUtil.CreateBitmapSource(Properties.Resources.AnimationEmphasis);
+                    return GraphicsUtil.CreateBitmapSource(Properties.Resources.AnimationEmphasis);
                 case AnimationType.Entrance:
-                    return CommonUtil.CreateBitmapSource(Properties.Resources.AnimationEntrance);
+                    return GraphicsUtil.CreateBitmapSource(Properties.Resources.AnimationEntrance);
                 case AnimationType.Exit:
-                    return CommonUtil.CreateBitmapSource(Properties.Resources.AnimationExit);
+                    return GraphicsUtil.CreateBitmapSource(Properties.Resources.AnimationExit);
                 case AnimationType.MotionPath:
                 default:
-                    return CommonUtil.CreateBitmapSource(Properties.Resources.AnimationMotionPath);
+                    return GraphicsUtil.CreateBitmapSource(Properties.Resources.AnimationMotionPath);
             }
         }
 

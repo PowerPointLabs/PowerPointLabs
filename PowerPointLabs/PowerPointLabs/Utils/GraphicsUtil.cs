@@ -6,6 +6,7 @@ using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Windows.Forms;
+using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
@@ -279,6 +280,22 @@ namespace PowerPointLabs.Utils
 
             return thumbnail;
         }
+
+        /// <summary>
+        /// Used to create a <seealso cref="BitmapSource"/> using a <seealso cref="Bitmap"/>,
+        /// which can be used to specify an <seealso cref="System.Windows.Controls.Image"/>'s source.
+        /// As the Bitmap image is used as-is, there is no need to specify a palette, rectangle or sizing options.
+        /// As such, the palette pointer is IntPtr.Zero.
+        /// </summary>
+        public static BitmapSource CreateBitmapSource(Bitmap image)
+        {
+            return Imaging.CreateBitmapSourceFromHBitmap(
+                image.GetHbitmap(),
+                IntPtr.Zero,
+                System.Windows.Int32Rect.Empty,
+                BitmapSizeOptions.FromEmptyOptions());
+        }
+
         #endregion
 
         #region GDI+
@@ -317,9 +334,10 @@ namespace PowerPointLabs.Utils
             b = (byte)((rgb >> 16) & 255);
         }
 
-        public static Drawing.Color DrawingColorFromMediaColor(System.Windows.Media.Color mediaColor)
+        public static Drawing.Color DrawingColorFromMediaColor(System.Windows.Media.Color mediaColor, bool opaque = false)
         {
-            return Drawing.Color.FromArgb(mediaColor.A, mediaColor.R, mediaColor.G, mediaColor.B);
+            return Drawing.Color.FromArgb(opaque ? 255 : mediaColor.A,
+                mediaColor.R, mediaColor.G, mediaColor.B);
         }
 
         public static System.Windows.Media.Color MediaColorFromDrawingColor(Drawing.Color drawingColor)

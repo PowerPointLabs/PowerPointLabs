@@ -60,7 +60,7 @@ namespace PowerPointLabs.SyncLab.Views
             }
             else
             {
-                BitmapSource source = CommonUtil.CreateBitmapSource(image);
+                BitmapSource source = GraphicsUtil.CreateBitmapSource(image);
                 imageBox.Source = source;
                 imageBox.Visibility = Visibility.Visible;
                 label.Margin = new Thickness(65, label.Margin.Top,
