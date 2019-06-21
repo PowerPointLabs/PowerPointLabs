@@ -7,7 +7,7 @@ using System.Windows.Media;
 
 using PowerPointLabs.PictureSlidesLab.Model;
 using PowerPointLabs.Utils;
-
+using PowerPointLabs.Utils.Windows;
 using Color = System.Drawing.Color;
 
 namespace PowerPointLabs.PictureSlidesLab.Views
@@ -71,17 +71,13 @@ namespace PowerPointLabs.PictureSlidesLab.Views
             }
 
             Color selectedColor = GetColor(panel.Background as SolidColorBrush);
-            ColorDialog colorDialog = new ColorDialog
-            {
-                Color = GetColor(panel.Background as SolidColorBrush),
-                FullOpen = true
-            };
-            if (colorDialog.ShowDialog() != System.Windows.Forms.DialogResult.OK)
+            Color? result = ColorDialogUtil.RequestForColor(GetColor(panel.Background as SolidColorBrush));
+            if (!result.HasValue)
             {
                 return;
             }
 
-            string hexString = StringUtil.GetHexValue(colorDialog.Color);
+            string hexString = StringUtil.GetHexValue(result.Value);
             Settings settings = DataContext as Settings;
             if (settings == null)
             {
