@@ -4,9 +4,11 @@ using System.Windows.Input;
 using System.Windows.Media;
 
 using PowerPointLabs.Utils;
-
+using PowerPointLabs.Utils.Windows;
 using Drawing = System.Drawing;
+
 using Forms = System.Windows.Forms;
+using DrawingColor = System.Drawing.Color;
 
 namespace PowerPointLabs.HighlightLab.Views
 {
@@ -15,9 +17,9 @@ namespace PowerPointLabs.HighlightLab.Views
     /// </summary>
     public partial class HighlightLabSettingsDialogBox
     {
-        public delegate void DialogConfirmedDelegate(Drawing.Color highlightColor, 
-                                                    Drawing.Color defaultColor, 
-                                                    Drawing.Color backgroundColor);
+        public delegate void DialogConfirmedDelegate(DrawingColor highlightColor,
+                                                    DrawingColor defaultColor,
+                                                    DrawingColor backgroundColor);
         public DialogConfirmedDelegate DialogConfirmedHandler { get; set; }
 
         public HighlightLabSettingsDialogBox()
@@ -25,9 +27,9 @@ namespace PowerPointLabs.HighlightLab.Views
             InitializeComponent();
         }
 
-        public HighlightLabSettingsDialogBox(Drawing.Color defaultHighlightColor, 
-                                            Drawing.Color defaultTextColor, 
-                                            Drawing.Color defaultBackgroundColor)
+        public HighlightLabSettingsDialogBox(DrawingColor defaultHighlightColor,
+                                            DrawingColor defaultTextColor,
+                                            DrawingColor defaultBackgroundColor)
             : this()
         {
             textHighlightColorRect.Fill = new SolidColorBrush(GraphicsUtil.MediaColorFromDrawingColor(defaultHighlightColor));
@@ -37,9 +39,9 @@ namespace PowerPointLabs.HighlightLab.Views
 
         private void OkButton_Click(object sender, RoutedEventArgs e)
         {
-            Drawing.Color textHighlightColor = GraphicsUtil.DrawingColorFromBrush(textHighlightColorRect.Fill);
-            Drawing.Color textDefaultColor = GraphicsUtil.DrawingColorFromBrush(textDefaultColorRect.Fill);
-            Drawing.Color backgroundHighlightColor = GraphicsUtil.DrawingColorFromBrush(backgroundHighlightColorRect.Fill);
+            DrawingColor textHighlightColor = GraphicsUtil.DrawingColorFromBrush(textHighlightColorRect.Fill);
+            DrawingColor textDefaultColor = GraphicsUtil.DrawingColorFromBrush(textDefaultColorRect.Fill);
+            DrawingColor backgroundHighlightColor = GraphicsUtil.DrawingColorFromBrush(backgroundHighlightColorRect.Fill);
             DialogConfirmedHandler(textHighlightColor, textDefaultColor, backgroundHighlightColor);
             Close();
         }
@@ -47,24 +49,20 @@ namespace PowerPointLabs.HighlightLab.Views
         private void TextHighlightColorRect_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             Color currentColor = (textHighlightColorRect.Fill as SolidColorBrush).Color;
-            ColorDialog colorDialog = new ColorDialog();
-            colorDialog.Color = GraphicsUtil.DrawingColorFromMediaColor(currentColor);
-            colorDialog.FullOpen = true;
-            if (colorDialog.ShowDialog() != Forms.DialogResult.Cancel)
+            DrawingColor? resultColor = ColorDialogUtil.RequestForColor(currentColor);
+            if (resultColor.HasValue)
             {
-                textHighlightColorRect.Fill = GraphicsUtil.MediaBrushFromDrawingColor(colorDialog.Color);
+                textHighlightColorRect.Fill = GraphicsUtil.MediaBrushFromDrawingColor(resultColor.Value);
             }
         }
 
         private void TextDefaultColorRect_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             Color currentColor = (textDefaultColorRect.Fill as SolidColorBrush).Color;
-            ColorDialog colorDialog = new ColorDialog();
-            colorDialog.Color = GraphicsUtil.DrawingColorFromMediaColor(currentColor);
-            colorDialog.FullOpen = true;
-            if (colorDialog.ShowDialog() != Forms.DialogResult.Cancel)
+            DrawingColor? resultColor = ColorDialogUtil.RequestForColor(currentColor);
+            if (resultColor.HasValue)
             {
-                textDefaultColorRect.Fill = GraphicsUtil.MediaBrushFromDrawingColor(colorDialog.Color);
+                textDefaultColorRect.Fill = GraphicsUtil.MediaBrushFromDrawingColor(resultColor.Value);
             }
         }
 

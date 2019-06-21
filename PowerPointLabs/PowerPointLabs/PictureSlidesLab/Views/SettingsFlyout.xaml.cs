@@ -70,6 +70,7 @@ namespace PowerPointLabs.PictureSlidesLab.Views
                 return;
             }
 
+            Color selectedColor = GetColor(panel.Background as SolidColorBrush);
             ColorDialog colorDialog = new ColorDialog
             {
                 Color = GetColor(panel.Background as SolidColorBrush),

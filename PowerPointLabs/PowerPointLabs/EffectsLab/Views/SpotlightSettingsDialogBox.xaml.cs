@@ -63,7 +63,7 @@ namespace PowerPointLabs.EffectsLab.Views
             WPFColorDialog colorDialog = new WPFColorDialog();
             colorDialog.Color = GraphicsUtil.DrawingColorFromMediaColor(currentColor);
             colorDialog.FullOpen = true;
-            if (colorDialog.ShowDialog() != Utils.DialogResult.Cancel)
+            if (colorDialog.ShowDialog() != Utils.Windows.DialogResult.Cancel)
             {
                 spotlightColorRect.Fill = GraphicsUtil.MediaBrushFromDrawingColor(colorDialog.Color);
             }

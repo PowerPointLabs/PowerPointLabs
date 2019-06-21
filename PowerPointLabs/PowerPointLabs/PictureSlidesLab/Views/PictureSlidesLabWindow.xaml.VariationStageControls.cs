@@ -8,7 +8,7 @@ using System.Windows.Media;
 using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.PictureSlidesLab.Model;
 using PowerPointLabs.TextCollection;
-
+using PowerPointLabs.Utils.Windows;
 using Color = System.Drawing.Color;
 using Forms = System.Windows.Forms;
 
@@ -47,15 +47,13 @@ namespace PowerPointLabs.PictureSlidesLab.Views
                 return;
             }
 
-            ColorDialog colorDialog = new ColorDialog
-            {
-                Color = GetColor(panel.Background as SolidColorBrush),
-                FullOpen = true
-            };
             DisableLoadingStyleOnWindowActivate();
-            if (colorDialog.ShowDialog() == Forms.DialogResult.OK)
+            Color selectedColor = GetColor(panel.Background as SolidColorBrush);
+            Color? resultColor = ColorDialogUtil.RequestForColor(selectedColor);
+
+            if (resultColor.HasValue)
             {
-                ViewModel.BindSelectedColor(colorDialog.Color,
+                ViewModel.BindSelectedColor(resultColor.Value,
                     this.GetCurrentSlide().GetNativeSlide(),
                     this.GetCurrentPresentation().SlideWidth,
                     this.GetCurrentPresentation().SlideHeight);
