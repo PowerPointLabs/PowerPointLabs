@@ -339,27 +339,6 @@ namespace PowerPointLabs
             RemoveTaskPane(Application.ActiveWindow, typeof(RecorderTaskPane));
         }
 
-        private void RemoveTaskPane(PowerPoint.DocumentWindow window, Type paneType)
-        {
-            if (!_documentPaneMapper.ContainsKey(window))
-            {
-                return;
-            }
-
-            List<CustomTaskPane> activePanes = _documentPaneMapper[window];
-            for (int i = activePanes.Count - 1; i >= 0; i--)
-            {
-                CustomTaskPane pane = activePanes[i];
-                if (pane.Control.GetType() != paneType)
-                {
-                    continue;
-                }
-
-                RemoveTaskPane(pane);
-                activePanes.RemoveAt(i);
-            }
-        }
-
         protected override Microsoft.Office.Core.IRibbonExtensibility CreateRibbonExtensibilityObject()
         {
             Ribbon = new Ribbon1();
@@ -379,6 +358,27 @@ namespace PowerPointLabs
 
             Trace.AutoFlush = true;
             Trace.Listeners.Add(new TextWriterTraceListener(logPath));
+        }
+
+        private void RemoveTaskPane(PowerPoint.DocumentWindow window, Type paneType)
+        {
+            if (!_documentPaneMapper.ContainsKey(window))
+            {
+                return;
+            }
+
+            List<CustomTaskPane> activePanes = _documentPaneMapper[window];
+            for (int i = activePanes.Count - 1; i >= 0; i--)
+            {
+                CustomTaskPane pane = activePanes[i];
+                if (pane.Control.GetType() != paneType)
+                {
+                    continue;
+                }
+
+                RemoveTaskPane(pane);
+                activePanes.RemoveAt(i);
+            }
         }
 
         private void ShutDownRecorderPane()

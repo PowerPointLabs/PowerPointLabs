@@ -31,7 +31,8 @@ namespace PowerPointLabs.ActionFramework.NarrationsLab
             get
             {
                 InitStorageIfPresentationChanged();
-                if (_tempPath == null) {
+                if (_tempPath == null)
+                {
                     throw new NullReferenceException("TempStorage has not been initialized! Call Setup before using.");
                 }
                 return _tempPath;

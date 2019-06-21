@@ -66,62 +66,136 @@ namespace PowerPointLabs.ColorThemes.Extensions
             if (element.IsUpdated(theme)) { return; }
             RemoveConflictingTheme(element);
 
-            switch (element)
+            if (element is TextBlock)
             {
-                // textbox placeholder vanishes
-                case TextBlock t:
-                    t.Foreground = new SolidColorBrush(theme.foreground);
-                    t.Background = Brushes.Transparent;
-                    break;
-                case Label l:
-                    l.Foreground = new SolidColorBrush(theme.foreground);
-                    l.Background = Brushes.Transparent;
-                    l.BorderBrush = Brushes.Transparent;
-                    break;
-                case ListBox l:
-                    l.Background = new SolidColorBrush(theme.background);
-                    l.Foreground = new SolidColorBrush(theme.foreground);
-                    l.ResubscribeColorChangedHandler(sender, theme);
-                    break;
-                case Frame f:
-                    f.Background = new SolidColorBrush(theme.background);
-                    f.Foreground = new SolidColorBrush(theme.foreground);
-                    f.ResubscribeColorChangedHandler(sender, theme);
-                    break;
-                case Window w:
-                    w.Background = new SolidColorBrush(theme.background);
-                    w.Foreground = new SolidColorBrush(theme.foreground);
-                    w.UpdateColors(sender, theme);
-                    break;
-                case Panel p:
-                    p.Background = new SolidColorBrush(theme.boxBackground);
-                    p.UpdateColors(sender, theme); // the window is being update but doesn't show correctly
-                    break;
-                case Page p:
-                    p.Foreground = new SolidColorBrush(theme.foreground);
-                    p.Background = new SolidColorBrush(theme.background);
-                    p.UpdateColorsVisual(sender, theme);
-                    break;
-                case Control c:
-                    c.Background = new SolidColorBrush(theme.background);
-                    c.Foreground = new SolidColorBrush(theme.foreground);
-                    c.BorderBrush = new SolidColorBrush(theme.foreground);
-                    c.UpdateColorsVisual(sender, theme);
-                    break;
-                case Border b:
-                    b.Background = new SolidColorBrush(theme.boxBackground);
-                    break;
-                case Path p:
-                    p.Stroke = new SolidColorBrush(theme.foreground);
-                    break;
-                default:
-                    break;
+                TextBlock t = element as TextBlock;
+                t.Foreground = new SolidColorBrush(theme.foreground);
+                t.Background = Brushes.Transparent;
+            }
+            else if (element is Label)
+            {
+                Label l = element as Label;
+                l.Foreground = new SolidColorBrush(theme.foreground);
+                l.Background = Brushes.Transparent;
+                l.BorderBrush = Brushes.Transparent;
+            }
+            else if (element is ListBox)
+            {
+                ListBox l = element as ListBox;
+                l.Background = new SolidColorBrush(theme.background);
+                l.Foreground = new SolidColorBrush(theme.foreground);
+                l.ResubscribeColorChangedHandler(sender, theme);
+            }
+            else if (element is Frame)
+            {
+                Frame f = element as Frame;
+                f.Background = new SolidColorBrush(theme.background);
+                f.Foreground = new SolidColorBrush(theme.foreground);
+                f.ResubscribeColorChangedHandler(sender, theme);
+            }
+            else if (element is Window)
+            {
+                Window w = element as Window;
+                w.Background = new SolidColorBrush(theme.background);
+                w.Foreground = new SolidColorBrush(theme.foreground);
+                w.UpdateColors(sender, theme);
+            }
+            else if (element is Panel)
+            {
+                Panel p = element as Panel;
+                p.Background = new SolidColorBrush(theme.boxBackground);
+                p.UpdateColors(sender, theme); // the window is being update but doesn't show correctly
+            }
+            else if (element is Page)
+            {
+                Page p = element as Page;
+                p.Foreground = new SolidColorBrush(theme.foreground);
+                p.Background = new SolidColorBrush(theme.background);
+                p.UpdateColorsVisual(sender, theme);
+            }
+            else if (element is Control)
+            {
+                Control c = element as Control;
+                c.Background = new SolidColorBrush(theme.background);
+                c.Foreground = new SolidColorBrush(theme.foreground);
+                c.BorderBrush = new SolidColorBrush(theme.foreground);
+                c.UpdateColorsVisual(sender, theme);
+            }
+            else if (element is Border)
+            {
+                (element as Border).Background = new SolidColorBrush(theme.boxBackground);
+            }
+            else if (element is Path)
+            {
+                (element as Path).Stroke = new SolidColorBrush(theme.foreground);
             }
         }
 
         public static Control GetIWpfControl(this object control)
         {
             return (control as IWpfContainer)?.WpfControl;
+        }
+
+        /// <summary>
+        /// Checks if an element has been updated with the current theme.
+        /// </summary>
+        /// <param name="element">WPF element to be updated</param>
+        /// <param name="theme">Color theme</param>
+        /// <returns></returns>
+        public static bool IsUpdated(this DependencyObject element, ColorTheme theme)
+        {
+            if (element is TextBlock)
+            {
+                return (element as TextBlock).Foreground.IsBrushColor(theme.foreground);
+            }
+            else if (element is Label)
+            {
+                return (element as Label).Foreground.IsBrushColor(theme.foreground);
+            }
+            else if (element is ListBox)
+            {
+                ListBox l = element as ListBox;
+                return l.Background.IsBrushColor(theme.background) &&
+                    l.Foreground.IsBrushColor(theme.foreground);
+            }
+            else if (element is Frame)
+            {
+                Frame f = element as Frame;
+                return f.Background.IsBrushColor(theme.background) &&
+                    f.Foreground.IsBrushColor(theme.foreground);
+            }
+            else if (element is Window)
+            {
+                Window w = element as Window;
+                return w.Background.IsBrushColor(theme.background) &&
+                    w.Foreground.IsBrushColor(theme.foreground);
+            }
+            else if (element is Panel)
+            {
+                return (element as Panel).Background.IsBrushColor(theme.boxBackground);
+            }
+            else if (element is Page)
+            {
+                Page p = element as Page;
+                return p.Foreground.IsBrushColor(theme.foreground) &&
+                    p.Background.IsBrushColor(theme.background);
+            }
+            else if (element is Control)
+            {
+                Control c = element as Control;
+                return c.Background.IsBrushColor(theme.background) &&
+                    c.Foreground.IsBrushColor(theme.foreground) &&
+                    c.BorderBrush.IsBrushColor(theme.foreground);
+            }
+            else if (element is Border)
+            {
+                return (element as Border).Background.IsBrushColor(theme.boxBackground);
+            }
+            else if (element is Path)
+            {
+                return (element as Path).Stroke.IsBrushColor(theme.foreground);
+            }
+            return true;
         }
 
         // hotfix for combobox for AudioSettingsDialogWindow
@@ -134,52 +208,6 @@ namespace PowerPointLabs.ColorThemes.Extensions
                 ResourceDictionary r = p.Resources.MergedDictionaries.FirstOrDefault(
                     (d) => d.Source.AbsoluteUri == "pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml");
                 p.Resources.MergedDictionaries.Remove(r);
-            }
-        }
-
-        /// <summary>
-        /// Checks if an element has been updated with the current theme.
-        /// </summary>
-        /// <param name="element">WPF element to be updated</param>
-        /// <param name="theme">Color theme</param>
-        /// <returns></returns>
-        public static bool IsUpdated(this DependencyObject element, ColorTheme theme)
-        {
-            switch (element)
-            {
-                case TextBlock t:
-                    return t.Foreground.IsBrushColor(theme.foreground);
-                case Label l:
-                    return l.Foreground.IsBrushColor(theme.foreground);
-                case ListBox l:
-                    return
-                        l.Background.IsBrushColor(theme.background) &&
-                        l.Foreground.IsBrushColor(theme.foreground);
-                case Frame f:
-                    return
-                        f.Background.IsBrushColor(theme.background) &&
-                        f.Foreground.IsBrushColor(theme.foreground);
-                case Window w:
-                    return
-                        w.Background.IsBrushColor(theme.background) &&
-                        w.Foreground.IsBrushColor(theme.foreground);
-                case Panel p:
-                    return p.Background.IsBrushColor(theme.boxBackground);
-                case Page p:
-                    return
-                        p.Foreground.IsBrushColor(theme.foreground) &&
-                        p.Background.IsBrushColor(theme.background);
-                case Control c:
-                    return
-                        c.Background.IsBrushColor(theme.background) &&
-                        c.Foreground.IsBrushColor(theme.foreground) &&
-                        c.BorderBrush.IsBrushColor(theme.foreground);
-                case Border b:
-                    return b.Background.IsBrushColor(theme.boxBackground);
-                case Path p:
-                    return p.Stroke.IsBrushColor(theme.foreground);
-                default:
-                    return true;
             }
         }
 
@@ -209,7 +237,7 @@ namespace PowerPointLabs.ColorThemes.Extensions
 
         private static void ResubscribeColorChangedHandler(this Frame frame, object sender, ColorTheme theme)
         {
-            EventHandler StatusChangedHandler = new EventHandler((_o, _e) =>
+            EventHandler statusChangedHandler = new EventHandler((_o, _e) =>
             {
                 if (frame.Content != null)
                 {
@@ -218,7 +246,7 @@ namespace PowerPointLabs.ColorThemes.Extensions
             });
             ActionCommand command = new ActionCommand(() =>
             {
-                frame.ContentRendered -= StatusChangedHandler;
+                frame.ContentRendered -= statusChangedHandler;
             });
             CommandBinding commandBinding = new CommandBinding() { Command = command };
             foreach (CommandBinding binding in frame.CommandBindings)
@@ -226,7 +254,7 @@ namespace PowerPointLabs.ColorThemes.Extensions
                 binding.Command.Execute(null);
             }
             frame.CommandBindings.Clear();
-            frame.ContentRendered += StatusChangedHandler;
+            frame.ContentRendered += statusChangedHandler;
             frame.CommandBindings.Add(commandBinding);
         }
 
@@ -244,7 +272,7 @@ namespace PowerPointLabs.ColorThemes.Extensions
         // Exploits the CommandBindings on Control to store actions to unsubscribe events
         private static void ResubscribeColorChangedHandler(this ListBox listBox, object sender, ColorTheme theme)
         {
-            EventHandler StatusChangedHandler = new EventHandler((_o, _e) =>
+            EventHandler statusChangedHandler = new EventHandler((_o, _e) =>
             {
                 if (listBox.ItemContainerGenerator.Status == GeneratorStatus.ContainersGenerated)
                 {
@@ -253,7 +281,7 @@ namespace PowerPointLabs.ColorThemes.Extensions
             });
             ActionCommand command = new ActionCommand(() =>
             {
-                listBox.ItemContainerGenerator.StatusChanged -= StatusChangedHandler;
+                listBox.ItemContainerGenerator.StatusChanged -= statusChangedHandler;
             });
             CommandBinding commandBinding = new CommandBinding() { Command = command };
             foreach (CommandBinding binding in listBox.CommandBindings)
@@ -262,7 +290,7 @@ namespace PowerPointLabs.ColorThemes.Extensions
             }
             listBox.CommandBindings.Clear();
             listBox.UpdateColorsChildren(sender, theme);
-            listBox.ItemContainerGenerator.StatusChanged += StatusChangedHandler;
+            listBox.ItemContainerGenerator.StatusChanged += statusChangedHandler;
             listBox.CommandBindings.Add(commandBinding);
         }
 
@@ -321,7 +349,10 @@ namespace PowerPointLabs.ColorThemes.Extensions
             for (int i = 0; i < VisualTreeHelper.GetChildrenCount(parent); i++)
             {
                 Visual depChild = VisualTreeHelper.GetChild(parent, i) as Visual;
-                if (depChild == null) continue;
+                if (depChild == null)
+                {
+                    continue;
+                }
                 if (depChild is T)
                 {
                     yield return depChild as T;
