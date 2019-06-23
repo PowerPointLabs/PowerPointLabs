@@ -647,7 +647,11 @@ namespace PowerPointLabs.Models
             if (File.Exists(shapeGalleryFileName))
             {
                 File.SetAttributes(shapeGalleryFileName, FileAttributes.Normal);
-                File.Move(shapeGalleryFileName, FullName);
+                // To ensure that the file fullName does not exist before attempting to move
+                if (!File.Exists(FullName))
+                {
+                    File.Move(shapeGalleryFileName, FullName);
+                }
             }
 
             if (File.Exists(FullName))
