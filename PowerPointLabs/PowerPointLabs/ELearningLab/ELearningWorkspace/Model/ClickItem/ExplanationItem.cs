@@ -49,7 +49,13 @@ namespace PowerPointLabs.ELearningLab.ELearningWorkspace.Model
             }
         }
 
-        public bool HasShortVersion
+        public bool HasShortVersion =>
+            IsShortVersionIndicated &&
+            !string.IsNullOrEmpty(CalloutText.Trim()) &&
+            !CaptionText.Trim().Equals(CalloutText.Trim());
+
+
+        public bool IsShortVersionIndicated
         {
             get
             {
@@ -58,11 +64,8 @@ namespace PowerPointLabs.ELearningLab.ELearningWorkspace.Model
             set
             {
                 hasShortVersion = (bool)value;
-                if (!hasShortVersion)
-                {
-                    return;
-                }
-                if (string.IsNullOrEmpty(calloutText.Trim()))
+                NotifyPropertyChanged(nameof(IsShortVersionIndicated));
+                if (hasShortVersion && string.IsNullOrEmpty(calloutText.Trim()))
                 {
                     calloutText = captionText;
                     NotifyPropertyChanged(ELearningLabText.ExplanationItem_CalloutText);

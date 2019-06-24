@@ -602,23 +602,19 @@ namespace PowerPointLabs.ELearningLab.Views
 
         private void UpdateSelfExplanationItem(ExplanationItem item, bool uncheckAzureAudio, bool uncheckWatsonAudio)
         {
+            // syncs the checkboxes based on available context (text)
             if (string.IsNullOrEmpty(item.CaptionText.Trim()))
             {
                 item.IsVoice = false;
                 item.IsCaption = false;
-                if (!item.HasShortVersion)
+                if (!item.IsShortVersionIndicated)
                 {
                     item.IsCallout = false;
                 }
             }
-            if (item.HasShortVersion && string.IsNullOrEmpty(item.CalloutText.Trim()))
+            if (item.IsShortVersionIndicated && string.IsNullOrEmpty(item.CalloutText.Trim()))
             {
                 item.IsCallout = false;
-                item.HasShortVersion = false;
-            }
-            if (item.CaptionText.Trim().Equals(item.CalloutText.Trim()))
-            {
-                item.HasShortVersion = false;
             }
             if ((uncheckAzureAudio && AudioService.IsAzureVoiceSelectedForItem(item))
                 || (uncheckWatsonAudio && AudioService.IsWatsonVoiceSelectedForItem(item)))
