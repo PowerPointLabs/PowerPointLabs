@@ -921,9 +921,11 @@
     <Compile Include="TooltipsLab\TooltipsLabConstants.cs" />
     <Compile Include="TooltipsLab\ConvertToTooltip.cs" />
     <Compile Include="Utils\ClipboardUtil.cs" />
+    <Compile Include="Utils\WinformUtil.cs" />
     <Compile Include="Utils\ShapeUtil.cs" />
     <Compile Include="Utils\SlideUtil.cs" />
     <Compile Include="Utils\Windows\ColorDialogUtil.cs" />
+    <Compile Include="Utils\Windows\FolderBrowserDialogUtil.cs" />
     <Compile Include="Utils\Windows\MessageBoxUtil.cs" />
     <Compile Include="Utils\Windows\OpenFileDialogUtil.cs" />
     <Compile Include="Utils\Windows\SaveFileDialogUtil.cs" />
