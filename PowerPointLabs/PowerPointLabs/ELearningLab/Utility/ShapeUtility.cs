@@ -32,10 +32,12 @@ namespace PowerPointLabs.ELearningLab.Utility
             Shape calloutBox = slide.Shapes.AddShape(MsoAutoShapeType.msoShapeRoundedRectangularCallout, 10, 10, 100, 10);
             calloutBox.Name = shapeName;
             calloutBox.TextFrame.TextRange.Text = calloutText;
-            calloutBox.Left = 10;
-            calloutBox.Top = 10;
             calloutBox.TextFrame.AutoSize = PpAutoSize.ppAutoSizeShapeToFitText;
             calloutBox.TextEffect.Alignment = MsoTextEffectAlignment.msoTextEffectAlignmentLeft;
+
+            calloutBox.Left = 10;
+            calloutBox.Top = 10;
+
             ShapeUtil.FormatCalloutToDefaultStyle(calloutBox);
 
             return calloutBox;
@@ -107,6 +109,12 @@ namespace PowerPointLabs.ELearningLab.Utility
                 throw new Exception("Copied shape is null");
             }
             copiedShape.Name = shapeName;
+
+            copiedShape.TextFrame.TextRange.Text = text;
+            copiedShape.TextFrame.WordWrap = MsoTriState.msoTrue;
+
+            copiedShape.TextFrame.AutoSize = PpAutoSize.ppAutoSizeShapeToFitText;
+
             // copy shape to the default callout / caption position
             if (StringUtility.ExtractFunctionFromString(copiedShape.Name) == ELearningLabText.CalloutIdentifier)
             {
@@ -124,9 +132,6 @@ namespace PowerPointLabs.ELearningLab.Utility
                 copiedShape.TextEffect.Alignment = MsoTextEffectAlignment.msoTextEffectAlignmentCentered;
             }
 
-            copiedShape.TextFrame.AutoSize = PpAutoSize.ppAutoSizeShapeToFitText;
-            copiedShape.TextFrame.TextRange.Text = text;
-            copiedShape.TextFrame.WordWrap = MsoTriState.msoTrue;         
             // remove associated animation with copiedShape because we only want the shape to be copied.
             slide.RemoveAnimationsForShape(copiedShape);
             if (StringUtility.ExtractFunctionFromString(copiedShape.Name) == ELearningLabText.CaptionIdentifier)
