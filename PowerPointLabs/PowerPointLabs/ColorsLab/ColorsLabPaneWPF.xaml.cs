@@ -620,6 +620,9 @@ namespace PowerPointLabs.ColorsLab
         {
             timer1Ticks++;
 
+            // Force the magnifier to update
+            magnifier.Show();
+
             System.Drawing.Point mousePos = System.Windows.Forms.Control.MousePosition;
             IntPtr deviceContext = PPExtraEventHelper.Native.GetDC(IntPtr.Zero);
 
