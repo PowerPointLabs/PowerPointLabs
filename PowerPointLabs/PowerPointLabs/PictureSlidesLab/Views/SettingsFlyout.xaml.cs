@@ -70,8 +70,10 @@ namespace PowerPointLabs.PictureSlidesLab.Views
                 return;
             }
 
-            Color selectedColor = GetColor(panel.Background as SolidColorBrush);
-            Color? result = ColorDialogUtil.RequestForColor(GetColor(panel.Background as SolidColorBrush));
+            Color selectedColor =
+                GraphicsUtil.DrawingColorFromBrush(panel.Background as SolidColorBrush);
+            Color? result = ColorDialogUtil.RequestForColor(
+                GraphicsUtil.DrawingColorFromBrush(panel.Background as SolidColorBrush));
             if (!result.HasValue)
             {
                 return;
@@ -92,11 +94,6 @@ namespace PowerPointLabs.PictureSlidesLab.Views
             {
                 settings.CitationFontColor = hexString;
             }
-        }
-
-        private Color GetColor(SolidColorBrush brush)
-        {
-            return Color.FromArgb(brush.Color.A, brush.Color.R, brush.Color.G, brush.Color.B);
         }
 
         private void InsertCitationToggleSwitch_OnIsCheckedChanged(object sender, EventArgs e)

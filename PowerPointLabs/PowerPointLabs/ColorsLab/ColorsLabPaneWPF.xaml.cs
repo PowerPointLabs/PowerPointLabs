@@ -375,16 +375,13 @@ namespace PowerPointLabs.ColorsLab
         {
             System.Windows.Shapes.Rectangle rect = (System.Windows.Shapes.Rectangle)sender;
             rect.MouseUp -= SelectedColorRectangle_MouseUp;
-            WPFColorDialog colorPickerDialog = new WPFColorDialog();
-            colorPickerDialog.FullOpen = true;
 
-            // Sets the initial color select to the current selected color.
-            colorPickerDialog.Color = dataSource.SelectedColor;
+            Color? resultColor = ColorDialogUtil.RequestForColor(dataSource.SelectedColor);
 
             // Update the selected color if the user clicks OK
-            if (colorPickerDialog.ShowDialog() == DialogResult.OK)
+            if (resultColor.HasValue)
             {
-                dataSource.SelectedColor = colorPickerDialog.Color;
+                dataSource.SelectedColor = resultColor.Value;
             }
         }
 

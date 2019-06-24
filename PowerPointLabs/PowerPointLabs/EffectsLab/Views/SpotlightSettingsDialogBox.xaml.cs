@@ -7,6 +7,7 @@ using System.Windows.Media;
 
 using PowerPointLabs.TextCollection;
 using PowerPointLabs.Utils;
+using PowerPointLabs.Utils.Windows;
 using PowerPointLabs.Views;
 using Drawing = System.Drawing;
 
@@ -61,11 +62,10 @@ namespace PowerPointLabs.EffectsLab.Views
         {
             Color currentColor = (spotlightColorRect.Fill as SolidColorBrush).Color;
             WPFColorDialog colorDialog = new WPFColorDialog();
-            colorDialog.Color = GraphicsUtil.DrawingColorFromMediaColor(currentColor);
-            colorDialog.FullOpen = true;
-            if (colorDialog.ShowDialog() != Utils.Windows.DialogResult.Cancel)
+            Drawing.Color? resultColor = ColorDialogUtil.RequestForColor(currentColor);
+            if (resultColor.HasValue)
             {
-                spotlightColorRect.Fill = GraphicsUtil.MediaBrushFromDrawingColor(colorDialog.Color);
+                spotlightColorRect.Fill = GraphicsUtil.MediaBrushFromDrawingColor(resultColor.Value);
             }
         }
 

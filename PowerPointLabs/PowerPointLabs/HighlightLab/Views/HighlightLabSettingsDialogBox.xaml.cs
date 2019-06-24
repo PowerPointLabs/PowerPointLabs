@@ -68,7 +68,7 @@ namespace PowerPointLabs.HighlightLab.Views
         private void BackgroundHighlightColorRect_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
             Color currentColor = (backgroundHighlightColorRect.Fill as SolidColorBrush).Color;
-            DrawingColor? result = ColorDialogUtil.RequestForColor(GraphicsUtil.DrawingColorFromMediaColor(currentColor));
+            DrawingColor? result = ColorDialogUtil.RequestForColor(currentColor);
             if (result.HasValue)
             {
                 backgroundHighlightColorRect.Fill = GraphicsUtil.MediaBrushFromDrawingColor(result.Value);
