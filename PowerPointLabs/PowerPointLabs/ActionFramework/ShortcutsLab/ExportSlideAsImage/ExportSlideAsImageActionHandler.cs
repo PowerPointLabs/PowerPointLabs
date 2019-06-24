@@ -8,7 +8,7 @@ using PowerPointLabs.ActionFramework.Common.Interface;
 using PowerPointLabs.ShortcutsLab;
 using PowerPointLabs.TextCollection;
 using PowerPointLabs.Utils;
-using PowerPointLabs.Views;
+using PowerPointLabs.Utils.Windows;
 
 namespace PowerPointLabs.ActionFramework.ShortcutsLab
 {
@@ -32,17 +32,13 @@ namespace PowerPointLabs.ActionFramework.ShortcutsLab
             {
                 selectedSlides.Add(this.GetCurrentSlide().GetNativeSlide());
             }
-
-            WPFSaveFileDialog saveFileDialog = new WPFSaveFileDialog();
-            saveFileDialog.Title = ShortcutsLabConstants.ExportSlideSaveFileDialogTitle;
-            saveFileDialog.DefaultExt = ShortcutsLabConstants.ExportSlideSaveFileDialogExtension;
-            saveFileDialog.Filter = ShortcutsLabConstants.ExportSlideSaveFileDialogFilter;
-
-            Utils.Windows.DialogResult result = saveFileDialog.ShowDialog();
-
-            if (result == Utils.Windows.DialogResult.OK)
+            string savedFile = SaveFileDialogUtil.Save(
+                ShortcutsLabConstants.ExportSlideSaveFileDialogTitle,
+                ShortcutsLabConstants.ExportSlideSaveFileDialogFilter,
+                ShortcutsLabConstants.ExportSlideSaveFileDialogExtension);
+            if (savedFile != null)
             {           
-                GraphicsUtil.ExportSlides(selectedSlides, saveFileDialog.FileName);
+                GraphicsUtil.ExportSlides(selectedSlides, savedFile);
             }
 
         }

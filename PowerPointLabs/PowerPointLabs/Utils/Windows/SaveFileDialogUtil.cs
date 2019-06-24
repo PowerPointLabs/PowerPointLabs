@@ -2,14 +2,14 @@
 
 namespace PowerPointLabs.Utils.Windows
 {
-    class SaveFileDialogUtil
+    public class SaveFileDialogUtil
     {
-        public static string? Save(string title = "Save As", string filter = "*", string defaultExt = "",  string filename="", string initialDirectory = "", bool overwriteprompt = true)
+        public static string Save(string title = "Save As", string filter = "*", string defaultExt = "",  string filename="", string initialDirectory = "", bool overwriteprompt = true)
         {
             return SaveWinForm(defaultExt, filter, title, filename, initialDirectory, overwriteprompt);
         }
 
-        public static string? SaveWinForm(string defaultExt, string filter,
+        public static string SaveWinForm(string defaultExt, string filter,
             string title, string filename,
             string initialDirectory, bool overwriteprompt)
         {
@@ -22,7 +22,7 @@ namespace PowerPointLabs.Utils.Windows
                 InitialDirectory = initialDirectory,
                 OverwritePrompt = overwriteprompt
             };
-            return (DialogResult)(int)dialog.ShowDialog();
+            return (dialog.ShowDialog() == System.Windows.Forms.DialogResult.OK) ? dialog.FileName : null;
         }
     }
 }

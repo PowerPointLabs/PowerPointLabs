@@ -5,7 +5,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 
 using Microsoft.Office.Core;
@@ -704,13 +703,13 @@ namespace PowerPointLabs.ColorsLab
         /// <param name="e"></param>
         private void SaveColorButton_Click(object sender, EventArgs e)
         {
-            DialogResult result = SaveFileDialogUtil.Save(
+            string savedFile = SaveFileDialogUtil.Save(
                 title: "Save Favorite",
                 defaultExt: "thm",
                 filter: "PPTLabsFavorites|*.thm");
 
-            if (result == DialogResult.OK &&
-                dataSource.SaveFavoriteColorsInFile(saveFileDialog.FileName))
+            if (savedFile != null &&
+                dataSource.SaveFavoriteColorsInFile(savedFile))
             {
                 SaveDefaultColorPaneFavoriteColors();
             }

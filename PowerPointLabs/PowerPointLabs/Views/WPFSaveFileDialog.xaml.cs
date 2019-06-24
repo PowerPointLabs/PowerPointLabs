@@ -1,6 +1,4 @@
-﻿using System.Windows.Controls;
-using PowerPointLabs.Utils;
-using PowerPointLabs.Utils.Windows;
+﻿using PowerPointLabs.Utils.Windows;
 
 namespace PowerPointLabs.Views
 {

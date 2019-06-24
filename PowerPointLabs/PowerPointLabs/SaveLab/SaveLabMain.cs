@@ -2,6 +2,7 @@
 using System.Windows.Forms;
 
 using Microsoft.Office.Interop.PowerPoint;
+using PowerPointLabs.Utils.Windows;
 using PowerPointLabs.Views;
 
 namespace PowerPointLabs.SaveLab
@@ -11,18 +12,15 @@ namespace PowerPointLabs.SaveLab
         public static void SaveFile(Models.PowerPointPresentation currentPresentation)
         {
             // Opens up a new Save File Dialog
+            string savedFile = SaveFileDialogUtil.Save("Save Selected Slides",
+                "PowerPoint Presentations|*.pptx",
+                initialDirectory: SaveLabSettings.GetSaveFolderPath());
             WPFSaveFileDialog saveFileDialog = new WPFSaveFileDialog();
-            Models.PowerPointPresentation newPresentation;
 
+            Models.PowerPointPresentation newPresentation;
             List<Models.PowerPointSlide> selectedSlides = currentPresentation.SelectedSlides;
 
-            // Setting for Save File Dialog
-            saveFileDialog.InitialDirectory = SaveLabSettings.GetSaveFolderPath();
-            saveFileDialog.Filter = "PowerPoint Presentations|*.pptx";
-            saveFileDialog.Title = "Save Selected Slides";
-            saveFileDialog.OverwritePrompt = true;
-
-            if (saveFileDialog.ShowDialog() == Utils.Windows.DialogResult.OK)
+            if (savedFile != null)
             {
                 // Copy the Current Presentation under a new name
                 currentPresentation.Presentation.SaveCopyAs(saveFileDialog.FileName, PpSaveAsFileType.ppSaveAsDefault);
