@@ -1,4 +1,4 @@
-﻿using PowerPointLabs.WPF;
+﻿using Forms = System.Windows.Forms;
 using MessageBox = PowerPointLabs.WPF.MessageBoxVM;
 
 namespace PowerPointLabs.Utils.Windows
@@ -43,6 +43,12 @@ namespace PowerPointLabs.Utils.Windows
         public static DialogResult Show(string text, string caption = "",
             MessageBoxButtons buttons = MessageBoxButtons.OK, MessageBoxIcon icon = MessageBoxIcon.None)
         {
+            return ShowWinform(text, caption, buttons, icon);
+        }
+
+        private static DialogResult ShowWPF(string text, string caption,
+            MessageBoxButtons buttons, MessageBoxIcon icon)
+        {
             MessageBox messageBox = MessageBox.CreateInstance();
             messageBox.Title = caption;
             messageBox.Message = text;
@@ -50,11 +56,15 @@ namespace PowerPointLabs.Utils.Windows
             messageBox.MiddleButton = MiddleButtonResult(buttons);
             messageBox.RightButton = RightButtonResult(buttons);
             messageBox.Icon = icon;
-            //messageBox.SetButton(MessageBox.ButtonPos.Left, LeftButtonResult(buttons));
-            //messageBox.SetButton(MessageBox.ButtonPos.Middle, MiddleButtonResult(buttons));
-            //messageBox.SetButton(MessageBox.ButtonPos.Right, RightButtonResult(buttons));
-            //messageBox.IconSource = icon;
             return messageBox.ShowDialog();
+        }
+
+        private static DialogResult ShowWinform(string text, string caption,
+            MessageBoxButtons buttons, MessageBoxIcon icon)
+        {
+            return (DialogResult)(int)Forms.MessageBox.Show(
+                text, caption, (Forms.MessageBoxButtons)(int)buttons,
+                (Forms.MessageBoxIcon)(int)icon);
         }
 
         private static DialogResult LeftButtonResult(MessageBoxButtons buttons)
