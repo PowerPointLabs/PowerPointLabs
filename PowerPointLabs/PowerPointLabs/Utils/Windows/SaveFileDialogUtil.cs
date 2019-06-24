@@ -9,7 +9,7 @@ namespace PowerPointLabs.Utils.Windows
             return SaveWinForm(defaultExt, filter, title, filename, initialDirectory, overwriteprompt);
         }
 
-        public static string SaveWinForm(string defaultExt, string filter,
+        private static string SaveWinForm(string defaultExt, string filter,
             string title, string filename,
             string initialDirectory, bool overwriteprompt)
         {

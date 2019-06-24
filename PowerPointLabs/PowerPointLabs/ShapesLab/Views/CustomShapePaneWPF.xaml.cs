@@ -17,6 +17,7 @@ using PowerPointLabs.Models;
 using PowerPointLabs.ShortcutsLab;
 using PowerPointLabs.TextCollection;
 using PowerPointLabs.Utils;
+using PowerPointLabs.Utils.Windows;
 using PowerPointLabs.Views;
 
 using DialogResult = PowerPointLabs.Utils.Windows.DialogResult;
@@ -434,6 +435,9 @@ namespace PowerPointLabs.ShapesLab.Views
 
         private void ContextMenuStripImportShapesClicked(object sender, RoutedEventArgs e)
         {
+            OpenFileDialogUtil.Open(ShapesLabText.ImportShapeFileDialogTitle,
+                ImportShapesFileDialogFilter,
+                true);
             OpenFileDialog fileDialog = new OpenFileDialog
             {
                 Filter = ImportShapesFileDialogFilter,
