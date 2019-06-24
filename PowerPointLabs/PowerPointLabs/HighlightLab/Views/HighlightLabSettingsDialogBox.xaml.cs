@@ -1,5 +1,4 @@
 ﻿using System.Windows;
-using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
 
@@ -7,7 +6,6 @@ using PowerPointLabs.Utils;
 using PowerPointLabs.Utils.Windows;
 
 using DrawingColor = System.Drawing.Color;
-using Forms = System.Windows.Forms;
 
 namespace PowerPointLabs.HighlightLab.Views
 {

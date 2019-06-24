@@ -13,8 +13,6 @@ using PowerPointLabs.Utils;
 using PowerPointLabs.Utils.Windows;
 using PPExtraEventHelper;
 
-using Forms = System.Windows.Forms;
-
 namespace PowerPointLabs.ELearningLab.Views
 {
     /// <summary>

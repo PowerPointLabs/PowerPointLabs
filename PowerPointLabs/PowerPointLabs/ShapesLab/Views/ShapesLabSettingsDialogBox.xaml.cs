@@ -3,9 +3,6 @@
 using PowerPointLabs.TextCollection;
 using PowerPointLabs.Utils;
 using PowerPointLabs.Utils.Windows;
-using PowerPointLabs.Views;
-
-using Forms = System.Windows.Forms;
 
 namespace PowerPointLabs.ShapesLab.Views
 {
@@ -38,22 +35,17 @@ namespace PowerPointLabs.ShapesLab.Views
 
         private void SavePathBrowserButton_Click(object sender, RoutedEventArgs e)
         {
-            Forms.FolderBrowserDialog folderDialog = new Forms.FolderBrowserDialog
-            {
-                ShowNewFolderButton = true,
-                SelectedPath = savePathInput.Text,
-                Description = ShapesLabText.FolderDialogDescription
-            };
-
             // loop until user chooses an empty folder, or click "Cancel" button
             while (true)
             {
                 // this launcher will scroll the view to selected path
-                DialogResult folderDialogResult = FolderDialogLauncher.ShowFolderBrowser(folderDialog);
+                string selectedPath = FolderBrowserDialogUtil.SelectFolder(
+                    ShapesLabText.FolderDialogDescription,
+                    savePathInput.Text);
 
-                if (folderDialogResult == Utils.Windows.DialogResult.OK)
+                if (selectedPath != null)
                 {
-                    string newPath = folderDialog.SelectedPath;
+                    string newPath = selectedPath;
 
                     if (!FileDir.IsDirectoryEmpty(newPath))
                     {

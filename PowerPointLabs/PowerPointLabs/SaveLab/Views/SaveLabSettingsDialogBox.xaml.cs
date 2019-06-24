@@ -1,11 +1,8 @@
 ﻿using System.Windows;
-using System.Windows.Forms;
 
 using PowerPointLabs.TextCollection;
 using PowerPointLabs.Utils;
-using PowerPointLabs.Views;
-
-using Forms = System.Windows.Forms;
+using PowerPointLabs.Utils.Windows;
 
 namespace PowerPointLabs.SaveLab.Views
 {
@@ -39,22 +36,16 @@ namespace PowerPointLabs.SaveLab.Views
 
         private void SavePathBrowserButton_Click(object sender, RoutedEventArgs e)
         {
-            FolderBrowserDialog folderDialog = new FolderBrowserDialog
-            {
-                ShowNewFolderButton = true,
-                SelectedPath = savePathInput.Text,
-                Description = SaveLabText.FolderDialogDescription
-            };
-
             // loop until user chooses a folder, or click "Cancel" button
             while (true)
             {
-                // this launcher will scroll the view to selected path
-                Utils.Windows.DialogResult folderDialogResult = FolderDialogLauncher.ShowFolderBrowser(folderDialog);
+                string selectedPath = FolderBrowserDialogUtil.SelectFolder(
+                    SaveLabText.FolderDialogDescription,
+                    savePathInput.Text);
 
-                if (folderDialogResult == Utils.Windows.DialogResult.OK)
+                if (selectedPath != null)
                 {
-                    string newPath = folderDialog.SelectedPath;
+                    string newPath = selectedPath;
                     savePathInput.Text = newPath;
                     break;
                 }

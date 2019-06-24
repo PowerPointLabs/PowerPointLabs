@@ -7,7 +7,7 @@ namespace PowerPointLabs.Utils.Windows
     {
         public static string Open(string title = "Open", string filter = "*", string defaultExt = "*")
         {
-            return OpenWinform(title, filter, false, defaultExt)[0];
+            return OpenWinform(title, filter, false, defaultExt)?[0];
         }
 
         public static List<string> MultiOpen(string title = "Open", string filter = "*", string defaultExt = "*")

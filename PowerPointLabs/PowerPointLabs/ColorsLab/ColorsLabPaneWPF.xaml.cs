@@ -616,7 +616,7 @@ namespace PowerPointLabs.ColorsLab
         {
             timer1Ticks++;
 
-            System.Drawing.Point mousePos = System.Windows.Forms.Control.MousePosition;
+            System.Drawing.Point mousePos = WinformUtil.MousePosition;
             IntPtr deviceContext = PPExtraEventHelper.Native.GetDC(IntPtr.Zero);
 
             Color pickedColor = System.Drawing.ColorTranslator.FromWin32(PPExtraEventHelper.Native.GetPixel(deviceContext, mousePos.X, mousePos.Y));
@@ -719,15 +719,10 @@ namespace PowerPointLabs.ColorsLab
         /// <param name="e"></param>
         private void LoadColorButton_Click(object sender, EventArgs e)
         {
-            System.Windows.Forms.OpenFileDialog openFileDialog = new System.Windows.Forms.OpenFileDialog();
-            openFileDialog.DefaultExt = "thm";
-            openFileDialog.Filter = "PPTLabsFavorite|*.thm";
-            openFileDialog.Title = "Load Favorite";
+            string openedFile = OpenFileDialogUtil.Open("Load Favorite", "PPTLabsFavorite|*.thm", "thm");
 
-            System.Windows.Forms.DialogResult result = openFileDialog.ShowDialog();
-
-            if (result == System.Windows.Forms.DialogResult.OK &&
-                dataSource.LoadFavoriteColorsFromFile(openFileDialog.FileName))
+            if (openedFile != null &&
+                dataSource.LoadFavoriteColorsFromFile(openedFile))
             {
                 SaveDefaultColorPaneFavoriteColors();
             }

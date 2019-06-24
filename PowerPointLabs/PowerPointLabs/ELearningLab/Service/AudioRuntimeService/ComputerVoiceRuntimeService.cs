@@ -14,11 +14,9 @@ using PowerPointLabs.AudioMisc;
 using PowerPointLabs.ELearningLab.AudioGenerator;
 using PowerPointLabs.ELearningLab.ELearningWorkspace.Model;
 using PowerPointLabs.Models;
-using PowerPointLabs.Utils;
 using PowerPointLabs.Utils.Windows;
 using PowerPointLabs.Views;
 
-using OpenFileDialog = System.Windows.Forms.OpenFileDialog;
 using Shape = Microsoft.Office.Interop.PowerPoint.Shape;
 
 namespace PowerPointLabs.ELearningLab.Service
@@ -177,15 +175,12 @@ namespace PowerPointLabs.ELearningLab.Service
                 return;
             }
 
-            OpenFileDialog audioPicker = new OpenFileDialog
-            {
-                Filter = "Audio files (*.wav, *.mp3, *.wma)|*.wav;*.mp3;*.wma"
-            };
-            System.Windows.Forms.DialogResult result = audioPicker.ShowDialog();
+            string openedFile = OpenFileDialogUtil.Open(
+                filter: "Audio files (*.wav, *.mp3, *.wma)|*.wav;*.mp3;*.wma");
 
-            if (result == System.Windows.Forms.DialogResult.OK)
+            if (openedFile != null)
             {
-                string selectedFile = audioPicker.FileName;
+                string selectedFile = openedFile;
 
                 PowerPointSlide currentSlide = PowerPointCurrentPresentationInfo.CurrentSlide;
                 Shape newAudio = AudioService.InsertAudioFileOnSlide(currentSlide, selectedFile);

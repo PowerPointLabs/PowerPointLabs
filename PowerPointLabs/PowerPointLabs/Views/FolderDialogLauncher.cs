@@ -34,9 +34,9 @@ namespace PowerPointLabs.Views
         /// <param name="dlg"></param>
         /// <param name="parent"></param>
         /// <returns></returns>
-        public static Utils.Windows.DialogResult ShowFolderBrowser(FolderBrowserDialog dlg, IWin32Window parent = null)
+        public static DialogResult ShowFolderBrowser(FolderBrowserDialog dlg, IWin32Window parent = null)
         {
-            Utils.Windows.DialogResult result;
+            DialogResult result;
 
             using (Timer timer = new Timer())
             {
@@ -44,7 +44,7 @@ namespace PowerPointLabs.Views
                 timer.Interval = 10;
                 timer.Start();
 
-                result = (Utils.Windows.DialogResult)(int)dlg.ShowDialog(parent);
+                result = dlg.ShowDialog(parent);
             }
 
             _retries = 10;

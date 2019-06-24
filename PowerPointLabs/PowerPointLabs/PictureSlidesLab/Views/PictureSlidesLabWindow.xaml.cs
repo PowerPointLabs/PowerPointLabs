@@ -8,7 +8,6 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
-using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
@@ -26,12 +25,13 @@ using PowerPointLabs.PictureSlidesLab.Util;
 using PowerPointLabs.PictureSlidesLab.ViewModel;
 using PowerPointLabs.PictureSlidesLab.Views.Interface;
 using PowerPointLabs.TextCollection;
+using PowerPointLabs.Utils;
+using PowerPointLabs.Utils.Windows;
 using PowerPointLabs.WPF.Observable;
 
 using ButtonBase = System.Windows.Controls.Primitives.ButtonBase;
 using Clipboard = System.Windows.Forms.Clipboard;
 using DragEventArgs = System.Windows.DragEventArgs;
-using Forms = System.Windows.Forms;
 using KeyEventArgs = System.Windows.Input.KeyEventArgs;
 using ListBox = System.Windows.Controls.ListBox;
 using MessageBox = PowerPointLabs.Utils.Windows.MessageBoxUtil;
@@ -123,7 +123,7 @@ namespace PowerPointLabs.PictureSlidesLab.Views
 
         private void InitSizePosition()
         {
-            System.Drawing.Size mSize = SystemInformation.WorkingArea.Size;
+            System.Drawing.Size mSize = WinformUtil.WorkingAreaSize;
             //Devices might have scale factors > 100%
             float scaleFactor = GetScalingFactor();
             double systemHeight = mSize.Height / scaleFactor;
@@ -701,15 +701,13 @@ namespace PowerPointLabs.PictureSlidesLab.Views
                 if (imageItem != null
                     && imageItem.ImageFile == StoragePath.ChoosePicturesImgPath)
                 {
-                    OpenFileDialog openFileDialog = new OpenFileDialog
-                    {
-                        Multiselect = true,
-                        Filter = @"Image File|*.png;*.jpg;*.jpeg;*.bmp;*.gif;"
-                    };
                     DisableLoadingStyleOnWindowActivate();
-                    if (openFileDialog.ShowDialog() == Forms.DialogResult.OK)
+                    List<string> openedFiles = OpenFileDialogUtil.MultiOpen(
+                        filter: @"Image File|*.png;*.jpg;*.jpeg;*.bmp;*.gif;");
+
+                    if (openedFiles != null)
                     {
-                        ViewModel.AddImageSelectionListItem(openFileDialog.FileNames,
+                        ViewModel.AddImageSelectionListItem(openedFiles.ToArray(),
                             this.GetCurrentSlide().GetNativeSlide(),
                             this.GetCurrentPresentation().SlideWidth,
                             this.GetCurrentPresentation().SlideHeight);

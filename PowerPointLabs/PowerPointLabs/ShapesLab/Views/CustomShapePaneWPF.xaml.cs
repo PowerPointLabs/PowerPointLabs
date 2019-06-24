@@ -6,7 +6,6 @@ using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Navigation;
 
@@ -20,6 +19,7 @@ using PowerPointLabs.Utils;
 using PowerPointLabs.Utils.Windows;
 using PowerPointLabs.Views;
 
+using BindingSource = System.Windows.Forms.BindingSource;
 using DialogResult = PowerPointLabs.Utils.Windows.DialogResult;
 using MenuItem = System.Windows.Controls.MenuItem;
 using MessageBoxButtons = PowerPointLabs.Utils.Windows.MessageBoxButtons;
@@ -414,45 +414,35 @@ namespace PowerPointLabs.ShapesLab.Views
 
         private void ContextMenuStripImportCategoryClicked(object sender, RoutedEventArgs e)
         {
-            OpenFileDialog fileDialog = new OpenFileDialog
-            {
-                Filter = ImportLibraryFileDialogFilter,
-                Multiselect = false,
-                Title = ShapesLabText.ImportLibraryFileDialogTitle
-            };
+            string openedFile = OpenFileDialogUtil.Open(
+                ShapesLabText.ImportLibraryFileDialogTitle,
+                ImportLibraryFileDialogFilter);
 
             //flowlayoutContextMenuStrip.Hide();
 
-            if (fileDialog.ShowDialog() == System.Windows.Forms.DialogResult.Cancel)
+            if (openedFile == null)
             {
                 return;
             }
 
-            ImportShapes(fileDialog.FileName, true);
+            ImportShapes(openedFile, true);
 
             MessageBoxUtil.Show(ShapesLabText.SuccessImport);
         }
 
         private void ContextMenuStripImportShapesClicked(object sender, RoutedEventArgs e)
         {
-            OpenFileDialogUtil.Open(ShapesLabText.ImportShapeFileDialogTitle,
-                ImportShapesFileDialogFilter,
-                true);
-            OpenFileDialog fileDialog = new OpenFileDialog
-            {
-                Filter = ImportShapesFileDialogFilter,
-                Multiselect = true,
-                Title = ShapesLabText.ImportShapeFileDialogTitle
-            };
+            List<string> openedFiles = OpenFileDialogUtil.MultiOpen(ShapesLabText.ImportShapeFileDialogTitle,
+                ImportShapesFileDialogFilter);
 
-            if (fileDialog.ShowDialog() == System.Windows.Forms.DialogResult.Cancel)
+            if (openedFiles == null)
             {
                 return;
             }
 
-            bool importSuccess = fileDialog.FileNames.Aggregate(true,
-                                                               (current, fileName) =>
-                                                               ImportShapes(fileName, false) && current);
+            bool importSuccess = openedFiles.Aggregate(true,
+                                                       (current, fileName) =>
+                                                       ImportShapes(fileName, false) && current);
 
             if (!importSuccess)
             {

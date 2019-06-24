@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Runtime.InteropServices;
-using System.Windows.Forms;
 
 using Microsoft.Office.Interop.PowerPoint;
 
@@ -98,7 +97,7 @@ namespace PowerPointLabs.EffectsLab
             }
             catch (InvalidOperationException e)
             {
-                MessageBox.Show(e.Message);
+                MessageBoxUtil.Show(e.Message);
                 return null;
             }
             catch (COMException)
@@ -108,7 +107,7 @@ namespace PowerPointLabs.EffectsLab
                     dupSlide.Delete();
                 }
 
-                MessageBox.Show(TextCollection.EffectsLabText.ErrorSelectAtLeastOneShape);
+                MessageBoxUtil.Show(TextCollection.EffectsLabText.ErrorSelectAtLeastOneShape);
                 return null;
             }
             catch (Exception e)

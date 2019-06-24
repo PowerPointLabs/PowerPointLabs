@@ -4,6 +4,8 @@ using Microsoft.Office.Interop.PowerPoint;
 
 using PowerPointLabs.ShapesLab.Views;
 
+using Forms = System.Windows.Forms;
+
 namespace PowerPointLabs.ShapesLab
 {
     partial class CustomShapePane
@@ -118,13 +120,13 @@ namespace PowerPointLabs.ShapesLab
         /// </summary>
         private void InitializeComponent()
         {
-            this.elementHost1 = new System.Windows.Forms.Integration.ElementHost();
+            this.elementHost1 = new Forms.Integration.ElementHost();
             this.CustomShapePaneWPF1 = new PowerPointLabs.ShapesLab.Views.CustomShapePaneWPF();
             this.SuspendLayout();
             // 
             // elementHost1
             // 
-            this.elementHost1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.elementHost1.Dock = Forms.DockStyle.Fill;
             this.elementHost1.Location = new System.Drawing.Point(0, 0);
             this.elementHost1.Name = "elementHost1";
             this.elementHost1.Size = new System.Drawing.Size(300, 833);
@@ -135,7 +137,7 @@ namespace PowerPointLabs.ShapesLab
             // CustomShapePane
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
-            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.AutoScaleMode = Forms.AutoScaleMode.Font;
             this.Controls.Add(this.elementHost1);
             this.Name = "CustomShapePane";
             this.Size = new System.Drawing.Size(300, 833);
@@ -145,7 +147,7 @@ namespace PowerPointLabs.ShapesLab
 
         #endregion
 
-        private System.Windows.Forms.Integration.ElementHost elementHost1;
+        private Forms.Integration.ElementHost elementHost1;
         public CustomShapePaneWPF CustomShapePaneWPF1 { get; private set; }
 
         public string CurrentCategory

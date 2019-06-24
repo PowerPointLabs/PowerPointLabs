@@ -339,7 +339,7 @@ namespace PowerPointLabs.PositionsLab
         {
             //Remove dragging control of user
             this.GetCurrentSelection().Unselect();
-            System.Drawing.Point p = System.Windows.Forms.Control.MousePosition;
+            System.Drawing.Point p = WinformUtil.MousePosition;
 
             float prevAngle = (float)PositionsLabMain.AngleBetweenTwoPoints(ConvertSlidePointToScreenPoint(ShapeUtil.GetCenterPoint(_refPoint)), _prevMousePos);
             float angle = (float)PositionsLabMain.AngleBetweenTwoPoints(ConvertSlidePointToScreenPoint(ShapeUtil.GetCenterPoint(_refPoint)), p) - prevAngle;
@@ -382,7 +382,7 @@ namespace PowerPointLabs.PositionsLab
                     return;
                 }
 
-                System.Drawing.Point p = System.Windows.Forms.Control.MousePosition;
+                System.Drawing.Point p = WinformUtil.MousePosition;
                 Shape selectedShape = GetShapeDirectlyBelowMousePos(_allShapesInSlide, p);
 
                 if (selectedShape == null)
@@ -461,7 +461,7 @@ namespace PowerPointLabs.PositionsLab
             //Remove dragging control of user
             this.GetCurrentSelection().Unselect();
 
-            System.Drawing.Point currentMousePos = System.Windows.Forms.Control.MousePosition;
+            System.Drawing.Point currentMousePos = WinformUtil.MousePosition;
 
             float diffX = currentMousePos.X - _initialMousePos.X;
             float diffY = currentMousePos.Y - _initialMousePos.Y;
@@ -498,7 +498,7 @@ namespace PowerPointLabs.PositionsLab
                     return;
                 }
 
-                System.Drawing.Point p = System.Windows.Forms.Control.MousePosition;
+                System.Drawing.Point p = WinformUtil.MousePosition;
                 Models.PowerPointSlide currentSlide = this.GetCurrentSlide();
                 Shape selectedShape = GetShapeDirectlyBelowMousePos(_allShapesInSlide, p);
 

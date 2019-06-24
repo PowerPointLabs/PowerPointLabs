@@ -5,7 +5,7 @@ using System.Windows;
 using System.Windows.Interop;
 
 using PowerPointLabs.ActionFramework.Common.Log;
-
+using PowerPointLabs.Utils;
 using PPExtraEventHelper;
 
 namespace PowerPointLabs.ColorsLab
@@ -246,7 +246,7 @@ namespace PowerPointLabs.ColorsLab
 
         private void UpdateMagnifier()
         {
-            System.Drawing.Point mousePosition = System.Windows.Forms.Control.MousePosition;
+            System.Drawing.Point mousePosition = WinformUtil.MousePosition;
 
             // Set the source rectangle for the magnification
             Native.RECT sourceRect = new Native.RECT();
