@@ -43,17 +43,17 @@ namespace PowerPointLabs.ActionFramework.Common.Extension
         // copies placeholder textboxes safely
         public static Shape SafeCopyPlaceholder(this Shapes shapes, Shape shape)
         {
-            if (shape.Type == Microsoft.Office.Core.MsoShapeType.msoPlaceholder)
+            if (shape.Type != Microsoft.Office.Core.MsoShapeType.msoPlaceholder)
             {
-                PowerPointLabs.SyncLab.ObjectFormats.Format[] formats = ShapeUtil.GetCopyableFormats(shape);
-                Shape newShape = ShapeUtil.CopyMsoPlaceHolder(formats, shape, shapes);
-                if (newShape == null)
-                {
-                    throw new MsoPlaceholderException(shape.PlaceholderFormat.Type);
-                }
-                return newShape;
+                return shapes.SafeCopy(shape);
             }
-            return shapes.SafeCopy(shape);
+            PowerPointLabs.SyncLab.ObjectFormats.Format[] formats = ShapeUtil.GetCopyableFormats(shape);
+            Shape newShape = ShapeUtil.CopyMsoPlaceHolder(formats, shape, shapes);
+            if (newShape == null)
+            {
+                throw new MsoPlaceholderException(shape.PlaceholderFormat.Type);
+            }
+            return newShape;
         }
 
         public static Shape SafeCopy(this Shapes shapes, Shape shape)
