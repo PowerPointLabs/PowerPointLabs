@@ -43,7 +43,7 @@ namespace PowerPointLabs.ActionFramework.NarrationsLab
         private void TaskPaneVisibleValueChangedEventHandler(object sender, EventArgs e)
         {
             CustomTaskPane recorderPane = Globals.ThisAddIn.GetActivePane(typeof(RecorderTaskPane));
-            RecorderTaskPane recorder = recorderPane.Control as RecorderTaskPane;
+            RecorderTaskPane recorder = recorderPane?.Control as RecorderTaskPane;
 
             // trigger close form event when closing hide the pane
             if (!recorder?.Visible ?? false)

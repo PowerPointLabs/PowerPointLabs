@@ -29,7 +29,14 @@ namespace PowerPointLabs.Utils
             this.defaultKey = defaultKey;
             this.IsDefaultKey = true;
             RegisterKeyChanged();
-            GetKeyAndUpdateKeyStatus();
+            try
+            {
+                GetKeyAndUpdateKeyStatus();
+            }
+            catch (Exception)
+            {
+                // There is a possibility no registry entries have been created yet
+            }
         }
  
         /// <summary>
