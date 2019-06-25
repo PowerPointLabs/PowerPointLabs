@@ -211,6 +211,20 @@ namespace PowerPointLabs.ELearningLab.ELearningWorkspace.Model
             this.tagNo = tagNo;
             hasShortVersion = !this.calloutText.Equals(this.captionText);
         }
+
+        public void CopyFormat(ExplanationItem template)
+        {
+            if (template == null)
+            {
+                return;
+            }
+            IsCallout = template.IsCallout;
+            IsCaption = template.IsCaption;
+            IsVoice = template.IsVoice;
+            VoiceLabel = template.VoiceLabel;
+            trigger = template.trigger;
+        }
+
         public override bool Equals(object other)
         {
             if (other == null || other.GetType() != GetType())
