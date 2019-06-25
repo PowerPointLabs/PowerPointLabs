@@ -44,6 +44,29 @@ namespace Test.FunctionalTest
             TestDeleteExplanationItems(eLearningLab);
         }
 
+        [TestMethod]
+        [TestCategory("FT")]
+        public void FT_CreateExplanationBeforeTemplateTest()
+        {
+            // TODO: Write tests
+            // create using create (blank). Is it possible? Don't think so
+
+
+            // create using before
+            // create using after
+            // create using create
+
+        }
+
+
+        private void CreateStartItems()
+        {
+            IELearningLabController eLearningLab = PplFeatures.ELearningLab;
+            eLearningLab.OpenPane();
+            ThreadUtil.WaitFor(5000);
+            eLearningLab.AddSelfExplanationItem();
+        }
+
         private void TestSyncExplanationItems(IELearningLabController eLearningLab)
         {
             eLearningLab.Sync();

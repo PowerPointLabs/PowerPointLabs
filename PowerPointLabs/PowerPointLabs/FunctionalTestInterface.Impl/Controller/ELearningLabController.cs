@@ -36,27 +36,42 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl.Controller
             }));
         }
 
+        public void CreateTemplateExplanations(params IExplanationItem[] items)
+        {
+            // add to IELearningLabController
+            if (_pane != null)
+            {
+                UIThreadExecutor.Execute((Action)(() =>
+                {
+                    _pane.ELearningLabMainPanel.Items.Clear();
+                }));
+                foreach (IExplanationItem item in items)
+                {
+                    ExplanationItem explanationItem = CreateExplanationItem();
+                    item.CopyFormat(item);
+                    if (!explanationItem.HasSameFormat(item))
+                    {
+                        throw new Exception("Format failed to copy correctly");
+                    }
+                }
+            }
+        }
+
         public void AddSelfExplanationItem()
         {
             if (_pane != null)
             {
                 UIThreadExecutor.Execute((Action)(() =>
                 {
-                    _pane.ELearningLabMainPanel.createButton.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent));
-                    ExplanationItem item1 = _pane.ELearningLabMainPanel.listView.Items
-                        .OfType<ClickItem>().Last() as ExplanationItem;
+                    ExplanationItem item1 = CreateExplanationItem();
                     item1.CaptionText = "Test self explanation item 1";
                     item1.IsCaption = true;
-                    _pane.ELearningLabMainPanel.createButton.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent));
-                    ExplanationItem item2 = _pane.ELearningLabMainPanel.listView.Items
-                    .OfType<ClickItem>().Last() as ExplanationItem;
+                    ExplanationItem item2 = CreateExplanationItem();
                     item2.CaptionText = "Test self explanation item 2";
                     item2.CalloutText = "This is a shorter callout for self explanation item 2";
                     item2.IsCaption = true;
                     item2.IsCallout = true;
-                    _pane.ELearningLabMainPanel.createButton.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent));
-                    ExplanationItem item3 = _pane.ELearningLabMainPanel.listView.Items
-                    .OfType<ClickItem>().Last() as ExplanationItem;
+                    ExplanationItem item3 = CreateExplanationItem();
                     item3.CaptionText = "Test self explanation item 3";
                     item3.IsCaption = true;
                     item3.IsCallout = true;
@@ -107,6 +122,13 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl.Controller
                     }
                 }));
             }
+        }
+
+        private ExplanationItem CreateExplanationItem()
+        {
+            _pane.ELearningLabMainPanel.createButton.RaiseEvent(new RoutedEventArgs(ButtonBase.ClickEvent));
+            return _pane.ELearningLabMainPanel.listView.Items
+            .OfType<ClickItem>().Last() as ExplanationItem;
         }
     }
 }

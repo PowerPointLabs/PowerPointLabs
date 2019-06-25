@@ -3,10 +3,11 @@ using System.Collections.Generic;
 
 using PowerPointLabs.ELearningLab.Service;
 using PowerPointLabs.TextCollection;
+using TestInterface;
 
 namespace PowerPointLabs.ELearningLab.ELearningWorkspace.Model
 {
-    public class ExplanationItem : ClickItem, IEquatable<ExplanationItem>
+    public class ExplanationItem : ClickItem, IEquatable<ExplanationItem>, IExplanationItem
     {
         #region public properties
         public bool IsCallout
@@ -210,19 +211,6 @@ namespace PowerPointLabs.ELearningLab.ELearningWorkspace.Model
             this.isTriggerTypeComboBoxEnabled = isTriggerTypeComboBoxEnabled;
             this.tagNo = tagNo;
             hasShortVersion = !this.calloutText.Equals(this.captionText);
-        }
-
-        public void CopyFormat(ExplanationItem template)
-        {
-            if (template == null)
-            {
-                return;
-            }
-            IsCallout = template.IsCallout;
-            IsCaption = template.IsCaption;
-            IsVoice = template.IsVoice;
-            VoiceLabel = template.VoiceLabel;
-            trigger = template.trigger;
         }
 
         public override bool Equals(object other)

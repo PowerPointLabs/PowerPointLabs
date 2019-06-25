@@ -745,6 +745,8 @@
     <Compile Include="ELearningLab\ELearningWorkspace\Model\ClickItem\CustomItem.cs" />
     <Compile Include="ELearningLab\ELearningWorkspace\Model\ClickItem\CustomSubItem.cs" />
     <Compile Include="ELearningLab\ELearningWorkspace\Model\ClickItem\ExplanationItem.cs" />
+    <Compile Include="ELearningLab\ELearningWorkspace\Model\ClickItem\ExplanationItemExtensions.cs" />
+    <Compile Include="ELearningLab\ELearningWorkspace\Model\ClickItem\ExplanationItemTemplate.cs" />
     <Compile Include="ELearningLab\ELearningWorkspace\Model\Effect\AbstractEffect.cs" />
     <Compile Include="ELearningLab\ELearningWorkspace\Model\Effect\CustomEffect.cs" />
     <Compile Include="ELearningLab\ELearningWorkspace\Model\Effect\ELLEffect.cs" />
