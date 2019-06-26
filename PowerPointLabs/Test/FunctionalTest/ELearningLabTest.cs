@@ -49,7 +49,7 @@ namespace Test.FunctionalTest
         public void FT_CreateExplanationBeforeTemplateTest()
         {
             // TODO: Write tests
-            // create using create (blank). Is it possible? Don't think so
+            // create using create (blank). Is it possible? Don't think so. But can simulate?
 
 
             // create using before
