@@ -1142,8 +1142,11 @@ namespace PowerPointLabs.ColorsLab
 
         private void ColorMainColorRect(Color color)
         {
-            eyeDropperPreviewRectangle.Fill = 
-                new SolidColorBrush(System.Windows.Media.Color.FromArgb(color.A, color.R, color.G, color.B));
+            eyeDropperPreviewRectangle.Dispatcher.Invoke(() =>
+            {
+                eyeDropperPreviewRectangle.Fill =
+                    new SolidColorBrush(System.Windows.Media.Color.FromArgb(color.A, color.R, color.G, color.B));
+            });
         }
 
         #endregion
