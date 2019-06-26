@@ -151,7 +151,7 @@ namespace PowerPointLabs.ColorsLab
         private const float MAGNIFICATION_FACTOR = 2.5f;
         private Cursor eyeDropperCursor = new Cursor(new MemoryStream(Properties.Resources.EyeDropper));
         private Magnifier magnifier = new Magnifier(MAGNIFICATION_FACTOR);
-        private System.Windows.Threading.DispatcherTimer eyeDropperTimer = new System.Windows.Threading.DispatcherTimer();
+        private DispatcherTimer eyeDropperTimer;
         private const int CLICK_THRESHOLD = 2;
         private int timer1Ticks;
 
@@ -169,6 +169,7 @@ namespace PowerPointLabs.ColorsLab
 
         public ColorsLabPaneWPF()
         {
+            eyeDropperTimer = new DispatcherTimer(DispatcherPriority.Background, Dispatcher);
             // Set data context to data source for XAML to reference.
             DataContext = dataSource;
 
