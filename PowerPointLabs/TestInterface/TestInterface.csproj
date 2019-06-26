@@ -31,6 +31,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="ExplanationItemTemplate.cs" />
     <Compile Include="IELearningLabController.cs" />
     <Compile Include="IExplanationItem.cs" />
     <Compile Include="ITimerLabController.cs" />

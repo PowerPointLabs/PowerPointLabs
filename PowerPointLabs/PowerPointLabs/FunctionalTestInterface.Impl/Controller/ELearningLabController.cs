@@ -1,12 +1,13 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
-
 using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.ELearningLab.ELearningWorkspace.Model;
 using PowerPointLabs.ELearningLab.ELearningWorkspace.Views;
+using PowerPointLabs.ELearningLab.Service;
 using PowerPointLabs.ELearningLab.Utility;
 using PowerPointLabs.TextCollection;
 
@@ -23,6 +24,8 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl.Controller
 
         private ELearningLabTaskpane _pane;
 
+        public string DefaultVoiceLabel => string.Format(ELearningLabText.AudioDefaultLabelFormat, AudioSettingService.selectedVoice.VoiceName);
+
         private ELearningLabController() { }
 
         public void OpenPane()
@@ -36,25 +39,88 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl.Controller
             }));
         }
 
-        public void CreateTemplateExplanations(params IExplanationItem[] items)
+        public void CreateTemplateExplanations(params ExplanationItemTemplate[] items)
         {
             // add to IELearningLabController
             if (_pane != null)
             {
-                UIThreadExecutor.Execute((Action)(() =>
+                _pane.ELearningLabMainPanel.Dispatcher.Invoke((Action)(() =>
                 {
                     _pane.ELearningLabMainPanel.Items.Clear();
-                }));
-                foreach (IExplanationItem item in items)
-                {
-                    ExplanationItem explanationItem = CreateExplanationItem();
-                    item.CopyFormat(item);
-                    if (!explanationItem.HasSameFormat(item))
+                    foreach (ExplanationItemTemplate item in items)
                     {
-                        throw new Exception("Format failed to copy correctly");
+                        ExplanationItem explanationItem = CreateExplanationItem();
+                        explanationItem.CopyFormat(item);
+                        if (!explanationItem.HasSameFormat(item))
+                        {
+                            throw new Exception("Format failed to copy correctly");
+                        }
                     }
-                }
+                }));
             }
+        }
+
+        public ExplanationItemTemplate[] GetExplanations()
+        {
+            return _pane.ELearningLabMainPanel.Dispatcher.Invoke(() =>
+            {
+                List<ExplanationItemTemplate> result = new List<ExplanationItemTemplate>();
+                foreach (ExplanationItem item in _pane.ELearningLabMainPanel.Items.OfType<ExplanationItem>())
+                {
+                    ExplanationItemTemplate template = new ExplanationItemTemplate();
+                    template.CopyFormat(item);
+                    result.Add(template);
+                }
+                return result.ToArray();
+            });
+        }
+
+        public void AddAbove(int index)
+        {
+            _pane.ELearningLabMainPanel.Dispatcher.Invoke(() =>
+            {
+                ListViewItem visual = _pane.ELearningLabMainPanel.listView.ItemContainerGenerator.ContainerFromIndex(index) as ListViewItem;
+                if (visual == null)
+                {
+                    throw new Exception("Null visual when retrieving list item");
+                }
+                MenuItem item = visual.ContextMenu.Items.OfType<MenuItem>().First(
+                    o => (string)o.Header == "Add Explanation Above");
+                if (item == null)
+                {
+                    throw new Exception("Null menu item");
+                }
+                item.CommandParameter = _pane.ELearningLabMainPanel.listView.Items.GetItemAt(index);
+                item.RaiseEvent(new RoutedEventArgs(MenuItem.ClickEvent));
+            });
+        }
+
+        public void AddBelow(int index)
+        {
+            _pane.ELearningLabMainPanel.Dispatcher.Invoke(() =>
+            {
+                ListViewItem visual = _pane.ELearningLabMainPanel.listView.ItemContainerGenerator.ContainerFromIndex(index) as ListViewItem;
+                if (visual == null)
+                {
+                    throw new Exception("Null visual when retrieving list item");
+                }
+                MenuItem item = visual.ContextMenu.Items.OfType<MenuItem>().First(
+                    o => (string)o.Header == "Add Explanation Below");
+                if (item == null)
+                {
+                    throw new Exception("Null menu item");
+                }
+                item.CommandParameter = _pane.ELearningLabMainPanel.listView.Items.GetItemAt(index);
+                item.RaiseEvent(new RoutedEventArgs(MenuItem.ClickEvent));
+            });
+        }
+
+        public void AddAtBottom()
+        {
+            _pane.ELearningLabMainPanel.Dispatcher.Invoke(() =>
+            {
+                CreateExplanationItem();
+            });
         }
 
         public void AddSelfExplanationItem()
