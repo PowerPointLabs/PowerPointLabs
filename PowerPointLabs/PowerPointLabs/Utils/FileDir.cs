@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.Security.Permissions;
 
 namespace PowerPointLabs.Utils
 {
@@ -204,6 +205,29 @@ namespace PowerPointLabs.Utils
 
             File.SetAttributes(filePath, FileAttributes.Normal);
             File.Delete(filePath);
+        }
+
+        /// <summary>
+        /// Attempts to delete the file and does not delete the file if undeletable
+        /// </summary>
+        public static void TryDeleteFile(string filePath)
+        {
+            try
+            {
+                DeleteFile(filePath);
+            }
+            catch (Exception)
+            {
+            }
+        }
+
+        public static bool IsFileReadable(string filePath)
+        {
+            FileIOPermission fileIOPermission = new FileIOPermission(FileIOPermissionAccess.Read,
+                                            System.Security.AccessControl.AccessControlActions.View,
+                                            filePath);
+
+            return fileIOPermission.AllFiles == FileIOPermissionAccess.Read;
         }
         # endregion
     }

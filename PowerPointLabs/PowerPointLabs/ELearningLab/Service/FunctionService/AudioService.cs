@@ -1,8 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
-
-using Microsoft.Office.Core;
+using System.Windows.Forms;
 using Microsoft.Office.Interop.PowerPoint;
 
 using NAudio.Wave;
@@ -13,7 +12,7 @@ using PowerPointLabs.ELearningLab.ELearningWorkspace.Model;
 using PowerPointLabs.ELearningLab.Utility;
 using PowerPointLabs.Models;
 using PowerPointLabs.TextCollection;
-
+using PowerPointLabs.Utils;
 using Shape = Microsoft.Office.Interop.PowerPoint.Shape;
 
 namespace PowerPointLabs.ELearningLab.Service
@@ -128,23 +127,8 @@ namespace PowerPointLabs.ELearningLab.Service
             {
                 return null;
             }
-
-            float slideWidth = PowerPointPresentation.Current.SlideWidth;
-
-            Microsoft.Office.Interop.PowerPoint.Shapes shapes = slide.Shapes;
-
-            try
-            {
-                Shape audioShape = slide.Shapes.AddMediaObject2(fileName, MsoTriState.msoFalse, MsoTriState.msoTrue, slideWidth + 20);
-                slide.RemoveAnimationsForShape(audioShape);
-
-                return audioShape;
-            }
-            catch 
-            {
-                Logger.Log("Audio not generated because text is not in English.");
-                return null;
-            }
+            Shape audioShape = GraphicsUtil.AddAudioShapeFromFile(slide, fileName);
+            return audioShape;
         }
 
         public static TimeSpan ReadWavFileTimeSpan(string filepath)
