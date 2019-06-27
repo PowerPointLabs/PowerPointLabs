@@ -399,7 +399,9 @@ namespace PowerPointLabs.Utils
 
         #region Size and Position
 
-        public static void TryDisplaceShape(PowerPointSlide currentSlide, Shape triggerShape, float blurRadius)
+        public static void TryDisplaceShape(
+            PowerPointPresentation presentation, PowerPointSlide currentSlide,
+            Shape triggerShape, float blurRadius)
         {
             int numTries = 0;
             while (currentSlide.Shapes.Cast<Shape>().Any(
@@ -408,21 +410,21 @@ namespace PowerPointLabs.Utils
                          ShapeUtil.IsSamePosition(shape, triggerShape, false, blurRadius))
                          && numTries < MaxDisplaceTries)
             {
-                ShapeUtil.DisplaceShape(triggerShape);
+                ShapeUtil.DisplaceShape(triggerShape, presentation, currentSlide);
                 numTries++;
             }
         }
 
-        public static void DisplaceShape(Shape targetShape, float displaceAmount = DisplaceAmount)
+        public static void DisplaceShape(Shape targetShape,
+            PowerPointPresentation presentation,
+            PowerPointSlide slide, float displaceAmount = DisplaceAmount)
         {
             float newLeft = targetShape.Left + DisplaceAmount;
-            float halfWidth = targetShape.Width;
             float newTop = targetShape.Top + DisplaceAmount;
-            float halfHeight = targetShape.Height;
-            targetShape.Left = CommonUtil.Wrap(newLeft, halfWidth,
-                PowerPointPresentation.Current.SlideWidth - halfWidth);
-            targetShape.Top = CommonUtil.Wrap(newTop, halfHeight,
-                PowerPointPresentation.Current.SlideHeight - halfHeight);
+            targetShape.Left = CommonUtil.Wrap(newLeft, 0,
+                presentation.SlideWidth - targetShape.Width);
+            targetShape.Top = CommonUtil.Wrap(newTop, 0,
+                presentation.SlideHeight - targetShape.Height);
         }
 
         public static bool IsSamePosition(Shape refShape, Shape candidateShape,

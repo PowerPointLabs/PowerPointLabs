@@ -23,9 +23,8 @@ namespace PowerPointLabs.ActionFramework.TooltipsLab
             {
                 return;
             }
-            
-            Shape triggerShape = CreateTooltip.GenerateTriggerShape(currentSlide);
-
+            PowerPointPresentation presentation = this.GetCurrentPresentation();
+            Shape triggerShape = CreateTooltip.GenerateTriggerShape(presentation, currentSlide);
             Shape callout = CreateTooltip.GenerateCalloutWithReferenceTriggerShape(currentSlide, triggerShape);
             ConvertToTooltip.AddTriggerAnimation(currentSlide, triggerShape, callout);
 
