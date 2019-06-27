@@ -159,6 +159,14 @@ namespace PowerPointLabs.Utils
             return angle / 180.0 * Math.PI;
         }
 
+        public static float Wrap(float value, float lower, float upper)
+        {
+            float range = upper - lower;
+            float zeroBasedValue = value - lower;
+            float result = ((zeroBasedValue + range) % range) + lower;
+            return result;
+        }
+
         #endregion
 
         #region bitmap

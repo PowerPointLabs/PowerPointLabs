@@ -26,6 +26,8 @@ namespace PowerPointLabs.Utils
         private const int DefaultFontSize = 16;
         private const float DefaultLineWeight = 0.05f;
         private const int MaxShapeNameLength = 255;
+        private const float DisplaceAmount = 20;
+        private const int MaxDisplaceTries = 50;
 
         #endregion
 
@@ -396,6 +398,32 @@ namespace PowerPointLabs.Utils
         #endregion
 
         #region Size and Position
+
+        public static void TryDisplaceShape(PowerPointSlide currentSlide, Shape triggerShape, float blurRadius)
+        {
+            int numTries = 0;
+            while (currentSlide.Shapes.Cast<Shape>().Any(
+                shape => shape != triggerShape &&
+                         ShapeUtil.IsSameType(shape, triggerShape) &&
+                         ShapeUtil.IsSamePosition(shape, triggerShape, false, blurRadius))
+                         && numTries < MaxDisplaceTries)
+            {
+                ShapeUtil.DisplaceShape(triggerShape);
+                numTries++;
+            }
+        }
+
+        public static void DisplaceShape(Shape targetShape, float displaceAmount = DisplaceAmount)
+        {
+            float newLeft = targetShape.Left + DisplaceAmount;
+            float halfWidth = targetShape.Width;
+            float newTop = targetShape.Top + DisplaceAmount;
+            float halfHeight = targetShape.Height;
+            targetShape.Left = CommonUtil.Wrap(newLeft, halfWidth,
+                PowerPointPresentation.Current.SlideWidth - halfWidth);
+            targetShape.Top = CommonUtil.Wrap(newTop, halfHeight,
+                PowerPointPresentation.Current.SlideHeight - halfHeight);
+        }
 
         public static bool IsSamePosition(Shape refShape, Shape candidateShape,
                                           bool exactMatch = true, float blurRadius = float.Epsilon)

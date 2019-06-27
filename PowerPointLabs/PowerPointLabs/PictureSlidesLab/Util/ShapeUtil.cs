@@ -1,7 +1,6 @@
 ﻿using System;
 
 using Microsoft.Office.Core;
-
 using PowerPointLabs.PictureSlidesLab.Service.Effect;
 using PowerPointLabs.Utils;
 
