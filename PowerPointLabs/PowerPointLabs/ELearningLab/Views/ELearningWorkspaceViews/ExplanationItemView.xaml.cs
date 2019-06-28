@@ -75,11 +75,11 @@ namespace PowerPointLabs.ELearningLab.Views
         public ExplanationItemView()
         {
             InitializeComponent();
-            upImage.Source = CommonUtil.CreateBitmapSource(Properties.Resources.Up);
-            deleteImage.Source = CommonUtil.CreateBitmapSource(Properties.Resources.SyncLabDeleteButton);
-            downImage.Source = CommonUtil.CreateBitmapSource(Properties.Resources.Down);
-            audioImage.Source = CommonUtil.CreateBitmapSource(Properties.Resources.SpeakTextContext);
-            cancelCalloutImage.Source = CommonUtil.CreateBitmapSource(Properties.Resources.CancelCalloutButton);
+            upImage.Source = GraphicsUtil.BitmapToImageSource(Properties.Resources.Up);
+            deleteImage.Source = GraphicsUtil.BitmapToImageSource(Properties.Resources.SyncLabDeleteButton);
+            downImage.Source = GraphicsUtil.BitmapToImageSource(Properties.Resources.Down);
+            audioImage.Source = GraphicsUtil.BitmapToImageSource(Properties.Resources.SpeakTextContext);
+            cancelCalloutImage.Source = GraphicsUtil.BitmapToImageSource(Properties.Resources.CancelCalloutButton);
         }
 
         #region XAML-Binded Action Handler
