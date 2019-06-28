@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.Windows;
 
 namespace PowerPointLabs.ActionFramework.Common.Extension
@@ -28,6 +29,52 @@ namespace PowerPointLabs.ActionFramework.Common.Extension
         private PPLClipboard()
         {
             IsLocked = false;
+        }
+
+        public bool IsEmpty()
+        {
+            return LockIfNeeded(() =>
+            {
+                IDataObject clipboardData = Clipboard.GetDataObject();
+                return clipboardData == null || clipboardData.GetFormats().Length == 0;
+            });
+        }
+
+        public System.Drawing.Image GetImage()
+        {
+            return LockIfNeeded(() =>
+            {
+                return System.Windows.Forms.Clipboard.GetImage();
+            });
+        }
+
+        public StringCollection GetFileDropList()
+        {
+            return LockIfNeeded(() =>
+            {
+                return Clipboard.GetFileDropList();
+            });
+        }
+
+        public List<object> LoadClipboardObjects()
+        {
+            return LockIfNeeded(() =>
+            {
+                List<object> result = new List<object>();
+                if (Clipboard.ContainsImage())
+                {
+                    result.Add(Clipboard.GetImage());
+                }
+                if (Clipboard.ContainsFileDropList())
+                {
+                    result.Add(Clipboard.GetFileDropList());
+                }
+                if (Clipboard.ContainsText())
+                {
+                    result.Add(Clipboard.GetText());
+                }
+                return result;
+            });
         }
 
         public void LockAndRelease(Action action)
@@ -67,15 +114,12 @@ namespace PowerPointLabs.ActionFramework.Common.Extension
                     MessageBox.Show("Another application is currently using the clipboard. Please come back later and try again", "Retry", MessageBoxButton.OK);
                 }
             }
-            // PowerPointShapeGalleryPresentation has a strong reliance on the clipboard
-            SaveClipboard();
             IsLocked = true;
         }
 
         public void ReleaseClipboard()
         {
             if (!IsLocked) { return; }
-            RestoreClipboard();
             CloseClipboard();
             IsLocked = false;
         }
@@ -86,13 +130,8 @@ namespace PowerPointLabs.ActionFramework.Common.Extension
             _instance = null;
         }
 
-        private bool IsClipboardFree()
-        {
-            IntPtr hwnd = GetOpenClipboardWindow();
-            return hwnd == IntPtr.Zero || hwnd == _parentWindow;
-        }
-
-        private void SaveClipboard()
+        // not working stably
+        public void SaveClipboard()
         {
             lDataObject = Clipboard.GetDataObject();
             string[] lFormats = lDataObject.GetFormats(false);
@@ -110,7 +149,8 @@ namespace PowerPointLabs.ActionFramework.Common.Extension
         }
 
         // referred to https://stackoverflow.com/questions/6262454/c-sharp-backing-up-and-restoring-clipboard
-        private void RestoreClipboard()
+        // not working stably
+        public void RestoreClipboard()
         {
             /*
             foreach (KeyValuePair<string, object> pair in lBackup)
@@ -125,6 +165,24 @@ namespace PowerPointLabs.ActionFramework.Common.Extension
             Clipboard.Flush();
             lBackup.Clear();
             lDataObject = null;
+        }
+
+        private TResult LockIfNeeded<TResult>(Func<TResult> action)
+        {
+            if (IsLocked)
+            {
+                return action();
+            }
+            LockClipboard();
+            TResult result = action();
+            ReleaseClipboard();
+            return result;
+        }
+
+        private bool IsClipboardFree()
+        {
+            IntPtr hwnd = GetOpenClipboardWindow();
+            return hwnd == IntPtr.Zero || hwnd == _parentWindow;
         }
 
         [System.Runtime.InteropServices.DllImport("user32.dll")]

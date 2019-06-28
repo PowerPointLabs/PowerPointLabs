@@ -18,8 +18,7 @@ namespace PowerPointLabs.Utils
 
         public static bool IsClipboardEmpty()
         {
-            IDataObject clipboardData = Clipboard.GetDataObject();
-            return clipboardData == null || clipboardData.GetFormats().Length == 0;
+            return PPLClipboard.Instance.IsEmpty();
         }
 
         /// <summary>
@@ -39,31 +38,29 @@ namespace PowerPointLabs.Utils
         /// </summary>
         public static TResult RestoreClipboardAfterAction<TResult>(System.Func<TResult> action, PowerPointPresentation pres, PowerPointSlide origSlide)
         {
-            // Going to be deprecated
-            return action();
-            //TResult result;
-            //if (!IsClipboardEmpty())
-            //{
-            //    // Save clipboard onto a temp slide
-            //    PowerPointSlide tempClipboardSlide;
-            //    ShapeRange tempClipboardShapes;
-            //    SlideRange tempPastedSlide;
-            //    SaveClipboard(pres, origSlide, out tempClipboardSlide, out tempClipboardShapes, out tempPastedSlide);
+            TResult result;
+            if (!IsClipboardEmpty())
+            {
+                // Save clipboard onto a temp slide
+                PowerPointSlide tempClipboardSlide;
+                ShapeRange tempClipboardShapes;
+                SlideRange tempPastedSlide;
+                SaveClipboard(pres, origSlide, out tempClipboardSlide, out tempClipboardShapes, out tempPastedSlide);
 
-            //    result = action();
+                result = action();
 
-            //    RestoreClipboard(tempClipboardShapes, tempPastedSlide);
-            //    if (tempClipboardSlide != null)
-            //    {
-            //        tempClipboardSlide.Delete();
-            //    }
-            //}
-            //else
-            //{
-            //    // Clipboard is empty, we can just run the action function
-            //    result = action();
-            //}
-            //return result;
+                RestoreClipboard(tempClipboardShapes, tempPastedSlide);
+                if (tempClipboardSlide != null)
+                {
+                    tempClipboardSlide.Delete();
+                }
+            }
+            else
+            {
+                // Clipboard is empty, we can just run the action function
+                result = action();
+            }
+            return result;
         }
 
         private static ShapeRange PasteShapesFromClipboardUnprotected(PowerPointPresentation pres, PowerPointSlide slide)
