@@ -1,8 +1,6 @@
 ﻿using System;
-using System.Linq;
 
 using Microsoft.Office.Core;
-using Microsoft.Office.Interop;
 
 using PowerPointLabs.Models;
 using PowerPointLabs.Utils;
