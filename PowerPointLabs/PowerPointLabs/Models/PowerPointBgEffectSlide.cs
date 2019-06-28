@@ -211,16 +211,20 @@ namespace PowerPointLabs.Models
 
 
                 // swap the uncropped shapes and cropped shapes
-                Shape pastedCrop = newSlide.Shapes.SafeCut(croppedShape);
+                ShapeRange pastedCrop = PPLClipboard.Instance.LockAndRelease(() =>
+                {
+                    croppedShape.Cut();
+                    return newSlide.Shapes.Paste();
+                });
 
                 // calibrate pasted shapes
                 pastedCrop.Left -= 12;
                 pastedCrop.Top -= 12;
 
                 // ungroup front image if necessary
-                if (pastedCrop.Type == Core.MsoShapeType.msoGroup)
+                if (pastedCrop[1].Type == Core.MsoShapeType.msoGroup)
                 {
-                    pastedCrop.Ungroup();
+                    pastedCrop[1].Ungroup();
                 }
 
                 PPLClipboard.Instance.LockAndRelease(() =>
