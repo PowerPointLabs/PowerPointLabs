@@ -53,7 +53,6 @@ namespace Test.FunctionalTest
         [TestCleanup]
         public void TearDown()
         {
-            PPLClipboard.Instance.Teardown();
             if (TestContext.CurrentTestOutcome != UnitTestOutcome.Passed)
             {
                 if (!Directory.Exists(PathUtil.GetTestFailurePath()))
@@ -143,7 +142,7 @@ namespace Test.FunctionalTest
             MessageBoxUtil.ExpectMessageBoxWillPopUp(
                 "PowerPointLabs FT", "{*}",
                 PpOperations.ActivatePresentation);
-            PPLClipboard.Instance.AutoDismiss = true;
+            PPLClipboard.Init(PpOperations.Window, true);
         }
 
         private void OpenSlideForTest(String slideName)
@@ -176,6 +175,7 @@ namespace Test.FunctionalTest
 
         private void WaitForPpInstanceToClose()
         {
+            PPLClipboard.Instance.Teardown();
             int retry = 5;
             while (Process.GetProcessesByName("POWERPNT").Length > 0
                 && retry > 0)

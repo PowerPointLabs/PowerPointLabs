@@ -9,6 +9,7 @@ namespace TestInterface
     public interface IPowerPointOperations
     {
         # region PowerPoint Application API
+        IntPtr Window { get; }
 
         void MaximizeWindow();
         void EnterFunctionalTest();

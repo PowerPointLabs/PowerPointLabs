@@ -22,48 +22,9 @@ namespace PowerPointLabs.Utils
         }
 
         /// <summary>
-        /// This method assumes that there is valid data on the clipboard
+        /// This method assumes that there is valid data on the clipboard. DO NOT lock the clipboard.
         /// </summary>
         public static ShapeRange PasteShapesFromClipboard(PowerPointPresentation pres, PowerPointSlide slide)
-        {
-            return PPLClipboard.Instance.LockAndRelease(() =>
-            {
-                return PasteShapesFromClipboardUnprotected(pres, slide);
-            });
-        }
-
-        /// <summary>
-        /// To avoid changing the clipboard during a copy/cut and paste action. 
-        /// One solution for this is to save clipboard into a temp slide and revert clipboard afterwards.
-        /// </summary>
-        public static TResult RestoreClipboardAfterAction<TResult>(System.Func<TResult> action, PowerPointPresentation pres, PowerPointSlide origSlide)
-        {
-            TResult result;
-            if (!IsClipboardEmpty())
-            {
-                // Save clipboard onto a temp slide
-                PowerPointSlide tempClipboardSlide;
-                ShapeRange tempClipboardShapes;
-                SlideRange tempPastedSlide;
-                SaveClipboard(pres, origSlide, out tempClipboardSlide, out tempClipboardShapes, out tempPastedSlide);
-
-                result = action();
-
-                RestoreClipboard(tempClipboardShapes, tempPastedSlide);
-                if (tempClipboardSlide != null)
-                {
-                    tempClipboardSlide.Delete();
-                }
-            }
-            else
-            {
-                // Clipboard is empty, we can just run the action function
-                result = action();
-            }
-            return result;
-        }
-
-        private static ShapeRange PasteShapesFromClipboardUnprotected(PowerPointPresentation pres, PowerPointSlide slide)
         {
             try
             {
@@ -104,6 +65,37 @@ namespace PowerPointLabs.Utils
             }
         }
 
+        /// <summary>
+        /// To avoid changing the clipboard during a copy/cut and paste action. 
+        /// One solution for this is to save clipboard into a temp slide and revert clipboard afterwards.
+        /// </summary>
+        public static TResult RestoreClipboardAfterAction<TResult>(System.Func<TResult> action, PowerPointPresentation pres, PowerPointSlide origSlide)
+        {
+            TResult result;
+            if (!IsClipboardEmpty())
+            {
+                // Save clipboard onto a temp slide
+                PowerPointSlide tempClipboardSlide;
+                ShapeRange tempClipboardShapes;
+                SlideRange tempPastedSlide;
+                SaveClipboard(pres, origSlide, out tempClipboardSlide, out tempClipboardShapes, out tempPastedSlide);
+
+                result = action();
+
+                RestoreClipboard(tempClipboardShapes, tempPastedSlide);
+                if (tempClipboardSlide != null)
+                {
+                    tempClipboardSlide.Delete();
+                }
+            }
+            else
+            {
+                // Clipboard is empty, we can just run the action function
+                result = action();
+            }
+            return result;
+        }
+
         private static void SaveClipboard(PowerPointPresentation pres, PowerPointSlide origSlide, out PowerPointSlide tempClipboardSlide, out ShapeRange tempClipboardShapes, out SlideRange tempPastedSlide)
         {
             tempClipboardSlide = null;
@@ -111,6 +103,7 @@ namespace PowerPointLabs.Utils
             tempPastedSlide = null;
             Logger.Log("RestoreClipboardAfterAction: Trying to paste as slide.", ActionFramework.Common.Logger.LogType.Info);
             PPLClipboard.Instance.LockClipboard();
+            PPLClipboard.Instance.SaveClipboard();
             tempPastedSlide = TryPastingAsSlide(pres, origSlide);
 
             if (tempPastedSlide == null)
@@ -163,6 +156,7 @@ namespace PowerPointLabs.Utils
             try
             {
                 PPLClipboard.Instance.LockClipboard();
+                PPLClipboard.Instance.RestoreClipboard();
                 if (slides != null)
                 {
                     slides.Copy();

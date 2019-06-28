@@ -852,6 +852,7 @@ namespace PowerPointLabs
             SetupAfterCopyPasteHandler();
 
             SaveLabSettings.InitialiseLocalStorage();
+            PPLClipboard.Init(new IntPtr(Application.HWND));
 
             // According to MSDN, when more than 1 event are triggered, callback's invoking sequence
             // follows the defining order. I.e. the earlier you defined, the earlier it will be

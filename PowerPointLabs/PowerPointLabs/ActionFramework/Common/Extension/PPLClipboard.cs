@@ -11,10 +11,6 @@ namespace PowerPointLabs.ActionFramework.Common.Extension
         {
             get
             {
-                if (_instance == null)
-                {
-                    _instance = new PPLClipboard();
-                }
                 return _instance;
             }
         }
@@ -23,12 +19,14 @@ namespace PowerPointLabs.ActionFramework.Common.Extension
         public bool IsLocked { get; private set; }
         private Dictionary<string, object> lBackup = new Dictionary<string, object>();
         private IDataObject lDataObject;
-        private IntPtr _parentWindow => new IntPtr(Globals.ThisAddIn.Application.HWND);
-        public bool AutoDismiss = false;
+        private IntPtr _parentWindow;
+        public bool AutoDismiss;
 
-        private PPLClipboard()
+        private PPLClipboard(IntPtr parentWindow, bool autoDismiss)
         {
             IsLocked = false;
+            _parentWindow = parentWindow;
+            AutoDismiss = autoDismiss;
         }
 
         public bool IsEmpty()
@@ -124,6 +122,14 @@ namespace PowerPointLabs.ActionFramework.Common.Extension
             IsLocked = false;
         }
 
+        public static void Init(IntPtr parentWindow, bool autoDismiss = false)
+        {
+            if (_instance == null)
+            {
+                _instance = new PPLClipboard(parentWindow, autoDismiss);
+            }
+        }
+
         public void Teardown()
         {
             ReleaseClipboard();
@@ -188,10 +194,10 @@ namespace PowerPointLabs.ActionFramework.Common.Extension
         [System.Runtime.InteropServices.DllImport("user32.dll")]
         private static extern IntPtr GetOpenClipboardWindow();
 
-        [System.Runtime.InteropServices.DllImport("user32.dll", SetLastError = true)]
+        [System.Runtime.InteropServices.DllImport("user32.dll")]
         private static extern bool OpenClipboard(IntPtr hWndNewOwner);
 
-        [System.Runtime.InteropServices.DllImport("user32.dll", SetLastError = true)]
+        [System.Runtime.InteropServices.DllImport("user32.dll")]
         private static extern bool CloseClipboard();
 
     }
