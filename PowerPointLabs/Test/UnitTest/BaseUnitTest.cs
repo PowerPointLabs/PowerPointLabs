@@ -1,4 +1,6 @@
-﻿using System.Globalization;
+﻿using System;
+using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Runtime.InteropServices;
 
@@ -50,6 +52,9 @@ namespace Test.UnitTest
                 PathUtil.GetDocTestPath() + GetTestingSlideName(),
                 WithWindow: MsoTriState.msoFalse);
             PpOperations = new UnitTestPpOperations(Pres, App);
+            int processId;
+            processId = NativeUtil.GetWindowThreadProcessId(new IntPtr(App.HWND), out processId);
+            WindowWatcher.HeadlessSetup(0);
         }
 
         [TestCleanup]

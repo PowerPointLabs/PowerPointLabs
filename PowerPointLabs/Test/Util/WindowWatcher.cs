@@ -43,6 +43,20 @@ namespace Test.Util
                 handler);
         }
 
+        public static void HeadlessSetup(int processId)
+        {
+            windowTriggers = new Dictionary<string, WindowOpenTrigger>();
+            whitelist = new HashSet<string>();
+            whitelistInstances = new SortedDictionary<string, WindowOpenTrigger>();
+
+            handler = GetOpenWindowHandler(processId);
+            Automation.AddAutomationEventHandler(
+                WindowPattern.WindowOpenedEvent,
+                AutomationElement.RootElement,
+                TreeScope.Descendants,
+                handler);
+        }
+
         public static void Teardown()
         {
             Automation.RemoveAutomationEventHandler(
@@ -79,7 +93,8 @@ namespace Test.Util
             return (sender, e) =>
             {
                 AutomationElement element = sender as AutomationElement;
-                if (element.Current.ProcessId != processId &&
+                // pID 0 to bypass failing to find the window in headless mode
+                if (processId != 0 && element.Current.ProcessId != processId &&
                 Process.GetProcessById(element.Current.ProcessId).ProcessName != "POWERPNT") { return; }
 
                 IntPtr handle = new IntPtr(element.Current.NativeWindowHandle);
@@ -92,7 +107,7 @@ namespace Test.Util
                 lastOpenWindowName = windowName;
 
                 WindowOpenTrigger resultTrigger = GetWindowTrigger(windowName);
-                if (resultTrigger == null)
+                if (resultTrigger == null && processId != 0)
                 {
                     WindowUtil.CloseWindow(handle);
                     return;
