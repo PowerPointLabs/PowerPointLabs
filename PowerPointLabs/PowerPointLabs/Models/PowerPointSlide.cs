@@ -644,10 +644,11 @@ namespace PowerPointLabs.Models
             }
 
             // Copy all the shapes over.
-            PPLClipboard.Instance.LockClipboard();
-            shapes.Copy();
-            ShapeRange newShapes = _slide.Shapes.Paste();
-            PPLClipboard.Instance.ReleaseClipboard();
+            ShapeRange newShapes = PPLClipboard.Instance.LockAndRelease(() =>
+            {
+                shapes.Copy();
+                return _slide.Shapes.Paste();
+            });
 
             // Now use the indexed names to set back the names and positions to the original shapes'
             foreach (Shape shape in newShapes)

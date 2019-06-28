@@ -32,6 +32,7 @@ namespace PowerPointLabs.ActionFramework.Common.Extension
             throw new System.NotImplementedException();
         }
 
+        // Warning: This method pastes each individually
         public static void SafeCopyPlaceholders(this Shapes shapes, ShapeRange shapeRange)
         {
             foreach (Shape s in shapeRange)
@@ -58,38 +59,20 @@ namespace PowerPointLabs.ActionFramework.Common.Extension
 
         public static Shape SafeCopy(this Shapes shapes, Shape shape)
         {
-            try
+            return PPLClipboard.Instance.LockAndRelease(() =>
             {
-                PPLClipboard.Instance.LockClipboard();
                 shape.Copy();
                 return shapes.Paste()[1];
-            }
-            catch (Exception e)
-            {
-                throw e;
-            }
-            finally
-            {
-                PPLClipboard.Instance.ReleaseClipboard();
-            }
+            });
         }
 
         public static ShapeRange SafeCopy(this Shapes shapes, ShapeRange shapeRange)
         {
-            try
+            return PPLClipboard.Instance.LockAndRelease(() =>
             {
-                PPLClipboard.Instance.LockClipboard();
                 shapeRange.Copy();
                 return shapes.Paste();
-            }
-            catch (Exception e)
-            {
-                throw e;
-            }
-            finally
-            {
-                PPLClipboard.Instance.ReleaseClipboard();
-            }
+            });
         }
 
         public static Shape SafeCopySlide(this Shapes shapes, PowerPointSlide slide)
@@ -112,56 +95,29 @@ namespace PowerPointLabs.ActionFramework.Common.Extension
 
         public static Shape SafeCut(this Shapes shapes, Shape shape)
         {
-            try
+            return PPLClipboard.Instance.LockAndRelease(() =>
             {
-                PPLClipboard.Instance.LockClipboard();
                 shape.Cut();
                 return shapes.PasteSpecial(PpPasteDataType.ppPastePNG)[1];
-            }
-            catch (Exception e)
-            {
-                throw e;
-            }
-            finally
-            {
-                PPLClipboard.Instance.ReleaseClipboard();
-            }
+            });
         }
 
         public static Shape SafeCut(this Shapes shapes, ShapeRange selection)
         {
-            try
+            return PPLClipboard.Instance.LockAndRelease(() =>
             {
-                PPLClipboard.Instance.LockClipboard();
                 selection.Cut();
                 return shapes.PasteSpecial(PpPasteDataType.ppPastePNG)[1];
-            }
-            catch (Exception e)
-            {
-                throw e;
-            }
-            finally
-            {
-                PPLClipboard.Instance.ReleaseClipboard();
-            }
+            });
         }
 
         public static Shape SafeCopyPNG(this Shapes shapes, Shape shape)
         {
-            try
+            return PPLClipboard.Instance.LockAndRelease(() =>
             {
-                PPLClipboard.Instance.LockClipboard();
                 shape.Copy();
                 return shapes.PasteSpecial(PpPasteDataType.ppPastePNG)[1];
-            }
-            catch (Exception e)
-            {
-                throw e;
-            }
-            finally
-            {
-                PPLClipboard.Instance.ReleaseClipboard();
-            }
+            });
         }
 
         public static void CopyPropertiesAndFieldsFrom<T>(this T target, T source)

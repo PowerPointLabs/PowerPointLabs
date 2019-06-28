@@ -19,15 +19,46 @@ namespace PowerPointLabs.ActionFramework.Common.Extension
         }
 
         private static PPLClipboard _instance;
-        private bool isLocked = false;
+        public bool IsLocked { get; private set; }
         private Dictionary<string, object> lBackup = new Dictionary<string, object>();
         private IDataObject lDataObject;
         private IntPtr _parentWindow => new IntPtr(Globals.ThisAddIn.Application.HWND);
         public bool AutoDismiss = false;
 
+        private PPLClipboard()
+        {
+            IsLocked = false;
+        }
+
+        public void LockAndRelease(Action action)
+        {
+            LockAndRelease<object>(() =>
+            {
+                action();
+                return null;
+            });
+        }
+
+        public TResult LockAndRelease<TResult>(Func<TResult> action)
+        {
+            LockClipboard();
+            try
+            {
+                return action();
+            }
+            catch (Exception e)
+            {
+                throw e;
+            }
+            finally
+            {
+                ReleaseClipboard();
+            }
+        }
+
         public void LockClipboard()
         {
-            if (isLocked) { return; }
+            if (IsLocked) { throw new Exception("Clipboard is not released before locking!"); }
             // wait to lock the clipboard
             while (!IsClipboardFree() && !OpenClipboard(_parentWindow))
             {
@@ -37,16 +68,16 @@ namespace PowerPointLabs.ActionFramework.Common.Extension
                 }
             }
             // PowerPointShapeGalleryPresentation has a strong reliance on the clipboard
-            //SaveClipboard();
-            isLocked = true;
+            SaveClipboard();
+            IsLocked = true;
         }
 
         public void ReleaseClipboard()
         {
-            if (!isLocked) { return; }
-            //RestoreClipboard();
+            if (!IsLocked) { return; }
+            RestoreClipboard();
             CloseClipboard();
-            isLocked = false;
+            IsLocked = false;
         }
 
         public void Teardown()

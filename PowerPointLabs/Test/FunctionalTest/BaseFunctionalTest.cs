@@ -77,14 +77,15 @@ namespace Test.FunctionalTest
             ShapeRange shapeToBeCopied = PpOperations.SelectShape(shapeNameToBeCopied);
             Assert.AreEqual(1, shapeToBeCopied.Count);
 
-            // Add this shape to clipboard
-            PPLClipboard.Instance.LockClipboard();
-            shapeToBeCopied.Copy();
-            action();
+            ShapeRange newShape = PPLClipboard.Instance.LockAndRelease(() =>
+            {
+                // Add this shape to clipboard
+                shapeToBeCopied.Copy();
+                action();
 
-            // Paste whatever in clipboard
-            ShapeRange newShape = actualSlide.Shapes.Paste();
-            PPLClipboard.Instance.ReleaseClipboard();
+                // Paste whatever in clipboard
+                return actualSlide.Shapes.Paste();
+            });
 
             // Check if pasted shape is the same as the shape added to clipboard originally
             Assert.AreEqual(shapeNameToBeCopied, newShape.Name);

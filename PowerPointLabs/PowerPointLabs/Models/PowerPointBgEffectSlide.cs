@@ -223,10 +223,11 @@ namespace PowerPointLabs.Models
                     pastedCrop.Ungroup();
                 }
 
-                PPLClipboard.Instance.LockClipboard();
-                copyShapeRange.Cut();
-                oriShapeRange = refSlide.Shapes.Paste();
-                PPLClipboard.Instance.ReleaseClipboard();
+                PPLClipboard.Instance.LockAndRelease(() =>
+                {
+                    copyShapeRange.Cut();
+                    oriShapeRange = refSlide.Shapes.Paste();
+                });
 
                 oriShapeRange.Fill.ForeColor.RGB = 0xaaaaaa;
                 oriShapeRange.Fill.Transparency = 0.7f;

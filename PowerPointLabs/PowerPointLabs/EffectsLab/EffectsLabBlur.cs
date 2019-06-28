@@ -51,14 +51,16 @@ namespace PowerPointLabs.EffectsLab
                 float left = shape.Left;
                 float top = shape.Top;
 
-                PPLClipboard.Instance.LockClipboard();
-                shapeRange.Cut();
+                PPLClipboard.Instance.LockAndRelease(() =>
+                {
+                    shapeRange.Cut();
 
-                Utils.GraphicsUtil.ExportSlide(slide, BlurPicture);
-                BlurImage(BlurPicture, percentage);
+                    Utils.GraphicsUtil.ExportSlide(slide, BlurPicture);
+                    BlurImage(BlurPicture, percentage);
 
-                shapeRange = slide.Shapes.Paste();
-                PPLClipboard.Instance.ReleaseClipboard();
+                    shapeRange = slide.Shapes.Paste();
+                });
+
                 shapeRange.Left = left;
                 shapeRange.Top = top;
                 if (hasManyShapes)

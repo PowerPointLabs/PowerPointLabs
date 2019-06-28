@@ -59,12 +59,13 @@ namespace Test.FunctionalTest
         {
             PpOperations.SelectSlide(8);
             ShapeRange pastingShapes = PpOperations.SelectShapes(new List<string> {"Notched Right Arrow", "Group"});
-            PPLClipboard.Instance.LockClipboard();
-            pastingShapes.Copy();
+            PPLClipboard.Instance.LockAndRelease(() =>
+            {
+                pastingShapes.Copy();
 
-            Slide targetSlide = PpOperations.SelectSlide(9);
-            targetSlide.Shapes.Paste();
-            PPLClipboard.Instance.ReleaseClipboard();
+                Slide targetSlide = PpOperations.SelectSlide(9);
+                targetSlide.Shapes.Paste();
+            });
 
             Assert.IsNotNull(PpOperations.SelectShape("Notched Right Arrow"), 
                 "Copy-Paste failed, this task is flaky so please re-run.");
