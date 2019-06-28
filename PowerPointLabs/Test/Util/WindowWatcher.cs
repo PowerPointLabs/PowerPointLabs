@@ -93,10 +93,9 @@ namespace Test.Util
             return (sender, e) =>
             {
                 AutomationElement element = sender as AutomationElement;
-                // pID 0 to bypass failing to find the window in headless mode
-                if (processId != 0 && element.Current.ProcessId != processId &&
+                if (element.Current.ProcessId != processId &&
                 Process.GetProcessById(element.Current.ProcessId).ProcessName != "POWERPNT") { return; }
-
+                //MessageBox.Show(Process.GetProcessById(element.Current.ProcessId).ProcessName);
                 IntPtr handle = new IntPtr(element.Current.NativeWindowHandle);
                 string windowName = WindowUtil.GetWindowTitle(handle);
                 if (windowName == "")
@@ -107,7 +106,7 @@ namespace Test.Util
                 lastOpenWindowName = windowName;
 
                 WindowOpenTrigger resultTrigger = GetWindowTrigger(windowName);
-                if (resultTrigger == null && processId != 0)
+                if (resultTrigger == null)
                 {
                     WindowUtil.CloseWindow(handle);
                     return;
