@@ -394,7 +394,7 @@ namespace PowerPointLabs.ResizeLab
                     duplicateCurrentShape.Top = referenceShape.Top;
                     Utils.PPShape currentPPShape = new Utils.PPShape(duplicateCurrentShape, false);
                     List<System.Drawing.PointF> currentShapePoints = currentPPShape.Points;
-                    duplicateCurrentShape.Delete();
+                    duplicateCurrentShape.SafeDelete();
 
                     selectedShapes.LockAspectRatio = isAspectRatio;
 

@@ -1,6 +1,6 @@
 ﻿using Microsoft.Office.Core;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-
+using PowerPointLabs.ActionFramework.Common.Extension;
 using Test.Util;
 
 using Shape = Microsoft.Office.Interop.PowerPoint.Shape;
@@ -35,7 +35,7 @@ namespace Test.FunctionalTest
             Assert.AreEqual(MsoShapeType.msoPicture, sh.Type);
 
             Microsoft.Office.Interop.PowerPoint.Slide expSlide = PpOperations.SelectSlide(8);
-            PpOperations.SelectShape("text 3")[1].Delete();
+            PpOperations.SelectShape("text 3")[1].SafeDelete();
             SlideUtil.IsSameLooking(expSlide, actualSlide);
         }
 
@@ -50,7 +50,7 @@ namespace Test.FunctionalTest
             Assert.AreEqual(MsoShapeType.msoPicture, sh.Type);
 
             Microsoft.Office.Interop.PowerPoint.Slide expSlide = PpOperations.SelectSlide(5);
-            PpOperations.SelectShape("text 3")[1].Delete();
+            PpOperations.SelectShape("text 3")[1].SafeDelete();
             SlideUtil.IsSameLooking(expSlide, actualSlide);
         }
 

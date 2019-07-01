@@ -11,7 +11,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
 using Microsoft.Office.Interop.PowerPoint;
-
+using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.Models;
 using PowerPointLabs.TextCollection;
 
@@ -151,7 +151,7 @@ namespace PowerPointLabs.Utils
             DeleteSpecificFilePath(tempFileStoragePath);
 
             // Delete targetShape to prevent duplication
-            targetShape.Delete();
+            targetShape.SafeDelete();
 
             return compressedImgShape;
         }

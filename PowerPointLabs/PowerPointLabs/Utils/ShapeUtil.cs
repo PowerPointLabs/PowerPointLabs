@@ -6,7 +6,7 @@ using System.Runtime.InteropServices;
 
 using Microsoft.Office.Core;
 using Microsoft.Office.Interop.PowerPoint;
-
+using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.Models;
 using PowerPointLabs.SyncLab.ObjectFormats;
 
@@ -329,7 +329,7 @@ namespace PowerPointLabs.Utils
         {
             Shape copy = shape.Duplicate()[1];
             bool hasDefaultName = copy.Name != shape.Name;
-            copy.Delete();
+            copy.SafeDelete();
             return hasDefaultName;
         }
 
@@ -373,7 +373,7 @@ namespace PowerPointLabs.Utils
             
             if (correctedShape != null)
             {
-                shape.Delete();
+                shape.SafeDelete();
                 return correctedShape;
             }
             else
@@ -853,7 +853,7 @@ namespace PowerPointLabs.Utils
                 return;
             }
 
-            candidateShape.Delete();
+            candidateShape.SafeDelete();
             refShape.Copy();
             candidateShape = candidateSlide.Shapes.Paste()[1];
             candidateShape.Name = refShape.Name;
@@ -1041,7 +1041,7 @@ namespace PowerPointLabs.Utils
             Shape duplicate = shape.Duplicate()[1];
             duplicate.TextFrame.TextRange.Text = "";
             int color = duplicate.TextFrame.TextRange.Font.Color.RGB;
-            duplicate.Delete();
+            duplicate.SafeDelete();
             return color;
         }
 
@@ -1144,7 +1144,7 @@ namespace PowerPointLabs.Utils
                 return false;
             }
             
-            copyAttempt.Delete();
+            copyAttempt.SafeDelete();
             return true;
         }
 
@@ -1206,7 +1206,7 @@ namespace PowerPointLabs.Utils
                     var tempShape = msoPlaceHolder.Duplicate()[1];
                     tempShape.Copy();
                     shapeTemplate = shapesSource.Paste()[1];
-                    tempShape.Delete();
+                    tempShape.SafeDelete();
                     break;
                 case PpPlaceholderType.ppPlaceholderVerticalObject:
                 case PpPlaceholderType.ppPlaceholderObject:

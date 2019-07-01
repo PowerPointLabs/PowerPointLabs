@@ -5,7 +5,7 @@ using System.Runtime.Remoting;
 
 using Microsoft.Office.Interop.PowerPoint;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-
+using PowerPointLabs.ActionFramework.Common.Extension;
 using Test.Base;
 using Test.Util;
 
@@ -90,7 +90,7 @@ namespace Test.FunctionalTest
             Slide expSlide = PpOperations.SelectSlide(expSlideNum);
             if (expShapeNameToDelete != "")
             {
-                PpOperations.SelectShape(expShapeNameToDelete)[1].Delete();
+                PpOperations.SelectShape(expShapeNameToDelete)[1].SafeDelete();
             }
 
             //Set the pasted shape location because the location of the pasted shape is flaky

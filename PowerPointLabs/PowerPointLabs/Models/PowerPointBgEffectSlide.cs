@@ -7,7 +7,7 @@ using ImageProcessor;
 using ImageProcessor.Imaging.Filters;
 
 using Microsoft.Office.Interop.PowerPoint;
-
+using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.CropLab;
 using PowerPointLabs.Utils;
 
@@ -176,7 +176,7 @@ namespace PowerPointLabs.Models
         {
             foreach (Shape shape in curSlide.Shapes.Cast<Shape>().Where(curSlide.HasExitAnimation))
             {
-                shape.Delete();
+                shape.SafeDelete();
             }
 
             curSlide.MoveMotionAnimation();
@@ -187,7 +187,7 @@ namespace PowerPointLabs.Models
             
             foreach (Shape shape in visibleShape)
             {
-                shape.Delete();
+                shape.SafeDelete();
             }
 
             List<Shape> placeHolders =
@@ -195,7 +195,7 @@ namespace PowerPointLabs.Models
 
             foreach (Shape placeHolder in placeHolders)
             {
-                placeHolder.Delete();
+                placeHolder.SafeDelete();
             }
         }
 

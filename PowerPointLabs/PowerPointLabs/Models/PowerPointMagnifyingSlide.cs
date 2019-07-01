@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-
+using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.AnimationLab;
 using PowerPointLabs.CropLab;
 using PowerPointLabs.Utils;
@@ -55,7 +55,7 @@ namespace PowerPointLabs.Models
             }
 
             shapeToZoom.Name = "PPTLabsMagnifyAreaSlide" + DateTime.Now.ToString("yyyyMMddHHmmssffff");
-            referenceShape.Delete();
+            referenceShape.SafeDelete();
             zoomSlideCroppedShapes.Visible = Office.MsoTriState.msoFalse;
             indicatorShape.ZOrder(Office.MsoZOrderCmd.msoBringToFront);
         }
@@ -69,7 +69,7 @@ namespace PowerPointLabs.Models
             IEnumerable<PowerPoint.Shape> matchingShapes = shapes.Where(current => (HasExitAnimation(current) || current.Equals(zoomShape)));
             foreach (PowerPoint.Shape s in matchingShapes)
             {
-                s.Delete();
+                s.SafeDelete();
             }
 
             float magnifyRatio = PowerPointPresentation.Current.SlideWidth / zoomShape.Width;
@@ -154,7 +154,7 @@ namespace PowerPointLabs.Models
                     Office.MsoTriState.msoTrue,
                     0,
                     0);
-                croppedShape.Delete();
+                croppedShape.SafeDelete();
                 try
                 {
                     FileDir.DeleteFile(tempFilePath);

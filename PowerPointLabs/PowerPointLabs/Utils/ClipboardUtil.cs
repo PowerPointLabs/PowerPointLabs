@@ -2,7 +2,7 @@
 using System.Windows.Forms;
 
 using Microsoft.Office.Interop.PowerPoint;
-
+using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.Models;
 
@@ -40,7 +40,7 @@ namespace PowerPointLabs.Utils
                     // Delete previously pasted "shapes" because it is not a valid shape
                     if (shapes != null)
                     {
-                        shapes[1].Delete();
+                        shapes[1].SafeDelete();
                     }
                     ShapeRange picture = TryPastingAsPNG(slide);
                     if (picture == null)
@@ -149,7 +149,7 @@ namespace PowerPointLabs.Utils
                 else if (shapes != null && shapes.Count >= 1)
                 {
                     shapes.Copy();
-                    shapes.Delete();
+                    shapes.SafeDelete();
                 }
             }
             catch (COMException e) 

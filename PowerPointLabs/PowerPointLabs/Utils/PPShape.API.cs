@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 
 using Microsoft.Office.Core;
-
+using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
 namespace PowerPointLabs.Utils
@@ -441,7 +441,7 @@ namespace PowerPointLabs.Utils
         /// </summary>
         public void Delete()
         {
-            _shape.Delete();
+            _shape.SafeDelete();
         }
 
         /// <summary>

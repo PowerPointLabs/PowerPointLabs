@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-
+using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.Models;
 using PowerPointLabs.Utils;
@@ -96,7 +96,7 @@ namespace PowerPointLabs.ZoomLab
 
                     addedSlide.PrepareForDrillDown();
                     addedSlide.AddDrillDownAnimationNoBackground(backgroundShape, shapeToZoom, pictureOnNextSlide);
-                    pictureOnNextSlide.Delete();
+                    pictureOnNextSlide.SafeDelete();
                 }
                 currentSlide.ShowIndicator();
 
@@ -295,7 +295,7 @@ namespace PowerPointLabs.ZoomLab
             shapeGroup.Copy();
             pictureOnNextSlide = nextSlide.Shapes.PasteSpecial(PowerPoint.PpPasteDataType.ppPastePNG)[1];
             LegacyShapeUtil.CopyShapePosition(shapeGroup, ref pictureOnNextSlide);
-            shapeGroup.Delete();
+            shapeGroup.SafeDelete();
 
             pictureOnNextSlide.Copy();
             PowerPoint.Shape slidePicture = currentSlide.Shapes.PasteSpecial(PowerPoint.PpPasteDataType.ppPastePNG)[1];
@@ -310,7 +310,7 @@ namespace PowerPointLabs.ZoomLab
             IEnumerable<PowerPoint.Shape> matchingShapes = shapes.Where(current => nextSlideCopy.HasEntryAnimation(current));
             foreach (PowerPoint.Shape s in matchingShapes)
             {
-                s.Delete();
+                s.SafeDelete();
             }
             PowerPoint.Shape slidePicture = AddSlideAsShape(nextSlideCopy, currentSlide);
             nextSlideCopy.Delete();
@@ -325,7 +325,7 @@ namespace PowerPointLabs.ZoomLab
             IEnumerable<PowerPoint.Shape> matchingShapes = shapes.Where(current => previousSlideCopy.HasExitAnimation(current));
             foreach (PowerPoint.Shape s in matchingShapes)
             {
-                s.Delete();
+                s.SafeDelete();
             }
             PowerPoint.Shape slidePicture = AddSlideAsShape(previousSlideCopy, currentSlide);
             previousSlideCopy.Delete();
@@ -442,7 +442,7 @@ namespace PowerPointLabs.ZoomLab
             PowerPoint.Shape previousSlidePicture = addedSlide.Shapes.PasteSpecial(PowerPoint.PpPasteDataType.ppPastePNG)[1];
             LegacyShapeUtil.CopyShapePosition(shapeGroup, ref previousSlidePicture);
             previousSlidePicture.Name = "PPTZoomOutShape" + DateTime.Now.ToString("yyyyMMddHHmmssffff");
-            shapeGroup.Delete();
+            shapeGroup.SafeDelete();
 
             return previousSlidePicture;
         }

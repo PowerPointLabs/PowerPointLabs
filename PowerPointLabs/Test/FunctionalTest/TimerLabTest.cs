@@ -2,7 +2,7 @@
 
 using Microsoft.Office.Interop.PowerPoint;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-
+using PowerPointLabs.ActionFramework.Common.Extension;
 using Test.Util;
 
 using TestInterface;
@@ -124,7 +124,7 @@ namespace Test.FunctionalTest
         {
             PpOperations.SelectSlide(OriginalSlideNo);
             ShapeRange shapes = PpOperations.SelectShape(TimerBody);
-            shapes.Delete();
+            shapes.SafeDelete();
 
             MessageBoxUtil.ExpectMessageBoxWillPopUp("Error",
                "Only one timer allowed per slide.", timerLab.ClickCreateButton, "Ok");
@@ -140,7 +140,7 @@ namespace Test.FunctionalTest
             ShapeRange lineMarkerGroup = PpOperations.SelectShape(TimerLineMarkerGroup);
             lineMarkerGroup.Line.ForeColor.RGB = expectedColor;
             ShapeRange timeMarkerGroup = PpOperations.SelectShape(TimerTimeMarkerGroup);
-            timeMarkerGroup.Delete();
+            timeMarkerGroup.SafeDelete();
 
             MessageBoxUtil.ExpectMessageBoxWillPopUp("Error",
               "Only one timer allowed per slide.", timerLab.ClickCreateButton, "Ok");
@@ -164,7 +164,7 @@ namespace Test.FunctionalTest
             timeMarkerGroup.TextFrame.TextRange.Font.Color.RGB = expectedColor;
             List<string> sliderComponentNames = new List<string> { TimerSliderHead, TimerSliderBody };
             ShapeRange sliderComponents = PpOperations.SelectShapes(sliderComponentNames);
-            sliderComponents.Delete();
+            sliderComponents.SafeDelete();
 
             MessageBoxUtil.ExpectMessageBoxWillPopUp("Error",
               "Only one timer allowed per slide.", timerLab.ClickCreateButton, "Ok");
@@ -247,7 +247,7 @@ namespace Test.FunctionalTest
         {
             PpOperations.SelectSlide(PbOriginalSlideNo);
             ShapeRange shapes = PpOperations.SelectShape(TimerBody);
-            shapes.Delete();
+            shapes.SafeDelete();
 
             MessageBoxUtil.ExpectMessageBoxWillPopUp("Error",
                "Only one timer allowed per slide.", timerLab.ClickCreateButton, "Ok");
@@ -263,7 +263,7 @@ namespace Test.FunctionalTest
             ShapeRange lineMarkerGroup = PpOperations.SelectShape(TimerLineMarkerGroup);
             lineMarkerGroup.Line.ForeColor.RGB = expectedColor;
             ShapeRange timeMarkerGroup = PpOperations.SelectShape(TimerTimeMarkerGroup);
-            timeMarkerGroup.Delete();
+            timeMarkerGroup.SafeDelete();
 
             MessageBoxUtil.ExpectMessageBoxWillPopUp("Error",
               "Only one timer allowed per slide.", timerLab.ClickCreateButton, "Ok");
@@ -286,7 +286,7 @@ namespace Test.FunctionalTest
             ShapeRange timeMarkerGroup = PpOperations.SelectShape(TimerTimeMarkerGroup);
             timeMarkerGroup.TextFrame.TextRange.Font.Color.RGB = expectedColor;
             ShapeRange progressBar = PpOperations.SelectShape(ProgressBar);
-            progressBar.Delete();
+            progressBar.SafeDelete();
 
             MessageBoxUtil.ExpectMessageBoxWillPopUp("Error",
               "Only one timer allowed per slide.", timerLab.ClickCreateButton, "Ok");

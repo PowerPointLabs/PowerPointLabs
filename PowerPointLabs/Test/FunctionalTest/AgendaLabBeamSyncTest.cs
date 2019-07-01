@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-
+using PowerPointLabs.ActionFramework.Common.Extension;
 using Test.Util;
 
 namespace Test.FunctionalTest
@@ -64,7 +64,7 @@ namespace Test.FunctionalTest
             PpOperations.SelectSlide(1);
             Microsoft.Office.Interop.PowerPoint.Shape highlightedText = PpOperations.RecursiveGetShapeWithPrefix("PptLabsAgenda_&^@BeamShapeMainGroup",              
                                                                            "PptLabsAgenda_&^@BeamShapeHighlightedText");
-            highlightedText.Delete();
+            highlightedText.SafeDelete();
 
             MessageBoxUtil.ExpectMessageBoxWillPopUp(
                 "Unable to execute action",
@@ -76,7 +76,7 @@ namespace Test.FunctionalTest
         {
             PpOperations.SelectSlide(1);
             Microsoft.Office.Interop.PowerPoint.Shape beamShape = PpOperations.SelectShapesByPrefix("PptLabsAgenda_&^@BeamShapeMainGroup")[1];
-            beamShape.Delete();
+            beamShape.SafeDelete();
 
             MessageBoxUtil.ExpectMessageBoxWillPopUp(
                 "Unable to execute action",
@@ -102,7 +102,7 @@ namespace Test.FunctionalTest
             {
                 Microsoft.Office.Interop.PowerPoint.Shape beamText = PpOperations.RecursiveGetShapeWithPrefix("PptLabsAgenda_&^@BeamShapeMainGroup",
                     "PptLabsAgenda_&^@BeamShapeText");
-                beamText.Delete();
+                beamText.SafeDelete();
             }
 
             MessageBoxUtil.ExpectMessageBoxWillPopUp(

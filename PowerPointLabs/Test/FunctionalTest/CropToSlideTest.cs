@@ -88,7 +88,7 @@ namespace Test.FunctionalTest
 
             // remove elements that affect comparing slides
             // e.g. "Expected" textbox
-            PpOperations.SelectShapesByPrefix("text").Delete();
+            PpOperations.SelectShapesByPrefix("text").SafeDelete();
 
             SlideUtil.IsSameLooking(expShape, expShapeInPic, expShape, expShapeInPic);
             SlideUtil.IsSameLooking(expSlide, actualSlide);

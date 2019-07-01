@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 
 using Microsoft.Office.Core;
-
+using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.Models;
 using PowerPointLabs.SyncLab.ObjectFormats;
 using PowerPointLabs.TextCollection;
@@ -158,7 +158,7 @@ namespace PowerPointLabs.SyncLab
             {
                 if (shapes[index].Name.Equals(shapeKey))
                 {
-                    shapes[index].Delete();
+                    shapes[index].SafeDelete();
                     _backupArtisticEffects.Remove(shapeKey);
                 }
                 else

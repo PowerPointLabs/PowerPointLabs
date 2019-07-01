@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-
+using PowerPointLabs.ActionFramework.Common.Extension;
 using Test.Util;
 
 namespace Test.FunctionalTest
@@ -51,7 +51,7 @@ namespace Test.FunctionalTest
 
             // remove elements that affect comparing slides
             // e.g. "Expected" textbox
-            PpOperations.SelectShapesByPrefix("text").Delete();
+            PpOperations.SelectShapesByPrefix("text").SafeDelete();
 
             SlideUtil.IsSameLooking(expShape, expShapeInPic, resultShape, resultShapeInPic);
             SlideUtil.IsSameLooking(expSlide, actualSlide);
@@ -78,7 +78,7 @@ namespace Test.FunctionalTest
 
             // remove elements that affect comparing slides
             // e.g. "Expected" textbox
-            PpOperations.SelectShapesByPrefix("text").Delete();
+            PpOperations.SelectShapesByPrefix("text").SafeDelete();
 
             SlideUtil.IsSameLooking(expShape, expShapeInPic, resultShape, resultShapeInPic);
             SlideUtil.IsSameLooking(expSlide, actualSlide);
@@ -102,7 +102,7 @@ namespace Test.FunctionalTest
 
             // remove elements that affect comparing slides
             // e.g. "Expected" textbox
-            PpOperations.SelectShapesByPrefix("text").Delete();
+            PpOperations.SelectShapesByPrefix("text").SafeDelete();
 
             SlideUtil.IsSameLooking(expShape, expShapeInPic, resultShape, resultShapeInPic);
             SlideUtil.IsSameLooking(expSlide, actualSlide);

@@ -1110,8 +1110,7 @@ namespace PowerPointLabs.PositionsLab
                 {
                     try
                     {
-                        simulatedShapes.Delete();
-                        GC.Collect();
+                        simulatedShapes.SafeDelete();
                     }
                     // Catch corrupted shapes
                     catch (System.Runtime.InteropServices.COMException)
@@ -1122,7 +1121,7 @@ namespace PowerPointLabs.PositionsLab
                             // This method to remove duplicated shapes might fail for non-corrupted shapes when mixing good/bad shapes
                             if (this.GetCurrentSlide().Shapes[1].Name.Contains("_Copy"))
                             {
-                                this.GetCurrentSlide().Shapes[1].Delete();
+                                this.GetCurrentSlide().Shapes[1].SafeDelete();
                             }
                             else
                             {
@@ -1205,8 +1204,7 @@ namespace PowerPointLabs.PositionsLab
             {
                 if (simulatedShapes != null)
                 {
-                    simulatedShapes.Delete();
-                    GC.Collect();
+                    simulatedShapes.SafeDelete();
                 }
             }
         }
@@ -1270,8 +1268,7 @@ namespace PowerPointLabs.PositionsLab
             {
                 if (simulatedShapes != null)
                 {
-                    simulatedShapes.Delete();
-                    GC.Collect();
+                    simulatedShapes.SafeDelete();
                 }
             }
         }
@@ -1329,8 +1326,7 @@ namespace PowerPointLabs.PositionsLab
                 {
                     if (simulatedShapes != null)
                     {
-                        simulatedShapes.Delete();
-                        GC.Collect();
+                        simulatedShapes.SafeDelete();
                     }
                 }
             }
@@ -1393,8 +1389,7 @@ namespace PowerPointLabs.PositionsLab
             {
                 if (simulatedShapes != null)
                 {
-                    simulatedShapes.Delete();
-                    GC.Collect();
+                    simulatedShapes.SafeDelete();
                 }
             }
         }
@@ -1455,8 +1450,7 @@ namespace PowerPointLabs.PositionsLab
                 {
                     if (simulatedShapes != null)
                     {
-                        simulatedShapes.Delete();
-                        GC.Collect();
+                        simulatedShapes.SafeDelete();
                     }
                 }
             }
@@ -1520,8 +1514,7 @@ namespace PowerPointLabs.PositionsLab
                 {
                     if (simulatedShapes != null)
                     {
-                        simulatedShapes.Delete();
-                        GC.Collect();
+                        simulatedShapes.SafeDelete();
                     }
                 }
             }
@@ -1596,8 +1589,7 @@ namespace PowerPointLabs.PositionsLab
                 {
                     try
                     {
-                        simulatedShapes.Delete();
-                        GC.Collect();
+                        simulatedShapes.SafeDelete();
                     }
                     // Catch corrupted shapes
                     catch (System.Runtime.InteropServices.COMException)
@@ -1608,7 +1600,7 @@ namespace PowerPointLabs.PositionsLab
                             // This method to remove duplicated shapes might fail for non-corrupted shapes when mixing good/bad shapes
                             if (this.GetCurrentSlide().Shapes[1].Name.Contains("_Copy"))
                             {
-                                this.GetCurrentSlide().Shapes[1].Delete();
+                                this.GetCurrentSlide().Shapes[1].SafeDelete();
                             }
                             else
                             {

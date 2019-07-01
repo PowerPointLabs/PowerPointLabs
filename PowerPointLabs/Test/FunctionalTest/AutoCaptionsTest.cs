@@ -1,5 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-
+using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.TextCollection;
 
 using Test.Util;
@@ -24,7 +24,7 @@ namespace Test.FunctionalTest
             PplFeatures.AutoCaptions();
 
             Microsoft.Office.Interop.PowerPoint.Slide expSlide = PpOperations.SelectSlide(5);
-            PpOperations.SelectShape("text 3").Delete();
+            PpOperations.SelectShape("text 3").SafeDelete();
 
             SlideUtil.IsSameAnimations(expSlide, actualSlide);
             SlideUtil.IsSameLooking(expSlide, actualSlide);

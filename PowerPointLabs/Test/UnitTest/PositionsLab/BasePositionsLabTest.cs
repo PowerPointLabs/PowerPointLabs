@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 using Microsoft.Office.Core;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-
+using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.PositionsLab;
 using PowerPointLabs.Utils;
 
@@ -149,8 +149,7 @@ namespace Test.UnitTest.PositionsLab
             {
                 if (simulatedShapes != null)
                 {
-                    simulatedShapes.Delete();
-                    GC.Collect();
+                    simulatedShapes.SafeDelete();
                 }
             }
         }
@@ -190,8 +189,7 @@ namespace Test.UnitTest.PositionsLab
             {
                 if (simulatedShapes != null)
                 {
-                    simulatedShapes.Delete();
-                    GC.Collect();
+                    simulatedShapes.SafeDelete();
                 }
             }
         }
@@ -231,8 +229,7 @@ namespace Test.UnitTest.PositionsLab
             {
                 if (simulatedShapes != null)
                 {
-                    simulatedShapes.Delete();
-                    GC.Collect();
+                    simulatedShapes.SafeDelete();
                 }
             }
         }
@@ -264,8 +261,7 @@ namespace Test.UnitTest.PositionsLab
             {
                 if (simulatedShapes != null)
                 {
-                    simulatedShapes.Delete();
-                    GC.Collect();
+                    simulatedShapes.SafeDelete();
                 }
             }
         }
@@ -304,8 +300,7 @@ namespace Test.UnitTest.PositionsLab
             {
                 if (simulatedShapes != null)
                 {
-                    simulatedShapes.Delete();
-                    GC.Collect();
+                    simulatedShapes.SafeDelete();
                 }
             }
         }
@@ -337,8 +332,7 @@ namespace Test.UnitTest.PositionsLab
             {
                 if (simulatedShapes != null)
                 {
-                    simulatedShapes.Delete();
-                    GC.Collect();
+                    simulatedShapes.SafeDelete();
                 }
             }
         }
@@ -370,8 +364,7 @@ namespace Test.UnitTest.PositionsLab
             {
                 if (simulatedShapes != null)
                 {
-                    simulatedShapes.Delete();
-                    GC.Collect();
+                    simulatedShapes.SafeDelete();
                 }
             }
         }
@@ -403,8 +396,7 @@ namespace Test.UnitTest.PositionsLab
             {
                 if (simulatedShapes != null)
                 {
-                    simulatedShapes.Delete();
-                    GC.Collect();
+                    simulatedShapes.SafeDelete();
                 }
             }
         }

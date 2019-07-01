@@ -14,7 +14,7 @@ using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
 using Microsoft.Office.Tools;
-
+using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.AutoUpdate;
 using PowerPointLabs.CaptionsLab;
@@ -1227,7 +1227,7 @@ namespace PowerPointLabs
 
                     foreach (PowerPoint.Shape shape in corruptedShapes)
                     {
-                        shape.Delete();
+                        shape.SafeDelete();
                     }
 
                     _isShapeMatchedAlready = new HashSet<string>();

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 
 using Microsoft.Office.Core;
+using PowerPointLabs.ActionFramework.Common.Extension;
 
 namespace PowerPointLabs.Utils
 {
@@ -218,7 +219,7 @@ namespace PowerPointLabs.Utils
 
             if (!isConvertToFreeform)
             {
-                shape.Delete();
+                shape.SafeDelete();
             }
         }
 

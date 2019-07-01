@@ -6,7 +6,7 @@ using System.Text;
 using System.Windows.Forms;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-
+using PowerPointLabs.ActionFramework.Common.Extension;
 using Test.Util;
 
 namespace Test.FunctionalTest
@@ -67,9 +67,9 @@ namespace Test.FunctionalTest
             Microsoft.Office.Interop.PowerPoint.Slide actualSlide1 = PpOperations.SelectSlide(8);
             Microsoft.Office.Interop.PowerPoint.Slide actualSlide2 = PpOperations.SelectSlide(9);
             Microsoft.Office.Interop.PowerPoint.Slide expSlide1 = PpOperations.SelectSlide(10);
-            PpOperations.SelectShape("text 3")[1].Delete();
+            PpOperations.SelectShape("text 3")[1].SafeDelete();
             Microsoft.Office.Interop.PowerPoint.Slide expSlide2 = PpOperations.SelectSlide(11);
-            PpOperations.SelectShape("text 3")[1].Delete();
+            PpOperations.SelectShape("text 3")[1].SafeDelete();
             SlideUtil.IsSameLooking(expSlide1, actualSlide1);
             SlideUtil.IsSameLooking(expSlide2, actualSlide2);
         }

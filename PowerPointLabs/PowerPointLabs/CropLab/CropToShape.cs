@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
-
+using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.EffectsLab;
 using PowerPointLabs.Models;
 using PowerPointLabs.Utils;
@@ -50,7 +50,7 @@ namespace PowerPointLabs.CropLab
                 float left = shape.Left;
                 float top = shape.Top;
                 shapeRange = shape.Duplicate();
-                shape.Delete();
+                shape.SafeDelete();
                 shapeRange.Left = left;
                 shapeRange.Top = top;
                 if (hasManyShapes)
@@ -94,7 +94,7 @@ namespace PowerPointLabs.CropLab
             }
 
             Shape shapeToReturn = shape.Duplicate()[1];
-            shape.Delete();
+            shape.SafeDelete();
             return shapeToReturn;
         }
 

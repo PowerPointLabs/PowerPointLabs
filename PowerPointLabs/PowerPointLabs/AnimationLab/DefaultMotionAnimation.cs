@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Globalization;
 
 using Microsoft.Office.Interop.PowerPoint;
-
+using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.Models;
 
 using Office = Microsoft.Office.Core;
@@ -326,7 +326,7 @@ namespace PowerPointLabs.AnimationLab
             PowerPoint.Shape newLine = animationSlide.ToShapeRange(toGroup).Group();
 
             animationSlide.TransferAnimation(tempAnimationHolder, newLine);
-            tempAnimationHolder.Delete();
+            tempAnimationHolder.SafeDelete();
 
             return newLine;
         }

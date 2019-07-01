@@ -8,7 +8,7 @@ using System.Text.RegularExpressions;
 
 using Microsoft.Office.Core;
 using Microsoft.Office.Interop.PowerPoint;
-
+using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.ELearningLab.Service;
 using PowerPointLabs.ELearningLab.Utility;
 using PowerPointLabs.TextCollection;
@@ -287,7 +287,7 @@ namespace PowerPointLabs.Models
             
             foreach (Shape s in matchingShapes)
             {
-                s.Delete();
+                s.SafeDelete();
             }
         }
 
@@ -298,7 +298,7 @@ namespace PowerPointLabs.Models
             IEnumerable<Shape> matchingShapes = shapes.Where(current => regex.IsMatch(current.Name));
             foreach (Shape s in matchingShapes)
             {
-                s.Delete();
+                s.SafeDelete();
             }
         }
 
@@ -309,7 +309,7 @@ namespace PowerPointLabs.Models
 
             foreach (Shape s in matchingShapes)
             {
-                s.Delete();
+                s.SafeDelete();
             }
         }
 
@@ -319,7 +319,7 @@ namespace PowerPointLabs.Models
                 .Cast<Shape>()
                 .Where(sh => sh.Visible == MsoTriState.msoFalse)
                 .ToList()
-                .ForEach(sh => sh.Delete());
+                .ForEach(sh => sh.SafeDelete());
         }
 
         public void DeleteAllShapes()
@@ -329,7 +329,7 @@ namespace PowerPointLabs.Models
             List<Shape> matchingShapes = shapes;
             foreach (Shape s in matchingShapes)
             {
-                s.Delete();
+                s.SafeDelete();
             }
         }
 
@@ -385,7 +385,7 @@ namespace PowerPointLabs.Models
                             .Cast<Shape>()
                             .Where(shape => nextSlideCopy.HasEntryAnimation(shape))
                             .ToList()
-                            .ForEach(shape => shape.Delete());
+                            .ForEach(shape => shape.SafeDelete());
 
             nextSlideCopy.Copy();
             Shape slidePicture = _slide.Shapes.PasteSpecial(PpPasteDataType.ppPastePNG)[1];
@@ -405,7 +405,7 @@ namespace PowerPointLabs.Models
                             .Cast<Shape>()
                             .Where(shape => previousSlideCopy.HasExitAnimation(shape))
                             .ToList()
-                            .ForEach(shape => shape.Delete());
+                            .ForEach(shape => shape.SafeDelete());
 
             previousSlideCopy.Copy();
             Shape slidePicture = _slide.Shapes.PasteSpecial(PpPasteDataType.ppPastePNG)[1];
@@ -897,7 +897,7 @@ namespace PowerPointLabs.Models
 
         public void DeletePlaceholderShapes()
         {
-            _slide.Shapes.Placeholders.Cast<Shape>().ToList().ForEach(shape => shape.Delete());
+            _slide.Shapes.Placeholders.Cast<Shape>().ToList().ForEach(shape => shape.SafeDelete());
         }
 
         public Shape AddTemplateSlideMarker()
@@ -955,7 +955,7 @@ namespace PowerPointLabs.Models
             _slide.Shapes.Cast<Shape>()
                         .Where(IsIndicator)
                         .ToList()
-                        .ForEach(shape => shape.Delete());
+                        .ForEach(shape => shape.SafeDelete());
         }
 
 
@@ -1229,7 +1229,7 @@ namespace PowerPointLabs.Models
 
             foreach (Shape s in matchingShapes)
             {
-                s.Delete();
+                s.SafeDelete();
             }
         }
 
@@ -1271,7 +1271,7 @@ namespace PowerPointLabs.Models
             {
                 if (sh.Type == MsoShapeType.msoMedia)
                 {
-                    sh.Delete();
+                    sh.SafeDelete();
                 }
             }
         }
