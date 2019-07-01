@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Media;
+using PowerPointLabs.Utils;
 
 namespace PowerPointLabs.ColorsLab
 {
@@ -18,7 +19,7 @@ namespace PowerPointLabs.ColorsLab
 
             InitializeComponent();
 
-            colorRectangle.Fill = new SolidColorBrush(System.Windows.Media.Color.FromArgb(color.A, color.R, color.G, color.B));
+            colorRectangle.Fill = GraphicsUtil.MediaBrushFromDrawingColor(color);
             colorHexText.Text = ((HSLColor)color).ToHexString();
             colorRgbText.Text = ((HSLColor)color).ToRGBString();
             colorHslText.Text = ((HSLColor)color).ToString();

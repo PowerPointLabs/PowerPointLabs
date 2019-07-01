@@ -6,6 +6,7 @@ using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Windows.Forms;
+using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Microsoft.Office.Core;
@@ -356,6 +357,23 @@ namespace PowerPointLabs.Utils
 
             return thumbnail;
         }
+
+        public static BitmapImage BitmapToImageSource(Bitmap bitmap)
+        {
+            using (MemoryStream memory = new MemoryStream())
+            {
+                bitmap.Save(memory, System.Drawing.Imaging.ImageFormat.Png);
+                memory.Position = 0;
+                BitmapImage bitmapimage = new BitmapImage();
+                bitmapimage.BeginInit();
+                bitmapimage.StreamSource = memory;
+                bitmapimage.CacheOption = BitmapCacheOption.OnLoad;
+                bitmapimage.EndInit();
+
+                return bitmapimage;
+            }
+        }
+
         #endregion
 
         #region GDI+
@@ -394,9 +412,10 @@ namespace PowerPointLabs.Utils
             b = (byte)((rgb >> 16) & 255);
         }
 
-        public static Drawing.Color DrawingColorFromMediaColor(System.Windows.Media.Color mediaColor)
+        public static Drawing.Color DrawingColorFromMediaColor(System.Windows.Media.Color mediaColor, bool opaque = false)
         {
-            return Drawing.Color.FromArgb(mediaColor.A, mediaColor.R, mediaColor.G, mediaColor.B);
+            return Drawing.Color.FromArgb(opaque ? 255 : mediaColor.A,
+                mediaColor.R, mediaColor.G, mediaColor.B);
         }
 
         public static System.Windows.Media.Color MediaColorFromDrawingColor(Drawing.Color drawingColor)

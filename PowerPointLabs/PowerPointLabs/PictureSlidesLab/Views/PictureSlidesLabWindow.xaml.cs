@@ -26,6 +26,7 @@ using PowerPointLabs.PictureSlidesLab.Util;
 using PowerPointLabs.PictureSlidesLab.ViewModel;
 using PowerPointLabs.PictureSlidesLab.Views.Interface;
 using PowerPointLabs.TextCollection;
+using PowerPointLabs.Utils;
 using PowerPointLabs.WPF.Observable;
 
 using ButtonBase = System.Windows.Controls.Primitives.ButtonBase;
@@ -91,8 +92,8 @@ namespace PowerPointLabs.PictureSlidesLab.Views
             EveryDayPhrase.Text = new EveryDayPhraseService().GetEveryDayPhrase();
             PictureSlidesLabGridLoadingOverlay.Visibility = Visibility.Visible;
             IsOpen = true;
-            SettingsButtonIcon.Source = ImageUtil.BitmapToImageSource(Properties.Resources.PslSettings);
-            PictureAspectRefreshButtonIcon.Source = ImageUtil.BitmapToImageSource(Properties.Resources.PslRefresh);
+            SettingsButtonIcon.Source = GraphicsUtil.BitmapToImageSource(Properties.Resources.PslSettings);
+            PictureAspectRefreshButtonIcon.Source = GraphicsUtil.BitmapToImageSource(Properties.Resources.PslRefresh);
             InitSizePosition();
             Logger.Log("PSL begins");
 
