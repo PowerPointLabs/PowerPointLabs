@@ -218,8 +218,9 @@ namespace PowerPointLabs.Utils
             {
                 DeleteFile(filePath);
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                Logger.LogException(e, nameof(TryDeleteFile));
             }
         }
 
