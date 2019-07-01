@@ -10,7 +10,7 @@ using PowerPointLabs.ColorsLab;
 
 namespace PowerPointLabs.DataSources
 {
-    class ColorDataSource : INotifyPropertyChanged
+    public class ColorDataSource : INotifyPropertyChanged
     {
         public IList<HSLColor> RecentColors
         {
@@ -269,22 +269,7 @@ namespace PowerPointLabs.DataSources
         // Create the OnPropertyChanged method to raise the event
         protected void RecentColors_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
-            System.Collections.IList newValues = e.NewItems;
-            switch (newValues?.Count ?? 0)
-            {
-                case 0:
-                    break;
-                case 1:
-                    string name = recentColorFieldNames[e.NewStartingIndex];
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
-                    break;
-                default:
-                    foreach (string fieldName in recentColorFieldNames)
-                    {
-                        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(fieldName));
-                    }
-                    break;
-            }
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(RecentColors)));
         }
 
         protected void FavoriteColors_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)

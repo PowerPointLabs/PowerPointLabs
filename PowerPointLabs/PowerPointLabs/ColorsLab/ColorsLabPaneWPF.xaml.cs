@@ -5,7 +5,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 
 using Microsoft.Office.Core;
@@ -24,7 +23,7 @@ namespace PowerPointLabs.ColorsLab
 {
 
     /// <summary>
-    /// Interaction logic for TimerLabPaneWPF.xaml
+    /// Interaction logic for ColorsLabPaneWPF.xaml
     /// </summary>
     public partial class ColorsLabPaneWPF : UserControl
     {
