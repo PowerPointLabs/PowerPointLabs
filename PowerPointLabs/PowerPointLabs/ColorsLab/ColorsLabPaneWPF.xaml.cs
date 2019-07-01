@@ -151,7 +151,7 @@ namespace PowerPointLabs.ColorsLab
         private const float MAGNIFICATION_FACTOR = 2.5f;
         private Cursor eyeDropperCursor = new Cursor(new MemoryStream(Properties.Resources.EyeDropper));
         private Magnifier magnifier = new Magnifier(MAGNIFICATION_FACTOR);
-        private System.Windows.Threading.DispatcherTimer eyeDropperTimer = new System.Windows.Threading.DispatcherTimer();
+        private DispatcherTimer eyeDropperTimer;
         private const int CLICK_THRESHOLD = 2;
         private int timer1Ticks;
 
@@ -169,6 +169,7 @@ namespace PowerPointLabs.ColorsLab
 
         public ColorsLabPaneWPF()
         {
+            eyeDropperTimer = new DispatcherTimer(DispatcherPriority.Background, Dispatcher);
             // Set data context to data source for XAML to reference.
             DataContext = dataSource;
 
@@ -195,25 +196,25 @@ namespace PowerPointLabs.ColorsLab
         /// </summary>
         private void SetupImageSources()
         {
-            textColorIcon.Source = CommonUtil.CreateBitmapSource(Properties.Resources.TextColor_icon);
+            textColorIcon.Source = GraphicsUtil.BitmapToImageSource(Properties.Resources.TextColor_icon);
 
-            lineColorIcon.Source = CommonUtil.CreateBitmapSource(Properties.Resources.LineColor_icon);
+            lineColorIcon.Source = GraphicsUtil.BitmapToImageSource(Properties.Resources.LineColor_icon);
 
-            fillColorIcon.Source = CommonUtil.CreateBitmapSource(Properties.Resources.FillColor_icon);
+            fillColorIcon.Source = GraphicsUtil.BitmapToImageSource(Properties.Resources.FillColor_icon);
 
-            eyeDropperIcon.Source = CommonUtil.CreateBitmapSource(Properties.Resources.EyeDropper_icon);
+            eyeDropperIcon.Source = GraphicsUtil.BitmapToImageSource(Properties.Resources.EyeDropper_icon);
 
-            brightnessIcon.Source = CommonUtil.CreateBitmapSource(Properties.Resources.Brightness_icon_25x25);
+            brightnessIcon.Source = GraphicsUtil.BitmapToImageSource(Properties.Resources.Brightness_icon_25x25);
 
-            saturationIcon.Source = CommonUtil.CreateBitmapSource(Properties.Resources.Saturation_icon_18x18);
+            saturationIcon.Source = GraphicsUtil.BitmapToImageSource(Properties.Resources.Saturation_icon_18x18);
 
-            saveColorIcon.Source = CommonUtil.CreateBitmapSource(Properties.Resources.Save_icon);
+            saveColorIcon.Source = GraphicsUtil.BitmapToImageSource(Properties.Resources.Save_icon);
 
-            loadColorIcon.Source = CommonUtil.CreateBitmapSource(Properties.Resources.Load_icon);
+            loadColorIcon.Source = GraphicsUtil.BitmapToImageSource(Properties.Resources.Load_icon);
 
-            reloadColorIcon.Source = CommonUtil.CreateBitmapSource(Properties.Resources.Reload_icon);
+            reloadColorIcon.Source = GraphicsUtil.BitmapToImageSource(Properties.Resources.Reload_icon);
 
-            clearColorIcon.Source = CommonUtil.CreateBitmapSource(Properties.Resources.Clear_icon);
+            clearColorIcon.Source = GraphicsUtil.BitmapToImageSource(Properties.Resources.Clear_icon);
         }
 
         /// <summary>
@@ -484,7 +485,7 @@ namespace PowerPointLabs.ColorsLab
             rect.MouseUp -= ColorRectangle_MouseUp;
 
             System.Windows.Media.Color color = ((SolidColorBrush)rect.Fill).Color;
-            Color selectedColor = Color.FromArgb(color.A, color.R, color.G, color.B);
+            Color selectedColor = GraphicsUtil.DrawingColorFromMediaColor(color);
             dataSource.SelectedColor = new HSLColor(selectedColor);
         }
 
@@ -503,7 +504,7 @@ namespace PowerPointLabs.ColorsLab
             System.Windows.Shapes.Rectangle rect = (System.Windows.Shapes.Rectangle)sender;
 
             System.Windows.Media.Color prevMediaColor = ((SolidColorBrush)rect.Fill).Color;
-            _previousFillColor = Color.FromArgb(prevMediaColor.A, prevMediaColor.R, prevMediaColor.G, prevMediaColor.B);
+            _previousFillColor = GraphicsUtil.DrawingColorFromMediaColor(prevMediaColor);
 
             if (rect != null)
             {
@@ -518,7 +519,7 @@ namespace PowerPointLabs.ColorsLab
                     if (converter.IsValid(dataString))
                     {
                         System.Windows.Media.Color mediaColor = (System.Windows.Media.Color)ColorConverter.ConvertFromString(dataString);
-                        Color color = Color.FromArgb(mediaColor.A, mediaColor.R, mediaColor.G, mediaColor.B);
+                        Color color = GraphicsUtil.DrawingColorFromMediaColor(mediaColor);
 
                         SetFavoriteColorRectangle(Grid.GetColumn(rect), color);
                     }
@@ -599,7 +600,7 @@ namespace PowerPointLabs.ColorsLab
                     if (converter.IsValid(dataString))
                     {
                         System.Windows.Media.Color mediaColor = (System.Windows.Media.Color)ColorConverter.ConvertFromString(dataString);
-                        Color color = Color.FromArgb(mediaColor.A, mediaColor.R, mediaColor.G, mediaColor.B);
+                        Color color = GraphicsUtil.DrawingColorFromMediaColor(mediaColor);
 
                         SetFavoriteColorRectangle(Grid.GetColumn(rect), color);
                     }
@@ -775,7 +776,7 @@ namespace PowerPointLabs.ColorsLab
             }
             System.Windows.Shapes.Rectangle rect = ((ContextMenu)(menuItem.Parent)).PlacementTarget as System.Windows.Shapes.Rectangle;
             System.Windows.Media.Color color = ((SolidColorBrush)rect.Fill).Color;
-            Color selectedColor = Color.FromArgb(color.A, color.R, color.G, color.B);
+            Color selectedColor = GraphicsUtil.DrawingColorFromMediaColor(color);
             ColorInformationDialog dialog = new ColorInformationDialog(selectedColor);
             dialog.Show();
         }
@@ -789,7 +790,7 @@ namespace PowerPointLabs.ColorsLab
             }
             System.Windows.Shapes.Rectangle rect = ((ContextMenu)(menuItem.Parent)).PlacementTarget as System.Windows.Shapes.Rectangle;
             System.Windows.Media.Color color = ((SolidColorBrush)rect.Fill).Color;
-            Color selectedColor = Color.FromArgb(color.A, color.R, color.G, color.B);
+            Color selectedColor = GraphicsUtil.DrawingColorFromMediaColor(color);
             dataSource.SelectedColor = new HSLColor(selectedColor);
         }
 
@@ -802,7 +803,7 @@ namespace PowerPointLabs.ColorsLab
             }
             System.Windows.Shapes.Rectangle rect = ((ContextMenu)(menuItem.Parent)).PlacementTarget as System.Windows.Shapes.Rectangle;
             System.Windows.Media.Color color = ((SolidColorBrush)rect.Fill).Color;
-            HSLColor clickedColor = Color.FromArgb(color.A, color.R, color.G, color.B);
+            HSLColor clickedColor = GraphicsUtil.DrawingColorFromMediaColor(color);
             dataSource.AddColorToFavorites(clickedColor);
         }
 
@@ -1145,8 +1146,10 @@ namespace PowerPointLabs.ColorsLab
 
         private void ColorMainColorRect(Color color)
         {
-            eyeDropperPreviewRectangle.Fill = 
-                new SolidColorBrush(System.Windows.Media.Color.FromArgb(color.A, color.R, color.G, color.B));
+            eyeDropperPreviewRectangle.Dispatcher.Invoke(() =>
+            {
+               eyeDropperPreviewRectangle.Fill = GraphicsUtil.MediaBrushFromDrawingColor(color);
+            });
         }
 
         #endregion
