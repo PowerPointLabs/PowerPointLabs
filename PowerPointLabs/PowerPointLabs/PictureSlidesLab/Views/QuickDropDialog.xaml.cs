@@ -5,6 +5,7 @@ using System.Windows.Input;
 using MahApps.Metro.Controls;
 using PowerPointLabs.ColorThemes.Extensions;
 using PowerPointLabs.PictureSlidesLab.Util;
+using PowerPointLabs.Utils;
 
 namespace PowerPointLabs.PictureSlidesLab.Views
 {
@@ -43,7 +44,7 @@ namespace PowerPointLabs.PictureSlidesLab.Views
 
             InitDragAndDrop();
             IsOpen = true;
-            PictureSlidesLabLogo.Source = ImageUtil.BitmapToImageSource(Properties.Resources.PictureSlidesLab);
+            PictureSlidesLabLogo.Source = GraphicsUtil.BitmapToImageSource(Properties.Resources.PictureSlidesLab);
         }
 
         public void ShowQuickDropDialog()

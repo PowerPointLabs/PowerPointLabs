@@ -99,7 +99,7 @@ namespace PowerPointLabs.PictureSlidesLab.Views
 
         private Color GetColor(SolidColorBrush brush)
         {
-            return Color.FromArgb(brush.Color.A, brush.Color.R, brush.Color.G, brush.Color.B);
+            return GraphicsUtil.DrawingColorFromBrush(brush);
         }
 
         private void InsertCitationToggleSwitch_OnIsCheckedChanged(object sender, EventArgs e)

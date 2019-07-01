@@ -10,6 +10,7 @@ using PowerPointLabs.ColorThemes.Extensions;
 using PowerPointLabs.CropLab;
 using PowerPointLabs.PictureSlidesLab.Util;
 using PowerPointLabs.PictureSlidesLab.Views.ImageAdjustment;
+using PowerPointLabs.Utils;
 using PowerPointLabs.WPF.Observable;
 
 using Color = System.Windows.Media.Color;
@@ -49,17 +50,17 @@ namespace PowerPointLabs.PictureSlidesLab.Views
         {
             InitializeComponent();
             ImageHolder.DataContext = thumbnailImageFile;
-            MoveLeftImage.Source = ImageUtil.BitmapToImageSource(Properties.Resources.Left);
-            MoveUpImage.Source = ImageUtil.BitmapToImageSource(Properties.Resources.Up);
-            MoveDownImage.Source = ImageUtil.BitmapToImageSource(Properties.Resources.Down);
-            MoveRightImage.Source = ImageUtil.BitmapToImageSource(Properties.Resources.Right);
-            ZoomInImage.Source = ImageUtil.BitmapToImageSource(Properties.Resources.PlusZoom);
-            ZoomOutImage.Source = ImageUtil.BitmapToImageSource(Properties.Resources.MinusZoom);
-            AutoFitImage.Source = ImageUtil.BitmapToImageSource(Properties.Resources.Fit);
-            LeftRotateImage.Source = ImageUtil.BitmapToImageSource(Properties.Resources.LeftRotate);
-            RightRotateImage.Source = ImageUtil.BitmapToImageSource(Properties.Resources.RightRotate);
-            FlipHorizontalImage.Source = ImageUtil.BitmapToImageSource(Properties.Resources.FlipHorizontal);
-            FlipVerticalImage.Source = ImageUtil.BitmapToImageSource(Properties.Resources.FlipVertical);
+            MoveLeftImage.Source = GraphicsUtil.BitmapToImageSource(Properties.Resources.Left);
+            MoveUpImage.Source = GraphicsUtil.BitmapToImageSource(Properties.Resources.Up);
+            MoveDownImage.Source = GraphicsUtil.BitmapToImageSource(Properties.Resources.Down);
+            MoveRightImage.Source = GraphicsUtil.BitmapToImageSource(Properties.Resources.Right);
+            ZoomInImage.Source = GraphicsUtil.BitmapToImageSource(Properties.Resources.PlusZoom);
+            ZoomOutImage.Source = GraphicsUtil.BitmapToImageSource(Properties.Resources.MinusZoom);
+            AutoFitImage.Source = GraphicsUtil.BitmapToImageSource(Properties.Resources.Fit);
+            LeftRotateImage.Source = GraphicsUtil.BitmapToImageSource(Properties.Resources.LeftRotate);
+            RightRotateImage.Source = GraphicsUtil.BitmapToImageSource(Properties.Resources.RightRotate);
+            FlipHorizontalImage.Source = GraphicsUtil.BitmapToImageSource(Properties.Resources.FlipHorizontal);
+            FlipVerticalImage.Source = GraphicsUtil.BitmapToImageSource(Properties.Resources.FlipVertical);
         }
 
         public void ShowAdjustPictureDimensionsDialog()
@@ -182,27 +183,32 @@ namespace PowerPointLabs.PictureSlidesLab.Views
         private void SaveCropButton_OnClick(object sender, RoutedEventArgs e)
         {
             Rect rect = _croppingAdorner.ClippingRectangle;
-            double xRatio = rect.X/ImageHolder.ActualWidth;
-            double yRatio = rect.Y/ImageHolder.ActualHeight;
-            double widthRatio = rect.Width/ImageHolder.ActualWidth;
-            double heightRatio = rect.Height/ImageHolder.ActualHeight;
+            double xRatio = rect.X / ImageHolder.ActualWidth;
+            double yRatio = rect.Y / ImageHolder.ActualHeight;
+            double widthRatio = rect.Width / ImageHolder.ActualWidth;
+            double heightRatio = rect.Height / ImageHolder.ActualHeight;
             Rect = rect;
-
-            Bitmap originalImg = (Bitmap)Bitmap.FromFile(CropResult);
-            Bitmap result = CropToShape.KiCut(originalImg, 
-                (float) xRatio*originalImg.Width,
-                (float) yRatio * originalImg.Height,
-                (float) widthRatio * originalImg.Width,
-                (float) heightRatio * originalImg.Height);
-            CropResult = StoragePath.GetPath("crop-"
-                                    + DateTime.Now.GetHashCode() + "-"
-                                    + Guid.NewGuid().ToString().Substring(0, 7));
-            result.Save(CropResult);
+            CropResult = CropAndSaveImageFromFile(CropResult, xRatio, yRatio, widthRatio, heightRatio);
 
             CropResultThumbnail = ImageUtil.GetThumbnailFromFullSizeImg(CropResult);
             IsCropped = true;
 
             Close();
+        }
+
+        private string CropAndSaveImageFromFile(string image, double xRatio, double yRatio, double widthRatio, double heightRatio)
+        {
+            Bitmap originalImg = (Bitmap)Bitmap.FromFile(image);
+            Bitmap result = CropToShape.KiCut(originalImg,
+                (float)xRatio * originalImg.Width,
+                (float)yRatio * originalImg.Height,
+                (float)widthRatio * originalImg.Width,
+                (float)heightRatio * originalImg.Height);
+            string croppedImage = StoragePath.GetPath("crop-"
+                                    + DateTime.Now.GetHashCode() + "-"
+                                    + Guid.NewGuid().ToString().Substring(0, 7));
+            result.Save(croppedImage);
+            return croppedImage;
         }
 
         private void AutoFitButton_OnClick(object sender, RoutedEventArgs e)
