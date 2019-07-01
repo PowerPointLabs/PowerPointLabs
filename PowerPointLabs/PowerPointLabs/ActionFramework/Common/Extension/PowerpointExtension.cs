@@ -6,6 +6,9 @@ using PowerPointLabs.Utils;
 
 namespace PowerPointLabs.ActionFramework.Common.Extension
 {
+    /// <summary>
+    /// Contains extensions for <seealso cref="Shape"/> clipboard operations.
+    /// </summary>
     public static class PowerpointExtension
     {
         // groups the shaperange only if there is 2 or more elements

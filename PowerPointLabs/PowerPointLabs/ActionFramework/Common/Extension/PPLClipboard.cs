@@ -5,6 +5,9 @@ using System.Windows;
 
 namespace PowerPointLabs.ActionFramework.Common.Extension
 {
+    /// <summary>
+    /// A class that provides clipboard resources for a process to use.
+    /// </summary>
     public class PPLClipboard
     {
         public static PPLClipboard Instance { get; private set; }
