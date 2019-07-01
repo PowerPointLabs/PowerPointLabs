@@ -27,7 +27,7 @@ namespace Test.FunctionalTest
 
         private void TestDrillDown()
         {
-            PplFeatures.SetZoomProperties(WindowStackManager, true, true);
+            PplFeatures.SetZoomProperties(true, true);
 
             PpOperations.SelectSlide(4);
             PpOperations.SelectShape("Drill Down This Shape");
@@ -40,7 +40,7 @@ namespace Test.FunctionalTest
 
         private void TestDrillDownBackground()
         {
-            PplFeatures.SetZoomProperties(WindowStackManager, false, true);
+            PplFeatures.SetZoomProperties(false, true);
 
             PpOperations.SelectSlide(10);
             PpOperations.SelectShape("Drill Down This Shape");
@@ -53,7 +53,7 @@ namespace Test.FunctionalTest
 
         private void TestStepBack()
         {
-            PplFeatures.SetZoomProperties(WindowStackManager, true, true);
+            PplFeatures.SetZoomProperties(true, true);
 
             PpOperations.SelectSlide(17);
             PpOperations.SelectShape("Step Back This Shape");
@@ -66,7 +66,7 @@ namespace Test.FunctionalTest
 
         private void TestStepBackBackground()
         {
-            PplFeatures.SetZoomProperties(WindowStackManager, false, true);
+            PplFeatures.SetZoomProperties(false, true);
 
             PpOperations.SelectSlide(24);
             PpOperations.SelectShape("Step Back This Shape");

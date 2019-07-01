@@ -33,10 +33,10 @@ namespace Test.FunctionalTest
 
         private void SettingsAndSingleShapeSuccessfully()
         {
-            // old code partially replaced
-            //PplFeatures.SetSpotlightProperties(0.01f, 50f, Color.FromArgb(0x00FF00));
-            PplFeatures.SetSpotlightProperties(1.0f, 10f, Color.FromArgb(0x00FF00));
-            VerifySpotlightSettingsDialogBoxWPF();
+            PplFeatures.SetSpotlightProperties(0.01f, 50f, Color.FromArgb(0x00FF00));
+
+            // This method is commented out since it currently does not work for WPF controls.
+            // VerifySpotlightSettingsDialogBox();
 
             PpOperations.SelectSlide(4);
             PpOperations.SelectShape("Spotlight Me");
@@ -77,31 +77,6 @@ namespace Test.FunctionalTest
             SlideUtil.IsSameLooking(expSlide2, actualSlide2);
         }
 
-        private void VerifySpotlightSettingsDialogBoxWPF()
-        {
-            string spotlightSettingsWindowTitle = "Spotlight Settings";
-            IMarshalWindow window = WindowStackManager.WaitAndPush<SpotlightSettingsDialogBox>(
-                PplFeatures.OpenSpotlightDialog,
-                spotlightSettingsWindowTitle);
-
-            window.LeftClick<SpotlightSettingsDialogBox>("spotlightTransparencyInput");
-            window.SelectAll<SpotlightSettingsDialogBox>("spotlightTransparencyInput");
-            window.TypeUsingKeyboard<SpotlightSettingsDialogBox>("spotlightTransparencyInput", "1");
-
-            // scrolling down doesn't work for a dropdown, it's not a combobox!
-            ThreadUtil.WaitFor(1000);
-            window.NativeClick<SpotlightSettingsDialogBox>("softEdgesSelectionInput");
-            ThreadUtil.WaitFor(1000);
-            window.NativeClickList<SpotlightSettingsDialogBox>("softEdgesSelectionInput", 7);
-            // The WPF element listens for mouse down/up events so this is required.
-            window.LeftClick<SpotlightSettingsDialogBox>("softEdgesSelectionInput");
-            ThreadUtil.WaitFor(1000);
-            window.NativeClick<SpotlightSettingsDialogBox>("okButton");
-
-            // spotlightColorRect is not supported as it uses WinForms
-        }
-
-        [Obsolete]
         private void VerifySpotlightSettingsDialogBox()
         {
             string spotlightSettingsWindowTitle = "Spotlight Settings";

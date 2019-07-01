@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Reflection;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -46,6 +47,30 @@ namespace PowerPointLabs.FunctionalTestInterface.Windows
             {
                 UIElement element = GetElement<T>(name);
                 element.RaiseEvent(args);
+            });
+        }
+
+        /// <summary>
+        /// Clicks on the UI element.
+        /// </summary>
+        /// <typeparam name="T">Type of UI element</typeparam>
+        /// <param name="name">Name of UI element</param>
+        public void LeftClick<T>(string name)
+        {
+            BlockUntilSTAThread(() =>
+            {
+                UIElement element = GetElement<T>(name);
+                PresentationSource source = PresentationSource.FromVisual(element);
+
+                element.RaiseEvent(new MouseButtonEventArgs(Mouse.PrimaryDevice, 0, MouseButton.Left)
+                {
+                    RoutedEvent = UIElement.MouseDownEvent
+                });
+                Thread.Sleep(30);
+                element.RaiseEvent(new MouseButtonEventArgs(Mouse.PrimaryDevice, 0, MouseButton.Left)
+                {
+                    RoutedEvent = UIElement.MouseUpEvent
+                });
             });
         }
 

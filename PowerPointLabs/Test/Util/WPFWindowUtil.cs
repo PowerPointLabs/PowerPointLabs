@@ -41,18 +41,6 @@ namespace Test.Util
             MouseUtil.SendMouseLeftClick((int)p.X, (int)p.Y);
         }
 
-        public static void SetZoomProperties(this IPowerPointLabsFeatures PplFeatures, IWindowStackManager windowStackManager,
-            bool backgroundChecked, bool multiSlideChecked)
-        {
-            string zoomLabSettingsWindowTitle = "Zoom Lab Settings";
-            IMarshalWindow window = windowStackManager.WaitAndPush<ZoomLabSettingsDialogBox>(
-                PplFeatures.OpenZoomLabSettings,
-                zoomLabSettingsWindowTitle);
-            window.SetCheckBox<ZoomLabSettingsDialogBox>("slideBackgroundCheckbox", backgroundChecked);
-            window.SetCheckBox<ZoomLabSettingsDialogBox>("separateSlidesCheckbox", multiSlideChecked);
-            window.NativeClick<ZoomLabSettingsDialogBox>("okButton");
-        }
-
         public static void SetCheckBox<T>(this IMarshalWindow window, string name, bool isChecked)
         {
             if (window.IsChecked<T>(name) == isChecked)

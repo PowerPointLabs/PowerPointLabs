@@ -7,6 +7,9 @@ using TestInterface.Windows;
 
 namespace PowerPointLabs.FunctionalTestInterface.Windows
 {
+    /// <summary>
+    /// A class that can be used to manage open <seealso cref="Window"/>s.
+    /// </summary>
     [Serializable]
     public class WindowStackManager : MarshalByRefObject, IWindowStackManager
     {
@@ -58,6 +61,11 @@ namespace PowerPointLabs.FunctionalTestInterface.Windows
             window.Close();
         }
 
+        /// <summary>
+        /// Retrieves a window using its HWND.
+        /// </summary>
+        /// <param name="handle">HWND</param>
+        /// <returns>Window</returns>
         private Window GetWindow(IntPtr handle)
         {
             HwndSource hwndSource = HwndSource.FromHwnd(handle);

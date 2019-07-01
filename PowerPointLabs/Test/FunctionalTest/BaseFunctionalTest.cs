@@ -48,7 +48,7 @@ namespace Test.FunctionalTest
             }
 
             Process pptProcess = GetChildProcess(GetTestingSlideName());
-            Process mainProcess = GetMainProcess(pptProcess);
+            Process mainProcess = GetMainProcessAndCloseOthers(pptProcess);
             SetupProcessAndWindowWatching(mainProcess, pptProcess);
             ConnectPpl();
         }
@@ -105,6 +105,12 @@ namespace Test.FunctionalTest
             SlideUtil.IsSameLooking(expSlide, actualSlide);
         }
 
+        /// <summary>
+        /// Postpones the process startup to have better control on waiting for the process to
+        /// finish starting up.
+        /// </summary>
+        /// <param name="process">Process that windows will eventually reside on</param>
+        /// <param name="childProcess">Process to be started</param>
         private void SetupProcessAndWindowWatching(Process process, Process childProcess)
         {
             string startWindowName = GetTestingSlideName().After("\\") + " - PowerPoint";
@@ -161,9 +167,14 @@ namespace Test.FunctionalTest
             WindowStackManager.Teardown();
         }
 
-        private Process GetMainProcess(Process process)
+        /// <summary>
+        /// Closes all other processes except the main process
+        /// </summary>
+        /// <param name="process"></param>
+        /// <returns></returns>
+        private Process GetMainProcessAndCloseOthers(Process process)
         {
-            Process[] p = Process.GetProcessesByName("POWERPNT");
+            Process[] p = Process.GetProcessesByName(Constants.pptProcess);
             if (p.Length == 0) { return process; }
             for (int i = 1; i < p.Length; i++)
             {
@@ -188,7 +199,7 @@ namespace Test.FunctionalTest
 
         private void CloseActivePpInstance()
         {
-            Process[] processes = Process.GetProcessesByName("POWERPNT");
+            Process[] processes = Process.GetProcessesByName(Constants.pptProcess);
             if (processes.Length > 0)
             {
                 foreach (Process p in processes)
@@ -204,16 +215,16 @@ namespace Test.FunctionalTest
         private void WaitForPpInstanceToClose()
         {
             int retry = 5;
-            while (Process.GetProcessesByName("POWERPNT").Length > 0
+            while (Process.GetProcessesByName(Constants.pptProcess).Length > 0
                 && retry > 0)
             {
                 retry--;
                 ThreadUtil.WaitFor(1500);
             }
 
-            if (Process.GetProcessesByName("POWERPNT").Length > 0)
+            if (Process.GetProcessesByName(Constants.pptProcess).Length > 0)
             {
-                foreach (Process process in Process.GetProcessesByName("POWERPNT"))
+                foreach (Process process in Process.GetProcessesByName(Constants.pptProcess))
                 {
                     process.Kill();
                 }

@@ -96,7 +96,7 @@ namespace Test.Util
                 AutomationElement element = sender as AutomationElement;
                 string processName = Process.GetProcessById(element.Current.ProcessId).ProcessName;
                 if (element.Current.ProcessId != processId &&
-                    processName != "POWERPNT") { return; }
+                    processName != Constants.pptProcess) { return; }
                 IntPtr handle = new IntPtr(element.Current.NativeWindowHandle);
                 string windowName = WindowUtil.GetWindowTitle(handle);
                 if (windowName == "")

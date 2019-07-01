@@ -17,6 +17,7 @@ namespace TestInterface.Windows
         void Show();
         bool? ShowDialog();
         void Close();
+        void LeftClick<T>(string name);
         Point GetListElementPosition<T>(string name, int index);
         Point GetPosition<T>(string name);
     }

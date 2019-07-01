@@ -10,7 +10,6 @@ using PowerPointLabs.TextCollection;
 using Test.Util;
 
 using TestInterface;
-using TestInterface.Windows;
 
 namespace Test.FunctionalTest
 {
