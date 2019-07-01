@@ -7,17 +7,8 @@ namespace PowerPointLabs.ActionFramework.Common.Extension
 {
     public class PPLClipboard
     {
-        public static PPLClipboard Instance
-        {
-            get
-            {
-                return _instance;
-            }
-        }
-
-        private static PPLClipboard _instance;
+        public static PPLClipboard Instance { get; private set; }
         public bool IsLocked { get; private set; }
-        private Dictionary<string, object> lBackup = new Dictionary<string, object>();
         private IDataObject lDataObject;
         private IntPtr _parentWindow;
         public bool AutoDismiss;
@@ -103,7 +94,9 @@ namespace PowerPointLabs.ActionFramework.Common.Extension
 
         public void LockClipboard()
         {
-            if (IsLocked) { throw new Exception("Clipboard is not released before locking!"); }
+            if (IsLocked) {
+                throw new Exception("Clipboard is not released before locking!");
+            }
             // wait to lock the clipboard
             while (!IsClipboardFree() && !OpenClipboard(_parentWindow))
             {
@@ -124,52 +117,33 @@ namespace PowerPointLabs.ActionFramework.Common.Extension
 
         public static void Init(IntPtr parentWindow, bool autoDismiss = false)
         {
-            if (_instance == null)
+            if (Instance == null)
             {
-                _instance = new PPLClipboard(parentWindow, autoDismiss);
+                Instance = new PPLClipboard(parentWindow, autoDismiss);
             }
         }
 
         public void Teardown()
         {
             ReleaseClipboard();
-            _instance = null;
+            Instance = null;
         }
 
         // not working stably
         public void SaveClipboard()
         {
             lDataObject = Clipboard.GetDataObject();
-            string[] lFormats = lDataObject.GetFormats(false);
-            lBackup.Clear();
-            /*
-            foreach (string lFormat in lFormats)
-            {
-                if (lDataObject.GetDataPresent(lFormat))
-                {
-                    lBackup.Add(lFormat, lDataObject.GetData(lFormat, false));
-                }
-            }
-            */
-            //Clipboard.Clear(); // to prevent any weird data from showing up
         }
 
         // referred to https://stackoverflow.com/questions/6262454/c-sharp-backing-up-and-restoring-clipboard
         // not working stably
         public void RestoreClipboard()
         {
-            /*
-            foreach (KeyValuePair<string, object> pair in lBackup)
-            {
-                lDataObject.SetData(pair.Key, pair.Value, false);
-            }
-            */
             if (lDataObject != null)
             {
                 Clipboard.SetDataObject(lDataObject);
             }
             Clipboard.Flush();
-            lBackup.Clear();
             lDataObject = null;
         }
 

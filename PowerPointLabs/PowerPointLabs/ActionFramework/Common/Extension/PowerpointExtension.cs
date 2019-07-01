@@ -177,15 +177,15 @@ namespace PowerPointLabs.ActionFramework.Common.Extension
             }
         }
 
-        private static void TryAndCatch(Action a)
+        private static void TryAndCatch(Action action)
         {
             try
             {
-                a();
+                action();
             }
-            catch
+            catch (Exception e)
             {
-                // do nothing
+                Log.Logger.LogException(e, action.Method.Name);
             }
         }
     }

@@ -2,6 +2,7 @@
 using System.IO;
 using System.Linq;
 using System.Security.Permissions;
+using PowerPointLabs.ActionFramework.Common.Log;
 
 namespace PowerPointLabs.Utils
 {
@@ -44,8 +45,9 @@ namespace PowerPointLabs.Utils
                     {
                         File.SetAttributes(file, FileAttributes.Normal);
                     }
-                    catch (Exception)
+                    catch (Exception e)
                     {
+                        Logger.LogException(e, "File.SetAttributes");
                     }
                     
                     CopyFile(file, dest, fileAttribute);
