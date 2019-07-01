@@ -204,6 +204,7 @@
     <Compile Include="UnitTest\TooltipsLab\CreateCalloutTest.cs" />
     <Compile Include="UnitTest\TooltipsLab\CreateTooltipTest.cs" />
     <Compile Include="UnitTest\Utils\TempPathTest.cs" />
+    <Compile Include="Util\Constants.cs" />
     <Compile Include="Util\TagUtil.cs" />
     <Compile Include="Util\DialogUtil.cs" />
     <Compile Include="Util\PresentationUtil.cs" />
