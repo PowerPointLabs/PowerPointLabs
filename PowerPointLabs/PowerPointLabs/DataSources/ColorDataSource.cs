@@ -28,37 +28,8 @@ namespace PowerPointLabs.DataSources
             }
         }
 
-        private readonly string[] recentColorFieldNames =
-        {
-            "RecentColorOne",
-            "RecentColorTwo",
-            "RecentColorThree",
-            "RecentColorFour",
-            "RecentColorFive",
-            "RecentColorSix",
-            "RecentColorSeven",
-            "RecentColorEight",
-            "RecentColorNine",
-            "RecentColorTen",
-            "RecentColorEleven",
-            "RecentColorTwelve"
-        };
-
-        private readonly string[] favoriteColorFieldNames =
-        {
-            "favoriteColorOne",
-            "favoriteColorTwo",
-            "favoriteColorThree",
-            "favoriteColorFour",
-            "favoriteColorFive",
-            "favoriteColorSix",
-            "favoriteColorSeven",
-            "favoriteColorEight",
-            "favoriteColorNine",
-            "favoriteColorTen",
-            "favoriteColorEleven",
-            "favoriteColorTwelve"
-        };
+        public readonly int NumRecentColorFields = 12;
+        public readonly int NumFavoriteColorFields = 12;
 
         private ObservableCollection<HSLColor> recentColors;
         private ObservableCollection<HSLColor> favoriteColors;
@@ -128,7 +99,7 @@ namespace PowerPointLabs.DataSources
         public void ClearRecentColors()
         {
             recentColors.Clear();
-            for (int i = 0; i < recentColorFieldNames.Length; i++)
+            for (int i = 0; i < NumRecentColorFields; i++)
             {
                 recentColors.Add(Color.White);
             }
@@ -137,7 +108,7 @@ namespace PowerPointLabs.DataSources
         public void ClearFavoriteColors()
         {
             favoriteColors.Clear();
-            for (int i = 0; i < favoriteColorFieldNames.Length; i++)
+            for (int i = 0; i < NumFavoriteColorFields; i++)
             {
                 favoriteColors.Add(Color.White);
             }
@@ -274,22 +245,7 @@ namespace PowerPointLabs.DataSources
 
         protected void FavoriteColors_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
-            System.Collections.IList newValues = e.NewItems;
-            switch (newValues?.Count ?? 0)
-            {
-                case 0:
-                    break;
-                case 1:
-                    string name = favoriteColorFieldNames[e.NewStartingIndex];
-                    PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
-                    break;
-                default:
-                    foreach (string fieldName in favoriteColorFieldNames)
-                    {
-                        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(fieldName));
-                    }
-                    break;
-            }
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(nameof(FavoriteColors)));
         }
 
         #endregion
