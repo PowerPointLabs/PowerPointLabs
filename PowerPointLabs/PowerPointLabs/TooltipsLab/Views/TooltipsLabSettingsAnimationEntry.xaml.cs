@@ -22,7 +22,7 @@ namespace PowerPointLabs.TooltipsLab.Views
         {
             InitializeComponent();
             Type = defaultEffectType;
-            imageBox.Source = CommonUtil.CreateBitmapSource(image);
+            imageBox.Source = GraphicsUtil.BitmapToImageSource(image);
         }
 
         #endregion

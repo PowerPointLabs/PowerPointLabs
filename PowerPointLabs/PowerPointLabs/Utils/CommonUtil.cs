@@ -3,9 +3,6 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Text.RegularExpressions;
-using System.Windows;
-using System.Windows.Interop;
-using System.Windows.Media.Imaging;
 
 namespace PowerPointLabs.Utils
 {
@@ -165,24 +162,6 @@ namespace PowerPointLabs.Utils
             float zeroBasedValue = value - lower;
             float result = ((zeroBasedValue + range) % range) + lower;
             return result;
-        }
-
-        #endregion
-
-        #region bitmap
-        /// <summary>
-        /// Used to create a <seealso cref="BitmapSource"/> using a <seealso cref="Bitmap"/>,
-        /// which can be used to specify an <seealso cref="System.Windows.Controls.Image"/>'s source.
-        /// As the Bitmap image is used as-is, there is no need to specify a palette, rectangle or sizing options.
-        /// As such, the palette pointer is IntPtr.Zero.
-        /// </summary>
-        public static BitmapSource CreateBitmapSource(Bitmap image)
-        {
-            return Imaging.CreateBitmapSourceFromHBitmap(
-                image.GetHbitmap(),
-                IntPtr.Zero,
-                Int32Rect.Empty,
-                BitmapSizeOptions.FromEmptyOptions());
         }
 
         #endregion
