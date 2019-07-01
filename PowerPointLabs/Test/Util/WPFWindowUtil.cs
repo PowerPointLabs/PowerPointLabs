@@ -13,8 +13,8 @@ namespace Test.Util
     {
         public static string After(this string original, string searchTerm)
         {
-            int index;
-            return (index = original.LastIndexOf(searchTerm)) != -1 ? original.Substring(index + searchTerm.Length) : "";
+            int index = original.LastIndexOf(searchTerm);
+            return index != -1 ? original.Substring(index + searchTerm.Length) : "";
         }
 
         public static IMarshalWindow WaitAndPush<T>(this IWindowStackManager windowStackManager,

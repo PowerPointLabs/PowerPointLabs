@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Automation;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.FunctionalTestInterface.Windows;
 
 namespace Test.Util
@@ -93,14 +94,17 @@ namespace Test.Util
             return (sender, e) =>
             {
                 AutomationElement element = sender as AutomationElement;
+                string processName = Process.GetProcessById(element.Current.ProcessId).ProcessName;
                 if (element.Current.ProcessId != processId &&
-                Process.GetProcessById(element.Current.ProcessId).ProcessName != "POWERPNT") { return; }
-                //MessageBox.Show(Process.GetProcessById(element.Current.ProcessId).ProcessName);
+                    processName != "POWERPNT") { return; }
                 IntPtr handle = new IntPtr(element.Current.NativeWindowHandle);
                 string windowName = WindowUtil.GetWindowTitle(handle);
                 if (windowName == "")
                 {
-                    // Can't be sure what this is
+                    Logger.Log("Titleless window in windowwatcher: " +
+                        $"pID: {element.Current.ProcessId}\n" +
+                        $"process name: {processName}\n" +
+                        $"HWND: {handle}");
                     return;
                 }
                 lastOpenWindowName = windowName;
