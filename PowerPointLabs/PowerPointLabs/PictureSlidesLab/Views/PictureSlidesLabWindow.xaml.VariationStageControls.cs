@@ -7,8 +7,8 @@ using System.Windows.Media;
 using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.PictureSlidesLab.Model;
 using PowerPointLabs.TextCollection;
-using PowerPointLabs.Utils.Windows;
 using PowerPointLabs.Utils;
+using PowerPointLabs.Utils.Windows;
 
 using Color = System.Drawing.Color;
 
