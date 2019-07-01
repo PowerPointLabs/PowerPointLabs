@@ -109,7 +109,7 @@ namespace PowerPointLabs.ColorThemes.Extensions
             else if (element is Panel)
             {
                 Panel p = element as Panel;
-                p.Background = new SolidColorBrush(theme.boxBackground);
+                p.Background = new SolidColorBrush(theme.background);
                 p.UpdateColors(sender, theme); // the window is being update but doesn't show correctly
             }
             else if (element is Page)
@@ -129,7 +129,7 @@ namespace PowerPointLabs.ColorThemes.Extensions
             }
             else if (element is Border)
             {
-                (element as Border).Background = new SolidColorBrush(theme.boxBackground);
+                (element as Border).Background = new SolidColorBrush(theme.background);
             }
             else if (element is Path)
             {
