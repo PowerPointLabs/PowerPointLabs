@@ -175,7 +175,7 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
             }));
         }
 
-        [Obsolete]
+        [Obsolete("Use PplFeatures.SetZoomProperties instead")]
         public void SetZoomProperties(bool backgroundChecked, bool multiSlideChecked)
         {
             UIThreadExecutor.Execute(() =>

@@ -4,12 +4,10 @@ using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 
 using PowerPointLabs.ActionFramework.Common.Extension;
-using PowerPointLabs.FunctionalTestInterface.Windows;
 using PowerPointLabs.SyncLab.Views;
 using PowerPointLabs.TextCollection;
 
 using TestInterface;
-using TestInterface.Windows;
 
 namespace PowerPointLabs.FunctionalTestInterface.Impl.Controller
 {
