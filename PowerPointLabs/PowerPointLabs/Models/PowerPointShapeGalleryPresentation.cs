@@ -115,7 +115,7 @@ namespace PowerPointLabs.Models
             }
 
             Save();
-            ActionProtection();
+            FlushUndoHistory();
         }
         public string AddShape(PowerPointPresentation pres, PowerPointSlide origSlide, ShapeRange shapeRange, string name, string category = "", bool fromClipBoard = false)
         {
@@ -192,7 +192,7 @@ namespace PowerPointLabs.Models
 
 
             Save();
-            ActionProtection();
+            FlushUndoHistory();
         }
 
         public bool HasCategory(string name)
@@ -220,7 +220,7 @@ namespace PowerPointLabs.Models
             }, pres, origSlide);
 
             Save();
-            ActionProtection();
+            FlushUndoHistory();
         }
 
         public override bool Open(bool readOnly = false, bool untitled = false,
@@ -262,7 +262,7 @@ namespace PowerPointLabs.Models
             RemoveSlide(index);
 
             Save();
-            ActionProtection();
+            FlushUndoHistory();
         }
 
         public void RemoveShape(string name)
@@ -270,7 +270,7 @@ namespace PowerPointLabs.Models
             _defaultCategory.DeleteShapeWithRule(GenerateNameSearchPattern(name));
             
             Save();
-            ActionProtection();
+            FlushUndoHistory();
         }
 
         public void RenameShape(string oldName, string newName)
@@ -285,7 +285,7 @@ namespace PowerPointLabs.Models
             }
 
             Save();
-            ActionProtection();
+            FlushUndoHistory();
         }
 
         public void RenameCategory(string newName)
@@ -297,12 +297,16 @@ namespace PowerPointLabs.Models
             categoryNameBox.TextFrame.TextRange.Text = string.Format(CategoryNameFormat, newName);
 
             Save();
-            ActionProtection();
+            FlushUndoHistory();
         }
         # endregion
 
         # region Helper Function
-        private void ActionProtection()
+
+        /// <summary>
+        /// Flushes the undo history with a dummy action.
+        /// </summary>
+        private void FlushUndoHistory()
         {
             for (int i = 0; i < MaxUndoAmount; i++)
             {
@@ -646,7 +650,11 @@ namespace PowerPointLabs.Models
             if (File.Exists(shapeGalleryFileName))
             {
                 File.SetAttributes(shapeGalleryFileName, FileAttributes.Normal);
-                File.Move(shapeGalleryFileName, FullName);
+                // To ensure that the file fullName does not exist before attempting to move
+                if (!File.Exists(FullName))
+                {
+                    File.Move(shapeGalleryFileName, FullName);
+                }
             }
 
             if (File.Exists(FullName))
@@ -718,7 +726,7 @@ namespace PowerPointLabs.Models
             }
 
             Save();
-            ActionProtection();
+            FlushUndoHistory();
 
             return name;
         }

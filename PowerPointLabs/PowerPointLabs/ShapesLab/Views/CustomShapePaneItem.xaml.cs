@@ -295,7 +295,7 @@ namespace PowerPointLabs.ShapesLab.Views
             }
             else
             {
-                BitmapSource source = CommonUtil.CreateBitmapSource(image);
+                BitmapSource source = GraphicsUtil.BitmapToImageSource(image);
                 imageBox.Source = source;
                 imageBox.Visibility = Visibility.Visible;
                 col1.Width = new GridLength(60);

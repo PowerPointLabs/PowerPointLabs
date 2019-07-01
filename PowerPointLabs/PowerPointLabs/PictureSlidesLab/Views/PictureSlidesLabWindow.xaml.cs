@@ -92,8 +92,8 @@ namespace PowerPointLabs.PictureSlidesLab.Views
             EveryDayPhrase.Text = new EveryDayPhraseService().GetEveryDayPhrase();
             PictureSlidesLabGridLoadingOverlay.Visibility = Visibility.Visible;
             IsOpen = true;
-            SettingsButtonIcon.Source = ImageUtil.BitmapToImageSource(Properties.Resources.PslSettings);
-            PictureAspectRefreshButtonIcon.Source = ImageUtil.BitmapToImageSource(Properties.Resources.PslRefresh);
+            SettingsButtonIcon.Source = GraphicsUtil.BitmapToImageSource(Properties.Resources.PslSettings);
+            PictureAspectRefreshButtonIcon.Source = GraphicsUtil.BitmapToImageSource(Properties.Resources.PslRefresh);
             InitSizePosition();
             Logger.Log("PSL begins");
 

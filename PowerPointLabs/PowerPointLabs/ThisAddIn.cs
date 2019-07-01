@@ -1167,7 +1167,7 @@ namespace PowerPointLabs
             PPMouse.StopHook();
             PPKeyboard.StopHook();
             PPCopy.StopHook();
-            PositionsPaneWpf.ClearAllEventHandlers();
+            // Event Handler unregistering taken care of in destructor
             UIThreadExecutor.TearDown();
             Trace.TraceInformation(DateTime.Now.ToString("yyyyMMddHHmmss") + ": PowerPointLabs Exiting");
             Trace.Close();

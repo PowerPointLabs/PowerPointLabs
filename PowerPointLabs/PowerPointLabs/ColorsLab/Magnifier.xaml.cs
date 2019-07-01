@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Interop;
-
+using System.Windows.Threading;
 using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.Utils;
 using PPExtraEventHelper;
@@ -32,7 +32,7 @@ namespace PowerPointLabs.ColorsLab
         {
             InitializeComponent();
 
-            timer = new System.Windows.Threading.DispatcherTimer();
+            timer = new DispatcherTimer(DispatcherPriority.Background, Dispatcher);
             timer.Interval = new TimeSpan(0, 0, 0, 0, 100);
             timer.Tick += new EventHandler(Timer_Tick);
             

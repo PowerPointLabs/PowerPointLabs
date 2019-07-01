@@ -8,6 +8,8 @@ using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.PictureSlidesLab.Model;
 using PowerPointLabs.TextCollection;
 using PowerPointLabs.Utils.Windows;
+using PowerPointLabs.Utils;
+
 using Color = System.Drawing.Color;
 
 namespace PowerPointLabs.PictureSlidesLab.Views
@@ -196,7 +198,7 @@ namespace PowerPointLabs.PictureSlidesLab.Views
 
         private Color GetColor(SolidColorBrush brush)
         {
-            return Color.FromArgb(brush.Color.A, brush.Color.R, brush.Color.G, brush.Color.B);
+            return GraphicsUtil.DrawingColorFromBrush(brush);
         }
 
         private bool IsSliderSupported(string currentCategory)
