@@ -68,6 +68,7 @@ namespace PowerPointLabs.ColorThemes
         {
             themeWatcher = new RegistryWatcher<int>(ThemeRegistryPath, ThemeRegistryKey, GetDefaultKeys());
             themeWatcher.ValueChanged += ThemeChangedHandler;
+            themeWatcher.Fire();
             themeWatcher.Start();
         }
 

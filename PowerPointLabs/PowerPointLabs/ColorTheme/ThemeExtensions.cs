@@ -66,7 +66,13 @@ namespace PowerPointLabs.ColorThemes.Extensions
             if (element.IsUpdated(theme)) { return; }
             RemoveConflictingTheme(element);
 
-            if (element is TextBlock)
+            if (element is TextBox)
+            {
+                TextBox t = element as TextBox;
+                t.Foreground = new SolidColorBrush(theme.foreground);
+                t.Background = Brushes.Transparent;
+            }
+            else if (element is TextBlock)
             {
                 TextBlock t = element as TextBlock;
                 t.Foreground = new SolidColorBrush(theme.foreground);
