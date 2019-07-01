@@ -4,7 +4,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Windows;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
-
+using System.Windows.Threading;
 using Microsoft.Office.Interop.PowerPoint;
 
 using PowerPointLabs.ActionFramework.Common.Extension;
@@ -30,9 +30,9 @@ namespace PowerPointLabs.PositionsLab
         private PositionsDistributeGridDialog _positionsDistributeGridDialog;
 
         #pragma warning disable 0618
-        private static LMouseUpListener _leftMouseUpListener;
-        private static LMouseDownListener _leftMouseDownListener;
-        private static System.Windows.Threading.DispatcherTimer _dispatcherTimer = new System.Windows.Threading.DispatcherTimer();
+        private LMouseUpListener _leftMouseUpListener;
+        private LMouseDownListener _leftMouseDownListener;
+        private DispatcherTimer _dispatcherTimer;
 
         //Variable for preview
         private bool _previewIsExecuted = false;
@@ -63,10 +63,17 @@ namespace PowerPointLabs.PositionsLab
             PositionsLabMain.InitPositionsLab();
             InitializeComponent();
             InitializeHotKeys();
+            _dispatcherTimer = new DispatcherTimer(DispatcherPriority.Background, Dispatcher);
             _dispatcherTimer.Interval = TimeSpan.FromMilliseconds(10);
             Focusable = true;
+
         }
-        
+
+        ~PositionsPaneWpf()
+        {
+            ClearAllEventHandlers();
+        }
+
         private void InitializeHotKeys()
         {
             Dictionary<ToggleButton, Action<bool, bool>> buttonActionMapping = new Dictionary<ToggleButton, Action<bool, bool>>();
@@ -917,7 +924,7 @@ namespace PowerPointLabs.PositionsLab
         }
         #endregion
 
-        public static void ClearAllEventHandlers()
+        public void ClearAllEventHandlers()
         {
             if (_leftMouseUpListener != null)
             {
@@ -930,7 +937,7 @@ namespace PowerPointLabs.PositionsLab
             }
 
             _dispatcherTimer.Stop();
-            _dispatcherTimer = new System.Windows.Threading.DispatcherTimer();
+            _dispatcherTimer = new DispatcherTimer(DispatcherPriority.Background, Dispatcher);
         }
 
         private void StartRotationMode()
