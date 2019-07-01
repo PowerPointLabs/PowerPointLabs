@@ -68,7 +68,6 @@ namespace PowerPointLabs.ColorThemes
         {
             themeWatcher = new RegistryWatcher<int>(ThemeRegistryPath, ThemeRegistryKey, GetDefaultKeys());
             themeWatcher.ValueChanged += ThemeChangedHandler;
-            themeWatcher.Fire();
             themeWatcher.Start();
         }
 
@@ -76,12 +75,14 @@ namespace PowerPointLabs.ColorThemes
         {
             if (!Globals.ThisAddIn.IsApplicationVersion2013())
             {
-                return new List<int>(ColorTheme.COLORFUL);
+                return new List<int>() { ColorTheme.COLORFUL };
             }
-            List<int> result = new List<int>(ColorTheme.WHITE);
-            result.Add(ColorTheme.LIGHT_GREY);
-            result.Add(ColorTheme.DARK_GREY);
-            return result;
+            return new List<int>()
+            {
+                ColorTheme.WHITE,
+                ColorTheme.LIGHT_GREY,
+                ColorTheme.DARK_GREY
+            };
         }
 
         private void ThemeChangedHandler(object sender, int newValue)
