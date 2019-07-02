@@ -322,6 +322,15 @@ namespace PowerPointLabs.Models
                 .ForEach(sh => sh.Delete());
         }
 
+        public void DeleteEntryAnimationShapes()
+        {
+            _slide.Shapes
+                .Cast<Shape>()
+                .Where(shape => shape.AnimationSettings.EntryEffect != PpEntryEffect.ppEffectNone)
+                .ToList()
+                .ForEach(shape => shape.Delete());
+        }
+
         public void DeleteAllShapes()
         {
             List<Shape> shapes = _slide.Shapes.Cast<Shape>().ToList();

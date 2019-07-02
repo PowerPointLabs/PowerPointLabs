@@ -382,7 +382,7 @@ namespace PowerPointLabs.ZoomLab
 
         private static PowerPoint.Shape GetStepBackWithBackgroundShapeToZoom(PowerPointSlide currentSlide, PowerPointSlide addedSlide, PowerPoint.Shape previousSlidePicture, out PowerPoint.Shape backgroundShape)
         {
-            PowerPoint.Shape currentSlideCopy = AddSlideAsShape(currentSlide, addedSlide);
+            PowerPoint.Shape currentSlideCopy = AddSlideAsShapeWithoutEntryAnimations(currentSlide, addedSlide);
 
             ShapeUtil.FitShapeToSlide(ref currentSlideCopy);
             currentSlideCopy.Name = "PPTZoomOutShape" + DateTime.Now.ToString("yyyyMMddHHmmssffff");
@@ -453,6 +453,15 @@ namespace PowerPointLabs.ZoomLab
             {
                 shapeCopy.Select(Office.MsoTriState.msoFalse);
             }
+        }
+
+        private static PowerPoint.Shape AddSlideAsShapeWithoutEntryAnimations(PowerPointSlide slideToAdd, PowerPointSlide targetSlide)
+        {
+            PowerPointSlide slideWithoutEntryAnimations = slideToAdd.Duplicate();
+            slideWithoutEntryAnimations.DeleteEntryAnimationShapes();
+            PowerPoint.Shape result = AddSlideAsShape(slideWithoutEntryAnimations, targetSlide);
+            slideWithoutEntryAnimations.Delete();
+            return result;
         }
 
         private static PowerPoint.Shape AddSlideAsShape(PowerPointSlide slideToAdd, PowerPointSlide targetSlide)
