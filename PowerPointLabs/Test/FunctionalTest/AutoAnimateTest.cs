@@ -2,7 +2,7 @@
 
 using Microsoft.Office.Interop.PowerPoint;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using PowerPointLabs.ActionFramework.Common.Extension;
+
 using Test.Util;
 
 namespace Test.FunctionalTest
@@ -45,11 +45,11 @@ namespace Test.FunctionalTest
 
             Microsoft.Office.Interop.PowerPoint.Slide actualSlide = PpOperations.SelectSlide(5);
             // remove elements that affect comparing slides
-            PpOperations.SelectShapesByPrefix("text").SafeDelete();
+            PpOperations.SelectShapesByPrefix("text").Delete();
 
             Microsoft.Office.Interop.PowerPoint.Slide expSlide = PpOperations.SelectSlide(7);
             // remove elements that affect comparing slides
-            PpOperations.SelectShapesByPrefix("text").SafeDelete();
+            PpOperations.SelectShapesByPrefix("text").Delete();
 
             SlideUtil.IsSameAnimations(expSlide, actualSlide);
             SlideUtil.IsSameLooking(expSlide, actualSlide);
@@ -78,11 +78,11 @@ namespace Test.FunctionalTest
 
             Slide actualSlide = PpOperations.SelectSlide(9);
             // remove elements that affect comparing slides
-            PpOperations.SelectShapesByPrefix("text").SafeDelete();
+            PpOperations.SelectShapesByPrefix("text").Delete();
 
             Slide expSlide = PpOperations.SelectSlide(11);
             // remove elements that affect comparing slides
-            PpOperations.SelectShapesByPrefix("text").SafeDelete();
+            PpOperations.SelectShapesByPrefix("text").Delete();
 
             // TODO: actually this expected slide looks a bit strange..
             SlideUtil.IsSameAnimations(expSlide, actualSlide);
@@ -97,11 +97,11 @@ namespace Test.FunctionalTest
 
             Slide actualSlide = PpOperations.SelectSlide(39);
             // remove elements that affect comparing slides
-            PpOperations.SelectShape("Text Label Initial Slide")[1].SafeDelete();
+            PpOperations.SelectShape("Text Label Initial Slide")[1].Delete();
 
             Slide expSlide = PpOperations.SelectSlide(41);
             // remove elements that affect comparing slides
-            PpOperations.SelectShape("Text Label Expected Output")[1].SafeDelete();
+            PpOperations.SelectShape("Text Label Expected Output")[1].Delete();
 
             SlideUtil.IsSameAnimations(expSlide, actualSlide);
             SlideUtil.IsSameLooking(expSlide, actualSlide);

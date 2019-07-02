@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using PowerPointLabs.ActionFramework.Common.Extension;
+
 using Test.Util;
 
 namespace Test.FunctionalTest
@@ -27,7 +27,7 @@ namespace Test.FunctionalTest
             Microsoft.Office.Interop.PowerPoint.Slide expSlide = PpOperations.SelectSlide(5);
 
             // remove text "Expected"
-            PpOperations.SelectShape("text 3")[1].SafeDelete();
+            PpOperations.SelectShape("text 3")[1].Delete();
             SlideUtil.IsSameAnimations(expSlide, actualSlide);
             SlideUtil.IsSameLooking(expSlide, actualSlide);
         }
@@ -47,7 +47,7 @@ namespace Test.FunctionalTest
             Microsoft.Office.Interop.PowerPoint.Slide expSlide = PpOperations.SelectSlide(22);
 
             // remove text "Expected"
-            PpOperations.SelectShape("Text Label Expected Output")[1].SafeDelete();
+            PpOperations.SelectShape("Text Label Expected Output")[1].Delete();
             SlideUtil.IsSameAnimations(expSlide, actualSlide);
             SlideUtil.IsSameLooking(expSlide, actualSlide);
         }
@@ -69,7 +69,7 @@ namespace Test.FunctionalTest
             Microsoft.Office.Interop.PowerPoint.Slide expSlide = PpOperations.SelectSlide(11);
 
             // remove text "Expected"
-            PpOperations.SelectShape("text 3")[1].SafeDelete();
+            PpOperations.SelectShape("text 3")[1].Delete();
             SlideUtil.IsSameAnimations(expSlide, actualSlide);
             SlideUtil.IsSameLooking(expSlide, actualSlide);
         }

@@ -47,7 +47,7 @@ namespace Test.UnitTest.ResizeLab
                 List<string> duplicatedShapeNames = new List<string>(_originalShapeName.Keys);
                 PowerPoint.ShapeRange executedShapes = GetShapes(slideNumber, shapeNames);
                 PowerPoint.ShapeRange shapes = GetShapes(slideNumber, duplicatedShapeNames);
-                executedShapes.SafeDelete();
+                executedShapes.Delete();
 
                 foreach (PowerPoint.Shape shape in shapes)
                 {

@@ -1,5 +1,5 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using PowerPointLabs.ActionFramework.Common.Extension;
+
 using Test.Util;
 
 namespace Test.FunctionalTest
@@ -57,7 +57,7 @@ namespace Test.FunctionalTest
 
             // Duplicate template slide and delete original template slide. It should use the duplicate as the new template slide.
             Microsoft.Office.Interop.PowerPoint.Slide firstSlide = PpOperations.SelectSlide(1);
-            PpOperations.SelectShape("PPTTemplateMarker").SafeDelete();
+            PpOperations.SelectShape("PPTTemplateMarker").Delete();
             firstSlide.Duplicate();
             firstSlide.Delete();
 
@@ -74,7 +74,7 @@ namespace Test.FunctionalTest
         {
             PpOperations.SelectSlide(1);
             Microsoft.Office.Interop.PowerPoint.Shape contentShape = PpOperations.SelectShapesByPrefix("PptLabsAgenda_&^@ContentShape")[1];
-            contentShape.SafeDelete();
+            contentShape.Delete();
 
             MessageBoxUtil.ExpectMessageBoxWillPopUp(
                 "Unable to execute action",
