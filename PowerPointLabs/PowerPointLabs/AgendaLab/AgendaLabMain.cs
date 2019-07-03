@@ -8,6 +8,7 @@ using Microsoft.Office.Core;
 using Microsoft.Office.Interop.PowerPoint;
 
 using PowerPointLabs.AgendaLab.Templates;
+using PowerPointLabs.ColorThemes.Extensions;
 using PowerPointLabs.FunctionalTestInterface.Impl;
 using PowerPointLabs.Models;
 using PowerPointLabs.TextCollection;
@@ -1114,7 +1115,7 @@ namespace PowerPointLabs.AgendaLab
             else
             {
                 _loadDialog = new LoadingDialogBox(title, content);
-                _loadDialog.Show();
+                _loadDialog.ShowThematicDialog(false);
                 return true;
             }
         }

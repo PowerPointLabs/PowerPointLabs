@@ -12,6 +12,7 @@ using System.Windows.Navigation;
 using Microsoft.Office.Interop.PowerPoint;
 
 using PowerPointLabs.ActionFramework.Common.Extension;
+using PowerPointLabs.ColorThemes.Extensions;
 using PowerPointLabs.Models;
 using PowerPointLabs.ShortcutsLab;
 using PowerPointLabs.TextCollection;
@@ -408,7 +409,7 @@ namespace PowerPointLabs.ShapesLab.Views
                 AddCategory(newCategoryName);
                 categoryBox.SelectedIndex = _categoryBinding.Count - 1;
             };
-            categoryInfoDialog.ShowDialog();
+            categoryInfoDialog.ShowThematicDialog();
             shapeList.Focus();
         }
 
@@ -535,7 +536,7 @@ namespace PowerPointLabs.ShapesLab.Views
                 ShapesLabUtils.SyncRenameCategory(this.GetAddIn(), categoryIndex, newCategoryName);
                 RenameCategory(categoryIndex, newCategoryName);
             };
-            categoryInfoDialog.ShowDialog();
+            categoryInfoDialog.ShowThematicDialog();
 
             shapeList.Focus();
         }
@@ -578,7 +579,7 @@ namespace PowerPointLabs.ShapesLab.Views
                     ShapesLabText.SuccessSaveLocationChangedTitle, MessageBoxButtons.OK,
                     MessageBoxIcon.Information);
             };
-            settingsDialog.ShowDialog();
+            settingsDialog.ShowThematicDialog();
         }
 
         #endregion
@@ -807,7 +808,7 @@ namespace PowerPointLabs.ShapesLab.Views
         {
             LoadingDialogBox loadingDialog = new LoadingDialogBox(ShapesLabText.MigratingDialogTitle,
                                                     ShapesLabText.MigratingDialogContent);
-            loadingDialog.Show();
+            loadingDialog.ShowThematicDialog(false);
 
             // close the opening presentation
             if (this.GetAddIn().ShapePresentation.Opened)

@@ -6,6 +6,7 @@ using System.Windows;
 using NAudio.Wave;
 
 using PowerPointLabs.ActionFramework.Common.Log;
+using PowerPointLabs.ColorThemes.Extensions;
 using PowerPointLabs.ELearningLab.AudioGenerator;
 using PowerPointLabs.ELearningLab.Views;
 using PowerPointLabs.Models;
@@ -151,7 +152,7 @@ namespace PowerPointLabs.ELearningLab.Service
                 {
                     player.Init(reader);
                     player.Play();
-                    speechPlayingDialog.ShowDialog();
+                    speechPlayingDialog.ShowThematicDialog();
                 }
             }
             catch
@@ -265,7 +266,7 @@ namespace PowerPointLabs.ELearningLab.Service
         {
             SpeechPlayingDialogBox speechPlayingDialog = new SpeechPlayingDialogBox();
             speechPlayingDialog.Closed += (sender, e) => SpeechPlayingDialog_Closed(player);
-            speechPlayingDialog.ShowDialog();
+            speechPlayingDialog.ShowThematicDialog();
             return speechPlayingDialog;
         }
 

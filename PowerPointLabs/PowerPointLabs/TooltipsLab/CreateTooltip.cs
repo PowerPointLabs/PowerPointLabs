@@ -1,4 +1,6 @@
-﻿using Microsoft.Office.Core;
+﻿using System;
+
+using Microsoft.Office.Core;
 
 using PowerPointLabs.Models;
 using PowerPointLabs.Utils;
@@ -46,17 +48,23 @@ namespace PowerPointLabs.TooltipsLab
             return callout;
         }
 
-        public static PowerPoint.Shape GenerateTriggerShape(PowerPointSlide currentSlide)
+        public static PowerPoint.Shape GenerateTriggerShape(
+            PowerPointPresentation presentation, PowerPointSlide currentSlide)
         {
             PowerPoint.Shape triggerShape = currentSlide.Shapes.AddShape(
-                Microsoft.Office.Core.MsoAutoShapeType.msoShapeOval, 
-                TooltipsLabConstants.TriggerShapeDefaultLeft, 
-                TooltipsLabConstants.TriggerShapeDefaultTop, 
-                TooltipsLabConstants.TriggerShapeDefaultWidth, 
+                Microsoft.Office.Core.MsoAutoShapeType.msoShapeOval,
+                TooltipsLabConstants.TriggerShapeDefaultLeft,
+                TooltipsLabConstants.TriggerShapeDefaultTop,
+                TooltipsLabConstants.TriggerShapeDefaultWidth,
                 TooltipsLabConstants.TriggerShapeDefaultHeight);
             ShapeUtil.FormatTriggerShapeToDefaultStyle(triggerShape);
+
+            // Look for a shape on the same position of the same size and type on the same slide
+            float blurRadius = Math.Min(TooltipsLabConstants.TriggerShapeDefaultWidth,
+                TooltipsLabConstants.TriggerShapeDefaultHeight) / 2;
+            ShapeUtil.TryDisplaceShape(presentation, currentSlide, triggerShape, blurRadius);
+
             return triggerShape;
         }
-
     }
 }

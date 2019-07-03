@@ -6,6 +6,7 @@ using System.Windows;
 using NAudio.Wave;
 
 using PowerPointLabs.ActionFramework.Common.Log;
+using PowerPointLabs.ColorThemes.Extensions;
 using PowerPointLabs.ELearningLab.AudioGenerator;
 using PowerPointLabs.ELearningLab.AudioGenerator.WatsonVoiceGenerator.Model;
 using PowerPointLabs.ELearningLab.AudioGenerator.WatsonVoiceGenerator.SpeechEngine;
@@ -132,7 +133,7 @@ namespace PowerPointLabs.ELearningLab.Service
                 {
                     player.Init(reader);
                     player.Play();
-                    speechPlayingDialog.ShowDialog();
+                    speechPlayingDialog.ShowThematicDialog();
                 }
             }
             catch

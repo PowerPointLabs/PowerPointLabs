@@ -1,4 +1,5 @@
-﻿using PowerPointLabs.ZoomLab.Views;
+﻿using PowerPointLabs.ColorThemes.Extensions;
+using PowerPointLabs.ZoomLab.Views;
 
 namespace PowerPointLabs.ZoomLab
 {
@@ -11,7 +12,7 @@ namespace PowerPointLabs.ZoomLab
         {
             ZoomLabSettingsDialogBox dialog = new ZoomLabSettingsDialogBox(BackgroundZoomChecked, MultiSlideZoomChecked);
             dialog.DialogConfirmedHandler += OnSettingsDialogConfirmed;
-            dialog.ShowDialog();
+            dialog.ShowThematicDialog();
         }
 
         private static void OnSettingsDialogConfirmed(bool backgroundChecked, bool multiSlideChecked)

@@ -3,6 +3,7 @@
 using PowerPointLabs.ActionFramework.Common.Attribute;
 using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.ActionFramework.Common.Interface;
+using PowerPointLabs.ColorThemes.Extensions;
 using PowerPointLabs.ShortcutsLab.Views;
 using PowerPointLabs.TextCollection;
 
@@ -21,7 +22,7 @@ namespace PowerPointLabs.ActionFramework.ShortcutsLab
             }
             
             EditNameDialogBox editForm = new EditNameDialogBox(selectedShape);
-            editForm.ShowDialog();
+            editForm.ShowThematicDialog();
 
             if (!this.GetApplication().CommandBars.GetPressedMso("SelectionPane"))
             {
