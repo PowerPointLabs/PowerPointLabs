@@ -1,4 +1,6 @@
-﻿using Microsoft.Office.Interop.PowerPoint;
+﻿using System;
+
+using Microsoft.Office.Interop.PowerPoint;
 using Microsoft.Office.Tools;
 
 using PowerPointLabs.ActionFramework.Common.Attribute;
@@ -16,29 +18,39 @@ namespace PowerPointLabs.ActionFramework.NarrationsLab
         {
             //TODO: This needs to improved to stop using global variables
             Presentation currentPresentation = this.GetCurrentPresentation().Presentation;
-
             if (!this.GetRibbonUi().IsValidPresentation(currentPresentation))
             {
                 return;
             }
 
-            // prepare media files
-            string tempPath = this.GetAddIn().PrepareTempFolder(currentPresentation);
-            this.GetAddIn().PrepareMediaFiles(currentPresentation, tempPath);
-
-            this.GetAddIn().RegisterRecorderPane(currentPresentation.Windows[1], tempPath);
+            this.RegisterTaskPane(typeof(RecorderTaskPane), NarrationsLabText.RecManagementPanelTitle,
+                TaskPaneVisibleValueChangedEventHandler, null);
 
             CustomTaskPane recorderPane = this.GetAddIn().GetActivePane(typeof(RecorderTaskPane));
             RecorderTaskPane recorder = recorderPane.Control as RecorderTaskPane;
 
             // if currently the pane is hidden, show the pane
-            if (recorder != null && !recorderPane.Visible)
+            if (recorder?.Visible ?? false)
             {
                 // fire the pane visble change event
                 recorderPane.Visible = true;
 
                 // reload the pane
                 recorder.RecorderPaneReload();
+            }
+        }
+
+        private void TaskPaneVisibleValueChangedEventHandler(object sender, EventArgs e)
+        {
+            CustomTaskPane recorderPane = Globals.ThisAddIn.GetActivePane(typeof(RecorderTaskPane));
+            RecorderTaskPane recorder = recorderPane?.Control as RecorderTaskPane;
+
+            // trigger close form event when closing hide the pane
+            if (!recorder?.Visible ?? false)
+            {
+                recorder.RecorderPaneClosing();
+                // remove recorder pane and force it to reload when next time open
+                Globals.ThisAddIn.RemoveRecorderTaskPane();
             }
         }
     }

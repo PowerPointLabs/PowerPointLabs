@@ -16,7 +16,9 @@ using Microsoft.Office.Interop.PowerPoint;
 using NAudio.Wave;
 
 using PowerPointLabs.ActionFramework.Common.Log;
+using PowerPointLabs.ActionFramework.NarrationsLab;
 using PowerPointLabs.AudioMisc;
+using PowerPointLabs.ColorThemes.Extensions;
 using PowerPointLabs.ELearningLab.Service;
 using PowerPointLabs.Models;
 using PowerPointLabs.TextCollection;
@@ -44,6 +46,7 @@ namespace PowerPointLabs.ELearningLab.Views
         private readonly List<List<string>> _scriptList;
         // a buffer to store the audio that has been replaced
         private Audio _undoAudioBuffer;
+        private TempStorage _storage;
 
         // Records save and display
         private const string SaveNameFormat = "Slide {0} Speech";
@@ -51,9 +54,27 @@ namespace PowerPointLabs.ELearningLab.Views
         private const string SpeechShapePrefixOld = "AudioGen Speech";
         private const string SpeechShapeFormat = "PowerPointLabs Speech {0}";
 
-        private readonly string _tempFullPath;
-        private readonly string _tempWaveFileNameFormat;
-        private readonly string _tempShapAudioXmlFormat;
+        private string _tempFullPath
+        {
+            get
+            {
+                return _storage.TempPath;
+            }
+        }
+        private string _tempWaveFileNameFormat
+        {
+            get
+            {
+                return String.Format("{0}temp{{0}}.{1}", _tempFullPath, Audio.RecordedFormatExtension);
+            }
+        }
+        private string _tempShapAudioXmlFormat
+        {
+            get
+            {
+                return _tempFullPath + "slide{0}.xml";
+            }
+        }
 
         private int _recordClipCnt;
         private int _recordTotalLength;
@@ -1603,7 +1624,7 @@ namespace PowerPointLabs.ELearningLab.Views
 
             // init the in-show control
             _inShowControlBox = new InShowRecordingControl(this);
-            _inShowControlBox.Show();
+            _inShowControlBox.ShowThematicDialog(false);
 
             // activate the show
             slideShowWindow.Activate();
@@ -1792,18 +1813,15 @@ namespace PowerPointLabs.ELearningLab.Views
         # endregion
 
         # region Constructor
-        public RecorderTaskPane(string tempFullPath)
+        public RecorderTaskPane()
         {
+
             _audioList = new List<List<Audio>>();
             _scriptList = new List<List<string>>();
             AudioBuffer = new List<List<Tuple<Audio, int>>>();
+            _storage = new TempStorage();
             
             _slideRelativeMapper = new Dictionary<int, int>();
-
-            _tempFullPath = tempFullPath;
-            _tempWaveFileNameFormat = String.Format("{0}temp{{0}}.{1}", _tempFullPath, Audio.RecordedFormatExtension);
-            _tempShapAudioXmlFormat = _tempFullPath + "slide{0}.xml";
-
             _relativeSlideCounter = 0;
             
             InitializeComponent();

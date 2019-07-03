@@ -76,7 +76,9 @@ namespace Test.UnitTest.TooltipsLab
         private void CreateTooltipOnSlide(int slideNo)
         {
             PowerPointSlide currentSlide = PowerPointSlide.FromSlideFactory(PpOperations.GetCurrentSlide());
-            Shape triggerShape = PowerPointLabs.TooltipsLab.CreateTooltip.GenerateTriggerShape(currentSlide);
+            PowerPointPresentation presentation = new PowerPointPresentation(Pres);
+            Shape triggerShape = PowerPointLabs.TooltipsLab.CreateTooltip.GenerateTriggerShape(
+                presentation, currentSlide);
             Shape callout = PowerPointLabs.TooltipsLab.CreateTooltip.GenerateCalloutWithReferenceTriggerShape(currentSlide, triggerShape);
             ConvertToTooltip.AddTriggerAnimation(currentSlide, triggerShape, callout);
         }

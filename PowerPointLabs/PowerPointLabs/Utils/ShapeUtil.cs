@@ -26,6 +26,8 @@ namespace PowerPointLabs.Utils
         private const int DefaultFontSize = 16;
         private const float DefaultLineWeight = 0.05f;
         private const int MaxShapeNameLength = 255;
+        private const float DisplaceAmount = 20;
+        private const int MaxDisplaceTries = 50;
 
         #endregion
 
@@ -396,6 +398,31 @@ namespace PowerPointLabs.Utils
         #endregion
 
         #region Size and Position
+
+        /// <summary>
+        /// Displaces a shape by <seealso cref="DisplaceAmount"/> until it is not on the
+        /// same position as another shape of the same shape type or until
+        /// <seealso cref="MaxDisplaceTries"/>.
+        /// </summary>
+        /// <param name="presentation">Context for slide dimensions</param>
+        /// <param name="currentSlide">Slide containing shapes to compare with.</param>
+        /// <param name="targetShape">Shape to be displaced</param>
+        /// <param name="samePositionThreshold">Pixel distance required to be different</param>
+        public static void TryDisplaceShape(
+            PowerPointPresentation presentation, PowerPointSlide currentSlide,
+            Shape targetShape, float samePositionThreshold)
+        {
+            int numTries = 0;
+            while (currentSlide.Shapes.Cast<Shape>().Any(
+                shape => shape != targetShape &&
+                         ShapeUtil.IsSameType(shape, targetShape) &&
+                         ShapeUtil.IsSamePosition(shape, targetShape, false, samePositionThreshold))
+                         && numTries < MaxDisplaceTries)
+            {
+                ShapeUtil.DisplaceShape(targetShape, presentation);
+                numTries++;
+            }
+        }
 
         public static bool IsSamePosition(Shape refShape, Shape candidateShape,
                                           bool exactMatch = true, float blurRadius = float.Epsilon)
@@ -1272,12 +1299,32 @@ namespace PowerPointLabs.Utils
                 return false;
             }
         }
-        
+
         #endregion
-        
+
         #endregion
 
         #region Helper Methods
+
+        /// <summary>
+        /// Displaces the shape rightwards and downwards by displaceAmount while staying
+        /// within slide boundaries.
+        /// </summary>
+        /// <param name="targetShape">Shape to be displaced</param>
+        /// <param name="presentation">Context for slide dimensions</param>
+        /// <param name="displaceAmount">Amount displaced in pixels</param>
+        private static void DisplaceShape(Shape targetShape,
+            PowerPointPresentation presentation,
+            float displaceAmount = DisplaceAmount)
+        {
+            float newLeft = targetShape.Left + DisplaceAmount;
+            float newTop = targetShape.Top + DisplaceAmount;
+            targetShape.Left = CommonUtil.Wrap(newLeft, 0,
+                presentation.SlideWidth - targetShape.Width);
+            targetShape.Top = CommonUtil.Wrap(newTop, 0,
+                presentation.SlideHeight - targetShape.Height);
+        }
+
         private static void SyncShapeLocation(Shape refShape, Shape candidateShape)
         {
             candidateShape.Left = refShape.Left;
