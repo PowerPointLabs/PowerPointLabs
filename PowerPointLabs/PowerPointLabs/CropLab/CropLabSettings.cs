@@ -1,4 +1,5 @@
-﻿using PowerPointLabs.CropLab.Views;
+﻿using PowerPointLabs.ColorThemes.Extensions;
+using PowerPointLabs.CropLab.Views;
 
 namespace PowerPointLabs.CropLab
 {
@@ -66,7 +67,7 @@ namespace PowerPointLabs.CropLab
         {
             CropLabSettingsDialogBox dialog = new CropLabSettingsDialogBox(AnchorPosition);
             dialog.DialogConfirmedHandler += OnSettingsDialogConfirmed;
-            dialog.ShowDialog();
+            dialog.ShowThematicDialog();
         }
 
         private static void OnSettingsDialogConfirmed(AnchorPosition anchorPosition)

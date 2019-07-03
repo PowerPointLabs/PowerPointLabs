@@ -3,10 +3,11 @@
 using Microsoft.Office.Interop.PowerPoint;
 
 using PowerPointLabs.ShapesLab.Views;
+using PowerPointLabs.Utils;
 
 namespace PowerPointLabs.ShapesLab
 {
-    partial class CustomShapePane
+    partial class CustomShapePane: IWpfContainer
     {
         /// <summary> 
         /// Required designer variable.
@@ -160,5 +161,12 @@ namespace PowerPointLabs.ShapesLab
             }
         }
 
+        public Control WpfControl
+        {
+            get
+            {
+                return CustomShapePaneWPF1;
+            }
+        }
     }
 }
