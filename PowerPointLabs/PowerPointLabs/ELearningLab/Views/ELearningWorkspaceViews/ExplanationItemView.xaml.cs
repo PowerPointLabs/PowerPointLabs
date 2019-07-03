@@ -2,7 +2,7 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
-
+using PowerPointLabs.ColorThemes.Extensions;
 using PowerPointLabs.ELearningLab.AudioGenerator;
 using PowerPointLabs.ELearningLab.Service;
 using PowerPointLabs.ELearningLab.Utility;
@@ -128,7 +128,7 @@ namespace PowerPointLabs.ELearningLab.Views
             page.PreviewDialogConfirmedHandler = OnSettingsDialogConfirmed;
             ConfigureAudioPreviewSettings(page);
             dialog.Title = "Audio Preview Window";
-            dialog.ShowDialog();
+            dialog.ShowThematicDialog();
         }
 
         private void ShorterCalloutCancelButton_Click(object sender, RoutedEventArgs e)

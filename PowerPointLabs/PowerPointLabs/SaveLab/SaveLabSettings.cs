@@ -1,5 +1,5 @@
 ﻿using System.IO;
-
+using PowerPointLabs.ColorThemes.Extensions;
 using PowerPointLabs.SaveLab.Views;
 
 namespace PowerPointLabs.SaveLab
@@ -22,7 +22,7 @@ namespace PowerPointLabs.SaveLab
         {
             SaveLabSettingsDialogBox dialog = new SaveLabSettingsDialogBox(saveFolderPath);
             dialog.DialogConfirmedHandler += OnSettingsDialogConfirmed;
-            dialog.ShowDialog();
+            dialog.ShowThematicDialog();
         }
 
         // Function to be used at the start to create save directory and set initial value of path
