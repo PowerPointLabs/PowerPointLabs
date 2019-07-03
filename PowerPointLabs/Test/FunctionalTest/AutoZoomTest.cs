@@ -17,7 +17,6 @@ namespace Test.FunctionalTest
         public void FT_AutoZoomTest()
         {
             // Do tests in reverse order because added slides change slide numbers lower down.
-            TestStepBackBackgroundWithEntry();
             TestStepBackBackground();
             TestStepBack();
             TestDrillDownBackground();
@@ -64,18 +63,6 @@ namespace Test.FunctionalTest
             AssertIsSame(17, 21);
             AssertIsSame(18, 22);
         }
-
-        private void TestStepBackBackgroundWithEntry()
-        {
-            PplFeatures.SetZoomProperties(true, true);
-
-            PpOperations.SelectSlide(32);
-            PpOperations.SelectShape("Step Back This Shape");
-            PplFeatures.StepBack();
-
-            // have no slide to assert same yet
-        }
-
 
         private void TestStepBackBackground()
         {

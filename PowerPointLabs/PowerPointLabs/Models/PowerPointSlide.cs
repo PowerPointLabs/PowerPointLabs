@@ -33,6 +33,8 @@ namespace PowerPointLabs.Models
 
         private List<MsoAnimEffect> entryEffects = new List<MsoAnimEffect>()
         {
+            MsoAnimEffect.msoAnimEffectAscend,
+
             MsoAnimEffect.msoAnimEffectAppear, MsoAnimEffect.msoAnimEffectBlinds, MsoAnimEffect.msoAnimEffectBox,
             MsoAnimEffect.msoAnimEffectCheckerboard, MsoAnimEffect.msoAnimEffectCircle, MsoAnimEffect.msoAnimEffectDiamond,
             MsoAnimEffect.msoAnimEffectDissolve, MsoAnimEffect.msoAnimEffectFly, MsoAnimEffect.msoAnimEffectPeek, 
@@ -324,23 +326,26 @@ namespace PowerPointLabs.Models
 
         public void DeleteEntryAnimationShapes()
         {
-            List<Shape> list = _slide.Shapes
-                .Cast<Shape>()
-                .Where(shape =>
+            IEnumerable<Effect> sequence = _slide.TimeLine.MainSequence
+                .Cast<Effect>().Where(effect =>
                 {
-                    return shape.AnimationSettings.EntryEffect != PpEntryEffect.ppEffectNone
-                        && shape.AnimationSettings.Animate == MsoTriState.msoTrue;
-                })
-                .ToList();
-            list.ForEach(shape => shape.Delete());
-            List<Shape> list2 = _slide.Shapes
-                .Cast<Shape>()
-                .Where(shape =>
+                    return IsEntryEffect(effect);
+                });
+            foreach (Effect effect in sequence)
+            {
+                if (effect.TextRangeStart >= 0)
                 {
-                    return shape.AnimationSettings.EntryEffect != PpEntryEffect.ppEffectNone
-                        && shape.AnimationSettings.Animate == MsoTriState.msoTrue;
-                })
-                .ToList();
+                    effect.Shape.Visible = MsoTriState.msoFalse;
+                    // Currently there is no way to set text fill to none
+                    //TextRange textRange = effect.Shape.TextFrame.TextRange;
+                    //TextRange animatedRange = textRange.Characters(
+                    //    effect.TextRangeStart, effect.TextRangeLength);
+                }
+                else
+                {
+                    effect.Shape.Visible = MsoTriState.msoFalse;
+                }
+            }
         }
 
         public void DeleteAllShapes()
