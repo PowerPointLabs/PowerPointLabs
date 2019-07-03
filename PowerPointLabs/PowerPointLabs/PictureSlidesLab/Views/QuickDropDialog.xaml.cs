@@ -3,7 +3,7 @@ using System.Windows;
 using System.Windows.Input;
 
 using MahApps.Metro.Controls;
-
+using PowerPointLabs.ColorThemes.Extensions;
 using PowerPointLabs.PictureSlidesLab.Util;
 using PowerPointLabs.Utils;
 
@@ -50,7 +50,7 @@ namespace PowerPointLabs.PictureSlidesLab.Views
         public void ShowQuickDropDialog()
         {
             IsOpen = true;
-            Show();
+            this.ShowThematicDialog(false);
         }
 
         public void HideQuickDropDialog()

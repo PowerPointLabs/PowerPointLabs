@@ -5,7 +5,7 @@ using Microsoft.Office.Core;
 
 namespace PowerPointLabs.Utils
 {
-    class StringUtil
+    public static class StringUtil
     {
         public static bool IsEmpty(string str)
         {
@@ -72,6 +72,11 @@ namespace PowerPointLabs.Utils
                 default:
                     return MsoTextEffectAlignment.msoTextEffectAlignmentMixed;
             }
+        }
+
+        public static string AppendIfAbsent(this string presName, string suffix)
+        {
+            return presName.EndsWith(suffix) ? presName : presName + suffix;
         }
     }
 }

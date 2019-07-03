@@ -1,5 +1,5 @@
 ﻿using System.Drawing;
-
+using PowerPointLabs.ColorThemes.Extensions;
 using PowerPointLabs.HighlightLab.Views;
 
 namespace PowerPointLabs.HighlightLab
@@ -20,7 +20,7 @@ namespace PowerPointLabs.HighlightLab
                 bulletsTextDefaultColor, 
                 bulletsBackgroundColor);
             dialog.DialogConfirmedHandler += OnSettingsDialogConfirmed;
-            dialog.ShowDialog();
+            dialog.ShowThematicDialog();
         }
 
         private static void OnSettingsDialogConfirmed(Color newHighlightColor, Color newDefaultColor, Color newBackgroundColor)

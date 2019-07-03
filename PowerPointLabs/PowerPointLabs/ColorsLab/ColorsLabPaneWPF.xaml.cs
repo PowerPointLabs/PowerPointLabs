@@ -5,12 +5,12 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 
 using Microsoft.Office.Core;
 
 using PowerPointLabs.ActionFramework.Common.Extension;
+using PowerPointLabs.ColorThemes.Extensions;
 using PowerPointLabs.DataSources;
 using PowerPointLabs.TextCollection;
 using PowerPointLabs.Utils;
@@ -778,7 +778,7 @@ namespace PowerPointLabs.ColorsLab
             System.Windows.Media.Color color = ((SolidColorBrush)rect.Fill).Color;
             Color selectedColor = GraphicsUtil.DrawingColorFromMediaColor(color);
             ColorInformationDialog dialog = new ColorInformationDialog(selectedColor);
-            dialog.Show();
+            dialog.ShowThematicDialog();
         }
 
         private void Set_Main_Color_Click(object sender, RoutedEventArgs e)
