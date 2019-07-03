@@ -165,6 +165,7 @@
     <Compile Include="UnitTest\PictureSlidesLab\Util\StoragePathTest.cs" />
     <Compile Include="UnitTest\PictureSlidesLab\Util\UrlUtilTest.cs" />
     <Compile Include="UnitTest\PictureSlidesLab\ViewModel\PictureSlidesLabWindowViewModelTest.cs" />
+    <Compile Include="UnitTest\PPShape\PPShapeTest.cs" />
     <Compile Include="UnitTest\ResizeLab\AdjustProportionallyTest.cs" />
     <Compile Include="UnitTest\ResizeLab\FitToSlideTest.cs" />
     <Compile Include="UnitTest\ResizeLab\BaseResizeLabTest.cs" />
