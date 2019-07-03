@@ -5,7 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
-
+using System.Windows.Forms;
 using Microsoft.Office.Core;
 using Microsoft.Office.Interop.PowerPoint;
 
@@ -326,9 +326,21 @@ namespace PowerPointLabs.Models
         {
             List<Shape> list = _slide.Shapes
                 .Cast<Shape>()
-                .Where(shape => shape.AnimationSettings.EntryEffect != PpEntryEffect.ppEffectNone)
+                .Where(shape =>
+                {
+                    return shape.AnimationSettings.EntryEffect != PpEntryEffect.ppEffectNone
+                        && shape.AnimationSettings.Animate == MsoTriState.msoTrue;
+                })
                 .ToList();
             list.ForEach(shape => shape.Delete());
+            List<Shape> list2 = _slide.Shapes
+                .Cast<Shape>()
+                .Where(shape =>
+                {
+                    return shape.AnimationSettings.EntryEffect != PpEntryEffect.ppEffectNone
+                        && shape.AnimationSettings.Animate == MsoTriState.msoTrue;
+                })
+                .ToList();
         }
 
         public void DeleteAllShapes()
