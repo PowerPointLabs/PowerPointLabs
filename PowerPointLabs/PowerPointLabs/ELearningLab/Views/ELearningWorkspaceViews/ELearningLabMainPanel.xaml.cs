@@ -11,6 +11,7 @@ using System.Windows.Threading;
 using Microsoft.Office.Interop.PowerPoint;
 
 using PowerPointLabs.ActionFramework.Common.Extension;
+using PowerPointLabs.ColorThemes.Extensions;
 using PowerPointLabs.ELearningLab.Converters;
 using PowerPointLabs.ELearningLab.ELearningWorkspace.Model;
 using PowerPointLabs.ELearningLab.ELearningWorkspace.ModelFactory;
@@ -476,7 +477,7 @@ namespace PowerPointLabs.ELearningLab.Views
             int totalSelfExplanationItemsCount = service.GetExplanationItemsCount();
             ProcessingStatusForm progressBarForm =
                 new ProcessingStatusForm(totalSelfExplanationItemsCount, BackgroundWorkerType.ELearningLabService, service);
-            progressBarForm.ShowDialog();
+            progressBarForm.ShowThematicDialog();
         }
 
         /// <summary>

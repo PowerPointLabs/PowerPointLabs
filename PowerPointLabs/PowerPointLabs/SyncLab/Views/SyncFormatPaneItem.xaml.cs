@@ -10,6 +10,7 @@ using System.Windows.Media.Imaging;
 using Microsoft.Office.Interop.PowerPoint;
 
 using PowerPointLabs.ActionFramework.Common.Extension;
+using PowerPointLabs.ColorThemes.Extensions;
 using PowerPointLabs.SyncLab.ObjectFormats;
 using PowerPointLabs.TextCollection;
 using PowerPointLabs.Utils;
@@ -177,7 +178,7 @@ namespace PowerPointLabs.SyncLab.Views
             Shape shape = shapeStorage.GetShape(shapeKey);
             parent.Dialog = new SyncFormatDialog(shape, Text, formats);
             parent.Dialog.ObjectName = this.Text;
-            bool? result = parent.Dialog.ShowDialog();
+            bool? result = parent.Dialog.ShowThematicDialog();
             if (!result.HasValue || !(bool)result)
             {
                 return;

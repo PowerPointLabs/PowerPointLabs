@@ -85,7 +85,7 @@
                                 <Setter Property="Template">
                                     <Setter.Value>
                                         <ControlTemplate>
-                                            <DockPanel Background="White">
+                                            <DockPanel>
                                                 <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center"
                                                        FontWeight="Bold" FontSize="20">
                                                 No items to display

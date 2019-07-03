@@ -1,4 +1,4 @@
-﻿
+﻿using Microsoft.Office.Interop.PowerPoint;
 using PowerPointLabs.ActionFramework.Common.Attribute;
 using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.ActionFramework.Common.Interface;
@@ -23,9 +23,9 @@ namespace PowerPointLabs.ActionFramework.TooltipsLab
             {
                 return;
             }
-            
-            PowerPoint.Shape triggerShape = CreateTooltip.GenerateTriggerShape(currentSlide);
-            PowerPoint.Shape callout = CreateTooltip.GenerateCalloutWithReferenceTriggerShape(currentSlide, triggerShape);
+            PowerPointPresentation presentation = this.GetCurrentPresentation();
+            Shape triggerShape = CreateTooltip.GenerateTriggerShape(presentation, currentSlide);
+            Shape callout = CreateTooltip.GenerateCalloutWithReferenceTriggerShape(currentSlide, triggerShape);
             ConvertToTooltip.AddTriggerAnimation(currentSlide, triggerShape, callout);
 
             if (!this.GetApplication().CommandBars.GetPressedMso(TooltipsLabConstants.AnimationPaneName))
