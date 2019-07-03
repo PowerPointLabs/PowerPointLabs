@@ -1,5 +1,5 @@
 ﻿using Microsoft.Office.Interop.PowerPoint;
-
+using PowerPointLabs.ColorThemes.Extensions;
 using PowerPointLabs.TooltipsLab.Views;
 
 using MsoAutoShapeType = Microsoft.Office.Core.MsoAutoShapeType;
@@ -15,7 +15,7 @@ namespace PowerPointLabs.TooltipsLab
         {
             TooltipsLabSettingsDialogBox dialog = new TooltipsLabSettingsDialogBox(ShapeType, AnimationType);
             dialog.DialogConfirmedHandler += OnSettingsDialogConfirmed;
-            dialog.ShowDialog();
+            dialog.ShowThematicDialog();
         }
 
         private static void OnSettingsDialogConfirmed(MsoAutoShapeType newShapeType, MsoAnimEffect newAnimationType)

@@ -6,6 +6,7 @@ using System.Windows.Media;
 using System.Windows.Threading;
 
 using PowerPointLabs.ActionFramework.Common.Extension;
+using PowerPointLabs.ColorThemes.Extensions;
 using PowerPointLabs.CropLab;
 using PowerPointLabs.PictureSlidesLab.Util;
 using PowerPointLabs.PictureSlidesLab.Views.ImageAdjustment;
@@ -65,7 +66,7 @@ namespace PowerPointLabs.PictureSlidesLab.Views
         public void ShowAdjustPictureDimensionsDialog()
         {
             IsOpen = true;
-            ShowDialog();
+            this.ShowThematicDialog();
             IsOpen = false;
         }
 

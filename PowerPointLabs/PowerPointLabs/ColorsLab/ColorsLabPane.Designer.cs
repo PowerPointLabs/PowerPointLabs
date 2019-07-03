@@ -1,6 +1,9 @@
-﻿namespace PowerPointLabs.ColorsLab
+﻿using System.Windows.Controls;
+using PowerPointLabs.Utils;
+
+namespace PowerPointLabs.ColorsLab
 {
-    partial class ColorsLabPane
+    partial class ColorsLabPane: IWpfContainer
     {
         /// <summary>
         /// Required designer variable.
@@ -56,5 +59,7 @@
 
         private System.Windows.Forms.Integration.ElementHost elementHost1;
         public ColorsLabPaneWPF ColorsLabPaneWPF1 { get; private set; }
+
+        public Control WpfControl => ColorsLabPaneWPF1;
     }
 }
