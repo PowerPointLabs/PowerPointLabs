@@ -930,6 +930,7 @@
     <Compile Include="ColorTheme\ThemeExtensions.cs" />
     <Compile Include="Utils\ClipboardUtil.cs" />
     <Compile Include="ColorTheme\ColorTheme.cs" />
+    <Compile Include="Utils\ClipboardUtilData.cs" />
     <Compile Include="Utils\IWPFContainer.cs" />
     <Compile Include="Utils\RegistryWatcher.cs" />
     <Compile Include="Utils\ShapeUtil.cs" />

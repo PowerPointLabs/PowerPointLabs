@@ -293,11 +293,14 @@ namespace PowerPointLabs.Utils
 
         private static Shape ImportPictureToSlide(Shape shapeToAdd, Slide targetSlide, string tempFilePath)
         {
-            // The AccessViolationException is longer catchable
+            // The AccessViolationException is no longer catchable
             if (!FileDir.IsFileReadable(tempFilePath))
             {
-                shapeToAdd.Cut();
-                return targetSlide.Shapes.PasteSpecial(PpPasteDataType.ppPastePNG)[1];
+                return PPLClipboard.Instance.LockAndRelease(() =>
+                {
+                    shapeToAdd.Cut();
+                    return targetSlide.Shapes.PasteSpecial(PpPasteDataType.ppPastePNG)[1];
+                });
             }
             else
             {

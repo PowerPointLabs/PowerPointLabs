@@ -80,20 +80,11 @@ namespace PowerPointLabs.ActionFramework.Common.Extension
 
         public static Shape SafeCopySlide(this Shapes shapes, PowerPointSlide slide)
         {
-            try
+            return PPLClipboard.Instance.LockAndRelease(() =>
             {
-                PPLClipboard.Instance.LockClipboard();
                 slide.Copy();
                 return shapes.PasteSpecial(PpPasteDataType.ppPastePNG)[1];
-            }
-            catch (Exception e)
-            {
-                throw e;
-            }
-            finally
-            {
-                PPLClipboard.Instance.ReleaseClipboard();
-            }
+            });
         }
 
         public static Shape SafeCut(this Shapes shapes, Shape shape)

@@ -45,15 +45,17 @@ namespace PowerPointLabs.Models
             // TODO: make use of PowerPointLabs.Presentation Model!!!
             // cut the original shape cover again and duplicate the slide
             // here the slide will be duplicated without the original shape cover
-            PPLClipboard.Instance.LockClipboard();
-            oriShapeRange.Cut();
-            PowerPointSlide newSlide = FromSlideFactory(refSlide.Duplicate()[1]);
-            
-            // get a copy of original cover shapes
-            ShapeRange copyShapeRange = newSlide.Shapes.Paste();
-            // paste the original shape cover back
-            oriShapeRange = refSlide.Shapes.Paste();
-            PPLClipboard.Instance.ReleaseClipboard();
+            PowerPointSlide newSlide = null;
+            ShapeRange copyShapeRange = PPLClipboard.Instance.LockAndRelease(() =>
+            {
+                oriShapeRange.Cut();
+                newSlide = FromSlideFactory(refSlide.Duplicate()[1]);
+                // get a copy of original cover shapes
+                ShapeRange resultCopyShapeRange = newSlide.Shapes.Paste();
+                // paste the original shape cover back
+                oriShapeRange = refSlide.Shapes.Paste();
+                return resultCopyShapeRange;
+            });
             
             // make the range invisible before animated the slide
             copyShapeRange.Visible = Core.MsoTriState.msoFalse;

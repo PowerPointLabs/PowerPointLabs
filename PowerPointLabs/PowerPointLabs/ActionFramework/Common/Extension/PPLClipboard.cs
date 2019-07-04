@@ -151,16 +151,22 @@ namespace PowerPointLabs.ActionFramework.Common.Extension
             lDataObject = null;
         }
 
+        private void LockIfNeeded(Action action)
+        {
+            LockIfNeeded<object>(() =>
+            {
+                action();
+                return null;
+            });
+        }
+
         private TResult LockIfNeeded<TResult>(Func<TResult> action)
         {
             if (IsLocked)
             {
                 return action();
             }
-            LockClipboard();
-            TResult result = action();
-            ReleaseClipboard();
-            return result;
+            return LockAndRelease(action);
         }
 
         private bool IsClipboardFree()

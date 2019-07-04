@@ -175,7 +175,7 @@ namespace Test.FunctionalTest
 
         private void WaitForPpInstanceToClose()
         {
-            PPLClipboard.Instance.Teardown();
+            PPLClipboard.Instance?.Teardown();
             int retry = 5;
             while (Process.GetProcessesByName("POWERPNT").Length > 0
                 && retry > 0)

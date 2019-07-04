@@ -98,12 +98,19 @@ namespace PowerPointLabs.Utils
 
         private static void SaveClipboard(PowerPointPresentation pres, PowerPointSlide origSlide, out PowerPointSlide tempClipboardSlide, out ShapeRange tempClipboardShapes, out SlideRange tempPastedSlide)
         {
-            tempClipboardSlide = null;
-            tempClipboardShapes = null;
-            tempPastedSlide = null;
             Logger.Log("RestoreClipboardAfterAction: Trying to paste as slide.", ActionFramework.Common.Logger.LogType.Info);
-            PPLClipboard.Instance.LockClipboard();
-            PPLClipboard.Instance.SaveClipboard();
+            ClipboardUtilData data = PPLClipboard.Instance.LockAndRelease(() => SaveClipboardUnsafe(pres, origSlide));
+            tempClipboardSlide = data.tempClipboardSlide;
+            tempClipboardShapes = data.tempClipboardShapes;
+            tempPastedSlide = data.tempPastedSlide;
+        }
+
+        private static ClipboardUtilData SaveClipboardUnsafe(PowerPointPresentation pres, PowerPointSlide origSlide)
+        {
+            PowerPointSlide tempClipboardSlide = null;
+            ShapeRange tempClipboardShapes = null;
+            SlideRange tempPastedSlide = null;
+
             tempPastedSlide = TryPastingAsSlide(pres, origSlide);
 
             if (tempPastedSlide == null)
@@ -136,7 +143,12 @@ namespace PowerPointLabs.Utils
                 Logger.Log("RestoreClipboardAfterAction: Trying to paste onto view", ActionFramework.Common.Logger.LogType.Info);
                 tempClipboardShapes = TryPastingOntoView(pres, tempClipboardSlide, origSlide);
             }
-            PPLClipboard.Instance.ReleaseClipboard();
+            return new ClipboardUtilData()
+            {
+                tempClipboardSlide = tempClipboardSlide,
+                tempClipboardShapes = tempClipboardShapes,
+                tempPastedSlide = tempPastedSlide
+            };
         }
 
         private static bool CheckIfPastingFailed(SlideRange slide, ShapeRange shapes)
@@ -155,19 +167,20 @@ namespace PowerPointLabs.Utils
         {
             try
             {
-                PPLClipboard.Instance.LockClipboard();
-                PPLClipboard.Instance.RestoreClipboard();
-                if (slides != null)
+                PPLClipboard.Instance.LockAndRelease(() =>
                 {
-                    slides.Copy();
-                    slides.Delete();
-                }
-                else if (shapes != null && shapes.Count >= 1)
-                {
-                    shapes.Copy();
-                    shapes.Delete();
-                }
-                PPLClipboard.Instance.ReleaseClipboard();
+                    PPLClipboard.Instance.RestoreClipboard();
+                    if (slides != null)
+                    {
+                        slides.Copy();
+                        slides.Delete();
+                    }
+                    else if (shapes != null && shapes.Count >= 1)
+                    {
+                        shapes.Copy();
+                        shapes.Delete();
+                    }
+                });
             }
             catch (COMException e) 
             {
