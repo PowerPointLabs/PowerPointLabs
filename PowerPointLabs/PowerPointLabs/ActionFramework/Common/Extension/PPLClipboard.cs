@@ -97,7 +97,8 @@ namespace PowerPointLabs.ActionFramework.Common.Extension
 
         public void LockClipboard()
         {
-            if (IsLocked) {
+            if (IsLocked)
+            {
                 throw new Exception("Clipboard is not released before locking!");
             }
             // wait to lock the clipboard
