@@ -349,7 +349,7 @@ namespace PowerPointLabs.AgendaLab
             List<Shape> textBoxes = CreateBeamAgendaTextBoxes(refSlide, sections);
             Shape highlightedTextBox = CreateHighlightedTextBox(refSlide);
             SetupBeamTextBoxPositions(textBoxes, highlightedTextBox, background);
-            MatchColour(highlightedTextBox, background);
+            MatchColor(highlightedTextBox, background);
 
             List<Shape> beamShapeItems = new List<Shape>();
             beamShapeItems.Add(background);
@@ -402,7 +402,7 @@ namespace PowerPointLabs.AgendaLab
             highlightedTextBox.Left = (slideWidth - highlightedTextBox.Width)/2;
         }
 
-        private static void MatchColour(Shape highlightedTextBox, Shape background)
+        private static void MatchColor(Shape highlightedTextBox, Shape background)
         {
             if (background == null)
             {
@@ -861,7 +861,7 @@ namespace PowerPointLabs.AgendaLab
             Shape highlightedTextBox = BeamFormats.GetShapeWithPurpose(beamShape, ShapePurpose.BeamShapeHighlightedText);
             Shape background = BeamFormats.GetShapeWithPurpose(beamShape, ShapePurpose.BeamShapeBackground);
 
-            MatchColour(highlightedTextBox, background);
+            MatchColor(highlightedTextBox, background);
 
             if (SectionsMatch(currentSections, newSections))
             {

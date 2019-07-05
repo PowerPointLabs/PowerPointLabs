@@ -140,7 +140,7 @@ namespace PowerPointLabs.ZoomLab
                 zoomRectangle.TextFrame2.TextRange.Font.Fill.ForeColor.RGB = 0xffffff;
                 zoomRectangle.TextFrame2.TextRange.Font.Bold = Office.MsoTriState.msoTrue;
 
-                // Set Colour
+                // Set Color
                 zoomRectangle.Fill.ForeColor.RGB = 0xaaaaaa;
                 zoomRectangle.Fill.Transparency = 0.7f;
                 zoomRectangle.Line.ForeColor.RGB = 0x000000;
