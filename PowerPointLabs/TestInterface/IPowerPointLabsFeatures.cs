@@ -41,11 +41,11 @@ namespace TestInterface
         void BlurSelectedEffect();
         void BlurRemainderEffect();
         void BlurBackgroundEffect();
-        void GreyScaleRemainderEffect();
+        void GrayScaleRemainderEffect();
         void BlackAndWhiteRemainderEffect();
         void GothamRemainderEffect();
         void SepiaRemainderEffect();
-        void GreyScaleBackgroundEffect();
+        void GrayScaleBackgroundEffect();
         void BlackAndWhiteBackgroundEffect();
         void GothamBackgroundEffect();
         void SepiaBackgroundEffect();
