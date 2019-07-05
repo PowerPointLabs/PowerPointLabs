@@ -153,7 +153,7 @@ namespace PowerPointLabs.Models
             foreach (Shape shape in shapeRange)
             {
                 float softEdgeRadius = Math.Min(Math.Min(shape.Width, shape.Height) * 0.15f, 10f);
-                if (ShapeUtil.IsAGroup(shape))
+                if (shape.IsAGroup())
                 {
                     for (int i = 1; i <= shape.GroupItems.Count; i++)
                     {

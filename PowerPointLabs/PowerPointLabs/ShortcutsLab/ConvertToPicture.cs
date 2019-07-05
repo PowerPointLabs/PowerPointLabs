@@ -24,7 +24,7 @@ namespace PowerPointLabs.ShortcutsLab
                 PowerPoint.Shape shape = GetShapeFromSelection(selection);
                 int originalZOrder = shape.ZOrderPosition;
                 // In case shape is corrupted
-                if (ShapeUtil.IsCorrupted(shape))
+                if (shape.IsCorrupted())
                 {
                     shape = ShapeUtil.CorruptionCorrection(shape, slide);
                 }

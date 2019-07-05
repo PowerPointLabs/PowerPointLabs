@@ -265,7 +265,7 @@ namespace PowerPointLabs.ZoomLab
             List<PowerPoint.Shape> shapesOnNextSlide = new List<PowerPoint.Shape>();
             foreach (PowerPoint.Shape sh in nextSlide.Shapes)
             {
-                if (!nextSlide.HasEntryAnimation(sh) && !ShapeUtil.IsHidden(sh))
+                if (!nextSlide.HasEntryAnimation(sh) && !sh.IsHidden())
                 {
                     shapesOnNextSlide.Add(sh);
                 }
@@ -417,7 +417,7 @@ namespace PowerPointLabs.ZoomLab
             List<PowerPoint.Shape> copiedShapes = new List<PowerPoint.Shape>();
             foreach (PowerPoint.Shape sh in previousSlide.Shapes)
             {
-                if (!previousSlide.HasExitAnimation(sh) && !ShapeUtil.IsHidden(sh))
+                if (!previousSlide.HasExitAnimation(sh) && !sh.IsHidden())
                 {
                     sh.Copy();
                     PowerPoint.Shape shapeCopy = addedSlide.Shapes.Paste()[1];

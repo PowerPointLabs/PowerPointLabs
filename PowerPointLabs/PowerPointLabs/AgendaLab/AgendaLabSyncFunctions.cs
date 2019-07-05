@@ -76,7 +76,7 @@ namespace PowerPointLabs.AgendaLab
             Shape targetContentShape = targetSlide.GetShape(AgendaShape.WithPurpose(ShapePurpose.ContentShape));
             BulletFormats bulletFormats = BulletFormats.ExtractFormats(referenceContentShape);
 
-            ShapeUtil.SetText(targetContentShape, sections.Where(section => section.Index > 1)
+            targetContentShape.SetText(sections.Where(section => section.Index > 1)
                 .Select(section => section.Name));
             ShapeUtil.SyncShape(referenceContentShape, targetContentShape, pickupTextContent: false,
                 pickupTextFormat: false);

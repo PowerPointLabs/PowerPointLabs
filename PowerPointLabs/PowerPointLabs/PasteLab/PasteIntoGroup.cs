@@ -19,7 +19,7 @@ namespace PowerPointLabs.PasteLab
             ShapeUtil.MoveZToJustInFront(tempShapeForAnimation, firstSelectedShape);
 
             string originalGroupName = null;
-            if (selectedShapes.Count == 1 && ShapeUtil.IsAGroup(firstSelectedShape))
+            if (selectedShapes.Count == 1 && firstSelectedShape.IsAGroup())
             {
                 originalGroupName = firstSelectedShape.Name;
                 selectedShapes = firstSelectedShape.Ungroup();

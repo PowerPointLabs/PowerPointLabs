@@ -470,12 +470,12 @@ namespace PowerPointLabs.AgendaLab
             Shape contentShape = refSlide.Shapes.Placeholders[2];
             AgendaShape.SetShapeName(contentShape, ShapePurpose.ContentShape, AgendaSection.None);
 
-            ShapeUtil.SetText(titleShape, AgendaLabText.TitleContent);
-            ShapeUtil.SetText(contentShape, AgendaLabText.BulletVisitedContent,
-                                            AgendaLabText.BulletHighlightedContent,
-                                            AgendaLabText.BulletUnvisitedContent);
+            titleShape.SetText(AgendaLabText.TitleContent);
+            contentShape.SetText(AgendaLabText.BulletVisitedContent,
+                                 AgendaLabText.BulletHighlightedContent,
+                                 AgendaLabText.BulletUnvisitedContent);
 
-            List<TextRange2> paragraphs = ShapeUtil.GetParagraphs(contentShape);
+            List<TextRange2> paragraphs = contentShape.GetParagraphs();
             paragraphs[0].Font.Fill.ForeColor.RGB = GraphicsUtil.ConvertColorToRgb(Color.Gray);
             paragraphs[1].Font.Fill.ForeColor.RGB = GraphicsUtil.ConvertColorToRgb(Color.Red);
             paragraphs[2].Font.Fill.ForeColor.RGB = GraphicsUtil.ConvertColorToRgb(Color.Black);
@@ -502,7 +502,7 @@ namespace PowerPointLabs.AgendaLab
                                                             .Add(1, PpSlideLayout.ppLayoutTitleOnly));
 
             Shape titleBar = refSlide.Shapes.Placeholders[1];
-            ShapeUtil.SetText(titleBar, AgendaLabText.TitleContent);
+            titleBar.SetText(AgendaLabText.TitleContent);
 
             InsertVisualAgendaSectionImages(refSlide);
 
@@ -903,7 +903,7 @@ namespace PowerPointLabs.AgendaLab
                 {
                     // Reuse old textbox
                     Shape textbox = textboxAssignment[index];
-                    ShapeUtil.SetText(textbox, section.Name);
+                    textbox.SetText(section.Name);
                     AgendaShape.SetShapeName(textbox, ShapePurpose.BeamShapeText, section);
                     reassignedTextboxIndexes.Add(index);
                 }

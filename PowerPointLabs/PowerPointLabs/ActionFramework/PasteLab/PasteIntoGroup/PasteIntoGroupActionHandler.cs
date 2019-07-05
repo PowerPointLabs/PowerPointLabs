@@ -23,7 +23,7 @@ namespace PowerPointLabs.ActionFramework.PasteLab
                 return null;
             }
 
-            if (selectedShapes.Count == 1 && !ShapeUtil.IsAGroup(selectedShapes[1]))
+            if (selectedShapes.Count == 1 && !selectedShapes[1].IsAGroup())
             {
                 Logger.Log("PasteIntoGroup failed. Selection is only a single shape.");
                 return null;

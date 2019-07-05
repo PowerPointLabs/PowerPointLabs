@@ -122,7 +122,7 @@ namespace PowerPointLabs.PositionsLab
         
         private void RotateSlightly(bool isClockwise, bool isLarge)
         {
-            System.Drawing.PointF origin = ShapeUtil.GetCenterPoint(_refPoint);
+            System.Drawing.PointF origin = _refPoint.GetCenterPoint();
             float angle = (isClockwise) ? 1f : -1f;
             if (isLarge)
             {
@@ -348,10 +348,10 @@ namespace PowerPointLabs.PositionsLab
             this.GetCurrentSelection().Unselect();
             System.Drawing.Point p = System.Windows.Forms.Control.MousePosition;
 
-            float prevAngle = (float)PositionsLabMain.AngleBetweenTwoPoints(ConvertSlidePointToScreenPoint(ShapeUtil.GetCenterPoint(_refPoint)), _prevMousePos);
-            float angle = (float)PositionsLabMain.AngleBetweenTwoPoints(ConvertSlidePointToScreenPoint(ShapeUtil.GetCenterPoint(_refPoint)), p) - prevAngle;
+            float prevAngle = (float)PositionsLabMain.AngleBetweenTwoPoints(ConvertSlidePointToScreenPoint(_refPoint.GetCenterPoint()), _prevMousePos);
+            float angle = (float)PositionsLabMain.AngleBetweenTwoPoints(ConvertSlidePointToScreenPoint(_refPoint.GetCenterPoint()), p) - prevAngle;
 
-            System.Drawing.PointF origin = ShapeUtil.GetCenterPoint(_refPoint);
+            System.Drawing.PointF origin = _refPoint.GetCenterPoint();
 
             foreach (Shape currentShape in _shapesToBeRotated)
             {
@@ -802,7 +802,7 @@ namespace PowerPointLabs.PositionsLab
         {
             float epsilon = 0.00001f;
 
-            System.Drawing.PointF centerPoint = ConvertSlidePointToScreenPoint(ShapeUtil.GetCenterPoint(shape));
+            System.Drawing.PointF centerPoint = ConvertSlidePointToScreenPoint(shape.GetCenterPoint());
             System.Drawing.PointF rotatedMousePos = CommonUtil.RotatePoint(p, centerPoint, -shape.Rotation);
 
             float x1 = PointsToScreenPixelsX(shape.Left);
@@ -1705,8 +1705,8 @@ namespace PowerPointLabs.PositionsLab
                 Shape selectedShape = selected[i];
                 Shape simulatedShape = simulatedShapes[i];
 
-                selectedShape.IncrementLeft(ShapeUtil.GetCenterPoint(simulatedShape).X - ShapeUtil.GetCenterPoint(selectedShape).X);
-                selectedShape.IncrementTop(ShapeUtil.GetCenterPoint(simulatedShape).Y - ShapeUtil.GetCenterPoint(selectedShape).Y);
+                selectedShape.IncrementLeft(simulatedShape.GetCenterPoint().X - selectedShape.GetCenterPoint().X);
+                selectedShape.IncrementTop(simulatedShape.GetCenterPoint().Y - selectedShape.GetCenterPoint().Y);
                 selectedShape.Rotation = simulatedShape.Rotation;
             }
         }
@@ -1718,8 +1718,8 @@ namespace PowerPointLabs.PositionsLab
                 Shape selectedShape = selected[i];
                 Shape simulatedShape = simulatedShapes[i];
 
-                selectedShape.IncrementLeft(ShapeUtil.GetCenterPoint(simulatedShape).X - originalPositions[i - 1, Left]);
-                selectedShape.IncrementTop(ShapeUtil.GetCenterPoint(simulatedShape).Y - originalPositions[i - 1, Top]);
+                selectedShape.IncrementLeft(simulatedShape.GetCenterPoint().X - originalPositions[i - 1, Left]);
+                selectedShape.IncrementTop(simulatedShape.GetCenterPoint().Y - originalPositions[i - 1, Top]);
             }
         }
 
