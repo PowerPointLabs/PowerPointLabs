@@ -15,6 +15,7 @@
 
         public const string ErrorUndefined = "Undefined error in Positions Lab.";
 
+        public const string ErrorRepositionFail = "Failed to reposition.";
         public const string ErrorDialogTitle = "Unable to execute action";
         public const string ErrorCorruptedShapesTitle = "Corrupted shapes detected";
         public const string ErrorCorruptedSelection = "Please undo the last operation and try again.";

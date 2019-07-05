@@ -1110,9 +1110,9 @@ namespace PowerPointLabs
                     }
                 }
             }
-            catch
+            catch (Exception e)
             {
-                //TODO: log in ThisAddIn.cs
+                Logger.LogException(e, nameof(AfterPasteEventHandler));
             }
         }
 
@@ -1279,9 +1279,9 @@ namespace PowerPointLabs
                 Ribbon.RefreshRibbonControl("ReplaceWithClipboardButton");
                 Ribbon.RefreshRibbonControl("PasteIntoGroupButton");
             }
-            catch
+            catch (Exception e)
             {
-                //TODO: log in ThisAddIn.cs
+                Logger.LogException(e, nameof(AfterCopyEventHandler));
             }
         }
         # endregion
