@@ -45,7 +45,7 @@
     <PublishUrl>C:\publish_online\</PublishUrl>
     <InstallUrl>https://www.comp.nus.edu.sg/~pptlabs/download/dev/</InstallUrl>
     <TargetCulture>en</TargetCulture>
-    <ApplicationVersion>5.1.0.1</ApplicationVersion>
+    <ApplicationVersion>5.2.0.0</ApplicationVersion>
     <AutoIncrementApplicationRevision>false</AutoIncrementApplicationRevision>
     <UpdateEnabled>true</UpdateEnabled>
     <UpdateInterval>0</UpdateInterval>
@@ -752,6 +752,7 @@
     <Compile Include="ELearningLab\ELearningWorkspace\Model\ClickItem\CustomItem.cs" />
     <Compile Include="ELearningLab\ELearningWorkspace\Model\ClickItem\CustomSubItem.cs" />
     <Compile Include="ELearningLab\ELearningWorkspace\Model\ClickItem\ExplanationItem.cs" />
+    <Compile Include="ELearningLab\ELearningWorkspace\Model\ClickItem\ExplanationItemExtensions.cs" />
     <Compile Include="ELearningLab\ELearningWorkspace\Model\Effect\AbstractEffect.cs" />
     <Compile Include="ELearningLab\ELearningWorkspace\Model\Effect\CustomEffect.cs" />
     <Compile Include="ELearningLab\ELearningWorkspace\Model\Effect\ELLEffect.cs" />
