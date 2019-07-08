@@ -5,7 +5,6 @@ using System.Linq;
 
 using Microsoft.Office.Core;
 using Microsoft.Office.Interop.PowerPoint;
-using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.FunctionalTestInterface.Impl;
 using PowerPointLabs.Utils;
 
@@ -38,12 +37,6 @@ namespace Test.Util
         {
             Pres = pres;
             App = app;
-            PPLClipboard.Init(Window, true);
-        }
-
-        ~UnitTestPpOperations()
-        {
-            PPLClipboard.Instance.Teardown();
         }
 
         public void MaximizeWindow()
