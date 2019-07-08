@@ -317,7 +317,7 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
             }));
         }
 
-        public void GreyScaleRemainderEffect()
+        public void GrayScaleRemainderEffect()
         {
             UIThreadExecutor.Execute((Action)(() =>
             {
@@ -357,7 +357,7 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
             }));
         }
 
-        public void GreyScaleBackgroundEffect()
+        public void GrayScaleBackgroundEffect()
         {
             UIThreadExecutor.Execute((Action)(() =>
             {

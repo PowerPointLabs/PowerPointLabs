@@ -13,7 +13,7 @@ namespace PowerPointLabs.ActionFramework.AgendaLab
         {
             this.StartNewUndoEntry();
 
-            AgendaLabMain.SynchroniseAgenda();
+            AgendaLabMain.SynchronizeAgenda();
         }
     }
 }

@@ -22,7 +22,7 @@ namespace Test.FunctionalTest
         private const int RecolorSepiaTestSlide = 28;
         private const int RecolorGothamTestSlide = 25;
         private const int RecolorBlackAndWhiteTestSlide = 22;
-        private const int RecolorGreyScaleTestSlide = 19;
+        private const int RecolorGrayScaleTestSlide = 19;
         private const int TintBlurSelectedShapeTestSlide = 17;
         private const int TintBlurRemainderTextBoxTestSlide = 14;
         private const int TintBlurRemainderGroupTestSlide = 11;
@@ -56,7 +56,7 @@ namespace Test.FunctionalTest
             TestGeneratedSlideEffect(RecolorSepiaTestSlide, PplFeatures.SepiaRemainderEffect);
             TestGeneratedSlideEffect(RecolorGothamTestSlide, PplFeatures.GothamRemainderEffect);
             TestGeneratedSlideEffect(RecolorBlackAndWhiteTestSlide, PplFeatures.BlackAndWhiteBackgroundEffect);
-            TestGeneratedSlideEffect(RecolorGreyScaleTestSlide, PplFeatures.GreyScaleBackgroundEffect);
+            TestGeneratedSlideEffect(RecolorGrayScaleTestSlide, PplFeatures.GrayScaleBackgroundEffect);
 
             // tinted
             PplFeatures.SetTintForBlurSelected(true);
