@@ -161,12 +161,7 @@ namespace PowerPointLabs.ShapesLab.Views
             }
 
             // Finish checks, will add shape(s) from selection
-
-            ShapeRange selectedShapes = selection.ShapeRange;
-            if (selection.HasChildShapeRange)
-            {
-                selectedShapes = selection.ChildShapeRange;
-            }
+            ShapeRange selectedShapes = ShapeUtil.GetShapeRange(selection);
 
             // add shape into shape gallery first to reduce flicker
             PowerPointSlide currentSlide = this.GetCurrentSlide();
