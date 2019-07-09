@@ -97,10 +97,16 @@ namespace PowerPointLabs.ShortcutsLab
 
         private static PowerPoint.Shape GetShapeFromSelection(PowerPoint.Selection selection)
         {
-            return GetShapeFromSelection(selection.ShapeRange);
+            ShapeRange shapeRange = GetShapeRangeFromSelection(selection);
+            return GetShapeFromShapeRange(shapeRange);
         }
 
-        private static PowerPoint.Shape GetShapeFromSelection(PowerPoint.ShapeRange shapeRange)
+        private static ShapeRange GetShapeRangeFromSelection(Selection selection)
+        {
+            return selection.HasChildShapeRange ? selection.ChildShapeRange : selection.ShapeRange;
+        }
+
+        private static PowerPoint.Shape GetShapeFromShapeRange(PowerPoint.ShapeRange shapeRange)
         {
             PowerPoint.Shape result = shapeRange.Count > 1 ? shapeRange.Group() : shapeRange[1];
             return result;
