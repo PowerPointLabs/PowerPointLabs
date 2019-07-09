@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Windows.Forms;
 
 using Microsoft.Office.Interop.PowerPoint;
@@ -98,7 +99,8 @@ namespace PowerPointLabs.ShortcutsLab
         private static PowerPoint.Shape GetShapeFromSelection(PowerPoint.Selection selection)
         {
             ShapeRange shapeRange = GetShapeRangeFromSelection(selection);
-            return GetShapeFromShapeRange(shapeRange);
+            Shape shape = GetShapeFromShapeRange(shapeRange);
+            return shape;
         }
 
         private static ShapeRange GetShapeRangeFromSelection(Selection selection)
@@ -108,8 +110,33 @@ namespace PowerPointLabs.ShortcutsLab
 
         private static PowerPoint.Shape GetShapeFromShapeRange(PowerPoint.ShapeRange shapeRange)
         {
+            List<ShapeRange> regroupShapes = new List<ShapeRange>();
+            foreach (Shape shape in shapeRange)
+            {
+                ShapeRange shapes = GetParentShapeRange(shape);
+                if (shapes != null)
+                {
+                    regroupShapes.Add(shapes);
+                }
+            }
             PowerPoint.Shape result = shapeRange.Count > 1 ? shapeRange.Group() : shapeRange[1];
+            foreach (ShapeRange regroupShapeRange in regroupShapes)
+            {
+                regroupShapeRange.Regroup();
+            }
             return result;
+        }
+
+        private static ShapeRange GetParentShapeRange(Shape shape)
+        {
+            try
+            {
+                return shape.ParentGroup.Ungroup();
+            }
+            catch
+            {
+                return null;
+            }
         }
     }
 }
