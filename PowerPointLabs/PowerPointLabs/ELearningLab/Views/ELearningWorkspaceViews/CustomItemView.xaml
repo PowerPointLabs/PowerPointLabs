@@ -20,25 +20,28 @@
             <Label Content="{Binding ClickNo}" VerticalAlignment="Center" HorizontalAlignment="Center"
                                        FontFamily="Century Gothic" FontWeight="SemiBold" Foreground="White" FontSize="13"/>
         </Border>
-        <ListView Grid.Column="1" ItemsSource="{Binding CustomItems}" BorderThickness="0" Margin="0" IsHitTestVisible="False">
-            <ListView.ItemTemplate>
-                <DataTemplate DataType="{x:Type data:CustomSubItem}">
-                    <Grid>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="30" MaxWidth="30"/>
-                            <ColumnDefinition Width="*" />
-                        </Grid.ColumnDefinitions>
-                        <Image Grid.Column="0" MinHeight="15" MaxHeight="15" MinWidth="15" MaxWidth="15" VerticalAlignment="Center"
-                   Source="{Binding Type, Converter={converters:AnimationTypeToImageSourceConverter}}" 
+        <DockPanel Grid.Column="1"  x:Name="panel" Margin="0">
+            <ListView MaxWidth="{Binding ActualWidth, ElementName=panel}" ItemsSource="{Binding CustomItems}"
+                      HorizontalContentAlignment="Stretch" BorderThickness="0" Margin="0" IsHitTestVisible="False">
+                <ListView.ItemTemplate>
+                    <DataTemplate DataType="{x:Type data:CustomSubItem}">
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="30" MaxWidth="30"/>
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <Image Grid.Column="0" MinHeight="15" MaxHeight="15" MinWidth="15" MaxWidth="15" VerticalAlignment="Center"
+                               Source="{Binding Type, Converter={converters:AnimationTypeToImageSourceConverter}}" 
                                Stretch="Uniform" HorizontalAlignment="Center"/>
-                        <DockPanel x:Name="canvas" Grid.Column="1" Margin="0">
-                            <TextBlock  MaxWidth="{Binding ActualWidth, ElementName=canvas}"
+                            <DockPanel x:Name="canvas" Grid.Column="1" Margin="0">
+                                <TextBlock MaxWidth="{Binding ActualWidth, ElementName=canvas}"
                                        HorizontalAlignment="Stretch" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"
                                        Margin="0" Text="{Binding ShapeName}"/>
-                        </DockPanel>
-                    </Grid>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
+                            </DockPanel>
+                        </Grid>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+        </DockPanel>
     </Grid>
 </UserControl>
