@@ -1,9 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
-
+using EyeOpen.Imaging.Processing;
 using Microsoft.Office.Core;
 using Microsoft.Office.Interop.PowerPoint;
 
@@ -269,9 +270,55 @@ namespace PowerPointLabs.Utils
             return result;
         }
 
-        public static bool IsSelectionAllRectangle(Selection selection)
+        public static bool IsSelectionAllShapes(Selection selection)
         {
             if (selection == null || selection.Type != PpSelectionType.ppSelectionShapes)
+            {
+                return false;
+            }
+            return true;
+        }
+
+        public static bool IsShapeRectangleAutoshape(this Shape shape)
+        {
+            if (shape.Type != MsoShapeType.msoAutoShape)
+            {
+                return false;
+            }
+            if (shape.AutoShapeType == MsoAutoShapeType.msoShapeRectangle)
+            {
+                return true;
+            }
+
+            string originalShape = FileDir.GetTemporaryPngFilePath();
+            GraphicsUtil.ExportShape(shape, originalShape);
+            Shape duplicateShape = shape.Duplicate()[1];
+            string rectangleShape = FileDir.GetTemporaryPngFilePath();
+            duplicateShape.AutoShapeType = MsoAutoShapeType.msoShapeRectangle;
+            GraphicsUtil.ExportShape(duplicateShape, rectangleShape);
+            duplicateShape.Delete();
+            return IsSameLooking(originalShape, rectangleShape);
+        }
+
+        public static bool IsSameLooking(string shape1, string shape2, double similarityTolerance = 0.95)
+        {
+            return IsSameLooking(new FileInfo(shape1),
+                new FileInfo(shape2),
+                similarityTolerance);
+        }
+
+        public static bool IsSameLooking(FileInfo expSlideImage, FileInfo actualSlideImage, double similarityTolerance = 0.95)
+        {
+            ComparableImage actualSlideInPic = new ComparableImage(actualSlideImage);
+            ComparableImage expSlideInPic = new ComparableImage(expSlideImage);
+
+            double similarity = actualSlideInPic.CalculateSimilarity(expSlideInPic);
+            return similarity > similarityTolerance;
+        }
+
+        public static bool IsSelectionAllRectangle(Selection selection)
+        {
+            if (!IsSelectionAllShapes(selection))
             {
                 return false;
             }
@@ -279,9 +326,8 @@ namespace PowerPointLabs.Utils
             ShapeRange shapes = selection.ShapeRange;
             foreach (Shape shape in shapes)
             {
-                if ((shape.Type != MsoShapeType.msoAutoShape ||
-                   shape.AutoShapeType != MsoAutoShapeType.msoShapeRectangle) &&
-                   shape.Type != MsoShapeType.msoPicture)
+                if (shape.Type != MsoShapeType.msoPicture &&
+                   !shape.IsShapeRectangleAutoshape())
                 {
                     return false;
                 }
