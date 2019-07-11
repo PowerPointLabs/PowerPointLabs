@@ -26,6 +26,7 @@ namespace Test.FunctionalTest
         [TestCategory("FT")]
         public void FT_CreateSelfExplanationTest()
         {
+            PpOperations.MaximizeWindow();
             PpOperations.SelectSlide(TestSyncExplanationItemSlideNo);
             IELearningLabController eLearningLab = PplFeatures.ELearningLab;
             eLearningLab.OpenPane();
@@ -34,14 +35,15 @@ namespace Test.FunctionalTest
             TestSyncExplanationItems(eLearningLab);
 
             PpOperations.SelectSlide(TestReorderExplanationItemSlideNo);
-            ThreadUtil.WaitFor(5000);
+            ThreadUtil.WaitFor(1000);
             eLearningLab.AddSelfExplanationItem();
             TestReorderExplanationItems(eLearningLab);
 
             PpOperations.SelectSlide(TestDeleteExplanationItemSlideNo);
-            ThreadUtil.WaitFor(5000);
+            ThreadUtil.WaitFor(1000);
             eLearningLab.AddSelfExplanationItem();
             TestDeleteExplanationItems(eLearningLab);
+            ThreadUtil.WaitFor(10000);
         }
 
         [TestMethod]
@@ -135,6 +137,7 @@ namespace Test.FunctionalTest
         {
             eLearningLab.Sync();
             Slide expSlide = PpOperations.SelectSlide(TestSyncExplanationItemSlideNo);
+            ThreadUtil.WaitFor(1000);
             Slide actualSlide = PpOperations.SelectSlide(ExpectedSyncExplanationItemSlideNo);
             SlideUtil.IsSameLooking(expSlide, actualSlide, similarityTolerance: 0.9);
         }
@@ -144,6 +147,7 @@ namespace Test.FunctionalTest
             eLearningLab.Reorder();
             eLearningLab.Sync();
             Slide expSlide = PpOperations.SelectSlide(TestReorderExplanationItemSlideNo);
+            ThreadUtil.WaitFor(1000);
             Slide actualSlide = PpOperations.SelectSlide(ExpectedReorderExplanationItemSlideNo);
             SlideUtil.IsSameLooking(expSlide, actualSlide, similarityTolerance: 0.9);
         }
@@ -153,6 +157,7 @@ namespace Test.FunctionalTest
             eLearningLab.Delete();
             eLearningLab.Sync();
             Slide expSlide = PpOperations.SelectSlide(TestDeleteExplanationItemSlideNo);
+            ThreadUtil.WaitFor(1000);
             Slide actualSlide = PpOperations.SelectSlide(ExpectedDeleteExplanationItemSlideNo);
             SlideUtil.IsSameLooking(expSlide, actualSlide, similarityTolerance: 0.9);
         }

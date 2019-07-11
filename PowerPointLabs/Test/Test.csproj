@@ -78,6 +78,8 @@
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.XML" />
     <Reference Include="System.Xml.Linq" />
+    <Reference Include="UIAutomationClient" />
+    <Reference Include="UIAutomationTypes" />
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <Choose>
@@ -202,6 +204,7 @@
     <Compile Include="UnitTest\TooltipsLab\CreateCalloutTest.cs" />
     <Compile Include="UnitTest\TooltipsLab\CreateTooltipTest.cs" />
     <Compile Include="UnitTest\Utils\TempPathTest.cs" />
+    <Compile Include="Util\Constants.cs" />
     <Compile Include="Util\TagUtil.cs" />
     <Compile Include="Util\DialogUtil.cs" />
     <Compile Include="Util\PresentationUtil.cs" />
@@ -214,6 +217,9 @@
     <Compile Include="Util\PathUtil.cs" />
     <Compile Include="Util\SlideUtil.cs" />
     <Compile Include="Util\ThreadUtil.cs" />
+    <Compile Include="Util\WindowOpenTrigger.cs" />
+    <Compile Include="Util\WindowWatcher.cs" />
+    <Compile Include="Util\WPFWindowUtil.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PowerPointLabs\PowerPointLabs.csproj">

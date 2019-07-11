@@ -208,12 +208,7 @@ namespace Test.FunctionalTest
 
         private void CopyStyle(ISyncLabController syncLab)
         {
-            new Task(() =>
-            {
-                ThreadUtil.WaitFor(1000);
-                syncLab.DialogClickOk();
-            }).Start();
-            syncLab.Copy();
+            CopyStyle(syncLab, new int[0,0]);
         }
 
         private void CopyStyle(ISyncLabController syncLab, int categoryPosition, int itemPosition)
@@ -224,16 +219,12 @@ namespace Test.FunctionalTest
 
         private void CopyStyle(ISyncLabController syncLab, int[,] dialogItems)
         {
-            new Task(() =>
+            WindowWatcher.Push("Copy Format", syncLab.Copy);
+            for (int i = 0; i < dialogItems.GetLength(0); i++)
             {
-                ThreadUtil.WaitFor(1000);
-                for (int i = 0; i < dialogItems.GetLength(0); i++)
-                {
-                    syncLab.DialogSelectItem(dialogItems[i, CategoryIndexPosition], dialogItems[i, FormatItemIndexPosition]);
-                }
-                syncLab.DialogClickOk();
-            }).Start();
-            syncLab.Copy();
+                syncLab.DialogSelectItem(dialogItems[i, CategoryIndexPosition], dialogItems[i, FormatItemIndexPosition]);
+            }
+            syncLab.DialogClickOk();
         }
 
         private void ExpectCopyButtonEnabled(ISyncLabController syncLab)
