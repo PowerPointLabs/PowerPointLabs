@@ -6,7 +6,7 @@
         bool IsCaption { get; set; }
         bool IsVoice { get; set; }
         string VoiceLabel { get; set; }
-        bool HasShortVersion { get; set; }
+        bool IsShortVersionIndicated { get; set; }
         string CaptionText { get; set; }
     }
 }

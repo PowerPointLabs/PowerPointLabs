@@ -10,7 +10,7 @@ namespace TestInterface
         public bool IsCaption { get; set; }
         public bool IsVoice { get; set; }
         public string VoiceLabel { get; set; }
-        public bool HasShortVersion { get; set; }
+        public bool IsShortVersionIndicated { get; set; }
         public string CaptionText { get; set; }
 
         public override bool Equals(object obj)
@@ -21,7 +21,7 @@ namespace TestInterface
                 IsCaption == other.IsCaption &&
                 IsVoice == other.IsVoice &&
                 VoiceLabel == other.VoiceLabel &&
-                HasShortVersion == other.HasShortVersion; //&&
+                IsShortVersionIndicated == other.IsShortVersionIndicated; //&&
                 //CaptionText == other.CaptionText;
         }
 
@@ -32,7 +32,7 @@ namespace TestInterface
             hashCode = hashCode * -1521134295 + IsCaption.GetHashCode();
             hashCode = hashCode * -1521134295 + IsVoice.GetHashCode();
             hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(VoiceLabel);
-            hashCode = hashCode * -1521134295 + HasShortVersion.GetHashCode();
+            hashCode = hashCode * -1521134295 + IsShortVersionIndicated.GetHashCode();
             hashCode = hashCode * -1521134295 + EqualityComparer<string>.Default.GetHashCode(CaptionText);
             return hashCode;
         }
