@@ -3,10 +3,11 @@ using System.Collections.Generic;
 
 using PowerPointLabs.ELearningLab.Service;
 using PowerPointLabs.TextCollection;
+using TestInterface;
 
 namespace PowerPointLabs.ELearningLab.ELearningWorkspace.Model
 {
-    public class ExplanationItem : ClickItem, IEquatable<ExplanationItem>
+    public class ExplanationItem : ClickItem, IEquatable<ExplanationItem>, IExplanationItem
     {
         #region public properties
         public bool IsCallout
@@ -49,7 +50,13 @@ namespace PowerPointLabs.ELearningLab.ELearningWorkspace.Model
             }
         }
 
-        public bool HasShortVersion
+        public bool HasShortVersion =>
+            IsShortVersionIndicated &&
+            !string.IsNullOrEmpty(CalloutText.Trim()) &&
+            !CaptionText.Trim().Equals(CalloutText.Trim());
+
+
+        public bool IsShortVersionIndicated
         {
             get
             {
@@ -58,11 +65,8 @@ namespace PowerPointLabs.ELearningLab.ELearningWorkspace.Model
             set
             {
                 hasShortVersion = (bool)value;
-                if (!hasShortVersion)
-                {
-                    return;
-                }
-                if (string.IsNullOrEmpty(calloutText.Trim()))
+                NotifyPropertyChanged(nameof(IsShortVersionIndicated));
+                if (hasShortVersion && string.IsNullOrEmpty(calloutText.Trim()))
                 {
                     calloutText = captionText;
                     NotifyPropertyChanged(ELearningLabText.ExplanationItem_CalloutText);
@@ -211,6 +215,7 @@ namespace PowerPointLabs.ELearningLab.ELearningWorkspace.Model
             this.tagNo = tagNo;
             hasShortVersion = !this.calloutText.Equals(this.captionText);
         }
+
         public override bool Equals(object other)
         {
             if (other == null || other.GetType() != GetType())

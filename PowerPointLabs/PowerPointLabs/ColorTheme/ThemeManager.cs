@@ -81,8 +81,8 @@ namespace PowerPointLabs.ColorThemes
             return new List<int>()
             {
                 ColorTheme.WHITE,
-                ColorTheme.LIGHT_GREY,
-                ColorTheme.DARK_GREY
+                ColorTheme.LIGHT_GRAY,
+                ColorTheme.DARK_GRAY
             };
         }
 
@@ -105,8 +105,8 @@ namespace PowerPointLabs.ColorThemes
                     _colorTheme.headingForeground = Color.FromRgb(238, 238, 238);
                     break;
                 case ColorTheme.WHITE:
-                case ColorTheme.LIGHT_GREY:
-                case ColorTheme.DARK_GREY_ALT:
+                case ColorTheme.LIGHT_GRAY:
+                case ColorTheme.DARK_GRAY_ALT:
                     _colorTheme.title = Color.FromRgb(181, 71, 42);
                     _colorTheme.background = Color.FromRgb(255, 255, 255);
                     _colorTheme.foreground = Color.FromRgb(37, 37, 37);
@@ -114,7 +114,7 @@ namespace PowerPointLabs.ColorThemes
                     _colorTheme.headingBackground = Color.FromRgb(181, 71, 42);
                     _colorTheme.headingForeground = Color.FromRgb(238, 238, 238);
                     break;
-                case ColorTheme.DARK_GREY:
+                case ColorTheme.DARK_GRAY:
                     _colorTheme.title = Color.FromRgb(181, 71, 42);
                     _colorTheme.background = Color.FromRgb(102, 102, 102);
                     _colorTheme.foreground = Color.FromRgb(238, 238, 238);

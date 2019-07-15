@@ -36,7 +36,7 @@ namespace Test.FunctionalTest
         public void BeamSyncSuccessful()
         {
             // TODO: Is there really no way to programmatically select multiple slides at once?
-            // TODO: Ideally, I want to select the slides 5,6,7,8 together and apply Synchronise Agenda on them
+            // TODO: Ideally, I want to select the slides 5,6,7,8 together and apply Synchronize Agenda on them
 
             ClickOnSlideThumbnailsPanel();
             PpOperations.SelectSlide(5);

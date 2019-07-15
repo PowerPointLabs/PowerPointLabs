@@ -15,7 +15,7 @@ namespace PowerPointLabs.AgendaLab.Templates
     /// 
     /// Each configuration must have the following:
     /// 1) The SlidePurpose of the slide.
-    /// 2) A pointer to a sync function, which is applied to synchronise the slide's contents.
+    /// 2) A pointer to a sync function, which is applied to synchronize the slide's contents.
     /// 
     /// Template Rules:
     /// - Every generated slide in the section must have a different purpose.

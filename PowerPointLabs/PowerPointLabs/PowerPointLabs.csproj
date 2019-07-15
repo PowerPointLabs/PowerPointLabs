@@ -45,7 +45,7 @@
     <PublishUrl>C:\publish_online\</PublishUrl>
     <InstallUrl>https://www.comp.nus.edu.sg/~pptlabs/download/dev/</InstallUrl>
     <TargetCulture>en</TargetCulture>
-    <ApplicationVersion>5.1.0.1</ApplicationVersion>
+    <ApplicationVersion>5.2.0.0</ApplicationVersion>
     <AutoIncrementApplicationRevision>false</AutoIncrementApplicationRevision>
     <UpdateEnabled>true</UpdateEnabled>
     <UpdateInterval>0</UpdateInterval>
@@ -183,6 +183,9 @@
   -->
   <ItemGroup>
     <Reference Include="Accessibility" />
+    <Reference Include="EyeOpen.Imaging.Processing">
+      <HintPath>..\Test\Dependency\EyeOpen.Imaging.Processing.dll</HintPath>
+    </Reference>
     <Reference Include="ImageProcessor">
       <HintPath>..\packages\ImageProcessor.1.9.5.0\lib\ImageProcessor.dll</HintPath>
     </Reference>
@@ -750,6 +753,7 @@
     <Compile Include="ELearningLab\ELearningWorkspace\Model\ClickItem\CustomItem.cs" />
     <Compile Include="ELearningLab\ELearningWorkspace\Model\ClickItem\CustomSubItem.cs" />
     <Compile Include="ELearningLab\ELearningWorkspace\Model\ClickItem\ExplanationItem.cs" />
+    <Compile Include="ELearningLab\ELearningWorkspace\Model\ClickItem\ExplanationItemExtensions.cs" />
     <Compile Include="ELearningLab\ELearningWorkspace\Model\Effect\AbstractEffect.cs" />
     <Compile Include="ELearningLab\ELearningWorkspace\Model\Effect\CustomEffect.cs" />
     <Compile Include="ELearningLab\ELearningWorkspace\Model\Effect\ELLEffect.cs" />
@@ -804,6 +808,8 @@
     <Compile Include="ShapesLab\ShapesLabUtils.cs" />
     <Compile Include="ShortcutsLab\ShortcutsLabConstants.cs" />
     <Compile Include="FunctionalTestInterface.Impl\Controller\ELearningLabController.cs" />
+    <Compile Include="FunctionalTestInterface.Impl\Windows\Constants.cs" />
+    <Compile Include="FunctionalTestInterface.Impl\Windows\MarshalWindow.cs" />
     <Compile Include="TextCollection\ELearningLabText.cs" />
     <Compile Include="HighlightLab\HighlightLabSettings.cs" />
     <Compile Include="ELearningLab\AudioGenerator\AzureVoiceGenerator\Model\Enums\AudioOutputFormat.cs" />
@@ -939,6 +945,8 @@
     <Compile Include="Views\ProcessingStatusForm.xaml.cs">
       <DependentUpon>ProcessingStatusForm.xaml</DependentUpon>
     </Compile>
+    <Compile Include="FunctionalTestInterface.Impl\Windows\WindowStackManager.cs" />
+    <Compile Include="FunctionalTestInterface.Impl\Windows\WindowUtil.cs" />
     <Compile Include="XMLMisc\Data\AudioGenSpeechData.cs" />
     <Compile Include="ZoomLab\AutoZoom.cs" />
     <Compile Include="ColorsLab\HSLColor.cs" />

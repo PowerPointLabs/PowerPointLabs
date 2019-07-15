@@ -192,7 +192,7 @@ namespace PowerPointLabs.Models
                 zoomSlideCroppedShapes.PictureFormat.CropRight += (PowerPointPresentation.Current.SlideWidth - (zoomShape.Left + zoomShape.Width));
                 zoomSlideCroppedShapes.PictureFormat.CropBottom += (PowerPointPresentation.Current.SlideHeight - (zoomShape.Top + zoomShape.Height));
 
-                LegacyShapeUtil.CopyShapePosition(zoomShape, ref zoomSlideCroppedShapes);
+                LegacyShapeUtil.CopyCenterShapePosition(zoomShape, ref zoomSlideCroppedShapes);
             }
         }
 

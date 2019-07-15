@@ -399,61 +399,83 @@ namespace PowerPointLabs.ELearningLab.Views
 
         private void CreateButton_Click(object sender, RoutedEventArgs e)
         {
-            ExplanationItem selfExplanationClickItem = new ExplanationItem(captionText: string.Empty);
-            selfExplanationClickItem.tagNo = SelfExplanationTagService.GenerateUniqueTag();
-            Items.Add(selfExplanationClickItem);
-            isSynced = false;
-            UpdateClickNumAndTriggerInItems(useWorker: false, e: null);
-            ScrollListViewToEnd();
+            AddExplanationItem(null, AddItemAtEnd);
         }
 
         private void AddItemAboveContextMenu_Click(object sender, RoutedEventArgs e)
         {
             ClickItem item = ((MenuItem)sender).CommandParameter as ClickItem;
-            ExplanationItem selfExplanationClickItem = new ExplanationItem(captionText: string.Empty);
-            selfExplanationClickItem.tagNo = SelfExplanationTagService.GenerateUniqueTag();
-            int index;
-            if (item is ExplanationItem)
-            {
-                index = Items.ToList().FindIndex(x => x is ExplanationItem
-                && ((ExplanationItem)x).TagNo == ((ExplanationItem)item).TagNo);
-            }
-            else
-            {
-                index = Items.IndexOf(item);
-            }
-            Items.Insert(index, selfExplanationClickItem);
-            isSynced = false;
-            UpdateClickNumAndTriggerInItems(useWorker: false, e: null);
-            ScrollItemToView(selfExplanationClickItem);
+            AddExplanationItem(item, AddItemAbove);
         }
 
         private void AddItemBelowContextMenu_Click(object sender, RoutedEventArgs e)
         {
             ClickItem item = ((MenuItem)sender).CommandParameter as ClickItem;
+            AddExplanationItem(item, InsertItemBelow);
+        }
+
+        /// <summary>
+        /// An action that inserts the ExplanationItem with reference to <seealso cref="ClickItem"/>
+        /// </summary>
+        /// <param name="item">Item to take positional reference.</param>
+        /// <param name="selfExplanationClickItem">Item to be inserted.</param>
+        /// <returns>Index of inserted item</returns>
+        private delegate int InsertItemAction(ClickItem item, ExplanationItem selfExplanationClickItem);
+
+        private void AddExplanationItem(ClickItem reference, InsertItemAction action)
+        {
             ExplanationItem selfExplanationClickItem = new ExplanationItem(captionText: string.Empty);
             selfExplanationClickItem.tagNo = SelfExplanationTagService.GenerateUniqueTag();
+            int index = action(reference, selfExplanationClickItem);
+            ExplanationItem template = Items.LastOrDefault(o => o is ExplanationItem &&
+                                                                GetItemIndex(o) < index)
+                                                                as ExplanationItem;
+            selfExplanationClickItem.CopyFormat(template);
+            isSynced = false;
+            UpdateClickNumAndTriggerInItems(useWorker: false, e: null);
+            ScrollItemToView(selfExplanationClickItem);
+        }
+
+        private int AddItemAtEnd(ClickItem item, ExplanationItem selfExplanationClickItem)
+        {
+            Items.Add(selfExplanationClickItem);
+            return Items.Count - 1;
+        }
+
+        private int AddItemAbove(ClickItem item, ExplanationItem selfExplanationClickItem)
+        {
+            int index = GetItemIndex(item);
+            Items.Insert(index, selfExplanationClickItem);
+            return index;
+        }
+
+        private int InsertItemBelow(ClickItem item, ExplanationItem selfExplanationClickItem)
+        {
             int index;
-            if (item is ExplanationItem)
-            {
-                index = Items.ToList().FindIndex(x => x is ExplanationItem
-                && ((ExplanationItem)x).TagNo == ((ExplanationItem)item).TagNo);
-            }
-            else
-            {
-                index = Items.IndexOf(item);
-            }
+            index = GetItemIndex(item);
             if (index < listView.Items.Count - 1)
             {
                 Items.Insert(index + 1, selfExplanationClickItem);
+                return index + 1;
             }
             else
             {
                 Items.Add(selfExplanationClickItem);
+                return Items.Count - 1;
             }
-            isSynced = false;
-            UpdateClickNumAndTriggerInItems(useWorker: false, e: null);
-            ScrollItemToView(selfExplanationClickItem);
+        }
+
+        private int GetItemIndex(ClickItem item)
+        {
+            if (item is ExplanationItem)
+            {
+                return Items.ToList().FindIndex(x => x is ExplanationItem
+                && ((ExplanationItem)x).TagNo == ((ExplanationItem)item).TagNo);
+            }
+            else
+            {
+                return Items.IndexOf(item);
+            }
         }
 
         #endregion
@@ -603,23 +625,19 @@ namespace PowerPointLabs.ELearningLab.Views
 
         private void UpdateSelfExplanationItem(ExplanationItem item, bool uncheckAzureAudio, bool uncheckWatsonAudio)
         {
+            // syncs the checkboxes based on available context (text)
             if (string.IsNullOrEmpty(item.CaptionText.Trim()))
             {
                 item.IsVoice = false;
                 item.IsCaption = false;
-                if (!item.HasShortVersion)
+                if (!item.IsShortVersionIndicated)
                 {
                     item.IsCallout = false;
                 }
             }
-            if (item.HasShortVersion && string.IsNullOrEmpty(item.CalloutText.Trim()))
+            if (item.IsShortVersionIndicated && string.IsNullOrEmpty(item.CalloutText.Trim()))
             {
                 item.IsCallout = false;
-                item.HasShortVersion = false;
-            }
-            if (item.CaptionText.Trim().Equals(item.CalloutText.Trim()))
-            {
-                item.HasShortVersion = false;
             }
             if ((uncheckAzureAudio && AudioService.IsAzureVoiceSelectedForItem(item))
                 || (uncheckWatsonAudio && AudioService.IsWatsonVoiceSelectedForItem(item)))

@@ -24,7 +24,7 @@ namespace PowerPointLabs.ColorsLab
 {
 
     /// <summary>
-    /// Interaction logic for TimerLabPaneWPF.xaml
+    /// Interaction logic for ColorsLabPaneWPF.xaml
     /// </summary>
     public partial class ColorsLabPaneWPF : UserControl
     {
@@ -520,8 +520,8 @@ namespace PowerPointLabs.ColorsLab
                     {
                         System.Windows.Media.Color mediaColor = (System.Windows.Media.Color)ColorConverter.ConvertFromString(dataString);
                         Color color = GraphicsUtil.DrawingColorFromMediaColor(mediaColor);
-
-                        SetFavoriteColorRectangle(Grid.GetColumn(rect), color);
+                        
+                        SetFavoriteColorRectangle((int)rect.Tag, color);
                     }
                 }
             }
@@ -570,7 +570,7 @@ namespace PowerPointLabs.ColorsLab
             System.Windows.Shapes.Rectangle rect = (System.Windows.Shapes.Rectangle)sender;
             if (rect != null)
             {
-                SetFavoriteColorRectangle(Grid.GetColumn(rect), _previousFillColor);
+                SetFavoriteColorRectangle((int)rect.Tag, _previousFillColor);
             }
         }
 
@@ -602,7 +602,7 @@ namespace PowerPointLabs.ColorsLab
                         System.Windows.Media.Color mediaColor = (System.Windows.Media.Color)ColorConverter.ConvertFromString(dataString);
                         Color color = GraphicsUtil.DrawingColorFromMediaColor(mediaColor);
 
-                        SetFavoriteColorRectangle(Grid.GetColumn(rect), color);
+                        SetFavoriteColorRectangle((int)rect.Tag, color);
                     }
                 }
             }

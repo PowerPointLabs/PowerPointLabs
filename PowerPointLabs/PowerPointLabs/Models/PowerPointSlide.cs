@@ -166,9 +166,9 @@ namespace PowerPointLabs.Models
         }
 
         /// <summary>
-        /// It only copies the background colour for now. Is there really no way to copy over background in general?
+        /// It only copies the background color for now. Is there really no way to copy over background in general?
         /// </summary>
-        public void CopyBackgroundColourFrom(PowerPointSlide refSlide)
+        public void CopyBackgroundColorFrom(PowerPointSlide refSlide)
         {
             Microsoft.Office.Interop.PowerPoint.FillFormat myFill = _slide.Background[1].Fill;
             Microsoft.Office.Interop.PowerPoint.FillFormat refFill = refSlide._slide.Background[1].Fill;

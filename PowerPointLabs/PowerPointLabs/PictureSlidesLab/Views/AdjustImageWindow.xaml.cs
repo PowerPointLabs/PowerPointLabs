@@ -140,7 +140,7 @@ namespace PowerPointLabs.PictureSlidesLab.Views
 
             layer.Add(_croppingAdorner);
             _frameworkElement = element;
-            SetClipColorGrey();
+            SetClipColorGray();
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -170,7 +170,7 @@ namespace PowerPointLabs.PictureSlidesLab.Views
             Top = (screenHeight / 2) - (windowHeight / 2);
         }
 
-        private void SetClipColorGrey()
+        private void SetClipColorGray()
         {
             if (_croppingAdorner != null)
             {

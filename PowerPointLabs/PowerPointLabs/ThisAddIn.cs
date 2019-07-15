@@ -870,7 +870,7 @@ namespace PowerPointLabs
             Ribbon.RefreshRibbonControl("ConvertToTooltipButton");
             Ribbon.RefreshRibbonControl("CreateCalloutButton");
             Ribbon.RefreshRibbonControl("CreateTriggerButton");
-            // To grey out the "HighlightText" button whenever non-text fragment or nothing has been selected
+            // To gray out the "HighlightText" button whenever non-text fragment or nothing has been selected
             Ribbon.RefreshRibbonControl("HighlightTextButton");
         }
 
@@ -982,7 +982,7 @@ namespace PowerPointLabs
             Trace.TraceInformation("Closing associated window...");
             CleanUp(associatedWindow);
 
-            // Refresh ribbon to grey out the menu / buttons if there are no windows open
+            // Refresh ribbon to gray out the menu / buttons if there are no windows open
             RefreshRibbonMenuButtons();
 
         }
@@ -1110,9 +1110,9 @@ namespace PowerPointLabs
                     }
                 }
             }
-            catch
+            catch (Exception e)
             {
-                //TODO: log in ThisAddIn.cs
+                Logger.LogException(e, nameof(AfterPasteEventHandler));
             }
         }
 
@@ -1279,9 +1279,9 @@ namespace PowerPointLabs
                 Ribbon.RefreshRibbonControl("ReplaceWithClipboardButton");
                 Ribbon.RefreshRibbonControl("PasteIntoGroupButton");
             }
-            catch
+            catch (Exception e)
             {
-                //TODO: log in ThisAddIn.cs
+                Logger.LogException(e, nameof(AfterCopyEventHandler));
             }
         }
         # endregion
