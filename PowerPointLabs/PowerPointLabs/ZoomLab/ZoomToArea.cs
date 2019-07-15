@@ -174,7 +174,7 @@ namespace PowerPointLabs.ZoomLab
                 zoomShapeCopy.Height = zoomShape.Height;
                 zoomShapeCopy.Width = PowerPointPresentation.Current.SlideWidth * zoomShapeCopy.Height / PowerPointPresentation.Current.SlideHeight;
             }
-            LegacyShapeUtil.CopyShapePosition(zoomShape, ref zoomShapeCopy);
+            LegacyShapeUtil.CopyCenterShapePosition(zoomShape, ref zoomShapeCopy);
 
             if (zoomShapeCopy.Width > PowerPointPresentation.Current.SlideWidth)
             {

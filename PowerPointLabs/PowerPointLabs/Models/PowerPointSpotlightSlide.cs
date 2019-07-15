@@ -74,12 +74,12 @@ namespace PowerPointLabs.Models
             if (isCallout)
             {
                 spotlightShape = this.Shapes.Paste()[1];
-                LegacyShapeUtil.CopyShapePosition(spotShape, ref spotlightShape);
+                LegacyShapeUtil.CopyCenterShapePosition(spotShape, ref spotlightShape);
             }
             else
             {
                 spotlightShape = this.Shapes.PasteSpecial(PowerPoint.PpPasteDataType.ppPastePNG)[1];
-                LegacyShapeUtil.CopyShapePosition(spotShape, ref spotlightShape);
+                LegacyShapeUtil.CopyCenterShapePosition(spotShape, ref spotlightShape);
                 CropSpotlightPictureToSlide(ref spotlightShape);
             }
 

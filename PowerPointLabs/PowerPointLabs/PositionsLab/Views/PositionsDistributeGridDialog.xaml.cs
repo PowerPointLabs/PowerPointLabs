@@ -149,7 +149,7 @@ namespace PowerPointLabs.PositionsLab.Views
                 !marginLeftValue.HasValue || marginLeftValue.GetValueOrDefault() < 0 ||
                 !marginRightValue.HasValue || marginRightValue.GetValueOrDefault() < 0)
             {
-                // TODO: Notify the user that not successfully changed
+                ShowErrorMessageBox(PositionsLabText.ErrorRepositionFail);
                 return;
             }
             
@@ -174,7 +174,7 @@ namespace PowerPointLabs.PositionsLab.Views
             if (!rowValue.HasValue || rowValue.GetValueOrDefault() == 0 ||
                 !colValue.HasValue || colValue.GetValueOrDefault() == 0)
             {
-                // TODO: Notify the user that not successfully changed
+                ShowErrorMessageBox(PositionsLabText.ErrorRepositionFail);
                 return;
             }
 
