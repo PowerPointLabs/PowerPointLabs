@@ -54,7 +54,7 @@ namespace Test.FunctionalTest
             PpOperations.ShowAllSlideNumbers();
             MessageBoxUtil.ExpectMessageBoxWillPopUp(AgendaExistsTitle, AgendaExistsContent,
                 PplFeatures.GenerateVisualAgenda, buttonNameToClick: "OK");
-
+            ThreadUtil.WaitFor(10000);
             System.Collections.Generic.List<TestInterface.ISlideData> actualSlides = PpOperations.FetchCurrentPresentationData();
             System.Collections.Generic.List<TestInterface.ISlideData> expectedSlides = PpOperations.FetchPresentationData(
                 PathUtil.GetDocTestPresentationPath("AgendaLab\\AgendaSlidesVisualWithSlideNumberDefault.pptx"));

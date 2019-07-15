@@ -25,7 +25,7 @@ namespace PowerPointLabs.AgendaLab
         #region Bullet Agenda
 
         /// <summary>
-        /// The SyncFunction used for synchronising the front bullet agenda slides.
+        /// The SyncFunction used for synchronizing the front bullet agenda slides.
         /// </summary>
         public static readonly SyncFunction SyncStartBulletAgendaSlide = (refSlide, sections, currentSection, deletedShapeNames, isNewlyGenerated, targetSlide) =>
         {
@@ -46,7 +46,7 @@ namespace PowerPointLabs.AgendaLab
         };
 
         /// <summary>
-        /// The SyncFunction used for synchronising the end bullet agenda slides.
+        /// The SyncFunction used for synchronizing the end bullet agenda slides.
         /// </summary>
         public static readonly SyncFunction SyncEndBulletAgendaSlide = (refSlide, sections, currentSection, deletedShapeNames, isNewlyGenerated, targetSlide) =>
         {
@@ -60,7 +60,7 @@ namespace PowerPointLabs.AgendaLab
         };
 
         /// <summary>
-        /// The SyncFunction used for synchronising the final bullet agenda slide.
+        /// The SyncFunction used for synchronizing the final bullet agenda slide.
         /// </summary>
         public static readonly SyncFunction SyncFinalBulletAgendaSlide = (refSlide, sections, currentSection, deletedShapeNames, isNewlyGenerated, targetSlide) =>
         {
@@ -122,7 +122,7 @@ namespace PowerPointLabs.AgendaLab
         #region Visual Agenda
 
         /// <summary>
-        /// The SyncFunction used for synchronising the Visual agenda slides (other than the last visual agenda slide).
+        /// The SyncFunction used for synchronizing the Visual agenda slides (other than the last visual agenda slide).
         /// </summary>
         public static readonly SyncFunction SyncVisualAgendaSlide = (refSlide, sections, currentSection, deletedShapeNames, isNewlyGenerated, targetSlide) =>
         {
@@ -144,7 +144,7 @@ namespace PowerPointLabs.AgendaLab
         };
 
         /// <summary>
-        /// The SyncFunction used for synchronising the last visual agenda slide.
+        /// The SyncFunction used for synchronizing the last visual agenda slide.
         /// </summary>
         public static readonly SyncFunction SyncVisualAgendaEndSlide = (refSlide, sections, currentSection, deletedShapeNames, isNewlyGenerated, targetSlide) =>
         {
@@ -237,7 +237,7 @@ namespace PowerPointLabs.AgendaLab
         #region General
 
         /// <summary>
-        /// Synchronises the shapes in the candidate slide with the shapes in the reference slide.
+        /// Synchronizes the shapes in the candidate slide with the shapes in the reference slide.
         /// Adds any shape that exists in the reference slide but is missing in the candidate slide.
         /// </summary>
         private static void SyncShapesFromReferenceSlide(PowerPointSlide refSlide, PowerPointSlide candidate, List<string> markedForDeletion)
@@ -285,7 +285,7 @@ namespace PowerPointLabs.AgendaLab
                 shapeOriginalZOrders.Add(refShape.ZOrderPosition, candidateShape);
             }
 
-            SynchroniseZOrders(shapeOriginalZOrders);
+            SynchronizeZOrders(shapeOriginalZOrders);
         }
 
         private static void CopyShapesTo(ShapeRange refShapes, PowerPointSlide candidate)
@@ -329,7 +329,7 @@ namespace PowerPointLabs.AgendaLab
             }
         }
 
-        private static void SynchroniseZOrders(SortedDictionary<int, Shape> shapeOriginalZOrders)
+        private static void SynchronizeZOrders(SortedDictionary<int, Shape> shapeOriginalZOrders)
         {
             Shape lastShape = null;
             foreach (KeyValuePair<int, Shape> entry in shapeOriginalZOrders.Reverse())

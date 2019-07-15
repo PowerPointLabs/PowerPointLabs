@@ -276,7 +276,7 @@ namespace PowerPointLabs.ZoomLab
             PowerPoint.Shape shapeGroup = sel.ShapeRange.SafeGroup();
 
             pictureOnNextSlide = nextSlide.Shapes.SafeCopyPNG(shapeGroup);
-            LegacyShapeUtil.CopyShapePosition(shapeGroup, ref pictureOnNextSlide);
+            LegacyShapeUtil.CopyCenterShapePosition(shapeGroup, ref pictureOnNextSlide);
             shapeGroup.Delete();
 
             PowerPoint.Shape slidePicture = currentSlide.Shapes.SafeCopyPNG(pictureOnNextSlide);
@@ -326,7 +326,7 @@ namespace PowerPointLabs.ZoomLab
                 nextSlidePicture.Width = selectedShape.Width;
             }
 
-            LegacyShapeUtil.CopyShapePosition(selectedShape, ref nextSlidePicture);
+            LegacyShapeUtil.CopyCenterShapePosition(selectedShape, ref nextSlidePicture);
  
             selectedShape.Visible = Office.MsoTriState.msoFalse;
             nextSlidePicture.Name = "PPTZoomInShape" + DateTime.Now.ToString("yyyyMMddHHmmssffff");
@@ -348,7 +348,7 @@ namespace PowerPointLabs.ZoomLab
                 previousSlidePicture.Width = selectedShape.Width;
             }
 
-            LegacyShapeUtil.CopyShapePosition(selectedShape, ref previousSlidePicture);
+            LegacyShapeUtil.CopyCenterShapePosition(selectedShape, ref previousSlidePicture);
 
             selectedShape.Visible = Office.MsoTriState.msoFalse;
             previousSlidePicture.Name = "PPTZoomOutShape" + DateTime.Now.ToString("yyyyMMddHHmmssffff");
@@ -411,7 +411,7 @@ namespace PowerPointLabs.ZoomLab
             PowerPoint.Shape shapeGroup = sel.ShapeRange.SafeGroup();
 
             PowerPoint.Shape previousSlidePicture = addedSlide.Shapes.SafeCopyPNG(shapeGroup);
-            LegacyShapeUtil.CopyShapePosition(shapeGroup, ref previousSlidePicture);
+            LegacyShapeUtil.CopyCenterShapePosition(shapeGroup, ref previousSlidePicture);
             previousSlidePicture.Name = "PPTZoomOutShape" + DateTime.Now.ToString("yyyyMMddHHmmssffff");
             shapeGroup.Delete();
 

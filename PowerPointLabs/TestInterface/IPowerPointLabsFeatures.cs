@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using System;
+using System.Drawing;
 
 namespace TestInterface
 {
@@ -19,6 +20,7 @@ namespace TestInterface
         void DrillDown();
         void StepBack();
         void AddZoomToArea();
+        void OpenZoomLabSettings();
         void SetZoomProperties(bool backgroundChecked, bool multiSlideChecked);
         void HighlightPoints();
         void HighlightBackground();
@@ -41,11 +43,11 @@ namespace TestInterface
         void BlurSelectedEffect();
         void BlurRemainderEffect();
         void BlurBackgroundEffect();
-        void GreyScaleRemainderEffect();
+        void GrayScaleRemainderEffect();
         void BlackAndWhiteRemainderEffect();
         void GothamRemainderEffect();
         void SepiaRemainderEffect();
-        void GreyScaleBackgroundEffect();
+        void GrayScaleBackgroundEffect();
         void BlackAndWhiteBackgroundEffect();
         void GothamBackgroundEffect();
         void SepiaBackgroundEffect();

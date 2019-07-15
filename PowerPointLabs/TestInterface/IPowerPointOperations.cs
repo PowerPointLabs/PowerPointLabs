@@ -1,8 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-
+using System.Windows;
 using Microsoft.Office.Interop.PowerPoint;
+using TestInterface.Windows;
 
 namespace TestInterface
 {

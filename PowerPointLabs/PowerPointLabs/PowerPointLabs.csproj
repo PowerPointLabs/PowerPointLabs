@@ -183,6 +183,9 @@
   -->
   <ItemGroup>
     <Reference Include="Accessibility" />
+    <Reference Include="EyeOpen.Imaging.Processing">
+      <HintPath>..\Test\Dependency\EyeOpen.Imaging.Processing.dll</HintPath>
+    </Reference>
     <Reference Include="ImageProcessor">
       <HintPath>..\packages\ImageProcessor.1.9.5.0\lib\ImageProcessor.dll</HintPath>
     </Reference>
@@ -807,6 +810,8 @@
     <Compile Include="ShapesLab\ShapesLabUtils.cs" />
     <Compile Include="ShortcutsLab\ShortcutsLabConstants.cs" />
     <Compile Include="FunctionalTestInterface.Impl\Controller\ELearningLabController.cs" />
+    <Compile Include="FunctionalTestInterface.Impl\Windows\Constants.cs" />
+    <Compile Include="FunctionalTestInterface.Impl\Windows\MarshalWindow.cs" />
     <Compile Include="TextCollection\ELearningLabText.cs" />
     <Compile Include="HighlightLab\HighlightLabSettings.cs" />
     <Compile Include="ELearningLab\AudioGenerator\AzureVoiceGenerator\Model\Enums\AudioOutputFormat.cs" />
@@ -943,6 +948,8 @@
     <Compile Include="Views\ProcessingStatusForm.xaml.cs">
       <DependentUpon>ProcessingStatusForm.xaml</DependentUpon>
     </Compile>
+    <Compile Include="FunctionalTestInterface.Impl\Windows\WindowStackManager.cs" />
+    <Compile Include="FunctionalTestInterface.Impl\Windows\WindowUtil.cs" />
     <Compile Include="XMLMisc\Data\AudioGenSpeechData.cs" />
     <Compile Include="ZoomLab\AutoZoom.cs" />
     <Compile Include="ColorsLab\HSLColor.cs" />

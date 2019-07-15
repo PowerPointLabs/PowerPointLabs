@@ -98,7 +98,7 @@ namespace PowerPointLabs.Models
             AddBackgroundImage(null, percentage: percentage, isTint: isTint);
         }
 
-        public void GreyScaleBackground()
+        public void GrayScaleBackground()
         {
             AddBackgroundImage(MatrixFilters.GreyScale);
         }

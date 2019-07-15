@@ -1,4 +1,5 @@
-﻿using System.Globalization;
+﻿using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Runtime.InteropServices;
 
@@ -51,6 +52,8 @@ namespace Test.UnitTest
                 WithWindow: MsoTriState.msoFalse);
             PpOperations = new UnitTestPpOperations(Pres, App);
             PPLClipboard.Init(PpOperations.Window, true);
+            int processId = Process.GetCurrentProcess().Id;
+            WindowWatcher.HeadlessSetup(processId);
         }
 
         [TestCleanup]
