@@ -109,7 +109,7 @@ namespace Test.FunctionalTest
                 IsCaption = false,
                 IsVoice = true,
                 VoiceLabel = "",
-                HasShortVersion = false,
+                IsShortVersionIndicated = false,
                 CaptionText = ""
             };
             ExplanationItemTemplate item2 = new ExplanationItemTemplate()
@@ -118,7 +118,7 @@ namespace Test.FunctionalTest
                 IsCaption = true,
                 IsVoice = false,
                 VoiceLabel = PplFeatures.ELearningLab.DefaultVoiceLabel,
-                HasShortVersion = false,
+                IsShortVersionIndicated = false,
                 CaptionText = ""
             };
             ExplanationItemTemplate item3 = new ExplanationItemTemplate()
@@ -127,7 +127,7 @@ namespace Test.FunctionalTest
                 IsCaption = false,
                 IsVoice = false,
                 VoiceLabel = "",
-                HasShortVersion = true,
+                IsShortVersionIndicated = true,
                 CaptionText = "Caption"
             };
             return new ExplanationItemTemplate[3] { item1, item2, item3 };

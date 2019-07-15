@@ -14,14 +14,14 @@ namespace PowerPointLabs.ELearningLab.ELearningWorkspace.Model
             self.IsCaption = template.IsCaption;
             self.IsVoice = template.IsVoice;
             self.VoiceLabel = template.VoiceLabel;
-            if (template.HasShortVersion)
+            if (template.IsShortVersionIndicated)
             {
                 self.CaptionText = template.CaptionText;
-                self.HasShortVersion = true;
+                self.IsShortVersionIndicated = true;
             }
             else
             {
-                self.HasShortVersion = false;
+                self.IsShortVersionIndicated = false;
             }
         }
 
@@ -32,7 +32,7 @@ namespace PowerPointLabs.ELearningLab.ELearningWorkspace.Model
                 self.IsCaption == other.IsCaption &&
                 self.IsVoice == other.IsVoice &&
                 self.VoiceLabel == other.VoiceLabel &&
-                self.HasShortVersion == other.HasShortVersion);
+                self.IsShortVersionIndicated == other.IsShortVersionIndicated);
         }
     }
 }
