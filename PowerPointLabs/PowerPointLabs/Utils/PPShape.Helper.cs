@@ -8,6 +8,11 @@ namespace PowerPointLabs.Utils
 {
     partial class PPShape
     {
+        private void KeepTextRotation()
+        {
+            _shape.TextFrame2.ThreeD.RotationZ += _shape.Rotation;
+        }
+
         /// <summary>
         /// Convert Autoshape to freeform
         /// </summary>
