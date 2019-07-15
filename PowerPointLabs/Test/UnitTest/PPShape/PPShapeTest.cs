@@ -1,12 +1,9 @@
 ﻿using Microsoft.Office.Interop.PowerPoint;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-using PowerPointLabs.Models;
-using PowerPointLabs.TooltipsLab;
 using PowerPointLabs.Utils;
-using Test.Util;
 
-namespace Test.UnitTest.TooltipsLab
+namespace Test.UnitTest.CommonTests
 {
     [TestClass]
     public class PPShapeTest : BaseUnitTest
