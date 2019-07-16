@@ -12,7 +12,7 @@ namespace PowerPointLabs.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "16.1.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "15.9.0.0")]
     internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
         
         private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
@@ -29,15 +29,6 @@ namespace PowerPointLabs.Properties {
         public string ReleaseType {
             get {
                 return ((string)(this["ReleaseType"]));
-            }
-        }
-        
-        [global::System.Configuration.ApplicationScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("online")]
-        public string InstallerType {
-            get {
-                return ((string)(this["InstallerType"]));
             }
         }
         
@@ -61,19 +52,28 @@ namespace PowerPointLabs.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("5.2.0.0")]
-        public string Version {
+        [global::System.Configuration.DefaultSettingValueAttribute("16 July 2019")]
+        public string ReleaseDate {
             get {
-                return ((string)(this["Version"]));
+                return ((string)(this["ReleaseDate"]));
             }
         }
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("3 July 2019")]
-        public string ReleaseDate {
+        [global::System.Configuration.DefaultSettingValueAttribute("online")]
+        public string InstallerType {
             get {
-                return ((string)(this["ReleaseDate"]));
+                return ((string)(this["InstallerType"]));
+            }
+        }
+        
+        [global::System.Configuration.ApplicationScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("5.3.0.0")]
+        public string Version {
+            get {
+                return ((string)(this["Version"]));
             }
         }
     }

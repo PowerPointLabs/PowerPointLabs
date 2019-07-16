@@ -5,20 +5,20 @@
     <Setting Name="ReleaseType" Type="System.String" Scope="Application">
       <Value Profile="(Default)">dev</Value>
     </Setting>
-    <Setting Name="InstallerType" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">online</Value>
-    </Setting>
     <Setting Name="ReleaseAddr" Type="System.String" Scope="Application">
       <Value Profile="(Default)">https://www.comp.nus.edu.sg/~pptlabs/download-78563/</Value>
     </Setting>
     <Setting Name="DevAddr" Type="System.String" Scope="Application">
       <Value Profile="(Default)">https://www.comp.nus.edu.sg/~pptlabs/download/dev/</Value>
     </Setting>
-    <Setting Name="Version" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">5.2.0.0</Value>
-    </Setting>
     <Setting Name="ReleaseDate" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">3 July 2019</Value>
+      <Value Profile="(Default)">16 July 2019</Value>
+    </Setting>
+    <Setting Name="InstallerType" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">online</Value>
+    </Setting>
+    <Setting Name="Version" Type="System.String" Scope="Application">
+      <Value Profile="(Default)">5.3.0.0</Value>
     </Setting>
   </Settings>
 </SettingsFile>
