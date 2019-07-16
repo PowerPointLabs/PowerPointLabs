@@ -5,7 +5,7 @@ using System.IO;
 
 using ImageProcessor;
 using ImageProcessor.Imaging;
-
+using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.CropLab;
 
 using Office = Microsoft.Office.Core;
@@ -50,12 +50,17 @@ namespace PowerPointLabs.EffectsLab
                 PowerPoint.Shape shape = hasManyShapes ? shapeRange.Group() : shapeRange[1];
                 float left = shape.Left;
                 float top = shape.Top;
-                shapeRange.Cut();
 
-                Utils.GraphicsUtil.ExportSlide(slide, BlurPicture);
-                BlurImage(BlurPicture, percentage);
+                PPLClipboard.Instance.LockAndRelease(() =>
+                {
+                    shapeRange.Cut();
 
-                shapeRange = slide.Shapes.Paste();
+                    Utils.GraphicsUtil.ExportSlide(slide, BlurPicture);
+                    BlurImage(BlurPicture, percentage);
+
+                    shapeRange = slide.Shapes.Paste();
+                });
+
                 shapeRange.Left = left;
                 shapeRange.Top = top;
                 if (hasManyShapes)

@@ -982,8 +982,7 @@ namespace PowerPointLabs.ColorsLab
         /// <param name="s"></param>
         private void RecreateCorruptedShape(PowerPoint.Shape s)
         {
-            s.Copy();
-            PowerPoint.Shape newShape = this.GetCurrentSlide().Shapes.Paste()[1];
+            PowerPoint.Shape newShape = this.GetCurrentSlide().Shapes.SafeCopyPlaceholder(s);
 
             newShape.Select();
 

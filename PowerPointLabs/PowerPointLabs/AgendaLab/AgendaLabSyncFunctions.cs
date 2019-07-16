@@ -5,7 +5,7 @@ using System.Text.RegularExpressions;
 
 using Microsoft.Office.Core;
 using Microsoft.Office.Interop.PowerPoint;
-
+using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.AgendaLab.Templates;
 using PowerPointLabs.Models;
 using PowerPointLabs.Utils;
@@ -296,6 +296,7 @@ namespace PowerPointLabs.AgendaLab
                 {
                     shape.Copy();
                     candidate.Shapes.Paste();
+                    //candidate.Shapes.SafeCopyPlaceholder(shape);
                 }
                 catch (COMException)
                 {

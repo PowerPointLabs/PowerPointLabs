@@ -275,6 +275,9 @@
     can be found.
   -->
   <ItemGroup>
+    <Compile Include="ActionFramework\Common\Extension\PPLClipboard.cs" />
+    <Compile Include="ActionFramework\Common\Extension\MsoPlaceholderException.cs" />
+    <Compile Include="ActionFramework\Common\Extension\PowerpointExtension.cs" />
     <Compile Include="ActionFramework\ELearningLab\ELearningLabMenu\ELearningLabMenuImageHandler.cs" />
     <Compile Include="ActionFramework\ELearningLab\ELearningLabMenu\ELearningLabMenuLabelHandler.cs" />
     <Compile Include="ActionFramework\ELearningLab\ELearningLabMenu\ELearningLabMenuSupertipHandler.cs" />
@@ -933,6 +936,7 @@
     <Compile Include="ColorTheme\ThemeExtensions.cs" />
     <Compile Include="Utils\ClipboardUtil.cs" />
     <Compile Include="ColorTheme\ColorTheme.cs" />
+    <Compile Include="Utils\ClipboardUtilData.cs" />
     <Compile Include="Utils\IWPFContainer.cs" />
     <Compile Include="Utils\RegistryWatcher.cs" />
     <Compile Include="Utils\ShapeUtil.cs" />

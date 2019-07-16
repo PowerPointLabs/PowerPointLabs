@@ -7,7 +7,7 @@ using System.Runtime.InteropServices;
 using EyeOpen.Imaging.Processing;
 using Microsoft.Office.Core;
 using Microsoft.Office.Interop.PowerPoint;
-
+using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.Models;
 using PowerPointLabs.SyncLab.ObjectFormats;
 
@@ -927,8 +927,7 @@ namespace PowerPointLabs.Utils
             }
 
             candidateShape.Delete();
-            refShape.Copy();
-            candidateShape = candidateSlide.Shapes.Paste()[1];
+            candidateShape = candidateSlide.Shapes.SafeCopyPlaceholder(refShape);
             candidateShape.Name = refShape.Name;
         }
 
@@ -1277,8 +1276,7 @@ namespace PowerPointLabs.Utils
                     // must use duplicate. there is no way to create a replacement picture
                     // as the image's source is not obtainable through the Shape API
                     var tempShape = msoPlaceHolder.Duplicate()[1];
-                    tempShape.Copy();
-                    shapeTemplate = shapesSource.Paste()[1];
+                    shapeTemplate = shapesSource.SafeCopy(tempShape); // DO NOT USE SAFECOPYPLACEHOLDER, INFINITE LOOP
                     tempShape.Delete();
                     break;
                 case PpPlaceholderType.ppPlaceholderVerticalObject:

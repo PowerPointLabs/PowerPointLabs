@@ -266,8 +266,11 @@ namespace PowerPointLabs.ShapesLab.Views
             {
                 ClipboardUtil.RestoreClipboardAfterAction(() =>
                 {
-                    this.GetAddIn().ShapePresentation.CopyShape(shape.Text);
-                    currentSlide.Shapes.Paste().Select();
+                    PPLClipboard.Instance.LockAndRelease(() =>
+                    {
+                        this.GetAddIn().ShapePresentation.CopyShape(shape.Text);
+                        currentSlide.Shapes.Paste().Select();
+                    });
                     return ClipboardUtil.ClipboardRestoreSuccess;
                 }, this.GetCurrentPresentation(), currentSlide);
             }
@@ -771,9 +774,11 @@ namespace PowerPointLabs.ShapesLab.Views
             {
                 foreach (string importCategory in importShapeGallery.Categories)
                 {
-                    importShapeGallery.CopyCategory(importCategory);
-
-                    this.GetAddIn().ShapePresentation.AddCategory(importCategory, false, true);
+                    PPLClipboard.Instance.LockAndRelease(() =>
+                    {
+                        importShapeGallery.CopyCategory(importCategory);
+                        this.GetAddIn().ShapePresentation.AddCategory(importCategory, false, true);
+                    });
 
                     _categoryBinding.Add(new CustomComboBoxItem(importCategory, null));
                     _contextMenuCategoryBinding.Add(new CustomMenuItem(importCategory, MoveShapeClick));
@@ -799,8 +804,12 @@ namespace PowerPointLabs.ShapesLab.Views
 
             ClipboardUtil.RestoreClipboardAfterAction(() =>
             {
-                importShapeGallery.CopyShape(shapeName);
-                shapeName = this.GetAddIn().ShapePresentation.AddShape(pres, currentSlide, null, shapeName, fromClipBoard: true);
+                PPLClipboard.Instance.LockAndRelease(() =>
+                {
+                    importShapeGallery.CopyShape(shapeName);
+                    shapeName = this.GetAddIn().ShapePresentation.AddShape(pres, currentSlide, null, shapeName, fromClipBoard: true);
+                });
+
                 string exportPath = Path.Combine(CurrentShapeFolderPath, shapeName + ".png");
 
                 GraphicsUtil.ExportShape(shapeRange, exportPath);

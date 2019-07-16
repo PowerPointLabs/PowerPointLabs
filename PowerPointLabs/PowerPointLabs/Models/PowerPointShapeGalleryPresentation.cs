@@ -7,7 +7,7 @@ using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
 using Microsoft.Office.Interop.PowerPoint;
-
+using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.TextCollection;
 using PowerPointLabs.Utils;
 
@@ -78,6 +78,9 @@ namespace PowerPointLabs.Models
         # endregion
 
         # region API
+        /// <summary>
+        /// Remember to lock/release clipboard when using from clipboard!
+        /// </summary>
         public void AddCategory(string name, bool setAsDefault = true, bool fromClipBoard = false)
         {
             int index = FindCategoryIndex(name, setAsDefault);
@@ -97,6 +100,10 @@ namespace PowerPointLabs.Models
 
             if (fromClipBoard)
             {
+                if (!PPLClipboard.Instance.IsLocked)
+                {
+                    throw new Exception("Clipboard is not locked before pasting!");
+                }
                 newSlide.Shapes.Paste();
                 categoryNameBox = RetrieveCategoryNameBox(newSlide);
             }
@@ -130,6 +137,11 @@ namespace PowerPointLabs.Models
             }
             else
             {
+                if (!PPLClipboard.Instance.IsLocked)
+                {
+                    throw new Exception("Clipboard is not locked before copying!");
+                }
+
                 return AddShape(name, category);
             }
         }
@@ -143,17 +155,29 @@ namespace PowerPointLabs.Models
 
         public void CopyCategory(string name)
         {
+            if (!PPLClipboard.Instance.IsLocked)
+            {
+                throw new Exception("Clipboard is not locked before copying!");
+            }
             int index = FindCategoryIndex(name);
             Presentation.Slides[index].Shapes.Range().Copy();
         }
 
         public void CopyShape()
         {
+            if (!PPLClipboard.Instance.IsLocked)
+            {
+                throw new Exception("Clipboard is not locked before copying!");
+            }
             _defaultCategory.Shapes.Range().Copy();
         }
 
         public void CopyShape(string name)
         {
+            if (!PPLClipboard.Instance.IsLocked)
+            {
+                throw new Exception("Clipboard is not locked before copying!");
+            }
             List<Shape> shapes = _defaultCategory.GetShapesWithRule(GenerateNameSearchPattern(name));
 
             _defaultCategory.Shapes.Range(shapes.Select(item => item.Name).ToArray()).Copy();
@@ -161,6 +185,10 @@ namespace PowerPointLabs.Models
 
         public void CopyShape(IEnumerable<string> nameList)
         {
+            if (!PPLClipboard.Instance.IsLocked)
+            {
+                throw new Exception("Clipboard is not locked before copying!");
+            }
             List<string> fullList = new List<string>();
 
             foreach (string name in nameList)
@@ -187,8 +215,12 @@ namespace PowerPointLabs.Models
 
             ClipboardUtil.RestoreClipboardAfterAction(() =>
             {
-                _defaultCategory.Shapes.Range(shapes.Select(item => item.Name).ToArray()).Copy();
-                return destCategory.Shapes.Paste();
+                ShapeRange result = PPLClipboard.Instance.LockAndRelease(() =>
+                {
+                    _defaultCategory.Shapes.Range(shapes.Select(item => item.Name).ToArray()).Copy();
+                    return destCategory.Shapes.Paste();
+                });
+                return result;
             }, pres, origSlide);
 
 
@@ -216,8 +248,12 @@ namespace PowerPointLabs.Models
 
             ClipboardUtil.RestoreClipboardAfterAction(() =>
             {
-                _defaultCategory.Shapes.Range(shapes.Select(item => item.Name).ToArray()).Cut();
-                return destCategory.Shapes.Paste();
+                ShapeRange result = PPLClipboard.Instance.LockAndRelease(() =>
+                {
+                    _defaultCategory.Shapes.Range(shapes.Select(item => item.Name).ToArray()).Cut();
+                    return destCategory.Shapes.Paste();
+                });
+                return result;
             }, pres, origSlide);
 
             Save();
@@ -374,7 +410,11 @@ namespace PowerPointLabs.Models
                 if (Slides.All(category => category.Name.ToLower() != categoryName.ToLower()))
                 {
                     categoryLost = true;
-                    AddCategory(categoryName, false, true);
+                    PPLClipboard.Instance.LockAndRelease(() =>
+                    {
+                        // not sure why fromClipboard is true here
+                        AddCategory(categoryName, false, true);
+                    });
                 }
             }
 

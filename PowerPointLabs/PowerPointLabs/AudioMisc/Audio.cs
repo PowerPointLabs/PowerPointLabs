@@ -6,6 +6,7 @@ using Microsoft.Office.Interop.PowerPoint;
 
 using PowerPointLabs.Models;
 using PowerPointLabs.TextCollection;
+using PowerPointLabs.Utils;
 
 namespace PowerPointLabs.AudioMisc
 {
@@ -120,9 +121,8 @@ namespace PowerPointLabs.AudioMisc
                 // name.
                 try
                 {
-                    Shape audioShape = AudioHelper.InsertAudioFileOnSlide(slide, SaveName);
+                    Shape audioShape = GraphicsUtil.AddAudioShapeFromFile(slide, SaveName);
                     audioShape.Name = "#";
-                    slide.RemoveAnimationsForShape(audioShape);
 
                     if (isOnClick)
                     {

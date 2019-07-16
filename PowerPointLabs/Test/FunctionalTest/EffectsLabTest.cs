@@ -79,6 +79,7 @@ namespace Test.FunctionalTest
             PpOperations.SelectSlide(startIdx);
             PpOperations.SelectShape("selectMe");
             effectAction.Invoke();
+            ThreadUtil.WaitFor(100);
             AssertIsSame(startIdx, startIdx + 2);
             AssertIsSame(startIdx + 1, startIdx + 3);
         }

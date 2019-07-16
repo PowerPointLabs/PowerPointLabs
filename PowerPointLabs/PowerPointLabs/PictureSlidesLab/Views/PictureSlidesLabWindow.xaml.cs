@@ -30,7 +30,6 @@ using PowerPointLabs.Utils;
 using PowerPointLabs.WPF.Observable;
 
 using ButtonBase = System.Windows.Controls.Primitives.ButtonBase;
-using Clipboard = System.Windows.Forms.Clipboard;
 using DragEventArgs = System.Windows.DragEventArgs;
 using Forms = System.Windows.Forms;
 using KeyEventArgs = System.Windows.Input.KeyEventArgs;
@@ -330,8 +329,8 @@ namespace PowerPointLabs.PictureSlidesLab.Views
         {
             try
             {
-                System.Drawing.Image pastedPicture = Clipboard.GetImage();
-                StringCollection pastedFiles = Clipboard.GetFileDropList();
+                System.Drawing.Image pastedPicture = PPLClipboard.Instance.GetImage();
+                StringCollection pastedFiles = PPLClipboard.Instance.GetFileDropList();
 
                 if (pastedPicture == null &&
                     (pastedFiles == null || pastedFiles.Count == 0))
