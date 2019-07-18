@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Windows.Forms;
 
 using Microsoft.Office.Interop.PowerPoint;
+
 using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.Models;
@@ -72,13 +73,12 @@ namespace PowerPointLabs.ShortcutsLab
 
             ClipboardUtil.RestoreClipboardAfterAction(() =>
             {
-                shape.Copy();
                 float x = shape.Left;
                 float y = shape.Top;
                 float width = shape.Width;
                 float height = shape.Height;
+                PowerPoint.Shape pic = slide.Shapes.SafeCopyPNG(shape);
                 shape.Delete();
-                PowerPoint.Shape pic = slide.Shapes.PasteSpecial(PowerPoint.PpPasteDataType.ppPastePNG)[1];
                 pic.Left = x + (width - pic.Width) / 2;
                 pic.Top = y + (height - pic.Height) / 2;
                 pic.Rotation = rotation;

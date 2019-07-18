@@ -135,6 +135,7 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl.Controller
                     ExplanationItem item2 = CreateExplanationItem();
                     item2.CaptionText = "Test self explanation item 2";
                     item2.CalloutText = "This is a shorter callout for self explanation item 2";
+                    item2.IsShortVersionIndicated = true;
                     item2.IsCaption = true;
                     item2.IsCallout = true;
                     ExplanationItem item3 = CreateExplanationItem();

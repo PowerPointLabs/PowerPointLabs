@@ -14,7 +14,7 @@ using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
 using Microsoft.Office.Tools;
-
+using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.AutoUpdate;
 using PowerPointLabs.CaptionsLab;
@@ -698,6 +698,7 @@ namespace PowerPointLabs
             SetupAfterCopyPasteHandler();
 
             SaveLabSettings.InitialiseLocalStorage();
+            PPLClipboard.Init(new IntPtr(Application.HWND));
 
             // According to MSDN, when more than 1 event are triggered, callback's invoking sequence
             // follows the defining order. I.e. the earlier you defined, the earlier it will be
@@ -1016,6 +1017,7 @@ namespace PowerPointLabs
             ThemeManager.TearDown();
 
             UIThreadExecutor.TearDown();
+            PPLClipboard.Instance.Teardown();
             Trace.TraceInformation(DateTime.Now.ToString("yyyyMMddHHmmss") + ": PowerPointLabs Exiting");
             Trace.Close();
             if (_ftChannel != null)
@@ -1059,8 +1061,7 @@ namespace PowerPointLabs
                         catch
                         {
                             //handling corrupted shapes
-                            shape.Copy();
-                            PowerPoint.Shape fixedShape = _previousSlideForCopyEvent.Shapes.Paste()[1];
+                            PowerPoint.Shape fixedShape = _previousSlideForCopyEvent.Shapes.SafeCopyPlaceholder(shape);
                             fixedShape.Left = shape.Left;
                             fixedShape.Top = shape.Top;
                             while (fixedShape.ZOrderPosition > shape.ZOrderPosition)
@@ -1110,9 +1111,9 @@ namespace PowerPointLabs
                     }
                 }
             }
-            catch
+            catch (Exception e)
             {
-                //TODO: log in ThisAddIn.cs
+                Logger.LogException(e, nameof(AfterPasteEventHandler));
             }
         }
 
@@ -1279,9 +1280,9 @@ namespace PowerPointLabs
                 Ribbon.RefreshRibbonControl("ReplaceWithClipboardButton");
                 Ribbon.RefreshRibbonControl("PasteIntoGroupButton");
             }
-            catch
+            catch (Exception e)
             {
-                //TODO: log in ThisAddIn.cs
+                Logger.LogException(e, nameof(AfterCopyEventHandler));
             }
         }
         # endregion

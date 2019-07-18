@@ -183,6 +183,9 @@
   -->
   <ItemGroup>
     <Reference Include="Accessibility" />
+    <Reference Include="EyeOpen.Imaging.Processing">
+      <HintPath>..\Test\Dependency\EyeOpen.Imaging.Processing.dll</HintPath>
+    </Reference>
     <Reference Include="ImageProcessor">
       <HintPath>..\packages\ImageProcessor.1.9.5.0\lib\ImageProcessor.dll</HintPath>
     </Reference>
@@ -272,6 +275,9 @@
     can be found.
   -->
   <ItemGroup>
+    <Compile Include="ActionFramework\Common\Extension\PPLClipboard.cs" />
+    <Compile Include="ActionFramework\Common\Extension\MsoPlaceholderException.cs" />
+    <Compile Include="ActionFramework\Common\Extension\PowerpointExtension.cs" />
     <Compile Include="ActionFramework\ELearningLab\ELearningLabMenu\ELearningLabMenuImageHandler.cs" />
     <Compile Include="ActionFramework\ELearningLab\ELearningLabMenu\ELearningLabMenuLabelHandler.cs" />
     <Compile Include="ActionFramework\ELearningLab\ELearningLabMenu\ELearningLabMenuSupertipHandler.cs" />
@@ -804,6 +810,8 @@
     <Compile Include="ShapesLab\ShapesLabUtils.cs" />
     <Compile Include="ShortcutsLab\ShortcutsLabConstants.cs" />
     <Compile Include="FunctionalTestInterface.Impl\Controller\ELearningLabController.cs" />
+    <Compile Include="FunctionalTestInterface.Impl\Windows\Constants.cs" />
+    <Compile Include="FunctionalTestInterface.Impl\Windows\MarshalWindow.cs" />
     <Compile Include="TextCollection\ELearningLabText.cs" />
     <Compile Include="HighlightLab\HighlightLabSettings.cs" />
     <Compile Include="ELearningLab\AudioGenerator\AzureVoiceGenerator\Model\Enums\AudioOutputFormat.cs" />
@@ -928,6 +936,7 @@
     <Compile Include="ColorTheme\ThemeExtensions.cs" />
     <Compile Include="Utils\ClipboardUtil.cs" />
     <Compile Include="ColorTheme\ColorTheme.cs" />
+    <Compile Include="Utils\ClipboardUtilData.cs" />
     <Compile Include="Utils\IWPFContainer.cs" />
     <Compile Include="Utils\RegistryWatcher.cs" />
     <Compile Include="Utils\ShapeUtil.cs" />
@@ -939,6 +948,8 @@
     <Compile Include="Views\ProcessingStatusForm.xaml.cs">
       <DependentUpon>ProcessingStatusForm.xaml</DependentUpon>
     </Compile>
+    <Compile Include="FunctionalTestInterface.Impl\Windows\WindowStackManager.cs" />
+    <Compile Include="FunctionalTestInterface.Impl\Windows\WindowUtil.cs" />
     <Compile Include="XMLMisc\Data\AudioGenSpeechData.cs" />
     <Compile Include="ZoomLab\AutoZoom.cs" />
     <Compile Include="ColorsLab\HSLColor.cs" />

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 
 using Microsoft.Office.Core;
-
+using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.Models;
 using PowerPointLabs.SyncLab.ObjectFormats;
 using PowerPointLabs.TextCollection;
@@ -92,8 +92,7 @@ namespace PowerPointLabs.SyncLab
             {
                 try
                 {
-                    shape.Copy();
-                    copiedShape = Slides[0].Shapes.Paste()[1];
+                    copiedShape = Slides[0].Shapes.SafeCopyPlaceholder(shape);
                 }
                 catch
                 {

@@ -26,6 +26,7 @@ namespace Test.FunctionalTest
         [TestCategory("FT")]
         public void FT_CreateSelfExplanationTest()
         {
+            PpOperations.MaximizeWindow();
             PpOperations.SelectSlide(TestSyncExplanationItemSlideNo);
             IELearningLabController eLearningLab = PplFeatures.ELearningLab;
             eLearningLab.OpenPane();
@@ -34,14 +35,15 @@ namespace Test.FunctionalTest
             TestSyncExplanationItems(eLearningLab);
 
             PpOperations.SelectSlide(TestReorderExplanationItemSlideNo);
-            ThreadUtil.WaitFor(5000);
+            ThreadUtil.WaitFor(1000);
             eLearningLab.AddSelfExplanationItem();
             TestReorderExplanationItems(eLearningLab);
 
             PpOperations.SelectSlide(TestDeleteExplanationItemSlideNo);
-            ThreadUtil.WaitFor(5000);
+            ThreadUtil.WaitFor(1000);
             eLearningLab.AddSelfExplanationItem();
             TestDeleteExplanationItems(eLearningLab);
+            ThreadUtil.WaitFor(10000);
         }
 
         [TestMethod]
@@ -107,7 +109,7 @@ namespace Test.FunctionalTest
                 IsCaption = false,
                 IsVoice = true,
                 VoiceLabel = "",
-                HasShortVersion = false,
+                IsShortVersionIndicated = false,
                 CaptionText = ""
             };
             ExplanationItemTemplate item2 = new ExplanationItemTemplate()
@@ -116,7 +118,7 @@ namespace Test.FunctionalTest
                 IsCaption = true,
                 IsVoice = false,
                 VoiceLabel = PplFeatures.ELearningLab.DefaultVoiceLabel,
-                HasShortVersion = false,
+                IsShortVersionIndicated = false,
                 CaptionText = ""
             };
             ExplanationItemTemplate item3 = new ExplanationItemTemplate()
@@ -125,7 +127,7 @@ namespace Test.FunctionalTest
                 IsCaption = false,
                 IsVoice = false,
                 VoiceLabel = "",
-                HasShortVersion = true,
+                IsShortVersionIndicated = true,
                 CaptionText = "Caption"
             };
             return new ExplanationItemTemplate[3] { item1, item2, item3 };
@@ -135,8 +137,9 @@ namespace Test.FunctionalTest
         {
             eLearningLab.Sync();
             Slide expSlide = PpOperations.SelectSlide(TestSyncExplanationItemSlideNo);
+            ThreadUtil.WaitFor(1000);
             Slide actualSlide = PpOperations.SelectSlide(ExpectedSyncExplanationItemSlideNo);
-            SlideUtil.IsSameLooking(expSlide, actualSlide, similarityTolerance: 0.9);
+            SlideUtil.IsSameLooking(expSlide, actualSlide, similarityTolerance: 0.99);
         }
 
         private void TestReorderExplanationItems(IELearningLabController eLearningLab)
@@ -144,8 +147,9 @@ namespace Test.FunctionalTest
             eLearningLab.Reorder();
             eLearningLab.Sync();
             Slide expSlide = PpOperations.SelectSlide(TestReorderExplanationItemSlideNo);
+            ThreadUtil.WaitFor(1000);
             Slide actualSlide = PpOperations.SelectSlide(ExpectedReorderExplanationItemSlideNo);
-            SlideUtil.IsSameLooking(expSlide, actualSlide, similarityTolerance: 0.9);
+            SlideUtil.IsSameLooking(expSlide, actualSlide, similarityTolerance: 0.99);
         }
 
         private void TestDeleteExplanationItems(IELearningLabController eLearningLab)
@@ -153,8 +157,9 @@ namespace Test.FunctionalTest
             eLearningLab.Delete();
             eLearningLab.Sync();
             Slide expSlide = PpOperations.SelectSlide(TestDeleteExplanationItemSlideNo);
+            ThreadUtil.WaitFor(1000);
             Slide actualSlide = PpOperations.SelectSlide(ExpectedDeleteExplanationItemSlideNo);
-            SlideUtil.IsSameLooking(expSlide, actualSlide, similarityTolerance: 0.9);
+            SlideUtil.IsSameLooking(expSlide, actualSlide, similarityTolerance: 0.99);
         }
     }
 }
