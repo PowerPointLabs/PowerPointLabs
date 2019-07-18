@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Windows.Forms;
 
 using Microsoft.Office.Interop.PowerPoint;
-
+using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.Models;
 using PowerPointLabs.TextCollection;
@@ -105,38 +105,13 @@ namespace PowerPointLabs.ShortcutsLab
 
         private static ShapeRange GetShapeRangeFromSelection(Selection selection)
         {
-            return selection.HasChildShapeRange ? selection.ChildShapeRange : selection.ShapeRange;
+            return selection.ShapeRange;
         }
 
         private static PowerPoint.Shape GetShapeFromShapeRange(PowerPoint.ShapeRange shapeRange)
         {
-            List<ShapeRange> regroupShapes = new List<ShapeRange>();
-            foreach (Shape shape in shapeRange)
-            {
-                ShapeRange shapes = GetParentShapeRange(shape);
-                if (shapes != null)
-                {
-                    regroupShapes.Add(shapes);
-                }
-            }
-            PowerPoint.Shape result = shapeRange.Count > 1 ? shapeRange.Group() : shapeRange[1];
-            foreach (ShapeRange regroupShapeRange in regroupShapes)
-            {
-                regroupShapeRange.Regroup();
-            }
-            return result;
+            return shapeRange.Count > 1 ? shapeRange.Group() : shapeRange[1];
         }
 
-        private static ShapeRange GetParentShapeRange(Shape shape)
-        {
-            try
-            {
-                return shape.ParentGroup.Ungroup();
-            }
-            catch
-            {
-                return null;
-            }
-        }
     }
 }
