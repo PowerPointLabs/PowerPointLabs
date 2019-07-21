@@ -148,7 +148,7 @@ namespace PowerPointLabs.ZoomLab
                 PowerPointSlide previousSlide = GetPreviousSlide(currentSlide, deletePreviouslyAdded);
 
                 PowerPoint.Shape previousSlidePicture = null, shapeToZoom = null;
-                
+
                 currentSlide.HideIndicator();
                 if (ZoomLabSettings.BackgroundZoomChecked)
                 {
@@ -327,7 +327,7 @@ namespace PowerPointLabs.ZoomLab
             }
 
             LegacyShapeUtil.CopyCenterShapePosition(selectedShape, ref nextSlidePicture);
- 
+
             selectedShape.Visible = Office.MsoTriState.msoFalse;
             nextSlidePicture.Name = "PPTZoomInShape" + DateTime.Now.ToString("yyyyMMddHHmmssffff");
 
@@ -402,7 +402,7 @@ namespace PowerPointLabs.ZoomLab
                     PowerPoint.Shape shapeCopy = addedSlide.Shapes.SafeCopyPlaceholder(sh);
                     LegacyShapeUtil.CopyShapeAttributes(sh, ref shapeCopy);
                     copiedShapes.Add(shapeCopy);
-                } 
+                }
             }
 
             Globals.ThisAddIn.Application.ActiveWindow.View.GotoSlide(addedSlide.Index);
@@ -430,42 +430,9 @@ namespace PowerPointLabs.ZoomLab
         {
             PowerPointSlide slideWithoutEntryAnimations = slideToAdd.Duplicate();
             slideWithoutEntryAnimations.DeleteEntryAnimationShapes();
-            PowerPoint.Shape result = AddSlideAsShape(slideWithoutEntryAnimations, targetSlide);
+            PowerPoint.Shape result = GraphicsUtil.AddSlideAsShape(slideWithoutEntryAnimations, targetSlide);
             slideWithoutEntryAnimations.Delete();
             return result;
-        }
-
-        private static PowerPoint.Shape AddSlideAsShape(PowerPointSlide slideToAdd, PowerPointSlide targetSlide)
-        {
-            try
-            {
-                // Export the slide as .png to a temporary location, then add it to shapes.
-                // This yields a higher quality image compared to copy-pasting slide as image.
-                string tempFilePath = FileDir.GetTemporaryPngFilePath();
-                GraphicsUtil.ExportSlide(slideToAdd, tempFilePath);
-                PowerPoint.Shape slideAsShape = targetSlide.Shapes.AddPicture2(tempFilePath,
-                                                                                 Microsoft.Office.Core.MsoTriState.msoFalse,
-                                                                                 Microsoft.Office.Core.MsoTriState.msoTrue,
-                                                                                 0,
-                                                                                 0);
-                try
-                {
-                    FileDir.DeleteFile(tempFilePath);
-                }
-                catch (Exception)
-                {
-                    return slideAsShape;
-                }
-                return slideAsShape;
-            }
-            catch (Exception)
-            {
-                // It is possible that there could permissions-related issues that cause user to be unable to create/delete files.
-                // In that case, we proceed with copy-pasting the slide as image.
-                slideToAdd.Copy();
-                PowerPoint.Shape slideAsShape = targetSlide.Shapes.PasteSpecial(PowerPoint.PpPasteDataType.ppPastePNG)[1];
-                return slideAsShape;
-            }
         }
     }
 }
