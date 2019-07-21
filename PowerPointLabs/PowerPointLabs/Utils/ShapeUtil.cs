@@ -215,7 +215,7 @@ namespace PowerPointLabs.Utils
 
             if (selection.HasChildShapeRange)
             {
-                return selection.ChildShapeRange.Count == 1;
+                return selection.ChildShapeRange?.Count == 1;
             }
 
             return selection.ShapeRange.Count == 1;

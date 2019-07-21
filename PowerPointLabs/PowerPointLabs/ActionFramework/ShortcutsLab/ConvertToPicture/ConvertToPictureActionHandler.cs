@@ -1,5 +1,4 @@
-﻿using System.Windows.Forms;
-using Microsoft.Office.Interop.PowerPoint;
+﻿using Microsoft.Office.Interop.PowerPoint;
 
 using PowerPointLabs.ActionFramework.Common.Attribute;
 using PowerPointLabs.ActionFramework.Common.Extension;
@@ -19,11 +18,7 @@ namespace PowerPointLabs.ActionFramework.ShortcutsLab
             PowerPointPresentation pres = this.GetCurrentPresentation();
             PowerPointSlide slide = this.GetCurrentSlide();
             Selection selection = GetSelection();
-            if (selection == null)
-            {
-                MessageBox.Show("The shape selection has changed.", "Please try again");
-                return;
-            }
+
             ConvertToPicture.Convert(pres, slide, selection);
         }
 
@@ -39,19 +34,7 @@ namespace PowerPointLabs.ActionFramework.ShortcutsLab
 
         private Selection DuplicateChildAsSelection(Selection selection)
         {
-            ShapeRange shapeRange = null;
-            int numTries = 0;
-
-            while (shapeRange == null && numTries < 50)
-            {
-                shapeRange = RegroupChildShapeRange(selection);
-                numTries++;
-            }
-
-            if (shapeRange == null)
-            {
-                return null;
-            }
+            ShapeRange shapeRange = RegroupChildShapeRange(selection);
 
             selection.Unselect();
             shapeRange.Select();
@@ -62,23 +45,9 @@ namespace PowerPointLabs.ActionFramework.ShortcutsLab
         private static ShapeRange RegroupChildShapeRange(Selection selection)
         {
             ShapeRange childShapeRange = selection.ChildShapeRange;
-            ShapeRange oldShapeRange = null;
-            try
-            {
-                oldShapeRange = selection.ShapeRange.Ungroup();
-                //childShapeRange[1].ParentGroup.Ungroup();
-            }
-            catch
-            {
-                // when an undo is performed and
-                // selecting a different number of shapes in a group, will throw exception
-                return null;
-            }
+            ShapeRange oldShapeRange = selection.ShapeRange.Ungroup();
+
             ShapeRange shapeRange = childShapeRange.Duplicate();
-            if (oldShapeRange != null)
-            {
-                oldShapeRange.Regroup();
-            }
             return shapeRange;
         }
 
