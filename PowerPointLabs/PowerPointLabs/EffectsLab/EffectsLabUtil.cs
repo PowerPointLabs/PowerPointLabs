@@ -65,11 +65,7 @@ namespace PowerPointLabs.EffectsLab
 
             try
             {
-                ShapeRange shapeRange = selection.ShapeRange;
-                if (selection.HasChildShapeRange)
-                {
-                    shapeRange = selection.ChildShapeRange;
-                }
+                ShapeRange shapeRange = ShapeUtil.GetShapeRange(selection);
 
                 if (shapeRange.Count != 0)
                 {

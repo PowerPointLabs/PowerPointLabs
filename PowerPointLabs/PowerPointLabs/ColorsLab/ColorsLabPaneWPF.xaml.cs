@@ -874,14 +874,9 @@ namespace PowerPointLabs.ColorsLab
                     return;
                 }
 
-                if (selection.Type == PowerPoint.PpSelectionType.ppSelectionShapes &&
-                    selection.HasChildShapeRange)
+                if (selection.Type == PowerPoint.PpSelectionType.ppSelectionShapes)
                 {
-                    _selectedShapes = selection.ChildShapeRange;
-                }
-                else if (selection.Type == PowerPoint.PpSelectionType.ppSelectionShapes)
-                {
-                    _selectedShapes = selection.ShapeRange;
+                    _selectedShapes = ShapeUtil.GetShapeRange(selection);
                 }
                 else if (selection.Type == PowerPoint.PpSelectionType.ppSelectionText)
                 {

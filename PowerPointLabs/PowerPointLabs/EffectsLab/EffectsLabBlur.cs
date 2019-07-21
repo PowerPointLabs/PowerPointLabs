@@ -7,7 +7,7 @@ using ImageProcessor;
 using ImageProcessor.Imaging;
 using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.CropLab;
-
+using PowerPointLabs.Utils;
 using Office = Microsoft.Office.Core;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
@@ -38,11 +38,7 @@ namespace PowerPointLabs.EffectsLab
 
         public static PowerPoint.ShapeRange BlurSelected(Models.PowerPointSlide slide, PowerPoint.Selection selection, int percentage)
         {
-            PowerPoint.ShapeRange shapeRange = selection.ShapeRange;
-            if (selection.HasChildShapeRange)
-            {
-                shapeRange = selection.ChildShapeRange;
-            }
+            PowerPoint.ShapeRange shapeRange = ShapeUtil.GetShapeRange(selection);
 
             try
             {
