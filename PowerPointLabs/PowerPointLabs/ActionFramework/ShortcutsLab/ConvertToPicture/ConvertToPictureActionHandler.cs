@@ -42,12 +42,12 @@ namespace PowerPointLabs.ActionFramework.ShortcutsLab
             return selection;
         }
 
-        private static ShapeRange RegroupChildShapeRange(Selection selection)
+        private ShapeRange RegroupChildShapeRange(Selection selection)
         {
-            ShapeRange childShapeRange = selection.ChildShapeRange;
             ShapeRange oldShapeRange = selection.ShapeRange.Ungroup();
 
-            ShapeRange shapeRange = childShapeRange.Duplicate();
+            ShapeRange shapeRange = this.GetCurrentSelection().ShapeRange.Duplicate();
+            oldShapeRange.Regroup();
             return shapeRange;
         }
 
