@@ -5,7 +5,7 @@ using System.Runtime.Remoting;
 
 using Microsoft.Office.Interop.PowerPoint;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-
+using PowerPointLabs.ActionFramework.Common.Extension;
 using Test.Base;
 using Test.Util;
 
@@ -80,12 +80,15 @@ namespace Test.FunctionalTest
             ShapeRange shapeToBeCopied = PpOperations.SelectShape(shapeNameToBeCopied);
             Assert.AreEqual(1, shapeToBeCopied.Count);
 
-            // Add this shape to clipboard
-            shapeToBeCopied.Copy();
-            action();
+            ShapeRange newShape = PPLClipboard.Instance.LockAndRelease(() =>
+            {
+                // Add this shape to clipboard
+                shapeToBeCopied.Copy();
+                action();
 
-            // Paste whatever in clipboard
-            ShapeRange newShape = actualSlide.Shapes.Paste();
+                // Paste whatever in clipboard
+                return actualSlide.Shapes.Paste();
+            });
 
             // Check if pasted shape is the same as the shape added to clipboard originally
             Assert.AreEqual(shapeNameToBeCopied, newShape.Name);
@@ -159,6 +162,7 @@ namespace Test.FunctionalTest
             MessageBoxUtil.ExpectMessageBoxWillPopUp(
                 "PowerPointLabs FT", "{*}",
                 PpOperations.ActivatePresentation, null, 5, 10000);
+            PPLClipboard.Init(PpOperations.Window, true);
         }
 
         private void TeardownWindowWatching()
@@ -214,6 +218,7 @@ namespace Test.FunctionalTest
 
         private void WaitForPpInstanceToClose()
         {
+            PPLClipboard.Instance?.Teardown();
             int retry = 5;
             while (Process.GetProcessesByName(Constants.pptProcess).Length > 0
                 && retry > 0)

@@ -139,8 +139,7 @@ namespace PowerPointLabs.Models
             float finalHeightMagnify = referenceShape.Height;
             float initialHeightMagnify = zoomShape.Height;
 
-            zoomShape.Copy();
-            PowerPoint.Shape zoomShapeCopy = _slide.Shapes.Paste()[1];
+            PowerPoint.Shape zoomShapeCopy = _slide.Shapes.SafeCopyPlaceholder(zoomShape);
             LegacyShapeUtil.CopyShapeAttributes(zoomShape, ref zoomShapeCopy);
 
             Globals.ThisAddIn.Application.ActiveWindow.View.GotoSlide(_slide.SlideIndex);

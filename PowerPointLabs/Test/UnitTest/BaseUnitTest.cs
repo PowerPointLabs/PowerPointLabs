@@ -5,7 +5,7 @@ using System.Runtime.InteropServices;
 
 using Microsoft.Office.Core;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-
+using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.Utils;
 
 using Test.Base;
@@ -51,6 +51,7 @@ namespace Test.UnitTest
                 PathUtil.GetDocTestPath() + GetTestingSlideName(),
                 WithWindow: MsoTriState.msoFalse);
             PpOperations = new UnitTestPpOperations(Pres, App);
+            PPLClipboard.Init(PpOperations.Window, true);
             int processId = Process.GetCurrentProcess().Id;
             WindowWatcher.HeadlessSetup(processId);
         }
@@ -58,6 +59,7 @@ namespace Test.UnitTest
         [TestCleanup]
         public void TearDown()
         {
+            PPLClipboard.Instance.Teardown();
             if (TestContext.CurrentTestOutcome != UnitTestOutcome.Passed)
             {
                 if (!Directory.Exists(PathUtil.GetTestFailurePath()))

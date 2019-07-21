@@ -25,6 +25,7 @@ namespace PowerPointLabs.Utils
 
             if (redefineBoundingBox && (int) _shape.Rotation%90 != 0)
             {
+                KeepTextRotation();
                 ConvertToFreeform();
             }
             else

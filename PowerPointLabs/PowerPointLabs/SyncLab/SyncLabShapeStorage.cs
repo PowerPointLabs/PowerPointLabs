@@ -92,8 +92,7 @@ namespace PowerPointLabs.SyncLab
             {
                 try
                 {
-                    shape.Copy();
-                    copiedShape = Slides[0].Shapes.Paste()[1];
+                    copiedShape = Slides[0].Shapes.SafeCopyPlaceholder(shape);
                 }
                 catch
                 {

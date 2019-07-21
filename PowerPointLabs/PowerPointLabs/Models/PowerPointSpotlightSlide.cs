@@ -62,7 +62,6 @@ namespace PowerPointLabs.Models
         //Edit selected spotlight shape to fit within the current slide
         public PowerPoint.Shape CreateSpotlightShape(PowerPoint.Shape spotShape)
         {
-            spotShape.Copy();
             bool isCallout = false;
             PowerPoint.Shape spotlightShape;
             
@@ -73,12 +72,12 @@ namespace PowerPointLabs.Models
 
             if (isCallout)
             {
-                spotlightShape = this.Shapes.Paste()[1];
+                spotlightShape = this.Shapes.SafeCopy(spotShape); // confident it is not a placeholder
                 LegacyShapeUtil.CopyCenterShapePosition(spotShape, ref spotlightShape);
             }
             else
             {
-                spotlightShape = this.Shapes.PasteSpecial(PowerPoint.PpPasteDataType.ppPastePNG)[1];
+                spotlightShape = this.Shapes.SafeCopyPNG(spotShape);
                 LegacyShapeUtil.CopyCenterShapePosition(spotShape, ref spotlightShape);
                 CropSpotlightPictureToSlide(ref spotlightShape);
             }
@@ -209,9 +208,8 @@ namespace PowerPointLabs.Models
             // Save the original dimensions because ppPastePNG is resized in PowerPoint 2016
             float originalWidth = currentSelection.ShapeRange[1].Width;
             float originalHeight = currentSelection.ShapeRange[1].Height;
-            currentSelection.Cut();
 
-            PowerPoint.Shape spotlightPicture = this.Shapes.PasteSpecial(PowerPoint.PpPasteDataType.ppPastePNG)[1];
+            PowerPoint.Shape spotlightPicture = this.Shapes.SafeCut(currentSelection.ShapeRange);
             spotlightPicture.Width = originalWidth;
             spotlightPicture.Height = originalHeight;
 

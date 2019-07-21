@@ -1053,8 +1053,12 @@ namespace PowerPointLabs.AgendaLab
         private static void UpdateBeamOnSlide(PowerPointSlide slide, Shape refBeamShape)
         {
             RemoveBeamAgendaFromSlide(slide);
-            refBeamShape.Copy();
-            Microsoft.Office.Interop.PowerPoint.ShapeRange beamShape = slide.Shapes.Paste();
+            Microsoft.Office.Interop.PowerPoint.ShapeRange beamShape = PPLClipboard.Instance.LockAndRelease(() =>
+            {
+                refBeamShape.Copy();
+                return slide.Shapes.Paste();
+            });
+
             AgendaSection section = GetSlideSection(slide);
 
             beamShape.GroupItems.Cast<Shape>()

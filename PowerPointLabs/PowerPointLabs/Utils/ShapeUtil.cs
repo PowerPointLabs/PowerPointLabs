@@ -927,8 +927,7 @@ namespace PowerPointLabs.Utils
             }
 
             candidateShape.SafeDelete();
-            refShape.Copy();
-            candidateShape = candidateSlide.Shapes.Paste()[1];
+            candidateShape = candidateSlide.Shapes.SafeCopyPlaceholder(refShape);
             candidateShape.Name = refShape.Name;
         }
 
@@ -1278,7 +1277,7 @@ namespace PowerPointLabs.Utils
                     // as the image's source is not obtainable through the Shape API
                     var tempShape = msoPlaceHolder.Duplicate()[1];
                     tempShape.Copy();
-                    shapeTemplate = shapesSource.Paste()[1];
+                    shapeTemplate = shapesSource.SafeCopy(tempShape); // DO NOT USE SAFECOPYPLACEHOLDER, INFINITE LOOP
                     tempShape.SafeDelete();
                     break;
                 case PpPlaceholderType.ppPlaceholderVerticalObject:
