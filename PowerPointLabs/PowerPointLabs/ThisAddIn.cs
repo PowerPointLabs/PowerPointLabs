@@ -30,6 +30,7 @@ using PowerPointLabs.PositionsLab;
 using PowerPointLabs.ResizeLab;
 using PowerPointLabs.SaveLab;
 using PowerPointLabs.ShapesLab;
+using PowerPointLabs.SyncLab;
 using PowerPointLabs.SyncLab.Views;
 using PowerPointLabs.TextCollection;
 using PowerPointLabs.TimerLab;
@@ -648,6 +649,7 @@ namespace PowerPointLabs
                 syncLabPpt.Close();
                 Trace.TraceInformation("SyncLab terminated.");
             }
+            SyncLabShapeStorage.ReInit();
         }
 
         private PowerPoint.Presentation GetOpenedSyncLabPresentation()
