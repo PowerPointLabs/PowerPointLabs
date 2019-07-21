@@ -45,7 +45,7 @@
     <PublishUrl>C:\publish_online\</PublishUrl>
     <InstallUrl>https://www.comp.nus.edu.sg/~pptlabs/download/dev/</InstallUrl>
     <TargetCulture>en</TargetCulture>
-    <ApplicationVersion>5.1.0.1</ApplicationVersion>
+    <ApplicationVersion>5.2.0.0</ApplicationVersion>
     <AutoIncrementApplicationRevision>false</AutoIncrementApplicationRevision>
     <UpdateEnabled>true</UpdateEnabled>
     <UpdateInterval>0</UpdateInterval>
@@ -183,6 +183,9 @@
   -->
   <ItemGroup>
     <Reference Include="Accessibility" />
+    <Reference Include="EyeOpen.Imaging.Processing">
+      <HintPath>..\Test\Dependency\EyeOpen.Imaging.Processing.dll</HintPath>
+    </Reference>
     <Reference Include="ImageProcessor">
       <HintPath>..\packages\ImageProcessor.1.9.5.0\lib\ImageProcessor.dll</HintPath>
     </Reference>
@@ -211,6 +214,7 @@
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
+    <Reference Include="PresentationFramework.Aero2" />
     <Reference Include="RestSharp, Version=105.1.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\RestSharp.105.1.0\lib\net4-client\RestSharp.dll</HintPath>
       <Private>True</Private>
@@ -223,6 +227,7 @@
     <Reference Include="System.Data" />
     <Reference Include="System.Deployment" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.Management" />
     <Reference Include="System.Net" />
     <Reference Include="System.Net.Http" />
     <Reference Include="System.Net.Http.Extensions, Version=2.2.29.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
@@ -270,6 +275,9 @@
     can be found.
   -->
   <ItemGroup>
+    <Compile Include="ActionFramework\Common\Extension\PPLClipboard.cs" />
+    <Compile Include="ActionFramework\Common\Extension\MsoPlaceholderException.cs" />
+    <Compile Include="ActionFramework\Common\Extension\PowerpointExtension.cs" />
     <Compile Include="ActionFramework\ELearningLab\ELearningLabMenu\ELearningLabMenuImageHandler.cs" />
     <Compile Include="ActionFramework\ELearningLab\ELearningLabMenu\ELearningLabMenuLabelHandler.cs" />
     <Compile Include="ActionFramework\ELearningLab\ELearningLabMenu\ELearningLabMenuSupertipHandler.cs" />
@@ -281,6 +289,7 @@
     <Compile Include="ActionFramework\ELearningLab\ELearningTaskPane\ELearningImageHandler.cs" />
     <Compile Include="ActionFramework\ELearningLab\ELearningTaskPane\ELearningLabelHandler.cs" />
     <Compile Include="ActionFramework\ELearningLab\ELearningTaskPane\ELearningSupertipHandler.cs" />
+    <Compile Include="ActionFramework\NarrationsLab\TempStorage.cs" />
     <Compile Include="ActionFramework\PictureSlidesLab\PictureSlidesEnabledHandler.cs" />
     <Compile Include="ActionFramework\ShapesLab\ShapesLabMenu\ShapesLabMenuImageHandler.cs" />
     <Compile Include="ActionFramework\ShapesLab\ShapesLabMenu\ShapesLabMenuLabelHandler.cs" />
@@ -709,6 +718,7 @@
     <Compile Include="ColorsLab\ColorInformationDialog.xaml.cs">
       <DependentUpon>ColorInformationDialog.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ColorTheme\ActionCommand.cs" />
     <Compile Include="Converters\ColorPane\HSLColorToHex.cs" />
     <Compile Include="Converters\ColorPane\SelectedColorShiftByAngle.cs" />
     <Compile Include="Converters\ColorPane\SelectedColorShiftSaturationByFactor.cs" />
@@ -745,6 +755,7 @@
     <Compile Include="ELearningLab\ELearningWorkspace\Model\ClickItem\CustomItem.cs" />
     <Compile Include="ELearningLab\ELearningWorkspace\Model\ClickItem\CustomSubItem.cs" />
     <Compile Include="ELearningLab\ELearningWorkspace\Model\ClickItem\ExplanationItem.cs" />
+    <Compile Include="ELearningLab\ELearningWorkspace\Model\ClickItem\ExplanationItemExtensions.cs" />
     <Compile Include="ELearningLab\ELearningWorkspace\Model\Effect\AbstractEffect.cs" />
     <Compile Include="ELearningLab\ELearningWorkspace\Model\Effect\CustomEffect.cs" />
     <Compile Include="ELearningLab\ELearningWorkspace\Model\Effect\ELLEffect.cs" />
@@ -799,6 +810,8 @@
     <Compile Include="ShapesLab\ShapesLabUtils.cs" />
     <Compile Include="ShortcutsLab\ShortcutsLabConstants.cs" />
     <Compile Include="FunctionalTestInterface.Impl\Controller\ELearningLabController.cs" />
+    <Compile Include="FunctionalTestInterface.Impl\Windows\Constants.cs" />
+    <Compile Include="FunctionalTestInterface.Impl\Windows\MarshalWindow.cs" />
     <Compile Include="TextCollection\ELearningLabText.cs" />
     <Compile Include="HighlightLab\HighlightLabSettings.cs" />
     <Compile Include="ELearningLab\AudioGenerator\AzureVoiceGenerator\Model\Enums\AudioOutputFormat.cs" />
@@ -920,15 +933,23 @@
     </Compile>
     <Compile Include="TooltipsLab\TooltipsLabConstants.cs" />
     <Compile Include="TooltipsLab\ConvertToTooltip.cs" />
+    <Compile Include="ColorTheme\ThemeExtensions.cs" />
     <Compile Include="Utils\ClipboardUtil.cs" />
+    <Compile Include="ColorTheme\ColorTheme.cs" />
+    <Compile Include="Utils\ClipboardUtilData.cs" />
+    <Compile Include="Utils\IWPFContainer.cs" />
+    <Compile Include="Utils\RegistryWatcher.cs" />
     <Compile Include="Utils\ShapeUtil.cs" />
     <Compile Include="Utils\SlideUtil.cs" />
+    <Compile Include="ColorTheme\ThemeManager.cs" />
     <Compile Include="Views\ErrorDialogBox.xaml.cs">
       <DependentUpon>ErrorDialogBox.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ProcessingStatusForm.xaml.cs">
       <DependentUpon>ProcessingStatusForm.xaml</DependentUpon>
     </Compile>
+    <Compile Include="FunctionalTestInterface.Impl\Windows\WindowStackManager.cs" />
+    <Compile Include="FunctionalTestInterface.Impl\Windows\WindowUtil.cs" />
     <Compile Include="XMLMisc\Data\AudioGenSpeechData.cs" />
     <Compile Include="ZoomLab\AutoZoom.cs" />
     <Compile Include="ColorsLab\HSLColor.cs" />

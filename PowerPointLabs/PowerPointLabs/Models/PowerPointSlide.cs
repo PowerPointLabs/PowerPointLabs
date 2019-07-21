@@ -8,6 +8,7 @@ using System.Text.RegularExpressions;
 using System.Windows.Forms;
 using Microsoft.Office.Core;
 using Microsoft.Office.Interop.PowerPoint;
+using PowerPointLabs.ActionFramework.Common.Extension;
 
 using PowerPointLabs.ELearningLab.Service;
 using PowerPointLabs.ELearningLab.Utility;
@@ -168,9 +169,9 @@ namespace PowerPointLabs.Models
         }
 
         /// <summary>
-        /// It only copies the background colour for now. Is there really no way to copy over background in general?
+        /// It only copies the background color for now. Is there really no way to copy over background in general?
         /// </summary>
-        public void CopyBackgroundColourFrom(PowerPointSlide refSlide)
+        public void CopyBackgroundColorFrom(PowerPointSlide refSlide)
         {
             Microsoft.Office.Interop.PowerPoint.FillFormat myFill = _slide.Background[1].Fill;
             Microsoft.Office.Interop.PowerPoint.FillFormat refFill = refSlide._slide.Background[1].Fill;
@@ -413,8 +414,7 @@ namespace PowerPointLabs.Models
                             .ToList()
                             .ForEach(shape => shape.Delete());
 
-            nextSlideCopy.Copy();
-            Shape slidePicture = _slide.Shapes.PasteSpecial(PpPasteDataType.ppPastePNG)[1];
+            Shape slidePicture = _slide.Shapes.SafeCopySlide(nextSlideCopy);
             nextSlideCopy.Delete();
             return slidePicture;
         }
@@ -433,8 +433,7 @@ namespace PowerPointLabs.Models
                             .ToList()
                             .ForEach(shape => shape.Delete());
 
-            previousSlideCopy.Copy();
-            Shape slidePicture = _slide.Shapes.PasteSpecial(PpPasteDataType.ppPastePNG)[1];
+            Shape slidePicture = _slide.Shapes.SafeCopySlide(previousSlideCopy);
             previousSlideCopy.Delete();
             return slidePicture;
         }
@@ -607,8 +606,7 @@ namespace PowerPointLabs.Models
             try
             {
                 // Will affect clipboard
-                shape.Copy();
-                Shape newShape = _slide.Shapes.Paste()[1];
+                Shape newShape = _slide.Shapes.SafeCopyPlaceholder(shape);
 
                 newShape.Name = shape.Name;
                 newShape.Left = shape.Left;
@@ -672,8 +670,11 @@ namespace PowerPointLabs.Models
             }
 
             // Copy all the shapes over.
-            shapes.Copy();
-            ShapeRange newShapes = _slide.Shapes.Paste();
+            ShapeRange newShapes = PPLClipboard.Instance.LockAndRelease(() =>
+            {
+                shapes.Copy();
+                return _slide.Shapes.Paste();
+            });
 
             // Now use the indexed names to set back the names and positions to the original shapes'
             foreach (Shape shape in newShapes)

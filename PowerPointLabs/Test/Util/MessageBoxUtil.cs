@@ -10,20 +10,52 @@ namespace Test.Util
     {
         private const String MessageBoxIdentifier = "#32770";
 
+        // retry count will be deprecating
         public static void ExpectMessageBoxWillPopUp(string title, string expContent, Action messageBoxTrigger,
-            string buttonNameToClick = null, int retryCount = 5, int waitTime = 1000)
+            string buttonNameToClick = null, int retryCount = 5, int waitTime = 5000)
         {
-            Task expect = ExpectMessageBoxWillPopUp(title, expContent, buttonNameToClick, retryCount, waitTime);
-            messageBoxTrigger.Invoke();
-            VerifyExpectation(expect, retryCount, waitTime);
+            IntPtr msgBoxHandle = WindowWatcher.Push(title, messageBoxTrigger, waitTime);
+            AssertMessageboxContent(msgBoxHandle, retryCount, expContent);
+            CloseMessageBox(msgBoxHandle, buttonNameToClick);
         }
 
         public static void ExpectMessageBoxWillNotPopUp(string title, string expContent, Action messageBoxTrigger,
-            string buttonNameToClick = null, int retryCount = 5, int waitTime = 1000)
+            string buttonNameToClick = null, int retryCount = 5, int waitTime = 5000)
         {
-            Task expect = ExpectMessageBoxWillNotPopUp(title, expContent, buttonNameToClick, retryCount, waitTime);
-            messageBoxTrigger.Invoke();
-            VerifyExpectation(expect, retryCount, waitTime);
+            try
+            {
+                IntPtr msgBoxHandle = WindowWatcher.Push(title, messageBoxTrigger, waitTime);
+                CloseMessageBox(msgBoxHandle, buttonNameToClick);
+            }
+            catch (AssertFailedException)
+            {
+                // discard error since it is reversed
+                return;
+            }
+            Assert.Fail("Message box should not open.");
+        }
+
+        private static void AssertMessageboxContent(IntPtr msgBoxHandle, int retryCount, string expContent)
+        {
+            IntPtr dlgHandle = IntPtr.Zero;
+            for (int i = 0; i < 5; i++)
+            {
+                // this API is a bit iffy, not sure why unable to find sometimes
+                dlgHandle = NativeUtil.GetDlgItem(msgBoxHandle, 0xFFFF);
+                if (dlgHandle != IntPtr.Zero) { break; }
+                ThreadUtil.WaitFor(1000);
+            }
+            Assert.AreNotEqual(IntPtr.Zero, dlgHandle, "Failed to find label in the messagebox.");
+
+            const int nchars = 1024;
+            StringBuilder actualContentBuilder = new StringBuilder(nchars);
+            int isGetTextSuccessful = NativeUtil.GetWindowText(dlgHandle, actualContentBuilder, nchars);
+
+            if (expContent != "{*}")
+            {
+                Assert.IsTrue(isGetTextSuccessful > 0, "Failed to get text in the label of messagebox.");
+                Assert.AreEqual(expContent, actualContentBuilder.ToString(), true, "Different MessageBox content.");
+            }
         }
 
         // This method must be called before PplFeatures,

@@ -9,6 +9,7 @@ using Microsoft.Office.Interop.PowerPoint;
 
 using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.ActionFramework.Common.Log;
+using PowerPointLabs.ColorThemes.Extensions;
 using PowerPointLabs.PositionsLab.Views;
 using PowerPointLabs.TextCollection;
 using PowerPointLabs.Utils;
@@ -265,7 +266,7 @@ namespace PowerPointLabs.PositionsLab
                                                                                     PositionsLabSettings.GridMarginLeft,
                                                                                     PositionsLabSettings.GridMarginRight);
                 _positionsDistributeGridDialog.DialogConfirmedHandler += OnDistributeGridDialogConfirmed;
-                _positionsDistributeGridDialog.ShowDialog();
+                _positionsDistributeGridDialog.ShowThematicDialog();
             }
             catch (Exception ex)
             {

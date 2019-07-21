@@ -1,8 +1,9 @@
-﻿using System.Runtime.InteropServices;
+﻿using System;
+using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
 using Microsoft.Office.Interop.PowerPoint;
-
+using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.Models;
 
@@ -17,10 +18,12 @@ namespace PowerPointLabs.Utils
 
         public static bool IsClipboardEmpty()
         {
-            IDataObject clipboardData = Clipboard.GetDataObject();
-            return clipboardData == null || clipboardData.GetFormats().Length == 0;
+            return PPLClipboard.Instance.IsEmpty();
         }
 
+        /// <summary>
+        /// This method assumes that there is valid data on the clipboard. DO NOT lock the clipboard.
+        /// </summary>
         public static ShapeRange PasteShapesFromClipboard(PowerPointPresentation pres, PowerPointSlide slide)
         {
             try
@@ -61,6 +64,7 @@ namespace PowerPointLabs.Utils
                 return null;
             }
         }
+
         /// <summary>
         /// To avoid changing the clipboard during a copy/cut and paste action. 
         /// One solution for this is to save clipboard into a temp slide and revert clipboard afterwards.
@@ -71,43 +75,10 @@ namespace PowerPointLabs.Utils
             if (!IsClipboardEmpty())
             {
                 // Save clipboard onto a temp slide
-                PowerPointSlide tempClipboardSlide = null;
-                ShapeRange tempClipboardShapes = null;
-                SlideRange tempPastedSlide = null;
-
-                Logger.Log("RestoreClipboardAfterAction: Trying to paste as slide.", ActionFramework.Common.Logger.LogType.Info);
-                tempPastedSlide = TryPastingAsSlide(pres, origSlide);
-
-                if (tempPastedSlide == null)
-                {
-                    tempClipboardSlide = pres.AddSlide();
-                    Logger.Log("RestoreClipboardAfterAction: Trying to paste as text.", ActionFramework.Common.Logger.LogType.Info);
-                    tempClipboardShapes = TryPastingAsText(tempClipboardSlide);
-                }
-
-                if (CheckIfPastingFailed(tempPastedSlide, tempClipboardShapes))
-                {
-                    Logger.Log("RestoreClipboardAfterAction: Trying to paste as shape.", ActionFramework.Common.Logger.LogType.Info);
-                    tempClipboardShapes = TryPastingAsShape(tempClipboardSlide);
-                }
-
-                if (CheckIfPastingFailed(tempPastedSlide, tempClipboardShapes))
-                {
-                    Logger.Log("RestoreClipboardAfterAction: Trying to paste as PNG picture", ActionFramework.Common.Logger.LogType.Info);
-                    tempClipboardShapes = TryPastingAsPNG(tempClipboardSlide);
-                }
-
-                if (CheckIfPastingFailed(tempPastedSlide, tempClipboardShapes))
-                {
-                    Logger.Log("RestoreClipboardAfterAction: Trying to paste as bitmap picture", ActionFramework.Common.Logger.LogType.Info);
-                    tempClipboardShapes = TryPastingAsBitmap(tempClipboardSlide);
-                }
-
-                if (CheckIfPastingFailed(tempPastedSlide, tempClipboardShapes))
-                {
-                    Logger.Log("RestoreClipboardAfterAction: Trying to paste onto view", ActionFramework.Common.Logger.LogType.Info);
-                    tempClipboardShapes = TryPastingOntoView(pres, tempClipboardSlide, origSlide);
-                }
+                PowerPointSlide tempClipboardSlide;
+                ShapeRange tempClipboardShapes;
+                SlideRange tempPastedSlide;
+                SaveClipboard(pres, origSlide, out tempClipboardSlide, out tempClipboardShapes, out tempPastedSlide);
 
                 result = action();
 
@@ -123,6 +94,61 @@ namespace PowerPointLabs.Utils
                 result = action();
             }
             return result;
+        }
+
+        private static void SaveClipboard(PowerPointPresentation pres, PowerPointSlide origSlide, out PowerPointSlide tempClipboardSlide, out ShapeRange tempClipboardShapes, out SlideRange tempPastedSlide)
+        {
+            Logger.Log("RestoreClipboardAfterAction: Trying to paste as slide.", ActionFramework.Common.Logger.LogType.Info);
+            ClipboardUtilData data = PPLClipboard.Instance.LockAndRelease(() => SaveClipboardUnsafe(pres, origSlide));
+            tempClipboardSlide = data.tempClipboardSlide;
+            tempClipboardShapes = data.tempClipboardShapes;
+            tempPastedSlide = data.tempPastedSlide;
+        }
+
+        private static ClipboardUtilData SaveClipboardUnsafe(PowerPointPresentation pres, PowerPointSlide origSlide)
+        {
+            PowerPointSlide tempClipboardSlide = null;
+            ShapeRange tempClipboardShapes = null;
+            SlideRange tempPastedSlide = null;
+
+            tempPastedSlide = TryPastingAsSlide(pres, origSlide);
+
+            if (tempPastedSlide == null)
+            {
+                tempClipboardSlide = pres.AddSlide();
+                Logger.Log("RestoreClipboardAfterAction: Trying to paste as text.", ActionFramework.Common.Logger.LogType.Info);
+                tempClipboardShapes = TryPastingAsText(tempClipboardSlide);
+            }
+
+            if (CheckIfPastingFailed(tempPastedSlide, tempClipboardShapes))
+            {
+                Logger.Log("RestoreClipboardAfterAction: Trying to paste as shape.", ActionFramework.Common.Logger.LogType.Info);
+                tempClipboardShapes = TryPastingAsShape(tempClipboardSlide);
+            }
+
+            if (CheckIfPastingFailed(tempPastedSlide, tempClipboardShapes))
+            {
+                Logger.Log("RestoreClipboardAfterAction: Trying to paste as PNG picture", ActionFramework.Common.Logger.LogType.Info);
+                tempClipboardShapes = TryPastingAsPNG(tempClipboardSlide);
+            }
+
+            if (CheckIfPastingFailed(tempPastedSlide, tempClipboardShapes))
+            {
+                Logger.Log("RestoreClipboardAfterAction: Trying to paste as bitmap picture", ActionFramework.Common.Logger.LogType.Info);
+                tempClipboardShapes = TryPastingAsBitmap(tempClipboardSlide);
+            }
+
+            if (CheckIfPastingFailed(tempPastedSlide, tempClipboardShapes))
+            {
+                Logger.Log("RestoreClipboardAfterAction: Trying to paste onto view", ActionFramework.Common.Logger.LogType.Info);
+                tempClipboardShapes = TryPastingOntoView(pres, tempClipboardSlide, origSlide);
+            }
+            return new ClipboardUtilData()
+            {
+                tempClipboardSlide = tempClipboardSlide,
+                tempClipboardShapes = tempClipboardShapes,
+                tempPastedSlide = tempPastedSlide
+            };
         }
 
         private static bool CheckIfPastingFailed(SlideRange slide, ShapeRange shapes)
@@ -141,16 +167,20 @@ namespace PowerPointLabs.Utils
         {
             try
             {
-                if (slides != null)
+                PPLClipboard.Instance.LockAndRelease(() =>
                 {
-                    slides.Copy();
-                    slides.Delete();
-                }
-                else if (shapes != null && shapes.Count >= 1)
-                {
-                    shapes.Copy();
-                    shapes.Delete();
-                }
+                    PPLClipboard.Instance.RestoreClipboard();
+                    if (slides != null)
+                    {
+                        slides.Copy();
+                        slides.Delete();
+                    }
+                    else if (shapes != null && shapes.Count >= 1)
+                    {
+                        shapes.Copy();
+                        shapes.Delete();
+                    }
+                });
             }
             catch (COMException e) 
             {

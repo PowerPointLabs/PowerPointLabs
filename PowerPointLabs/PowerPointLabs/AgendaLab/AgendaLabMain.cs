@@ -7,8 +7,9 @@ using System.Windows.Forms;
 
 using Microsoft.Office.Core;
 using Microsoft.Office.Interop.PowerPoint;
-
+using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.AgendaLab.Templates;
+using PowerPointLabs.ColorThemes.Extensions;
 using PowerPointLabs.FunctionalTestInterface.Impl;
 using PowerPointLabs.Models;
 using PowerPointLabs.TextCollection;
@@ -186,7 +187,7 @@ namespace PowerPointLabs.AgendaLab
             }
         }
 
-        public static void SynchroniseAgenda()
+        public static void SynchronizeAgenda()
         {
             bool dialogOpen = false;
             DocumentWindow currentWindow = Globals.ThisAddIn.Application.ActiveWindow;
@@ -348,7 +349,7 @@ namespace PowerPointLabs.AgendaLab
             List<Shape> textBoxes = CreateBeamAgendaTextBoxes(refSlide, sections);
             Shape highlightedTextBox = CreateHighlightedTextBox(refSlide);
             SetupBeamTextBoxPositions(textBoxes, highlightedTextBox, background);
-            MatchColour(highlightedTextBox, background);
+            MatchColor(highlightedTextBox, background);
 
             List<Shape> beamShapeItems = new List<Shape>();
             beamShapeItems.Add(background);
@@ -401,7 +402,7 @@ namespace PowerPointLabs.AgendaLab
             highlightedTextBox.Left = (slideWidth - highlightedTextBox.Width)/2;
         }
 
-        private static void MatchColour(Shape highlightedTextBox, Shape background)
+        private static void MatchColor(Shape highlightedTextBox, Shape background)
         {
             if (background == null)
             {
@@ -622,7 +623,7 @@ namespace PowerPointLabs.AgendaLab
         #endregion
 
 
-        #region Actions - Synchronise - General
+        #region Actions - Synchronize - General
 
         private static void BringToFront(PowerPointSlide slide)
         {
@@ -642,10 +643,10 @@ namespace PowerPointLabs.AgendaLab
         }
         #endregion
 
-        #region Actions - Synchronise - Bullet
+        #region Actions - Synchronize - Bullet
 
         /// <summary>
-        /// Called from the Synchronise action only.
+        /// Called from the Synchronize action only.
         /// </summary>
         private static void SyncBulletAgenda(SlideSelectionTracker slideTracker, PowerPointSlide refSlide)
         {
@@ -654,12 +655,12 @@ namespace PowerPointLabs.AgendaLab
         }
 
         /// <summary>
-        /// Called from both generate and synchronise actions.
+        /// Called from both generate and synchronize actions.
         /// </summary>
         private static void SyncBulletAgendaSlides(SlideSelectionTracker slideTracker, PowerPointSlide refSlide)
         {
             List<AgendaSection> sections = Sections;
-            SynchroniseSlidesUsingTemplate(slideTracker, refSlide, () => new BulletAgendaTemplate());
+            SynchronizeSlidesUsingTemplate(slideTracker, refSlide, () => new BulletAgendaTemplate());
         }
 
         private static void AdjustBulletReferenceSlideContent(PowerPointSlide refSlide)
@@ -688,10 +689,10 @@ namespace PowerPointLabs.AgendaLab
 
         #endregion
 
-        #region Actions - Synchronise - Visual
+        #region Actions - Synchronize - Visual
 
         /// <summary>
-        /// Called from the Synchronise action only.
+        /// Called from the Synchronize action only.
         /// </summary>
         private static void SyncVisualAgenda(SlideSelectionTracker slideTracker, PowerPointSlide refSlide)
         {
@@ -700,12 +701,12 @@ namespace PowerPointLabs.AgendaLab
         }
 
         /// <summary>
-        /// Called from both generate and synchronise actions.
+        /// Called from both generate and synchronize actions.
         /// </summary>
         private static void SyncVisualAgendaSlides(SlideSelectionTracker slideTracker, PowerPointSlide refSlide)
         {
             DeleteAllZoomSlides(slideTracker);
-            SynchroniseSlidesUsingTemplate(slideTracker, refSlide, () => new VisualAgendaTemplate());
+            SynchronizeSlidesUsingTemplate(slideTracker, refSlide, () => new VisualAgendaTemplate());
         }
 
         private static void RegenerateReferenceSlideImages(PowerPointSlide refSlide)
@@ -840,7 +841,7 @@ namespace PowerPointLabs.AgendaLab
 
         #endregion
 
-        #region Actions - Synchronise - Beam
+        #region Actions - Synchronize - Beam
 
         private static void SyncBeamAgenda(SlideSelectionTracker slideTracker, PowerPointSlide refSlide)
         {
@@ -860,7 +861,7 @@ namespace PowerPointLabs.AgendaLab
             Shape highlightedTextBox = BeamFormats.GetShapeWithPurpose(beamShape, ShapePurpose.BeamShapeHighlightedText);
             Shape background = BeamFormats.GetShapeWithPurpose(beamShape, ShapePurpose.BeamShapeBackground);
 
-            MatchColour(highlightedTextBox, background);
+            MatchColor(highlightedTextBox, background);
 
             if (SectionsMatch(currentSections, newSections))
             {
@@ -1036,7 +1037,7 @@ namespace PowerPointLabs.AgendaLab
                 syncSlides.AddRange(selectedSlidesWithoutBeam);
             }
 
-            // Synchronise agenda for all slides in the presentation that have the beam agenda.
+            // Synchronize agenda for all slides in the presentation that have the beam agenda.
             Shape refBeamShape = FindBeamShape(refSlide);
             IEnumerable<PowerPointSlide> allSlidesWithBeam = PowerPointPresentation.Current.Slides
                                                                   .Where(slide => AgendaSlide.IsNotReferenceslide(slide) &&
@@ -1052,8 +1053,12 @@ namespace PowerPointLabs.AgendaLab
         private static void UpdateBeamOnSlide(PowerPointSlide slide, Shape refBeamShape)
         {
             RemoveBeamAgendaFromSlide(slide);
-            refBeamShape.Copy();
-            Microsoft.Office.Interop.PowerPoint.ShapeRange beamShape = slide.Shapes.Paste();
+            Microsoft.Office.Interop.PowerPoint.ShapeRange beamShape = PPLClipboard.Instance.LockAndRelease(() =>
+            {
+                refBeamShape.Copy();
+                return slide.Shapes.Paste();
+            });
+
             AgendaSection section = GetSlideSection(slide);
 
             beamShape.GroupItems.Cast<Shape>()
@@ -1116,7 +1121,7 @@ namespace PowerPointLabs.AgendaLab
             else
             {
                 _loadDialog = new LoadingDialogBox(title, content);
-                _loadDialog.Show();
+                _loadDialog.ShowThematicDialog(false);
                 return true;
             }
         }

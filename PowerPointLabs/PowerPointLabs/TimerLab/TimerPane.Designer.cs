@@ -1,6 +1,9 @@
-﻿namespace PowerPointLabs.TimerLab
+﻿using System.Windows.Controls;
+using PowerPointLabs.Utils;
+
+namespace PowerPointLabs.TimerLab
 {
-    partial class TimerPane
+    partial class TimerPane: IWpfContainer
     {
         /// <summary> 
         /// Required designer variable.
@@ -58,5 +61,13 @@
 
         private System.Windows.Forms.Integration.ElementHost wpf;
         public TimerLabPaneWPF TimerPaneWPF { get; private set; }
+
+        public Control WpfControl
+        {
+            get
+            {
+                return TimerPaneWPF;
+            }
+        }
     }
 }

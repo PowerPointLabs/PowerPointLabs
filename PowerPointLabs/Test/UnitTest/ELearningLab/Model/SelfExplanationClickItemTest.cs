@@ -129,7 +129,7 @@ namespace Test.UnitTest.ELearningLab.Model
                 }
             };
             item.CaptionText = "callout text";
-            item.HasShortVersion = false;
+            item.IsShortVersionIndicated = false;
             Assert.IsTrue(captionTextChangeNotified);
             Assert.IsTrue(item.CaptionText.Equals(item.CalloutText));
         }
@@ -208,7 +208,7 @@ namespace Test.UnitTest.ELearningLab.Model
             item.CalloutText = string.Empty;
             Assert.IsTrue(item.IsEmpty);
 
-            item.HasShortVersion = true;
+            item.IsShortVersionIndicated = true;
             item.CalloutText = "callout text";
             item.CaptionText = string.Empty;
             Assert.IsFalse(item.IsEmpty);

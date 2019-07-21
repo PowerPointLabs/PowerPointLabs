@@ -1,7 +1,7 @@
 ﻿using System;
 
 using Microsoft.Office.Core;
-
+using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.PictureSlidesLab.Service.Effect;
 using PowerPointLabs.Utils;
 
@@ -76,8 +76,7 @@ namespace PowerPointLabs.PictureSlidesLab.Service
                 overlayShape.Line.Visible = MsoTriState.msoFalse;
             }
             // as picture shape
-            overlayShape.Cut();
-            overlayShape = Shapes.PasteSpecial(PowerPoint.PpPasteDataType.ppPastePNG)[1];
+            overlayShape = Shapes.SafeCut(overlayShape);
             overlayShape.Left = circleLeft;
             overlayShape.Top = circleTop;
             ChangeName(overlayShape, EffectName.Overlay);

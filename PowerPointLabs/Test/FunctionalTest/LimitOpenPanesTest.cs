@@ -47,6 +47,7 @@ namespace Test.FunctionalTest
         [TestCategory("FT")]
         public void FT_LimitOpenPanesTest()
         {
+            WindowWatcher.AddToWhitelist("Presentation1 - PowerPoint");
             // start clean
             StartWithNumWindows(2);
 

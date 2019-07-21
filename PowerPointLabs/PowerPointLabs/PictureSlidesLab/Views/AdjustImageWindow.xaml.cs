@@ -6,6 +6,7 @@ using System.Windows.Media;
 using System.Windows.Threading;
 
 using PowerPointLabs.ActionFramework.Common.Extension;
+using PowerPointLabs.ColorThemes.Extensions;
 using PowerPointLabs.CropLab;
 using PowerPointLabs.PictureSlidesLab.Util;
 using PowerPointLabs.PictureSlidesLab.Views.ImageAdjustment;
@@ -65,7 +66,7 @@ namespace PowerPointLabs.PictureSlidesLab.Views
         public void ShowAdjustPictureDimensionsDialog()
         {
             IsOpen = true;
-            ShowDialog();
+            this.ShowThematicDialog();
             IsOpen = false;
         }
 
@@ -139,7 +140,7 @@ namespace PowerPointLabs.PictureSlidesLab.Views
 
             layer.Add(_croppingAdorner);
             _frameworkElement = element;
-            SetClipColorGrey();
+            SetClipColorGray();
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -169,7 +170,7 @@ namespace PowerPointLabs.PictureSlidesLab.Views
             Top = (screenHeight / 2) - (windowHeight / 2);
         }
 
-        private void SetClipColorGrey()
+        private void SetClipColorGray()
         {
             if (_croppingAdorner != null)
             {

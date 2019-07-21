@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Linq;
-
+using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.AnimationLab;
 using PowerPointLabs.ZoomLab;
 
@@ -139,8 +139,7 @@ namespace PowerPointLabs.Models
             float finalHeightMagnify = referenceShape.Height;
             float initialHeightMagnify = zoomShape.Height;
 
-            zoomShape.Copy();
-            PowerPoint.Shape zoomShapeCopy = _slide.Shapes.Paste()[1];
+            PowerPoint.Shape zoomShapeCopy = _slide.Shapes.SafeCopyPlaceholder(zoomShape);
             LegacyShapeUtil.CopyShapeAttributes(zoomShape, ref zoomShapeCopy);
 
             Globals.ThisAddIn.Application.ActiveWindow.View.GotoSlide(_slide.SlideIndex);
@@ -192,7 +191,7 @@ namespace PowerPointLabs.Models
                 zoomSlideCroppedShapes.PictureFormat.CropRight += (PowerPointPresentation.Current.SlideWidth - (zoomShape.Left + zoomShape.Width));
                 zoomSlideCroppedShapes.PictureFormat.CropBottom += (PowerPointPresentation.Current.SlideHeight - (zoomShape.Top + zoomShape.Height));
 
-                LegacyShapeUtil.CopyShapePosition(zoomShape, ref zoomSlideCroppedShapes);
+                LegacyShapeUtil.CopyCenterShapePosition(zoomShape, ref zoomSlideCroppedShapes);
             }
         }
 

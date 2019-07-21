@@ -10,7 +10,7 @@ using System.Reflection;
 using System.Windows.Forms;
 
 using Microsoft.Office.Interop.PowerPoint;
-
+using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.AutoUpdate.Interface;
 using PowerPointLabs.Models;
@@ -798,19 +798,7 @@ namespace PowerPointLabs.PictureSlidesLab.ViewModel
             try
             {
                 Logger.Log("Load clipboard begins.");
-                List<object> result = new List<object>();
-                if (Clipboard.ContainsImage())
-                {
-                    result.Add(Clipboard.GetImage());
-                }
-                if (Clipboard.ContainsFileDropList())
-                {
-                    result.Add(Clipboard.GetFileDropList());
-                }
-                if (Clipboard.ContainsText())
-                {
-                    result.Add(Clipboard.GetText());
-                }
+                List<object> result = PPLClipboard.Instance.LoadClipboardObjects();
                 Logger.Log("Load clipboard done.");
                 return result;
             }

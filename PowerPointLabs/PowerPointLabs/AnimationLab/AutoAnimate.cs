@@ -2,6 +2,7 @@
 using System.Windows.Forms;
 
 using PowerPointLabs.ActionFramework.Common.Log;
+using PowerPointLabs.ColorThemes.Extensions;
 using PowerPointLabs.Models;
 using PowerPointLabs.TextCollection;
 using PowerPointLabs.Views;
@@ -53,7 +54,7 @@ namespace PowerPointLabs.AnimationLab
             Globals.ThisAddIn.Application.ActiveWindow.View.GotoSlide(addedSlide.Index);
 
             LoadingDialogBox loadingDialog = new LoadingDialogBox(content: AnimationLabText.AutoAnimateLoadingText);
-            loadingDialog.Show();
+            loadingDialog.ShowThematicDialog(false);
 
             addedSlide.MoveMotionAnimation(); // Move shapes with motion animation already added
             addedSlide.PrepareForAutoAnimate();

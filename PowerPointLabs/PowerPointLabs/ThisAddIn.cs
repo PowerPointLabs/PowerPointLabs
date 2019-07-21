@@ -14,10 +14,12 @@ using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
 using Microsoft.Office.Tools;
-
+using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.AutoUpdate;
 using PowerPointLabs.CaptionsLab;
+using PowerPointLabs.ColorThemes;
+using PowerPointLabs.ColorThemes.Extensions;
 using PowerPointLabs.ELearningLab.ELearningWorkspace.Views;
 using PowerPointLabs.ELearningLab.Service;
 using PowerPointLabs.ELearningLab.Views;
@@ -58,14 +60,15 @@ namespace PowerPointLabs
 
         internal PowerPointShapeGalleryPresentation ShapePresentation;
 
+        // For adaptive color theme changing, from winform to wpf
+        private Dictionary<CustomTaskPane, System.Windows.Controls.Control> wpfMapping = new Dictionary<CustomTaskPane, System.Windows.Controls.Control>();
+
         private delegate void SyncElearningItemsDelegate();
 
         private const string AppLogName = "PowerPointLabs.log";
-        private const string SlideXmlSearchPattern = @"slide(\d+)\.xml";
         private const string TempFolderNamePrefix = @"\PowerPointLabs Temp\";
         private const string ShapeGalleryPptxName = "ShapeGallery";
         private const string SyncLabPptxName = "Sync Lab - Do not edit";
-        private const string TempZipName = "tempZip.zip";
 
         private string _deactivatedPresFullName;
         private string tempFolderName;
@@ -215,97 +218,6 @@ namespace PowerPointLabs
             }
         }
 
-        public void PrepareMediaFiles(PowerPoint.Presentation pres, string tempPath)
-        {
-            string presFullName = pres.FullName;
-            string presName = pres.Name;
-
-            // in case of embedded slides, we need to regulate the file name and full name
-            RegulatePresentationName(pres, tempPath, ref presName, ref presFullName);
-
-            try
-            {
-                if (IsEmptyFile(presFullName))
-                {
-                    return;
-                }
-
-                string zipFullPath = tempPath + TempZipName;
-
-                // before we do everything, check if there's an undelete old zip file
-                // due to some error
-                try
-                {
-                    FileDir.DeleteFile(zipFullPath);
-                    FileDir.CopyFile(presFullName, zipFullPath);
-                }
-                catch (Exception e)
-                {
-                    ErrorDialogBox.ShowDialog(CommonText.ErrorAccessTempFolder, string.Empty, e);
-                }
-
-                ExtractMediaFiles(zipFullPath, tempPath);
-            }
-            catch (Exception e)
-            {
-                ErrorDialogBox.ShowDialog(CommonText.ErrorPrepareMedia, "Files cannot be linked.", e);
-            }
-        }
-
-        public string PrepareTempFolder(PowerPoint.Presentation pres)
-        {
-            string presName = pres.Name;
-            string presFullName = pres.FullName;
-
-            // here presFullName makes no use, just to fit in the signature
-            RegulatePresentationName(pres, null, ref presName, ref presFullName);
-
-            string tempPath = GetPresentationTempFolder(presName);
-
-            // if temp folder doesn't exist, create
-            try
-            {
-                if (Directory.Exists(tempPath))
-                {
-                    Directory.Delete(tempPath, true);
-                }
-            }
-            catch (Exception e)
-            {
-                ErrorDialogBox.ShowDialog(CommonText.ErrorCreateTempFolder, string.Empty, e);
-            }
-            finally
-            {
-                Directory.CreateDirectory(tempPath);
-            }
-
-            return tempPath;
-        }
-
-        public void RegisterResizePane(PowerPoint.Presentation presentation)
-        {
-            if (GetActivePane(typeof(ResizeLabPane)) != null)
-            {
-                return;
-            }
-
-            PowerPoint.DocumentWindow activeWindow = presentation.Application.ActiveWindow;
-
-            RegisterTaskPane(new ResizeLabPane(), ResizeLabText.TaskPaneTitle, activeWindow,
-                ResizeTaskPaneVisibleValueChangedEventHandler, null);
-        }
-
-        public void RegisterRecorderPane(PowerPoint.DocumentWindow activeWindow, string tempFullPath)
-        {
-            if (GetActivePane(typeof(RecorderTaskPane)) != null)
-            {
-                return;
-            }
-
-            RegisterTaskPane(new RecorderTaskPane(tempFullPath), NarrationsLabText.RecManagementPanelTitle, activeWindow,
-                TaskPaneVisibleValueChangedEventHandler, null);
-        }
-
         public void SyncShapeAdd(string shapeName, string shapeFullName, string category)
         {
             foreach (PowerPoint.DocumentWindow window in Globals.ThisAddIn.Application.Windows)
@@ -377,18 +289,19 @@ namespace PowerPointLabs
         #region Helper Functions
 
         public CustomTaskPane RegisterTaskPane(UserControl control, string title, PowerPoint.DocumentWindow wnd,
+    System.Windows.Controls.Control wpfControl = null,
     EventHandler visibleChangeEventHandler = null,
     EventHandler dockPositionChangeEventHandler = null)
         {
             LoadingDialogBox loadingDialog = new LoadingDialogBox();
-            loadingDialog.Show();
+            loadingDialog.ShowThematicDialog(false);
 
             // note down the control's width
             int width = control.Width;
 
             // register the user control to the CustomTaskPanes collection and set it as
             // current active task pane;
-            CustomTaskPane taskPane = CustomTaskPanes.Add(control, title, wnd);
+            CustomTaskPane taskPane = AddTaskPane(control, wpfControl, title, wnd);
 
             // task pane UI setup
             taskPane.Visible = false;
@@ -431,6 +344,11 @@ namespace PowerPointLabs
             return taskPane;
         }
 
+        public void RemoveRecorderTaskPane()
+        {
+            RemoveTaskPane(Application.ActiveWindow, typeof(RecorderTaskPane));
+        }
+
         protected override Microsoft.Office.Core.IRibbonExtensibility CreateRibbonExtensibilityObject()
         {
             Ribbon = new Ribbon1();
@@ -450,6 +368,27 @@ namespace PowerPointLabs
 
             Trace.AutoFlush = true;
             Trace.Listeners.Add(new TextWriterTraceListener(logPath));
+        }
+
+        private void RemoveTaskPane(PowerPoint.DocumentWindow window, Type paneType)
+        {
+            if (!_documentPaneMapper.ContainsKey(window))
+            {
+                return;
+            }
+
+            List<CustomTaskPane> activePanes = _documentPaneMapper[window];
+            for (int i = activePanes.Count - 1; i >= 0; i--)
+            {
+                CustomTaskPane pane = activePanes[i];
+                if (pane.Control.GetType() != paneType)
+                {
+                    continue;
+                }
+
+                RemoveTaskPane(pane);
+                activePanes.RemoveAt(i);
+            }
         }
 
         private void ShutDownRecorderPane()
@@ -481,74 +420,36 @@ namespace PowerPointLabs
             List<CustomTaskPane> activePanes = _documentPaneMapper[activeWindow];
             foreach (CustomTaskPane pane in activePanes)
             {
-                CustomTaskPanes.Remove(pane);
+                RemoveTaskPane(pane);
             }
 
             _documentPaneMapper.Remove(activeWindow);
         }
 
-        private void RemoveTaskPane(PowerPoint.DocumentWindow window, Type paneType)
+        private CustomTaskPane AddTaskPane(UserControl control, System.Windows.Controls.Control wpfControl, string title, PowerPoint.DocumentWindow wnd)
         {
-            if (!_documentPaneMapper.ContainsKey(window))
+            CustomTaskPane pane = CustomTaskPanes.Add(control, title, wnd);
+            if (wpfControl == null)
             {
-                return;
+                return pane;
             }
-
-            List<CustomTaskPane> activePanes = _documentPaneMapper[window];
-            for (int i = activePanes.Count - 1; i >= 0; i--)
-            {
-                CustomTaskPane pane = activePanes[i];
-                if (pane.Control.GetType() != paneType)
-                {
-                    continue;
-                }
-
-                CustomTaskPanes.Remove(pane);
-                activePanes.RemoveAt(i);
-            }
+            wpfMapping.Add(pane, wpfControl);
+            ThemeManager.Instance.ColorThemeChanged += wpfControl.ApplyTheme;
+            wpfControl.Loaded += wpfControl.RefreshVisual;
+            return pane;
         }
 
-        private void RegulatePresentationName(PowerPoint.Presentation pres, string tempPath, ref string presName,
-            ref string presFullName)
+        private bool RemoveTaskPane(CustomTaskPane pane)
         {
-            // this function is used to handle "embed on other application" issue. In this case,
-            // all of presentation name, path and full name do not match the usual rule: name is
-            // "Untitled", path is empty string and full name is "slide in XX application". We need
-            // to regulate these fields properly.
-
-            if (!presName.Contains(".pptx"))
+            System.Windows.Controls.Control wpfControl;
+            if (!wpfMapping.ContainsKey(pane) || (wpfControl = wpfMapping[pane]) == null)
             {
-                presName += ".pptx";
+                return false;
             }
-
-            if (tempPath != null)
-            {
-                // every time when recorder pane is open,
-                // save this presentation's copy, which will be used
-                // to load audio files later
-                pres.SaveCopyAs(tempPath + presName);
-                presFullName = tempPath + presName;
-            }
-        }
-
-        private void TaskPaneVisibleValueChangedEventHandler(object sender, EventArgs e)
-        {
-            CustomTaskPane recorderPane = GetActivePane(typeof(RecorderTaskPane));
-
-            if (recorderPane == null)
-            {
-                return;
-            }
-
-            RecorderTaskPane recorder = recorderPane.Control as RecorderTaskPane;
-
-            // trigger close form event when closing hide the pane
-            if (!recorder?.Visible ?? false)
-            {
-                recorder.RecorderPaneClosing();
-                // remove recorder pane and force it to reload when next time open
-                RemoveTaskPane(Application.ActiveWindow, typeof(RecorderTaskPane));
-            }
+            wpfControl.Loaded -= wpfControl.RefreshVisual;
+            ThemeManager.Instance.ColorThemeChanged -= wpfControl.ApplyTheme;
+            wpfMapping.Remove(pane);
+            return CustomTaskPanes.Remove(pane);
         }
 
         private void ResizeTaskPaneVisibleValueChangedEventHandler(object sender, EventArgs e)
@@ -655,18 +556,6 @@ namespace PowerPointLabs
             AgendaLab.AgendaLabMain.SlideShowEndHandler();
         }
 
-        private bool IsEmptyFile(string filePath)
-        {
-            if (!File.Exists(filePath))
-            {
-                return false;
-            }
-
-            FileInfo fileInfo = new FileInfo(filePath);
-
-            return fileInfo.Length == 0;
-        }
-
         private void UpdateRecorderPane(int count, int id)
         {
             CustomTaskPane recorderPane = GetActivePane(typeof(RecorderTaskPane));
@@ -729,14 +618,6 @@ namespace PowerPointLabs
             }
         }
 
-        private string GetPresentationTempFolder(string presName)
-        {
-            string tempName = presName.GetHashCode().ToString(CultureInfo.InvariantCulture);
-            string tempPath = Path.GetTempPath() + TempFolderNamePrefix + tempName + @"\";
-
-            return tempPath;
-        }
-
         private void CleanUp(PowerPoint.DocumentWindow associatedWindow)
         {
             if (_documentHashcodeMapper.ContainsKey(associatedWindow))
@@ -746,41 +627,6 @@ namespace PowerPointLabs
 
             // if there exists some task panes, remove them
             RemoveTaskPanes(associatedWindow);
-        }
-
-        private void ExtractMediaFiles(string zipFullPath, string tempPath)
-        {
-            try
-            {
-                ZipStorer zip = ZipStorer.Open(zipFullPath, FileAccess.Read);
-                List<ZipStorer.ZipFileEntry> dir = zip.ReadCentralDir();
-
-                Regex regex = new Regex(SlideXmlSearchPattern);
-
-                foreach (ZipStorer.ZipFileEntry entry in dir)
-                {
-                    string name = Path.GetFileName(entry.FilenameInZip);
-
-                    if (name == null)
-                    {
-                        continue;
-                    }
-
-                    if (name.Contains(".wav") ||
-                        regex.IsMatch(name))
-                    {
-                        zip.ExtractFile(entry, tempPath + name);
-                    }
-                }
-
-                zip.Close();
-
-                FileDir.DeleteFile(zipFullPath);
-            }
-            catch (Exception e)
-            {
-                ErrorDialogBox.ShowDialog(CommonText.ErrorExtract, "Archived files cannot be retrieved.", e);
-            }
         }
 
         private void BreakRecorderEvents()
@@ -852,6 +698,7 @@ namespace PowerPointLabs
             SetupAfterCopyPasteHandler();
 
             SaveLabSettings.InitialiseLocalStorage();
+            PPLClipboard.Init(new IntPtr(Application.HWND));
 
             // According to MSDN, when more than 1 event are triggered, callback's invoking sequence
             // follows the defining order. I.e. the earlier you defined, the earlier it will be
@@ -1024,7 +871,7 @@ namespace PowerPointLabs
             Ribbon.RefreshRibbonControl("ConvertToTooltipButton");
             Ribbon.RefreshRibbonControl("CreateCalloutButton");
             Ribbon.RefreshRibbonControl("CreateTriggerButton");
-            // To grey out the "HighlightText" button whenever non-text fragment or nothing has been selected
+            // To gray out the "HighlightText" button whenever non-text fragment or nothing has been selected
             Ribbon.RefreshRibbonControl("HighlightTextButton");
         }
 
@@ -1136,7 +983,7 @@ namespace PowerPointLabs
             Trace.TraceInformation("Closing associated window...");
             CleanUp(associatedWindow);
 
-            // Refresh ribbon to grey out the menu / buttons if there are no windows open
+            // Refresh ribbon to gray out the menu / buttons if there are no windows open
             RefreshRibbonMenuButtons();
 
         }
@@ -1167,8 +1014,10 @@ namespace PowerPointLabs
             PPMouse.StopHook();
             PPKeyboard.StopHook();
             PPCopy.StopHook();
-            // Event Handler unregistering taken care of in destructor
+            ThemeManager.TearDown();
+
             UIThreadExecutor.TearDown();
+            PPLClipboard.Instance.Teardown();
             Trace.TraceInformation(DateTime.Now.ToString("yyyyMMddHHmmss") + ": PowerPointLabs Exiting");
             Trace.Close();
             if (_ftChannel != null)
@@ -1212,8 +1061,7 @@ namespace PowerPointLabs
                         catch
                         {
                             //handling corrupted shapes
-                            shape.Copy();
-                            PowerPoint.Shape fixedShape = _previousSlideForCopyEvent.Shapes.Paste()[1];
+                            PowerPoint.Shape fixedShape = _previousSlideForCopyEvent.Shapes.SafeCopyPlaceholder(shape);
                             fixedShape.Left = shape.Left;
                             fixedShape.Top = shape.Top;
                             while (fixedShape.ZOrderPosition > shape.ZOrderPosition)
@@ -1263,9 +1111,9 @@ namespace PowerPointLabs
                     }
                 }
             }
-            catch
+            catch (Exception e)
             {
-                //TODO: log in ThisAddIn.cs
+                Logger.LogException(e, nameof(AfterPasteEventHandler));
             }
         }
 
@@ -1432,9 +1280,9 @@ namespace PowerPointLabs
                 Ribbon.RefreshRibbonControl("ReplaceWithClipboardButton");
                 Ribbon.RefreshRibbonControl("PasteIntoGroupButton");
             }
-            catch
+            catch (Exception e)
             {
-                //TODO: log in ThisAddIn.cs
+                Logger.LogException(e, nameof(AfterCopyEventHandler));
             }
         }
         # endregion
