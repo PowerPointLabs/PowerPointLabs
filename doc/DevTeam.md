@@ -7,7 +7,7 @@ Team Leads: Ong Heng Le
 
 Senior Devs: Alex Fong, Ang Shi Ya, Jamos Tay, Kenneth Loh, Lee Yan Hwa, Syed Abdullah, Tan Jun Kiat
 
-Team Members: Bryan Lew, Chester Sng, Henry Yu, Li Xiao Wei
+Team Members: Bryan Lew, Chester Sng, Henry Yu, Herald Yu, Li Xiao Wei
 
 ## Project Areas
 Area | Responsibilities | Lead | Past Leads
