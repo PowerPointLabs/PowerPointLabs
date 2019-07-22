@@ -52,12 +52,17 @@ namespace PowerPointLabs.SyncLab
                 new FillFormat()
             };
 
-        private static readonly Lazy<SyncLabShapeStorage> StorageInstance =
+        private static Lazy<SyncLabShapeStorage> storageInstance =
             new Lazy<SyncLabShapeStorage>(() => new SyncLabShapeStorage());
 
         public static SyncLabShapeStorage Instance
         {
-            get { return StorageInstance.Value; }
+            get { return storageInstance.Value; }
+        }
+
+        public static void ReInit()
+        {
+            storageInstance = new Lazy<SyncLabShapeStorage>(() => new SyncLabShapeStorage());
         }
 
         private SyncLabShapeStorage() : base()

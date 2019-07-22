@@ -25,11 +25,7 @@ namespace PowerPointLabs.CropLab
         public static Shape Crop(PowerPointSlide currentSlide, Selection selection,
                                 double magnifyRatio = 1.0, bool isInPlace = false, bool handleError = true)
         {
-            ShapeRange shapeRange = selection.ShapeRange;
-            if (selection.HasChildShapeRange)
-            {
-                shapeRange = selection.ChildShapeRange;
-            }
+            ShapeRange shapeRange = ShapeUtil.GetShapeRange(selection);
 
             Shape croppedShape = Crop(currentSlide, shapeRange, isInPlace: isInPlace, handleError: handleError);
             if (croppedShape != null)

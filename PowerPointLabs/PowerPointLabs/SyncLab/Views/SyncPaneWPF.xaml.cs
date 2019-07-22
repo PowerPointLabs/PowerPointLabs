@@ -230,12 +230,12 @@ namespace PowerPointLabs.SyncLab.Views
 
             Shape shape = selection.ShapeRange[1];
 
-            if (shape.Type == MsoShapeType.msoSmartArt) 
+            if (shape.Type == MsoShapeType.msoSmartArt)
             {
                 MessageBox.Show(SyncLabText.ErrorSmartArtUnsupported, SyncLabText.ErrorDialogTitle);
                 return;
             }
-            
+
             if (selection.HasChildShapeRange)
             {
                 if (selection.ChildShapeRange.Count != 1)
@@ -246,15 +246,11 @@ namespace PowerPointLabs.SyncLab.Views
                 shape = selection.ChildShapeRange[1];
             }
 
-            bool canSyncPlaceHolder =
-                shape.Type == MsoShapeType.msoPlaceholder && 
-                ShapeUtil.CanCopyMsoPlaceHolder(shape, SyncFormatUtil.GetTemplateShapes());
-
             if (shape.Type != MsoShapeType.msoAutoShape &&
                 shape.Type != MsoShapeType.msoLine &&
                 shape.Type != MsoShapeType.msoPicture &&
                 shape.Type != MsoShapeType.msoTextBox &&
-                !canSyncPlaceHolder)
+                !IsPlaceholderSyncable(shape))
             {
                 MessageBox.Show(SyncLabText.ErrorCopySelectionInvalid, SyncLabText.ErrorDialogTitle);
                 return;
@@ -268,6 +264,17 @@ namespace PowerPointLabs.SyncLab.Views
             }
             AddFormatToList(shape, Dialog.ObjectName, Dialog.Formats);
             Dialog = null;
+        }
+
+        private static bool IsPlaceholderSyncable(Shape shape)
+        {
+            if (shape.Type == MsoShapeType.msoPlaceholder)
+            {
+                return true;
+            }
+            Microsoft.Office.Interop.PowerPoint.Shapes templateShapes =
+                SyncFormatUtil.GetTemplateShapes();
+            return ShapeUtil.CanCopyMsoPlaceHolder(shape, templateShapes);
         }
         #endregion
 

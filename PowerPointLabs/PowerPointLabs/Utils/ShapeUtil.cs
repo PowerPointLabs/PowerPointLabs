@@ -213,12 +213,7 @@ namespace PowerPointLabs.Utils
                 return false;
             }
 
-            if (selection.HasChildShapeRange)
-            {
-                return selection.ChildShapeRange?.Count == 1;
-            }
-
-            return selection.ShapeRange.Count == 1;
+            return ShapeUtil.GetShapeRange(selection).Count == 1;
         }
 
         public static bool IsSelectionMultipleOrGroup(Selection selection)
@@ -777,6 +772,11 @@ namespace PowerPointLabs.Utils
         #endregion
 
         #region Shape Finding
+
+        public static ShapeRange GetShapeRange(Selection selection)
+        {
+            return (selection.HasChildShapeRange) ? selection.ChildShapeRange : selection.ShapeRange;
+        }
 
         public static ShapeRange GetShapesWhenTypeMatches(PowerPointSlide slide, ShapeRange shapes, MsoShapeType type)
         {
