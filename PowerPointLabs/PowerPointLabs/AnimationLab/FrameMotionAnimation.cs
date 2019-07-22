@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 
 using PowerPointLabs.Models;
-
+using PowerPointLabs.Utils;
 using Office = Microsoft.Office.Core;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
@@ -47,7 +47,7 @@ namespace PowerPointLabs.AnimationLab
                 initialFont = initialShape.TextFrame.TextRange.Font.Size;
             }
 
-            if (Utils.ShapeUtil.IsStraightLine(initialShape))
+            if (initialShape.IsStraightLine())
             {
                 double initialAngle = GetLineAngle(initialShape);
                 double finalAngle = GetLineAngle(finalShape);

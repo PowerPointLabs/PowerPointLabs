@@ -24,7 +24,7 @@ namespace PowerPointLabs.EffectsLab
             for (int i = 1; i <= shapeRange.Count; i++)
             {
                 Shape shape = shapeRange[i];
-                if (ShapeUtil.IsCorrupted(shape))
+                if (shape.IsCorrupted())
                 {
                     shape = ShapeUtil.CorruptionCorrection(shape, curSlide);
                 }

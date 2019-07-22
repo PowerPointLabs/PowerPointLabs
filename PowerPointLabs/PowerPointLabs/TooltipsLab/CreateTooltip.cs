@@ -15,8 +15,8 @@ namespace PowerPointLabs.TooltipsLab
         // Generate a trigger shape directly in the center bottom position of the specified callout shape.
         public static PowerPoint.Shape GenerateTriggerShapeWithReferenceCallout(PowerPointSlide currentSlide, PowerPoint.Shape callout)
         {
-            float left = ShapeUtil.GetCenterPoint(callout).X - TooltipsLabConstants.TriggerShapeDefaultWidth / 2;
-            float top = ShapeUtil.GetBottom(callout) + TooltipsLabConstants.TriggerShapeAndCalloutSpacing;
+            float left = callout.GetCenterPoint().X - TooltipsLabConstants.TriggerShapeDefaultWidth / 2;
+            float top = callout.GetBottom() + TooltipsLabConstants.TriggerShapeAndCalloutSpacing;
 
             PowerPoint.Shape triggerShape = currentSlide.Shapes.AddShape(
                 TooltipsLabConstants.TriggerShape, 
@@ -31,7 +31,7 @@ namespace PowerPointLabs.TooltipsLab
 
         public static PowerPoint.Shape GenerateCalloutWithReferenceTriggerShape(PowerPointSlide currentSlide, PowerPoint.Shape triggerShape)
         {
-            float midpointX = ShapeUtil.GetMidpointX(triggerShape);
+            float midpointX = triggerShape.GetMidpointX();
 
 
             PowerPoint.Shape callout = currentSlide.Shapes.AddShape(
@@ -62,7 +62,7 @@ namespace PowerPointLabs.TooltipsLab
             // Look for a shape on the same position of the same size and type on the same slide
             float blurRadius = Math.Min(TooltipsLabConstants.TriggerShapeDefaultWidth,
                 TooltipsLabConstants.TriggerShapeDefaultHeight) / 2;
-            ShapeUtil.TryDisplaceShape(presentation, currentSlide, triggerShape, blurRadius);
+            triggerShape.TryDisplaceShape(presentation, currentSlide, blurRadius);
 
             return triggerShape;
         }

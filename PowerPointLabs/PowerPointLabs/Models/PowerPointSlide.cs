@@ -1190,7 +1190,7 @@ namespace PowerPointLabs.Models
             IEnumerable<Shape> shapes = _slide.Shapes.Cast<Shape>();
             foreach (Shape shape in shapes)
             {
-                if (ShapeUtil.HasDefaultName(shape))
+                if (shape.HasDefaultName())
                 {
                     shape.Name = UnnamedShapeName + CommonUtil.UniqueDigitString();
                 }

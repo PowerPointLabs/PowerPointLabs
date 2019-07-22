@@ -262,7 +262,7 @@ namespace PowerPointLabs.ZoomLab
             List<PowerPoint.Shape> copiedShapes = new List<PowerPoint.Shape>();
             foreach (PowerPoint.Shape sh in nextSlide.Shapes)
             {
-                if (!nextSlide.HasEntryAnimation(sh) && !ShapeUtil.IsHidden(sh))
+                if (!nextSlide.HasEntryAnimation(sh) && !sh.IsHidden())
                 {
                     PowerPoint.Shape shapeCopy = currentSlide.Shapes.SafeCopyPlaceholder(sh);
                     LegacyShapeUtil.CopyShapeAttributes(sh, ref shapeCopy);
@@ -397,7 +397,7 @@ namespace PowerPointLabs.ZoomLab
             List<PowerPoint.Shape> copiedShapes = new List<PowerPoint.Shape>();
             foreach (PowerPoint.Shape sh in previousSlide.Shapes)
             {
-                if (!previousSlide.HasExitAnimation(sh) && !ShapeUtil.IsHidden(sh))
+                if (!previousSlide.HasExitAnimation(sh) && !sh.IsHidden())
                 {
                     PowerPoint.Shape shapeCopy = addedSlide.Shapes.SafeCopyPlaceholder(sh);
                     LegacyShapeUtil.CopyShapeAttributes(sh, ref shapeCopy);
