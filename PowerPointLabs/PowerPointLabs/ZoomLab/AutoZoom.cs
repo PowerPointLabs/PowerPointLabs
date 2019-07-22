@@ -148,7 +148,7 @@ namespace PowerPointLabs.ZoomLab
                 PowerPointSlide previousSlide = GetPreviousSlide(currentSlide, deletePreviouslyAdded);
 
                 PowerPoint.Shape previousSlidePicture = null, shapeToZoom = null;
-                
+
                 currentSlide.HideIndicator();
                 if (ZoomLabSettings.BackgroundZoomChecked)
                 {
@@ -327,7 +327,7 @@ namespace PowerPointLabs.ZoomLab
             }
 
             LegacyShapeUtil.CopyCenterShapePosition(selectedShape, ref nextSlidePicture);
- 
+
             selectedShape.Visible = Office.MsoTriState.msoFalse;
             nextSlidePicture.Name = "PPTZoomInShape" + DateTime.Now.ToString("yyyyMMddHHmmssffff");
 
@@ -363,7 +363,7 @@ namespace PowerPointLabs.ZoomLab
 
         private static PowerPoint.Shape GetStepBackWithBackgroundShapeToZoom(PowerPointSlide currentSlide, PowerPointSlide addedSlide, PowerPoint.Shape previousSlidePicture, out PowerPoint.Shape backgroundShape)
         {
-            PowerPoint.Shape currentSlideCopy = GraphicsUtil.AddSlideAsShape(currentSlide, addedSlide);
+            PowerPoint.Shape currentSlideCopy = AddSlideAsShapeWithoutEntryAnimations(currentSlide, addedSlide);
 
             ShapeUtil.FitShapeToSlide(ref currentSlideCopy);
             currentSlideCopy.Name = "PPTZoomOutShape" + DateTime.Now.ToString("yyyyMMddHHmmssffff");
@@ -402,7 +402,7 @@ namespace PowerPointLabs.ZoomLab
                     PowerPoint.Shape shapeCopy = addedSlide.Shapes.SafeCopyPlaceholder(sh);
                     LegacyShapeUtil.CopyShapeAttributes(sh, ref shapeCopy);
                     copiedShapes.Add(shapeCopy);
-                } 
+                }
             }
 
             Globals.ThisAddIn.Application.ActiveWindow.View.GotoSlide(addedSlide.Index);
@@ -424,6 +424,15 @@ namespace PowerPointLabs.ZoomLab
             {
                 shapeCopy.Select(Office.MsoTriState.msoFalse);
             }
+        }
+
+        private static PowerPoint.Shape AddSlideAsShapeWithoutEntryAnimations(PowerPointSlide slideToAdd, PowerPointSlide targetSlide)
+        {
+            PowerPointSlide slideWithoutEntryAnimations = slideToAdd.Duplicate();
+            slideWithoutEntryAnimations.DeleteEntryAnimationShapes();
+            PowerPoint.Shape result = GraphicsUtil.AddSlideAsShape(slideWithoutEntryAnimations, targetSlide);
+            slideWithoutEntryAnimations.Delete();
+            return result;
         }
     }
 }
