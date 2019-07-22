@@ -14,6 +14,7 @@ using Shapes = Microsoft.Office.Interop.PowerPoint.Shapes;
 
 namespace PowerPointLabs.SyncLab
 {
+
     /// <summary>
     /// Saves shapes into a PowerPointPresentation that exists in the background.
     /// The exact saved shapes may change in type but style will be retained.
