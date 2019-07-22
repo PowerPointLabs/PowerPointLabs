@@ -162,7 +162,7 @@ namespace PowerPointLabs.SyncLab
             {
                 if (shapes[index].Name.Equals(shapeKey))
                 {
-                    shapes[index].Delete();
+                    shapes[index].SafeDelete();
                     _backupArtisticEffects.Remove(shapeKey);
                 }
                 else

@@ -82,7 +82,7 @@ namespace PowerPointLabs.PictureSlidesLab.Service
                 Shape shape = ShapeUtil.GetTextShapeToProcess(Shapes);
                 if (shape != null)
                 {
-                    shape.Delete();
+                    shape.SafeDelete();
                 }
             }
             else

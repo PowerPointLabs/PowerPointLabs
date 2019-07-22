@@ -2,7 +2,7 @@
 using System.Drawing;
 
 using Microsoft.Office.Interop.PowerPoint;
-
+using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.Utils;
 
@@ -14,7 +14,7 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
         {
             Shape duplicateShape = formatShape.Duplicate()[1];
             bool canCopy = Sync(formatShape, duplicateShape);
-            duplicateShape.Delete();
+            duplicateShape.SafeDelete();
             return canCopy;
         }
 
@@ -36,7 +36,7 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
             shape.Line.Visible = Microsoft.Office.Core.MsoTriState.msoFalse;
             SyncFormat(formatShape, shape);
             Bitmap image = new Bitmap(GraphicsUtil.ShapeToBitmap(shape));
-            shape.Delete();
+            shape.SafeDelete();
             return image;
         }
 

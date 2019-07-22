@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 using Microsoft.Office.Core;
-
+using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.TextCollection;
 using PowerPointLabs.Utils;
 
@@ -2908,7 +2908,7 @@ namespace PowerPointLabs.PositionsLab
 
             PPShape duplicatePPShape = new PPShape(duplicateShape);
             Drawing.PointF visualCenter = duplicatePPShape.VisualCenter;
-            duplicateShape.Delete();
+            duplicateShape.SafeDelete();
 
             return visualCenter;
         }

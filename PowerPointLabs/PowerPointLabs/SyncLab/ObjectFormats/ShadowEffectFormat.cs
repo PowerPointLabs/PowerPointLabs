@@ -1,7 +1,7 @@
 ﻿using System.Drawing;
 
 using Microsoft.Office.Core;
-
+using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.Utils;
 
 using ShadowFormat = Microsoft.Office.Interop.PowerPoint.ShadowFormat;
@@ -61,7 +61,7 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
             duplicate.Shadow.Transparency = 0.3f;
 
             Bitmap image = GraphicsUtil.ShapeToBitmap(duplicate);
-            duplicate.Delete();
+            duplicate.SafeDelete();
 
             return image;
 

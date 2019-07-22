@@ -370,7 +370,7 @@ namespace PowerPointLabs.Utils
         {
             Shape copy = shape.Duplicate()[1];
             bool hasDefaultName = copy.Name != shape.Name;
-            copy.Delete();
+            copy.SafeDelete();
             return hasDefaultName;
         }
 
@@ -414,7 +414,7 @@ namespace PowerPointLabs.Utils
             
             if (correctedShape != null)
             {
-                shape.Delete();
+                shape.SafeDelete();
                 return correctedShape;
             }
             else
@@ -915,7 +915,7 @@ namespace PowerPointLabs.Utils
                 return;
             }
 
-            candidateShape.Delete();
+            candidateShape.SafeDelete();
             candidateShape = candidateSlide.Shapes.SafeCopyPlaceholder(refShape);
             candidateShape.Name = refShape.Name;
         }
@@ -1098,7 +1098,7 @@ namespace PowerPointLabs.Utils
             Shape duplicate = shape.Duplicate()[1];
             duplicate.TextFrame.TextRange.Text = "";
             int color = duplicate.TextFrame.TextRange.Font.Color.RGB;
-            duplicate.Delete();
+            duplicate.SafeDelete();
             return color;
         }
 
@@ -1201,7 +1201,7 @@ namespace PowerPointLabs.Utils
                 return false;
             }
             
-            copyAttempt.Delete();
+            copyAttempt.SafeDelete();
             return true;
         }
 
@@ -1261,8 +1261,9 @@ namespace PowerPointLabs.Utils
                     // must use duplicate. there is no way to create a replacement picture
                     // as the image's source is not obtainable through the Shape API
                     var tempShape = msoPlaceHolder.Duplicate()[1];
+                    tempShape.Copy();
                     shapeTemplate = shapesSource.SafeCopy(tempShape); // DO NOT USE SAFECOPYPLACEHOLDER, INFINITE LOOP
-                    tempShape.Delete();
+                    tempShape.SafeDelete();
                     break;
                 case PpPlaceholderType.ppPlaceholderVerticalObject:
                 case PpPlaceholderType.ppPlaceholderObject:

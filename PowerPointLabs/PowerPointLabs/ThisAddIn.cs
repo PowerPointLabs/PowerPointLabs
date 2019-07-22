@@ -1077,7 +1077,7 @@ namespace PowerPointLabs
 
                     foreach (PowerPoint.Shape shape in corruptedShapes)
                     {
-                        shape.Delete();
+                        shape.SafeDelete();
                     }
 
                     _isShapeMatchedAlready = new HashSet<string>();

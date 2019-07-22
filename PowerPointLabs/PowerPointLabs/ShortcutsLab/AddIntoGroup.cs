@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 
 using Microsoft.Office.Interop.PowerPoint;
-
+using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.Models;
 using PowerPointLabs.Utils;
 
@@ -59,7 +59,7 @@ namespace PowerPointLabs.ShortcutsLab
 
             // Transfer the animation
             slide.TransferAnimation(tempShapeForAnimation, selectedGroup);
-            tempShapeForAnimation.Delete();
+            tempShapeForAnimation.SafeDelete();
 
             return slide.ToShapeRange(selectedGroup);
         }

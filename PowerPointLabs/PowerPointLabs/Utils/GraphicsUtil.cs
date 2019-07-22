@@ -6,11 +6,11 @@ using System.Drawing.Drawing2D;
 using System.Drawing.Imaging;
 using System.IO;
 using System.Windows.Forms;
-using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using Microsoft.Office.Core;
 using Microsoft.Office.Interop.PowerPoint;
+
 using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.Models;
@@ -161,7 +161,7 @@ namespace PowerPointLabs.Utils
             DeleteSpecificFilePath(tempFileStoragePath);
 
             // Delete targetShape to prevent duplication
-            targetShape.Delete();
+            targetShape.SafeDelete();
 
             return compressedImgShape;
         }

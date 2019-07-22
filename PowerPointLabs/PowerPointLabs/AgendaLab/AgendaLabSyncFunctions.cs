@@ -163,7 +163,7 @@ namespace PowerPointLabs.AgendaLab
             slide.Shapes.Cast<Shape>()
                 .Where(AgendaShape.WithPurpose(ShapePurpose.VisualAgendaImage))
                 .ToList()
-                .ForEach(shape => shape.Delete());
+                .ForEach(shape => shape.SafeDelete());
         }
 
         /// <summary>
@@ -186,7 +186,7 @@ namespace PowerPointLabs.AgendaLab
                 Shape snapshotShape = slide.InsertExitSnapshotOfSlide(sectionEndSlide);
                 snapshotShape.Name = imageShape.Name;
                 ShapeUtil.SyncShape(imageShape, snapshotShape, pickupShapeFormat: true, pickupTextContent: false, pickupTextFormat: false);
-                imageShape.Delete();
+                imageShape.SafeDelete();
             }
         }
 
@@ -206,7 +206,7 @@ namespace PowerPointLabs.AgendaLab
         {
             PowerPointDrillDownSlide addedSlide;
             AutoZoom.AddDrillDownAnimation(zoomInShape, slide, out addedSlide, includeAckSlide: false, deletePreviouslyAdded: false);
-            slide.GetShapesWithRule(new Regex("PPTZoomIn"))[0].Delete();
+            slide.GetShapesWithRule(new Regex("PPTZoomIn"))[0].SafeDelete();
             AgendaSection section = AgendaSlide.Decode(slide).Section;
             AgendaSlide.SetSlideName(addedSlide, Type.Visual, SlidePurpose.ZoomIn, section);
             zoomInShape.Visible = MsoTriState.msoTrue;
@@ -219,7 +219,7 @@ namespace PowerPointLabs.AgendaLab
         {
             PowerPointStepBackSlide addedSlide;
             AutoZoom.AddStepBackAnimation(zoomOutShape, slide, out addedSlide, includeAckSlide: false, deletePreviouslyAdded: false);
-            slide.GetShapesWithRule(new Regex("PPTZoomOut"))[0].Delete();
+            slide.GetShapesWithRule(new Regex("PPTZoomOut"))[0].SafeDelete();
             AgendaSection section = AgendaSlide.Decode(slide).Section;
             AgendaSlide.SetSlideName(addedSlide, Type.Visual, finalZoomOut ? SlidePurpose.FinalZoomOut : SlidePurpose.ZoomOut, section);
             zoomOutShape.Visible = MsoTriState.msoTrue;
@@ -324,7 +324,7 @@ namespace PowerPointLabs.AgendaLab
                     continue;
                 }
                 
-                shapeInSlide.Delete();
+                shapeInSlide.SafeDelete();
                 candidateSlideShapes[shapeName] = null;
             }
         }

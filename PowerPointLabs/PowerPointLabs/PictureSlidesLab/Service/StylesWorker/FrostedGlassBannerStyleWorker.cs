@@ -2,7 +2,7 @@
 using System.ComponentModel.Composition;
 
 using Microsoft.Office.Interop.PowerPoint;
-
+using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.PictureSlidesLab.Model;
 using PowerPointLabs.PictureSlidesLab.Service.StylesWorker.Interface;
 
@@ -24,7 +24,7 @@ namespace PowerPointLabs.PictureSlidesLab.Service.StylesWorker
                 Shape banner = designer.ApplyFrostedGlassBannerEffect(option.GetBannerDirection(), option.GetTextBoxPosition(),
                     blurImageShape, option.FrostedGlassBannerColor, option.FrostedGlassBannerTransparency);
                 result.Add(banner);
-                blurImageShape.Delete();
+                blurImageShape.SafeDelete();
             }
             return result;
         }

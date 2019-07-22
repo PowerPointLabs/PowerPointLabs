@@ -988,7 +988,7 @@ namespace PowerPointLabs.ColorsLab
             {
                 newShape.ZOrder(Microsoft.Office.Core.MsoZOrderCmd.msoSendBackward);
             }
-            s.Delete();
+            s.SafeDelete();
         }
 
         /// <summary>

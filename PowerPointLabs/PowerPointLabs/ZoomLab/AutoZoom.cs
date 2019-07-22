@@ -94,7 +94,7 @@ namespace PowerPointLabs.ZoomLab
 
                     addedSlide.PrepareForDrillDown();
                     addedSlide.AddDrillDownAnimationNoBackground(backgroundShape, shapeToZoom, pictureOnNextSlide);
-                    pictureOnNextSlide.Delete();
+                    pictureOnNextSlide.SafeDelete();
                 }
                 currentSlide.ShowIndicator();
 
@@ -277,7 +277,7 @@ namespace PowerPointLabs.ZoomLab
 
             pictureOnNextSlide = nextSlide.Shapes.SafeCopyPNG(shapeGroup);
             LegacyShapeUtil.CopyCenterShapePosition(shapeGroup, ref pictureOnNextSlide);
-            shapeGroup.Delete();
+            shapeGroup.SafeDelete();
 
             PowerPoint.Shape slidePicture = currentSlide.Shapes.SafeCopyPNG(pictureOnNextSlide);
             return slidePicture;
@@ -291,7 +291,7 @@ namespace PowerPointLabs.ZoomLab
             IEnumerable<PowerPoint.Shape> matchingShapes = shapes.Where(current => nextSlideCopy.HasEntryAnimation(current));
             foreach (PowerPoint.Shape s in matchingShapes)
             {
-                s.Delete();
+                s.SafeDelete();
             }
             PowerPoint.Shape slidePicture = GraphicsUtil.AddSlideAsShape(nextSlideCopy, currentSlide);
             nextSlideCopy.Delete();
@@ -306,7 +306,7 @@ namespace PowerPointLabs.ZoomLab
             IEnumerable<PowerPoint.Shape> matchingShapes = shapes.Where(current => previousSlideCopy.HasExitAnimation(current));
             foreach (PowerPoint.Shape s in matchingShapes)
             {
-                s.Delete();
+                s.SafeDelete();
             }
             PowerPoint.Shape slidePicture = GraphicsUtil.AddSlideAsShape(previousSlideCopy, currentSlide);
             previousSlideCopy.Delete();
@@ -413,7 +413,7 @@ namespace PowerPointLabs.ZoomLab
             PowerPoint.Shape previousSlidePicture = addedSlide.Shapes.SafeCopyPNG(shapeGroup);
             LegacyShapeUtil.CopyCenterShapePosition(shapeGroup, ref previousSlidePicture);
             previousSlidePicture.Name = "PPTZoomOutShape" + DateTime.Now.ToString("yyyyMMddHHmmssffff");
-            shapeGroup.Delete();
+            shapeGroup.SafeDelete();
 
             return previousSlidePicture;
         }

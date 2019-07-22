@@ -2,7 +2,7 @@
 using System.Drawing;
 
 using Microsoft.Office.Interop.PowerPoint;
-
+using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.Utils;
 
@@ -31,7 +31,7 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
                 SyncFormatConstants.DisplayImageSize.Width, 0);
             SyncFormat(formatShape, shape);
             Bitmap image = GraphicsUtil.ShapeToBitmap(shape);
-            shape.Delete();
+            shape.SafeDelete();
             return image;
         }
 

@@ -151,7 +151,6 @@ namespace Test.UnitTest.PositionsLab
                 if (simulatedShapes != null)
                 {
                     simulatedShapes.Delete();
-                    GC.Collect();
                 }
             }
         }
@@ -192,7 +191,6 @@ namespace Test.UnitTest.PositionsLab
                 if (simulatedShapes != null)
                 {
                     simulatedShapes.Delete();
-                    GC.Collect();
                 }
             }
         }
@@ -233,7 +231,6 @@ namespace Test.UnitTest.PositionsLab
                 if (simulatedShapes != null)
                 {
                     simulatedShapes.Delete();
-                    GC.Collect();
                 }
             }
         }
@@ -266,7 +263,6 @@ namespace Test.UnitTest.PositionsLab
                 if (simulatedShapes != null)
                 {
                     simulatedShapes.Delete();
-                    GC.Collect();
                 }
             }
         }
@@ -306,7 +302,6 @@ namespace Test.UnitTest.PositionsLab
                 if (simulatedShapes != null)
                 {
                     simulatedShapes.Delete();
-                    GC.Collect();
                 }
             }
         }
@@ -339,7 +334,6 @@ namespace Test.UnitTest.PositionsLab
                 if (simulatedShapes != null)
                 {
                     simulatedShapes.Delete();
-                    GC.Collect();
                 }
             }
         }
@@ -372,7 +366,6 @@ namespace Test.UnitTest.PositionsLab
                 if (simulatedShapes != null)
                 {
                     simulatedShapes.Delete();
-                    GC.Collect();
                 }
             }
         }
@@ -405,7 +398,6 @@ namespace Test.UnitTest.PositionsLab
                 if (simulatedShapes != null)
                 {
                     simulatedShapes.Delete();
-                    GC.Collect();
                 }
             }
         }

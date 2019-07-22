@@ -3,7 +3,7 @@ using System.Drawing;
 using System.IO;
 
 using Microsoft.Office.Interop.PowerPoint;
-
+using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.Models;
 using PowerPointLabs.Utils;
 
@@ -45,7 +45,7 @@ namespace PowerPointLabs.CropLab
                     shapeBounds.Left, shapeBounds.Top, shapeBounds.Width, shapeBounds.Height);
                 toCrop = newShape;
                 toCrop.Name = shape.Name;
-                shape.Delete();
+                shape.SafeDelete();
             }
             RectangleF cropArea = GetCropArea(toCrop, slideWidth, slideHeight);
             toCrop.PictureFormat.Crop.ShapeHeight = cropArea.Height;
