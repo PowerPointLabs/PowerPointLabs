@@ -1,5 +1,5 @@
 using System;
-
+using PowerPointLabs.ActionFramework.Common.Extension;
 using Office = Microsoft.Office.Core;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
@@ -30,7 +30,7 @@ namespace PowerPointLabs.CropLab
                 origShape.ScaleHeight(1, Office.MsoTriState.msoTrue);
                 float origWidth = origShape.Width;
                 float origHeight = origShape.Height;
-                origShape.Delete();
+                origShape.SafeDelete();
 
                 float currentWidth = shapeRange[i].Width - (shapeRange[i].PictureFormat.CropLeft + shapeRange[i].PictureFormat.CropRight) / origWidth;
                 float currentHeight = shapeRange[i].Height - (shapeRange[i].PictureFormat.CropTop + shapeRange[i].PictureFormat.CropBottom) / origHeight;

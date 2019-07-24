@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-
+using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.AnimationLab;
 
 using Office = Microsoft.Office.Core;
@@ -46,7 +46,7 @@ namespace PowerPointLabs.Models
             IEnumerable<PowerPoint.Shape> matchingShapes = shapes.Where(current => (!current.Name.Contains("PPTLabsMagnifyAreaGroup")));
             foreach (PowerPoint.Shape s in matchingShapes)
             {
-                s.Delete();
+                s.SafeDelete();
             }
 
             panShapeFrom = GetShapesWithPrefix("PPTLabsMagnifyAreaGroup")[0];

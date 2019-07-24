@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 
 using Microsoft.Office.Core;
-
+using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.TextCollection;
 using PowerPointLabs.Utils;
 
@@ -416,14 +416,14 @@ namespace PowerPointLabs.PositionsLab
                 throw new Exception(PositionsLabText.ErrorFewerThanThreeSelection);
             }
                     
-            Drawing.PointF origin = ShapeUtil.GetCenterPoint(selectedShapes[1]);
-            Drawing.PointF refPoint = ShapeUtil.GetCenterPoint(selectedShapes[2]);
+            Drawing.PointF origin = selectedShapes[1].GetCenterPoint();
+            Drawing.PointF refPoint = selectedShapes[2].GetCenterPoint();
             double distance = DistanceBetweenTwoPoints(origin, refPoint);
 
             for (int i = 3; i <= selectedShapes.Count; i++)
             {
                 Shape shape = selectedShapes[i];
-                Drawing.PointF point = ShapeUtil.GetCenterPoint(shape);
+                Drawing.PointF point = shape.GetCenterPoint();
                 double currentDistance = DistanceBetweenTwoPoints(origin, point);
                 double proportion = (currentDistance - distance) / currentDistance;
 
@@ -1964,7 +1964,7 @@ namespace PowerPointLabs.PositionsLab
                     throw new Exception(PositionsLabText.ErrorFewerThanThreeSelection);
                 }
 
-                origin = ShapeUtil.GetCenterPoint(selectedShapes[1]);
+                origin = selectedShapes[1].GetCenterPoint();
 
                 float[] boundaryAngles = GetShapeBoundaryAngles(origin, selectedShapes[2]);
                 startingAngle = boundaryAngles[1];
@@ -1996,7 +1996,7 @@ namespace PowerPointLabs.PositionsLab
                     throw new Exception(PositionsLabText.ErrorFewerThanThreeSelection);
                 }
                 
-                origin = ShapeUtil.GetCenterPoint(selectedShapes[1]);
+                origin = selectedShapes[1].GetCenterPoint();
                 
                 startingAngle = (float)AngleBetweenTwoPoints(origin, GetVisualCenter(selectedShapes[2]));
                 referenceAngle = 360;
@@ -2010,7 +2010,7 @@ namespace PowerPointLabs.PositionsLab
                     throw new Exception(PositionsLabText.ErrorFewerThanFourSelection);
                 }
 
-                origin = ShapeUtil.GetCenterPoint(selectedShapes[1]);
+                origin = selectedShapes[1].GetCenterPoint();
                 float[] startingShapeBoundaryAngles = GetShapeBoundaryAngles(origin, selectedShapes[2]);
                 float[] endingShapeBoundaryAngles = GetShapeBoundaryAngles(origin, selectedShapes[3]);
                 startingAngle = startingShapeBoundaryAngles[0];
@@ -2050,7 +2050,7 @@ namespace PowerPointLabs.PositionsLab
                     throw new Exception(PositionsLabText.ErrorFewerThanFourSelection);
                 }
 
-                origin = ShapeUtil.GetCenterPoint(selectedShapes[1]);
+                origin = selectedShapes[1].GetCenterPoint();
                 startingAngle = (float)AngleBetweenTwoPoints(origin, GetVisualCenter(selectedShapes[2]));
                 float endingAngle = (float)AngleBetweenTwoPoints(origin, GetVisualCenter(selectedShapes[3]));
 
@@ -2071,7 +2071,7 @@ namespace PowerPointLabs.PositionsLab
 
             for (int i = startingIndex; i <= selectedShapes.Count; i++)
             {
-                float angle = (float)AngleBetweenTwoPoints(origin, ShapeUtil.GetCenterPoint(selectedShapes[i]));
+                float angle = (float)AngleBetweenTwoPoints(origin, selectedShapes[i].GetCenterPoint());
                 float angleFromStart = (angle + (360 - startingAngle)) % 360;
 
                 ShapeAngleInfo shapeAngleInfo = new ShapeAngleInfo(selectedShapes[i], angleFromStart);
@@ -2249,7 +2249,7 @@ namespace PowerPointLabs.PositionsLab
         
         public static void Rotate(Shape shape, Drawing.PointF origin, float angle, PositionsLabSettings.RadialShapeOrientationObject shapeOrientation)
         {
-            Drawing.PointF unrotatedCenter = ShapeUtil.GetCenterPoint(shape);
+            Drawing.PointF unrotatedCenter = shape.GetCenterPoint();
             Drawing.PointF rotatedCenter = CommonUtil.RotatePoint(unrotatedCenter, origin, angle);
 
             shape.Left += (rotatedCenter.X - unrotatedCenter.X);
@@ -2288,14 +2288,14 @@ namespace PowerPointLabs.PositionsLab
                 throw new Exception(PositionsLabText.ErrorFewerThanTwoSelection);
             }
 
-            Drawing.PointF refShapeCenter = ShapeUtil.GetCenterPoint(shapes[0]);
+            Drawing.PointF refShapeCenter = shapes[0].GetCenterPoint();
             bool isAllSameDir = true;
             int lastDir = -1;
 
             for (int i = 1; i < shapes.Count; i++)
             {
                 Shape shape = shapes[i];
-                Drawing.PointF shapeCenter = ShapeUtil.GetCenterPoint(shape);
+                Drawing.PointF shapeCenter = shape.GetCenterPoint();
                 float angle = (float) AngleBetweenTwoPoints(refShapeCenter, shapeCenter);
 
                 int dir = GetDirectionWrtRefShape(shape, angle);
@@ -2324,7 +2324,7 @@ namespace PowerPointLabs.PositionsLab
             for (int i = 1; i < shapes.Count; i++)
             {
                 Shape shape = shapes[i];
-                Drawing.PointF shapeCenter = ShapeUtil.GetCenterPoint(shape);
+                Drawing.PointF shapeCenter = shape.GetCenterPoint();
                 float angle = (float) AngleBetweenTwoPoints(refShapeCenter, shapeCenter);
 
                 float defaultUpAngle = 0;
@@ -2908,7 +2908,7 @@ namespace PowerPointLabs.PositionsLab
 
             PPShape duplicatePPShape = new PPShape(duplicateShape);
             Drawing.PointF visualCenter = duplicatePPShape.VisualCenter;
-            duplicateShape.Delete();
+            duplicateShape.SafeDelete();
 
             return visualCenter;
         }

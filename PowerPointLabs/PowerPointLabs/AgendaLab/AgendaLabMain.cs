@@ -470,12 +470,12 @@ namespace PowerPointLabs.AgendaLab
             Shape contentShape = refSlide.Shapes.Placeholders[2];
             AgendaShape.SetShapeName(contentShape, ShapePurpose.ContentShape, AgendaSection.None);
 
-            ShapeUtil.SetText(titleShape, AgendaLabText.TitleContent);
-            ShapeUtil.SetText(contentShape, AgendaLabText.BulletVisitedContent,
-                                            AgendaLabText.BulletHighlightedContent,
-                                            AgendaLabText.BulletUnvisitedContent);
+            titleShape.SetText(AgendaLabText.TitleContent);
+            contentShape.SetText(AgendaLabText.BulletVisitedContent,
+                                 AgendaLabText.BulletHighlightedContent,
+                                 AgendaLabText.BulletUnvisitedContent);
 
-            List<TextRange2> paragraphs = ShapeUtil.GetParagraphs(contentShape);
+            List<TextRange2> paragraphs = contentShape.GetParagraphs();
             paragraphs[0].Font.Fill.ForeColor.RGB = GraphicsUtil.ConvertColorToRgb(Color.Gray);
             paragraphs[1].Font.Fill.ForeColor.RGB = GraphicsUtil.ConvertColorToRgb(Color.Red);
             paragraphs[2].Font.Fill.ForeColor.RGB = GraphicsUtil.ConvertColorToRgb(Color.Black);
@@ -502,7 +502,7 @@ namespace PowerPointLabs.AgendaLab
                                                             .Add(1, PpSlideLayout.ppLayoutTitleOnly));
 
             Shape titleBar = refSlide.Shapes.Placeholders[1];
-            ShapeUtil.SetText(titleBar, AgendaLabText.TitleContent);
+            titleBar.SetText(AgendaLabText.TitleContent);
 
             InsertVisualAgendaSectionImages(refSlide);
 
@@ -589,7 +589,7 @@ namespace PowerPointLabs.AgendaLab
         {
             Shape snapshotShape = CreateSectionImage(refSlide, section);
             ShapeUtil.SyncShape(previousImageShape, snapshotShape, pickupShapeFormat: true, pickupTextContent: false, pickupTextFormat: false);
-            previousImageShape.Delete();
+            previousImageShape.SafeDelete();
         }
         
         #endregion
@@ -617,7 +617,7 @@ namespace PowerPointLabs.AgendaLab
             slide.Shapes.Cast<Shape>()
                         .Where(AgendaShape.WithPurpose(ShapePurpose.BeamShapeMainGroup))
                         .ToList()
-                        .ForEach(shape => shape.Delete());
+                        .ForEach(shape => shape.SafeDelete());
         }
 
         #endregion
@@ -752,7 +752,7 @@ namespace PowerPointLabs.AgendaLab
                                                         .ToList();
             PositionNewImageShapes(newSectionImages, existingImageWidth, existingImageHeight);
 
-            markedForDeletion.ForEach(shape => shape.Delete());
+            markedForDeletion.ForEach(shape => shape.SafeDelete());
         }
 
         private static Dictionary<int, Shape> GetImageShapeAssignment(PowerPointSlide inSlide, out List<Shape> unassignedShapes)
@@ -903,7 +903,7 @@ namespace PowerPointLabs.AgendaLab
                 {
                     // Reuse old textbox
                     Shape textbox = textboxAssignment[index];
-                    ShapeUtil.SetText(textbox, section.Name);
+                    textbox.SetText(section.Name);
                     AgendaShape.SetShapeName(textbox, ShapePurpose.BeamShapeText, section);
                     reassignedTextboxIndexes.Add(index);
                 }
@@ -918,7 +918,7 @@ namespace PowerPointLabs.AgendaLab
             }
             
             markedForDeletion.AddRange(from entry in textboxAssignment where !reassignedTextboxIndexes.Contains(entry.Key) select entry.Value);
-            markedForDeletion.ForEach(shape => shape.Delete());
+            markedForDeletion.ForEach(shape => shape.SafeDelete());
 
             List<Shape> beamShapeShapes = beamShape.Ungroup().Cast<Shape>().ToList();
             beamShapeShapes.AddRange(newTextboxes);
@@ -972,7 +972,7 @@ namespace PowerPointLabs.AgendaLab
                 ShapeUtil.SyncTextRange(referenceTextFormat, newTextBoxes[i].TextFrame2.TextRange, pickupTextContent: false);
             }
 
-            oldTextBoxes.ForEach(shape => shape.Delete());
+            oldTextBoxes.ForEach(shape => shape.SafeDelete());
 
             List<Shape> beamShapeShapes = beamShape.Ungroup().Cast<Shape>().ToList();
             beamShapeShapes.AddRange(newTextBoxes);
@@ -1064,7 +1064,7 @@ namespace PowerPointLabs.AgendaLab
             beamShape.GroupItems.Cast<Shape>()
                                 .Where(AgendaShape.WithPurpose(ShapePurpose.BeamShapeHighlightedText))
                                 .ToList()
-                                .ForEach(shape => shape.Delete());
+                                .ForEach(shape => shape.SafeDelete());
 
             if (section.Index == 1)
             {

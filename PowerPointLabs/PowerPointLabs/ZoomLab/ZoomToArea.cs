@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-
+using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.Models;
 using PowerPointLabs.Utils;
@@ -92,7 +92,7 @@ namespace PowerPointLabs.ZoomLab
                     addedSlides.Add(deMagnifyingSlide);
                 }
 
-                selectedShape.Delete();
+                selectedShape.SafeDelete();
 
                 if (shapeCount != 1)
                 {
@@ -146,7 +146,7 @@ namespace PowerPointLabs.ZoomLab
                 zoomRectangle.Line.ForeColor.RGB = 0x000000;
 
                 zoomRectangles.Add(zoomRectangle);
-                zoomShape.Delete();
+                zoomShape.SafeDelete();
                 shapeCount++;
             }
             return zoomRectangles;

@@ -157,7 +157,7 @@ namespace PowerPointLabs.Models
             foreach (Shape shape in shapeRange)
             {
                 float softEdgeRadius = Math.Min(Math.Min(shape.Width, shape.Height) * 0.15f, 10f);
-                if (ShapeUtil.IsAGroup(shape))
+                if (shape.IsAGroup())
                 {
                     for (int i = 1; i <= shape.GroupItems.Count; i++)
                     {
@@ -180,7 +180,7 @@ namespace PowerPointLabs.Models
         {
             foreach (Shape shape in curSlide.Shapes.Cast<Shape>().Where(curSlide.HasExitAnimation))
             {
-                shape.Delete();
+                shape.SafeDelete();
             }
 
             curSlide.MoveMotionAnimation();
@@ -191,7 +191,7 @@ namespace PowerPointLabs.Models
             
             foreach (Shape shape in visibleShape)
             {
-                shape.Delete();
+                shape.SafeDelete();
             }
 
             List<Shape> placeHolders =
@@ -199,7 +199,7 @@ namespace PowerPointLabs.Models
 
             foreach (Shape placeHolder in placeHolders)
             {
-                placeHolder.Delete();
+                placeHolder.SafeDelete();
             }
         }
 

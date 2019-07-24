@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Windows.Forms;
 
 using Microsoft.Office.Interop.PowerPoint;
@@ -25,7 +26,7 @@ namespace PowerPointLabs.ShortcutsLab
                 PowerPoint.Shape shape = GetShapeFromSelection(selection);
                 int originalZOrder = shape.ZOrderPosition;
                 // In case shape is corrupted
-                if (ShapeUtil.IsCorrupted(shape))
+                if (shape.IsCorrupted())
                 {
                     shape = ShapeUtil.CorruptionCorrection(shape, slide);
                 }
@@ -76,8 +77,10 @@ namespace PowerPointLabs.ShortcutsLab
                 float y = shape.Top;
                 float width = shape.Width;
                 float height = shape.Height;
-                PowerPoint.Shape pic = slide.Shapes.SafeCopyPNG(shape);
-                shape.Delete();
+
+                Shape pic = slide.Shapes.SafeCopyPNG(shape);
+                shape.SafeDelete();
+
                 pic.Left = x + (width - pic.Width) / 2;
                 pic.Top = y + (height - pic.Height) / 2;
                 pic.Rotation = rotation;
@@ -97,13 +100,20 @@ namespace PowerPointLabs.ShortcutsLab
 
         private static PowerPoint.Shape GetShapeFromSelection(PowerPoint.Selection selection)
         {
-            return GetShapeFromSelection(selection.ShapeRange);
+            ShapeRange shapeRange = GetShapeRangeFromSelection(selection);
+            Shape shape = GetShapeFromShapeRange(shapeRange);
+            return shape;
         }
 
-        private static PowerPoint.Shape GetShapeFromSelection(PowerPoint.ShapeRange shapeRange)
+        private static ShapeRange GetShapeRangeFromSelection(Selection selection)
         {
-            PowerPoint.Shape result = shapeRange.Count > 1 ? shapeRange.Group() : shapeRange[1];
-            return result;
+            return selection.ShapeRange;
         }
+
+        private static PowerPoint.Shape GetShapeFromShapeRange(PowerPoint.ShapeRange shapeRange)
+        {
+            return shapeRange.Count > 1 ? shapeRange.Group() : shapeRange[1];
+        }
+
     }
 }

@@ -3,14 +3,11 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
+
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using PowerPointLabs.EffectsLab.Views;
-using PowerPointLabs.FunctionalTestInterface.Windows;
+
 using Test.Util;
-using TestInterface.Windows;
 
 namespace Test.FunctionalTest
 {

@@ -20,11 +20,27 @@ namespace Test.FunctionalTest
         public void FT_ConvertToPictureTest()
         {
             ConvertSingleObjToPicture();
-            CovertGroupObjToPicture();
+            ConvertGroupObjToPicture();
+            ConvertSingleObjInGroupToPicutre();
             IsClipboardRestored();
         }
 
-        private void CovertGroupObjToPicture()
+        private void ConvertSingleObjInGroupToPicutre()
+        {
+            Microsoft.Office.Interop.PowerPoint.Slide actualSlide = PpOperations.SelectSlide(13);
+            PpOperations.SelectShape("pic");
+
+            PplFeatures.ConvertToPic();
+
+            Shape sh = PpOperations.SelectShapesByPrefix("Picture")[1] as Shape;
+            Assert.AreEqual(MsoShapeType.msoPicture, sh.Type);
+
+            Microsoft.Office.Interop.PowerPoint.Slide expSlide = PpOperations.SelectSlide(14);
+            PpOperations.SelectShape("text 3")[1].Delete();
+            SlideUtil.IsSameLooking(expSlide, actualSlide);
+        }
+
+        private void ConvertGroupObjToPicture()
         {
             Microsoft.Office.Interop.PowerPoint.Slide actualSlide = PpOperations.SelectSlide(7);
             PpOperations.SelectShape("pic");

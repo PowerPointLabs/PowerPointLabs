@@ -154,8 +154,8 @@ namespace PowerPointLabs.Models
             groupShape.Ungroup();
             zoomSlideCroppedShapes.Left += (referenceShape.Left - zoomShapeCopy.Left);
             zoomSlideCroppedShapes.Top += (referenceShape.Top - zoomShapeCopy.Top);
-            zoomShapeCopy.Delete();
-            referenceShape.Delete();
+            zoomShapeCopy.SafeDelete();
+            referenceShape.SafeDelete();
         }
 
         private PowerPoint.Shape GetReferenceShape(PowerPoint.Shape shapeToZoom)

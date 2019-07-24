@@ -46,7 +46,7 @@ namespace PowerPointLabs.Models
             IEnumerable<PowerPoint.Shape> matchingShapes = shapes.Where(current => (HasExitAnimation(current)));
             foreach (PowerPoint.Shape s in matchingShapes)
             {
-                s.Delete();
+                s.SafeDelete();
             }
 
             foreach (PowerPoint.Shape s in _slide.Shapes)
@@ -126,7 +126,7 @@ namespace PowerPointLabs.Models
             //get rid of extra padding
             CropSpotlightPictureToSlide(ref renderedPicture);
 
-            spotlightPicture.Delete();
+            spotlightPicture.SafeDelete();
         }
 
         private void ManageSlideTransitions()
@@ -138,8 +138,8 @@ namespace PowerPointLabs.Models
 
         private void CropSpotlightPictureToSlide(ref PowerPoint.Shape shapeToCrop)
         {
-            float scaleFactorWidth = ShapeUtil.GetScaleWidth(shapeToCrop);
-            float scaleFactorHeight = ShapeUtil.GetScaleHeight(shapeToCrop);
+            float scaleFactorWidth = shapeToCrop.GetScaleWidth();
+            float scaleFactorHeight = shapeToCrop.GetScaleHeight();
 
             if (shapeToCrop.Left < 0)
             {
