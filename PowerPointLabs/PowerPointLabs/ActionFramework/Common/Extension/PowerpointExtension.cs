@@ -29,18 +29,6 @@ namespace PowerPointLabs.ActionFramework.Common.Extension
             }
         }
 
-        // and also converts placeholders to lookalikes
-        private static Shape SafeGroupPlaceholders(this ShapeRange range, PowerPointSlide slide)
-        {
-            List<Shape> finalShapes = new List<Shape>();
-            foreach (Shape shape in range)
-            {
-                Shape finalShape = shape.ConvertToNonPlaceHolder(slide.Shapes);
-                finalShapes.Add(finalShape);
-            }
-            return slide.ToShapeRange(finalShapes).Group();
-        }
-
         public static Shape ConvertToNonPlaceHolder(this Shape shape, Shapes shapeSource)
         {
             if (shape.Type != Microsoft.Office.Core.MsoShapeType.msoPlaceholder)
@@ -183,6 +171,18 @@ namespace PowerPointLabs.ActionFramework.Common.Extension
         {
             return shape.Type == Microsoft.Office.Core.MsoShapeType.msoPlaceholder &&
                 shape.TextFrame.TextRange.Text.Length == 0;
+        }
+
+        // and also converts placeholders to lookalikes
+        private static Shape SafeGroupPlaceholders(this ShapeRange range, PowerPointSlide slide)
+        {
+            List<Shape> finalShapes = new List<Shape>();
+            foreach (Shape shape in range)
+            {
+                Shape finalShape = shape.ConvertToNonPlaceHolder(slide.Shapes);
+                finalShapes.Add(finalShape);
+            }
+            return slide.ToShapeRange(finalShapes).Group();
         }
 
         private static void CopyPropertiesAndFields(this Type t, object target, object source)

@@ -49,7 +49,7 @@ namespace PowerPointLabs.EffectsLab
 
                 PPLClipboard.Instance.LockAndRelease(() =>
                 {
-                    shapeRange.Cut();
+                    shape.Cut();
 
                     Utils.GraphicsUtil.ExportSlide(slide, BlurPicture);
                     BlurImage(BlurPicture, percentage);
