@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Reflection;
 using Microsoft.Office.Interop.PowerPoint;
 using PowerPointLabs.Models;
@@ -12,11 +13,11 @@ namespace PowerPointLabs.ActionFramework.Common.Extension
     public static class PowerpointExtension
     {
         // groups the shaperange only if there is 2 or more elements
-        public static Shape SafeGroup(this ShapeRange range)
+        public static Shape SafeGroup(this ShapeRange range, PowerPointSlide slide)
         {
             if (range.Count > 1)
             {
-                return range.Group();
+                return SafeGroupPlaceholders(range, slide);
             }
             else if (range.Count == 1)
             {
@@ -28,6 +29,33 @@ namespace PowerPointLabs.ActionFramework.Common.Extension
             }
         }
 
+        // and also converts placeholders to lookalikes
+        private static Shape SafeGroupPlaceholders(this ShapeRange range, PowerPointSlide slide)
+        {
+            List<Shape> finalShapes = new List<Shape>();
+            foreach (Shape shape in range)
+            {
+                Shape finalShape = shape.ConvertToNonPlaceHolder(slide.Shapes);
+                finalShapes.Add(finalShape);
+            }
+            return slide.ToShapeRange(finalShapes).Group();
+        }
+
+        public static Shape ConvertToNonPlaceHolder(this Shape shape, Shapes shapeSource)
+        {
+            if (shape.Type != Microsoft.Office.Core.MsoShapeType.msoPlaceholder)
+            {
+                return shape;
+            }
+            PowerPointLabs.SyncLab.ObjectFormats.Format[] formats = ShapeUtil.GetCopyableFormats(shape);
+            Shape newShape = ShapeUtil.CopyMsoPlaceHolder(formats, shape, shapeSource);
+            if (newShape == null)
+            {
+                throw new MsoPlaceholderException(shape.PlaceholderFormat.Type);
+            }
+            shape.SafeDelete();
+            return newShape;
+        }
 
         public static void SafeDelete(this ShapeRange shapeRange)
         {

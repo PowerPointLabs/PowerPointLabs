@@ -1,4 +1,5 @@
-﻿using PowerPointLabs.Models;
+﻿using PowerPointLabs.ActionFramework.Common.Extension;
+using PowerPointLabs.Models;
 using PowerPointLabs.Utils;
 
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
@@ -10,7 +11,7 @@ namespace PowerPointLabs.ShortcutsLab
         public static void Fill(PowerPoint.Selection selection, PowerPointSlide slide, float slideWidth, float slideHeight)
         {
             // Obtain selection, EnabledHandler has already checked if the selection are shapes/pics
-            PowerPoint.Shape shapeToFitSlide = GetShapeFromSelection(selection);
+            PowerPoint.Shape shapeToFitSlide = GetShapeFromSelection(slide, selection);
             
             // Fill operation
             shapeToFitSlide.LockAspectRatio = Microsoft.Office.Core.MsoTriState.msoTrue;
@@ -27,10 +28,10 @@ namespace PowerPointLabs.ShortcutsLab
             CropLab.CropToSlide.Crop(shapeToFitSlide, slide, slideWidth, slideHeight);
         }
 
-        private static PowerPoint.Shape GetShapeFromSelection(PowerPoint.Selection selection)
+        private static PowerPoint.Shape GetShapeFromSelection(PowerPointSlide slide, PowerPoint.Selection selection)
         {
             PowerPoint.ShapeRange shapeRange = selection.ShapeRange;
-            PowerPoint.Shape result = shapeRange.Count > 1 ? shapeRange.Group() : shapeRange[1];
+            PowerPoint.Shape result = shapeRange.SafeGroup(slide);
             return result;
         }
     }

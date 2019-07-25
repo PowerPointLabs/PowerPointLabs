@@ -40,7 +40,7 @@ namespace PowerPointLabs.ActionFramework.EffectsLab
                 {
                     ShapeRange subShapeRange = shape.Ungroup();
                     TransparentEffect(subShapeRange);
-                    subShapeRange.Group();
+                    subShapeRange.SafeGroup(this.GetCurrentSlide());
                 }
                 else if (shape.Type == Office.MsoShapeType.msoPlaceholder)
                 {

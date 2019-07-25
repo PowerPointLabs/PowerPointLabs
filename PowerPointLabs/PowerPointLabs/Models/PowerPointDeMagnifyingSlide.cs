@@ -147,7 +147,7 @@ namespace PowerPointLabs.Models
             zoomShapeCopy.Visible = Office.MsoTriState.msoTrue;
             zoomShapeCopy.Select(Office.MsoTriState.msoFalse);
             PowerPoint.ShapeRange selection = Globals.ThisAddIn.Application.ActiveWindow.Selection.ShapeRange;
-            PowerPoint.Shape groupShape = selection.Group();
+            PowerPoint.Shape groupShape = selection.SafeGroup(this);
 
             groupShape.Width *= (finalWidthMagnify / initialWidthMagnify);
             groupShape.Height *= (finalHeightMagnify / initialHeightMagnify);

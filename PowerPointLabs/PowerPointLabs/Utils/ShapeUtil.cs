@@ -290,7 +290,7 @@ namespace PowerPointLabs.Utils
             string rectangleShape = FileDir.GetTemporaryPngFilePath();
             duplicateShape.AutoShapeType = MsoAutoShapeType.msoShapeRectangle;
             GraphicsUtil.ExportShape(duplicateShape, rectangleShape);
-            duplicateShape.Delete();
+            duplicateShape.SafeDelete();
             return IsSameLooking(originalShape, rectangleShape);
         }
 

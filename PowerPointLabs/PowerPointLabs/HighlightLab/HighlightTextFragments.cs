@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
-
+using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.AnimationLab;
 using PowerPointLabs.Models;
@@ -51,7 +51,7 @@ namespace PowerPointLabs.HighlightLab
                     return;
                 }
                 List<PowerPoint.Shape> selectionToAnimate = GetShapesFromLinesInText(currentSlide, selectedText, selectedShapes[1]);
-                GroupShapesForAnimation(selectionToAnimate);
+                GroupShapesForAnimation(currentSlide, selectionToAnimate);
 
                 List<PowerPoint.Shape> shapesToAnimate = GetShapesToAnimate(currentSlide);
                 SelectShapes(shapesToAnimate);
@@ -66,7 +66,7 @@ namespace PowerPointLabs.HighlightLab
             }
         }
 
-        private static void GroupShapesForAnimation(List<PowerPoint.Shape> shapes)
+        private static void GroupShapesForAnimation(PowerPointSlide slide, List<PowerPoint.Shape> shapes)
         {
             if (shapes.Count > 1)
             {
@@ -78,7 +78,7 @@ namespace PowerPointLabs.HighlightLab
                 }
 
                 PowerPoint.Shape groupedShape = 
-                    Globals.ThisAddIn.Application.ActiveWindow.Selection.ShapeRange.Group();
+                    Globals.ThisAddIn.Application.ActiveWindow.Selection.ShapeRange.SafeGroup(slide);
 
                 groupedShape.Name = "PPTLabsHighlightTextFragmentsShape" + Guid.NewGuid().ToString();
             }

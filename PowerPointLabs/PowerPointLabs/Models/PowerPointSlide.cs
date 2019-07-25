@@ -573,7 +573,7 @@ namespace PowerPointLabs.Models
 
         public Shape GroupShapes(IEnumerable<Shape> shapes)
         {
-            return ToShapeRange(shapes).Group();
+            return ToShapeRange(shapes).SafeGroup(this);
         }
 
         public ShapeRange ToShapeRange(Shape shape)

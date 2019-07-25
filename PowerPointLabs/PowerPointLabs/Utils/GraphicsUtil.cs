@@ -304,7 +304,7 @@ namespace PowerPointLabs.Utils
             }
             else
             {
-                shapeToAdd.Delete();
+                shapeToAdd.SafeDelete();
                 return targetSlide.Shapes.AddPicture2(tempFilePath,
                     MsoTriState.msoFalse,
                     MsoTriState.msoTrue,

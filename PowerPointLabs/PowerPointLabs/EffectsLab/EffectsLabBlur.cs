@@ -43,7 +43,7 @@ namespace PowerPointLabs.EffectsLab
             try
             {
                 bool hasManyShapes = shapeRange.Count > 1;
-                PowerPoint.Shape shape = hasManyShapes ? shapeRange.Group() : shapeRange[1];
+                PowerPoint.Shape shape = shapeRange.SafeGroup(slide);
                 float left = shape.Left;
                 float top = shape.Top;
 
@@ -253,7 +253,7 @@ namespace PowerPointLabs.EffectsLab
             if (textBox.Type != Office.MsoShapeType.msoPlaceholder)
             {
                 PowerPoint.ShapeRange subRange = slide.Shapes.Range(shapeNames.ToArray());
-                PowerPoint.Shape groupedShape = subRange.Group();
+                PowerPoint.Shape groupedShape = subRange.SafeGroup(slide);
                 shapeNames.Clear();
                 shapeNames.Add(groupedShape.Name);
             }
@@ -289,7 +289,7 @@ namespace PowerPointLabs.EffectsLab
             if (shapeNames.Count > 1)
             {
                 PowerPoint.ShapeRange subRange = slide.Shapes.Range(shapeNames.ToArray());
-                PowerPoint.Shape groupedShape = subRange.Group();
+                PowerPoint.Shape groupedShape = subRange.SafeGroup(slide);
 
                 return groupedShape.Name;
             }

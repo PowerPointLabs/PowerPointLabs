@@ -42,7 +42,7 @@ namespace PowerPointLabs.CropLab
             try
             {
                 bool hasManyShapes = shapeRange.Count > 1;
-                Shape shape = hasManyShapes ? shapeRange.Group() : shapeRange[1];
+                Shape shape = shapeRange.SafeGroup(currentSlide);
                 float left = shape.Left;
                 float top = shape.Top;
                 shapeRange = shape.Duplicate();
@@ -66,7 +66,7 @@ namespace PowerPointLabs.CropLab
                 }
                 
                 ShapeRange croppedRange = currentSlide.ToShapeRange(shapeList);
-                Shape croppedShape = (croppedRange.Count == 1) ? croppedRange[1] : croppedRange.Group();
+                Shape croppedShape = croppedRange.SafeGroup(currentSlide);
 
                 return croppedShape;
             }

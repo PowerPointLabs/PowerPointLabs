@@ -1,5 +1,5 @@
 ﻿using Microsoft.Office.Core;
-
+using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.PictureSlidesLab.Service.Effect;
 using PowerPointLabs.Utils;
 
@@ -83,7 +83,7 @@ namespace PowerPointLabs.PictureSlidesLab.Service
             Utils.ShapeUtil.MoveZToJustBehind(blurBanner, overlayShape);
 
             Microsoft.Office.Interop.PowerPoint.ShapeRange range = Shapes.Range(new[] {blurBanner.Name, overlayShape.Name});
-            Shape resultShape = range.Group();
+            Shape resultShape = range.SafeGroup(this);
             ChangeName(resultShape, EffectName.Banner);
             return resultShape;
         }

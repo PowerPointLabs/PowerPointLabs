@@ -54,7 +54,7 @@ namespace PowerPointLabs.ShortcutsLab
 
             // Create the new group from the list
             selectedShapes = slide.ToShapeRange(newShapesList);
-            Shape selectedGroup = selectedShapes.Group();
+            Shape selectedGroup = selectedShapes.SafeGroup(slide);
             selectedGroup.Name = isFirstSelectionGroup ? groupName : selectedGroup.Name;
 
             // Transfer the animation

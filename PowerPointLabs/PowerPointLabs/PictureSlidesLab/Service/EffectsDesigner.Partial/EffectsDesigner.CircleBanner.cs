@@ -25,7 +25,7 @@ namespace PowerPointLabs.PictureSlidesLab.Service
             CropPicture(innerCircleShape);
             CropPicture(outerCircleShape);
 
-            PowerPoint.Shape result = Shapes.Range(new[] { innerCircleShape.Name, outerCircleShape.Name }).Group();
+            PowerPoint.Shape result = Shapes.Range(new[] { innerCircleShape.Name, outerCircleShape.Name }).SafeGroup(this);
             ChangeName(result, EffectName.Overlay);
             return result;
         }

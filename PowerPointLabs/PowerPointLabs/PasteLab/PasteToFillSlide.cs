@@ -1,6 +1,6 @@
 ﻿
 using Microsoft.Office.Interop.PowerPoint;
-
+using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.Models;
 using PowerPointLabs.Utils;
 
@@ -19,7 +19,7 @@ namespace PowerPointLabs.PasteLab
             Shape pastingShape = pastingShapes[1];
             if (pastingShapes.Count > 1)
             {
-                pastingShape = pastingShapes.Group();
+                pastingShape = pastingShapes.SafeGroup(slide);
             }
 
             // Temporary house the latest clipboard shapes

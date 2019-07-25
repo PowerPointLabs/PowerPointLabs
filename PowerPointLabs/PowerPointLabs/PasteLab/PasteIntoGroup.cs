@@ -33,7 +33,7 @@ namespace PowerPointLabs.PasteLab
             float selectionHeight = selectedShapes[1].Height;
             if (selectedShapes.Count > 1)
             {
-                Shape selectionGroup = selectedShapes.Group();
+                Shape selectionGroup = selectedShapes.SafeGroup(slide);
                 selectionLeft = selectionGroup.Left;
                 selectionTop = selectionGroup.Top;
                 selectionWidth = selectionGroup.Width;
@@ -56,7 +56,7 @@ namespace PowerPointLabs.PasteLab
             }
 
             ShapeRange shapesToGroup = slide.ToShapeRange(shapesToGroupList);
-            Shape resultGroup = shapesToGroup.Group();
+            Shape resultGroup = shapesToGroup.SafeGroup(slide);
             resultGroup.Name = originalGroupName ?? resultGroup.Name;
             slide.TransferAnimation(tempShapeForAnimation, resultGroup);
             ShapeUtil.MoveZToJustInFront(resultGroup, tempShapeForAnimation);

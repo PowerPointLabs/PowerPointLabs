@@ -273,7 +273,7 @@ namespace PowerPointLabs.ZoomLab
             Globals.ThisAddIn.Application.ActiveWindow.View.GotoSlide(currentSlide.Index);
             SelectAllShape(copiedShapes);
             PowerPoint.Selection sel = Globals.ThisAddIn.Application.ActiveWindow.Selection;
-            PowerPoint.Shape shapeGroup = sel.ShapeRange.SafeGroup();
+            PowerPoint.Shape shapeGroup = sel.ShapeRange.SafeGroup(currentSlide);
 
             pictureOnNextSlide = nextSlide.Shapes.SafeCopyPNG(shapeGroup);
             LegacyShapeUtil.CopyCenterShapePosition(shapeGroup, ref pictureOnNextSlide);
@@ -408,7 +408,7 @@ namespace PowerPointLabs.ZoomLab
             Globals.ThisAddIn.Application.ActiveWindow.View.GotoSlide(addedSlide.Index);
             SelectAllShape(copiedShapes);
             PowerPoint.Selection sel = Globals.ThisAddIn.Application.ActiveWindow.Selection;
-            PowerPoint.Shape shapeGroup = sel.ShapeRange.SafeGroup();
+            PowerPoint.Shape shapeGroup = sel.ShapeRange.SafeGroup(addedSlide);
 
             PowerPoint.Shape previousSlidePicture = addedSlide.Shapes.SafeCopyPNG(shapeGroup);
             LegacyShapeUtil.CopyCenterShapePosition(shapeGroup, ref previousSlidePicture);

@@ -717,7 +717,7 @@ namespace PowerPointLabs
             // Priority Mid: Window Actions
             Application.WindowActivate += ThisAddInApplicationOnWindowActivate;
             Application.WindowDeactivate += ThisAddInApplicationOnWindowDeactivate;
-            Application.WindowSelectionChange += ThisAddInSelectionChanged;
+            // Application.WindowSelectionChange += ThisAddInSelectionChanged;
             Application.SlideShowBegin += SlideShowBeginHandler;
             Application.SlideShowEnd += SlideShowEndHandler;
 
@@ -738,6 +738,7 @@ namespace PowerPointLabs
                 return;
             }
             Trace.TraceInformation(pres.Name + " (Presentation) and " + wn.Caption + " (Window) activated.");
+            ThisAddInSelectionChanged(wn.Selection);
 
             CustomShapePane customShape = GetActiveControl(typeof(CustomShapePane)) as CustomShapePane;
 

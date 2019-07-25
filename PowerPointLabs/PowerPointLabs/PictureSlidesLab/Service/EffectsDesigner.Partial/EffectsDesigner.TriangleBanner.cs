@@ -1,5 +1,5 @@
 ﻿using Microsoft.Office.Core;
-
+using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.PictureSlidesLab.Service.Effect;
 using PowerPointLabs.Utils;
 
@@ -42,7 +42,7 @@ namespace PowerPointLabs.PictureSlidesLab.Service
             triangle2.Fill.Transparency = (float)transparency / 100;
             triangle2.Line.Visible = MsoTriState.msoFalse;
 
-            PowerPoint.Shape result = Shapes.Range(new[] { triangle1.Name, triangle2.Name }).Group();
+            PowerPoint.Shape result = Shapes.Range(new[] { triangle1.Name, triangle2.Name }).SafeGroup(this);
             ChangeName(result, EffectName.Overlay);
             return result;
         }

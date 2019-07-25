@@ -23,7 +23,7 @@ namespace PowerPointLabs.ShortcutsLab
         {
             if (ShapeUtil.IsSelectionShapeOrText(selection))
             {
-                PowerPoint.Shape shape = GetShapeFromSelection(selection);
+                PowerPoint.Shape shape = GetShapeFromSelection(slide, selection);
                 int originalZOrder = shape.ZOrderPosition;
                 // In case shape is corrupted
                 if (shape.IsCorrupted())
@@ -98,10 +98,10 @@ namespace PowerPointLabs.ShortcutsLab
             }, pres, slide);
         }
 
-        private static PowerPoint.Shape GetShapeFromSelection(PowerPoint.Selection selection)
+        private static PowerPoint.Shape GetShapeFromSelection(PowerPointSlide slide, PowerPoint.Selection selection)
         {
             ShapeRange shapeRange = GetShapeRangeFromSelection(selection);
-            Shape shape = GetShapeFromShapeRange(shapeRange);
+            Shape shape = shapeRange.SafeGroup(slide);
             return shape;
         }
 
@@ -109,11 +109,5 @@ namespace PowerPointLabs.ShortcutsLab
         {
             return selection.ShapeRange;
         }
-
-        private static PowerPoint.Shape GetShapeFromShapeRange(PowerPoint.ShapeRange shapeRange)
-        {
-            return shapeRange.Count > 1 ? shapeRange.Group() : shapeRange[1];
-        }
-
     }
 }

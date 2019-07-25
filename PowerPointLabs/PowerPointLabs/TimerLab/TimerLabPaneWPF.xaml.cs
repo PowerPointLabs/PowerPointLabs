@@ -6,6 +6,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 
 using PowerPointLabs.ActionFramework.Common.Extension;
+using PowerPointLabs.Models;
 using PowerPointLabs.Utils;
 
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
@@ -809,7 +810,8 @@ namespace PowerPointLabs.TimerLab
             
             // Grouping the shapes together
             string[] progressBarNames = new string[] { visibleProgressBar.Name, invisibleProgressBar.Name };
-            progressBar = this.GetCurrentSlide().Shapes.Range(progressBarNames).Group();
+            PowerPointSlide slide = this.GetCurrentSlide();
+            progressBar = slide.Shapes.Range(progressBarNames).SafeGroup(slide);
             progressBar.Name = TimerLabConstants.ProgressBarId;
             progressBar.Tags.Add(TimerLabConstants.ShapeId, TimerLabConstants.ProgressBarId);
         }
@@ -1147,7 +1149,8 @@ namespace PowerPointLabs.TimerLab
         private Shape GroupShapes(string shapeName, string groupName)
         {
             bool firstInGroup = true;
-            foreach (Shape shape in this.GetCurrentSlide().Shapes)
+            Models.PowerPointSlide slide = this.GetCurrentSlide();
+            foreach (Shape shape in slide.Shapes)
             {
                 if (shape.Tags[TimerLabConstants.ShapeId].Equals(shapeName))
                 {
@@ -1162,7 +1165,7 @@ namespace PowerPointLabs.TimerLab
                     }
                 }
             }
-            Shape group = this.GetCurrentSelection().ShapeRange.Group();
+            Shape group = this.GetCurrentSelection().ShapeRange.SafeGroup(slide);
             group.Name = groupName;
             group.Tags.Add(TimerLabConstants.ShapeId, groupName);
             return group;

@@ -24,7 +24,7 @@ namespace PowerPointLabs.PasteLab
                 Shape pastingShape = pastingShapes[1];
                 if (pastingShapes.Count > 1)
                 {
-                    pastingShape = pastingShapes.Group();
+                    pastingShape = pastingShapes.SafeGroup(slide);
                 }
                 pastingShape.Left = selectedShape.Left;
                 pastingShape.Top = selectedShape.Top;
