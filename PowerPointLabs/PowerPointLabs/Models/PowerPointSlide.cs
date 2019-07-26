@@ -335,18 +335,8 @@ namespace PowerPointLabs.Models
                 });
             foreach (Effect effect in sequence)
             {
-                if (effect.TextRangeStart >= 0)
-                {
-                    effect.Shape.Visible = MsoTriState.msoFalse;
-                    // Currently there is no way to set text fill to none
-                    //TextRange textRange = effect.Shape.TextFrame.TextRange;
-                    //TextRange animatedRange = textRange.Characters(
-                    //    effect.TextRangeStart, effect.TextRangeLength);
-                }
-                else
-                {
-                    effect.Shape.Visible = MsoTriState.msoFalse;
-                }
+                // TODO: Support TextRange entry animations
+                effect.Shape.Visible = MsoTriState.msoFalse;
             }
         }
 
