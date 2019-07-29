@@ -812,6 +812,7 @@
     <Compile Include="FunctionalTestInterface.Impl\Controller\ELearningLabController.cs" />
     <Compile Include="FunctionalTestInterface.Impl\Windows\Constants.cs" />
     <Compile Include="FunctionalTestInterface.Impl\Windows\MarshalWindow.cs" />
+    <Compile Include="SyncLab\SyncLabShapeStorageException.cs" />
     <Compile Include="TextCollection\ELearningLabText.cs" />
     <Compile Include="HighlightLab\HighlightLabSettings.cs" />
     <Compile Include="ELearningLab\AudioGenerator\AzureVoiceGenerator\Model\Enums\AudioOutputFormat.cs" />

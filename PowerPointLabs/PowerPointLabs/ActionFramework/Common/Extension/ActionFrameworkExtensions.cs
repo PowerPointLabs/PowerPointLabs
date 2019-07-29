@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection;
 using System.Windows.Forms;
 
 using Microsoft.Office.Interop.PowerPoint;
@@ -96,7 +97,8 @@ namespace PowerPointLabs.ActionFramework.Common.Extension
                     return taskPane;
                 }
 
-                object control = Activator.CreateInstance(taskPaneType);
+                object control = CreateInstance(taskPaneType);
+
                 UserControl taskPaneControl = (UserControl)control;
                 if (taskPaneControl == null)
                 {
@@ -114,6 +116,18 @@ namespace PowerPointLabs.ActionFramework.Common.Extension
                 Log.Logger.LogException(e, "RegisterTaskPane_Extension");
                 Views.ErrorDialogBox.ShowDialog("PowerPointLabs", e.Message, e);
                 return null;
+            }
+        }
+
+        private static object CreateInstance(Type taskPaneType)
+        {
+            try
+            {
+                return Activator.CreateInstance(taskPaneType);
+            }
+            catch (TargetInvocationException tie)
+            {
+                throw tie.InnerException;
             }
         }
 #pragma warning restore 0618
