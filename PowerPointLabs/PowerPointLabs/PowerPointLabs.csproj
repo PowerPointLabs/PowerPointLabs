@@ -278,6 +278,7 @@
     <Compile Include="ActionFramework\Common\Extension\PPLClipboard.cs" />
     <Compile Include="ActionFramework\Common\Extension\MsoPlaceholderException.cs" />
     <Compile Include="ActionFramework\Common\Extension\PowerpointExtension.cs" />
+    <Compile Include="ActionFramework\Common\Extension\ShapeTypeExtension.cs" />
     <Compile Include="ActionFramework\ELearningLab\ELearningLabMenu\ELearningLabMenuImageHandler.cs" />
     <Compile Include="ActionFramework\ELearningLab\ELearningLabMenu\ELearningLabMenuLabelHandler.cs" />
     <Compile Include="ActionFramework\ELearningLab\ELearningLabMenu\ELearningLabMenuSupertipHandler.cs" />
