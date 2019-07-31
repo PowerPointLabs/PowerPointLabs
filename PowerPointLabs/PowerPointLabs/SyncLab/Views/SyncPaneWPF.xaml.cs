@@ -246,11 +246,8 @@ namespace PowerPointLabs.SyncLab.Views
                 shape = selection.ChildShapeRange[1];
             }
 
-            if (shape.Type != MsoShapeType.msoAutoShape &&
-                shape.Type != MsoShapeType.msoLine &&
-                shape.Type != MsoShapeType.msoPicture &&
-                shape.Type != MsoShapeType.msoTextBox &&
-                !IsPlaceholderSyncable(shape))
+            if (!shape.IsNormalShape() &&
+                !shape.IsPlaceholderSyncable())
             {
                 MessageBox.Show(SyncLabText.ErrorCopySelectionInvalid, SyncLabText.ErrorDialogTitle);
                 return;
@@ -266,16 +263,6 @@ namespace PowerPointLabs.SyncLab.Views
             Dialog = null;
         }
 
-        private static bool IsPlaceholderSyncable(Shape shape)
-        {
-            if (shape.Type == MsoShapeType.msoPlaceholder)
-            {
-                return true;
-            }
-            Microsoft.Office.Interop.PowerPoint.Shapes templateShapes =
-                SyncFormatUtil.GetTemplateShapes();
-            return ShapeUtil.CanCopyMsoPlaceHolder(shape, templateShapes);
-        }
         #endregion
 
         #region Shape Saving

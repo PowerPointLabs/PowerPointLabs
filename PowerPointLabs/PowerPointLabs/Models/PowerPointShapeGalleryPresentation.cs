@@ -131,8 +131,11 @@ namespace PowerPointLabs.Models
             {
                 return ClipboardUtil.RestoreClipboardAfterAction(() =>
                 {
-                    shapeRange.Copy();
-                    return AddShape(name, category);
+                    return PPLClipboard.Instance.LockAndRelease(() =>
+                    {
+                        shapeRange.Copy();
+                        return AddShape(name, category);
+                    });
                 }, pres, origSlide);
             }
             else

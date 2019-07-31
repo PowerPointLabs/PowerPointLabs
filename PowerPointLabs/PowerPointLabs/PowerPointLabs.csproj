@@ -278,6 +278,7 @@
     <Compile Include="ActionFramework\Common\Extension\PPLClipboard.cs" />
     <Compile Include="ActionFramework\Common\Extension\MsoPlaceholderException.cs" />
     <Compile Include="ActionFramework\Common\Extension\PowerpointExtension.cs" />
+    <Compile Include="ActionFramework\Common\Extension\ShapeTypeExtension.cs" />
     <Compile Include="ActionFramework\ELearningLab\ELearningLabMenu\ELearningLabMenuImageHandler.cs" />
     <Compile Include="ActionFramework\ELearningLab\ELearningLabMenu\ELearningLabMenuLabelHandler.cs" />
     <Compile Include="ActionFramework\ELearningLab\ELearningLabMenu\ELearningLabMenuSupertipHandler.cs" />
@@ -812,6 +813,7 @@
     <Compile Include="FunctionalTestInterface.Impl\Controller\ELearningLabController.cs" />
     <Compile Include="FunctionalTestInterface.Impl\Windows\Constants.cs" />
     <Compile Include="FunctionalTestInterface.Impl\Windows\MarshalWindow.cs" />
+    <Compile Include="SyncLab\SyncLabShapeStorageException.cs" />
     <Compile Include="TextCollection\ELearningLabText.cs" />
     <Compile Include="HighlightLab\HighlightLabSettings.cs" />
     <Compile Include="ELearningLab\AudioGenerator\AzureVoiceGenerator\Model\Enums\AudioOutputFormat.cs" />

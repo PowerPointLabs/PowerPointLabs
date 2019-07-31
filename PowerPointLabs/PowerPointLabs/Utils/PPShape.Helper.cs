@@ -11,7 +11,10 @@ namespace PowerPointLabs.Utils
     {
         private void KeepTextRotation()
         {
-            _shape.TextFrame2.ThreeD.RotationZ += _shape.Rotation;
+            if (_shape.HasTextFrame == MsoTriState.msoTrue)
+            {
+                _shape.TextFrame2.ThreeD.RotationZ += _shape.Rotation;
+            }
         }
 
         /// <summary>
