@@ -55,10 +55,12 @@ namespace PowerPointLabs.SyncLab
         private static Lazy<SyncLabShapeStorage> storageInstance =
             new Lazy<SyncLabShapeStorage>(() =>
             {
-                try {
+                try
+                {
                     return new SyncLabShapeStorage();
                 }
-                catch {
+                catch
+                {
                     throw new SyncLabShapeStorageException(
                         "Failed to initialized sync lab shape storage");
                 }
