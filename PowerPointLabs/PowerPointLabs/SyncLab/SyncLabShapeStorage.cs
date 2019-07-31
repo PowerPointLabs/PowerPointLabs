@@ -29,22 +29,22 @@ namespace PowerPointLabs.SyncLab
         public const int FormatStorageSlide = 0;
 
         private int nextKey = 0;
-
+        
         // only for 2013
-        private readonly Dictionary<String, List<MsoPictureEffectType>> _backupArtisticEffects =
+        private readonly Dictionary<String, List<MsoPictureEffectType>> _backupArtisticEffects = 
             new Dictionary<string, List<MsoPictureEffectType>>();
-
+        
         // only for 2013
         // need to sync all glow formats, syncing color alone resets transparency & radius
         // color must be synced first, it resets the transparency
-        private readonly List<Format> _glowFormats =
-            new List<Format>
+        private readonly List<Format> _glowFormats = 
+            new List<Format> 
             {
                 new GlowColorFormat(),
                 new GlowTransparencyFormat(),
                 new GlowSizeFormat()
             };
-
+        
         // only for 2013
         private readonly List<Format> _fillFormats =
             new List<Format>
@@ -53,16 +53,7 @@ namespace PowerPointLabs.SyncLab
             };
 
         private static Lazy<SyncLabShapeStorage> storageInstance =
-            new Lazy<SyncLabShapeStorage>(() =>
-            {
-                try {
-                    return new SyncLabShapeStorage();
-                }
-                catch {
-                    throw new SyncLabShapeStorageException(
-                        "Failed to initialized sync lab shape storage");
-                }
-            });
+            new Lazy<SyncLabShapeStorage>(() => new SyncLabShapeStorage());
 
         public static SyncLabShapeStorage Instance
         {
