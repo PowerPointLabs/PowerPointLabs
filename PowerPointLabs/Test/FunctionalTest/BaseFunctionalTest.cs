@@ -47,16 +47,37 @@ namespace Test.FunctionalTest
                 CloseActivePpInstance();
             }
 
+            NewProcessSetup();
+            ConnectPpl();
+        }
+
+        private void NewProcessSetup()
+        {
+            string exePath = Properties.Settings.Default.PowerPoint_path;
+            if (exePath == null || exePath.Length == 0)
+            {
+                OldProcessSetup();
+                return;
+            }
+            PPTProcessWrapper pptProcessWrapper =
+                new PPTProcessWrapper(exePath,
+                                      GetTestingSlideName(), PathUtil.GetDocTestPath());
+            Process mainProcess = GetMainProcessAndCloseOthers(null);
+            WindowWatcher.Setup(mainProcess, pptProcessWrapper, Constants.pptProcess);
+            InitWhiteList();
+        }
+
+        private void OldProcessSetup()
+        {
             Process pptProcess = GetChildProcess(GetTestingSlideName());
             Process mainProcess = GetMainProcessAndCloseOthers(pptProcess);
-            SetupProcessAndWindowWatching(mainProcess, pptProcess);
-            ConnectPpl();
+            WindowWatcher.Setup(mainProcess, pptProcess, Constants.pptProcess);
+            InitWhiteList();
         }
 
         [TestCleanup]
         public void TearDown()
         {
-            TeardownWindowWatching();
             if (TestContext.CurrentTestOutcome != UnitTestOutcome.Passed)
             {
                 if (!Directory.Exists(PathUtil.GetTestFailurePath()))
@@ -72,6 +93,8 @@ namespace Test.FunctionalTest
             {
                 PpOperations.ClosePresentation();
             }
+            WindowWatcher.RevalidateApp(); // to prevent next test from failing
+            TeardownWindowWatching();
         }
 
         protected static void CheckIfClipboardIsRestored(Action action, int actualSlideNum, string shapeNameToBeCopied, int expSlideNum, string expShapeNameToDelete, string expCopiedShapeName)
@@ -114,10 +137,11 @@ namespace Test.FunctionalTest
         /// </summary>
         /// <param name="process">Process that windows will eventually reside on</param>
         /// <param name="childProcess">Process to be started</param>
-        private void SetupProcessAndWindowWatching(Process process, Process childProcess)
+        private void InitWhiteList()
         {
-            string startWindowName = GetTestingSlideName().After("\\") + " - PowerPoint";
-            WindowWatcher.Setup(process, childProcess, startWindowName);
+            string fileName = GetTestingSlideName().After("\\");
+            WindowWatcher.AddToWhitelist(fileName + " - Microsoft PowerPoint");
+            WindowWatcher.AddToWhitelist(fileName + " - PowerPoint");
             WindowWatcher.AddToWhitelist("PowerPointLabs FT");
             WindowWatcher.AddToWhitelist("Loading...");
         }
@@ -158,11 +182,29 @@ namespace Test.FunctionalTest
             PpOperations.EnterFunctionalTest();
 
             // activate the thread of presentation window
-            // Sometimes it takes very long for messag box to pop up
+            // Sometimes it takes very long for message box to pop up
             MessageBoxUtil.ExpectMessageBoxWillPopUp(
                 "PowerPointLabs FT", "{*}",
                 PpOperations.ActivatePresentation, null, 5, 10000);
-            PPLClipboard.Init(PpOperations.Window, true);
+            IntPtr window = Gethwnd();
+            PPLClipboard.Init(window, true);
+        }
+
+        private static IntPtr Gethwnd(int retries = 5)
+        {
+            while (retries > 0)
+            {
+                try
+                {
+                    return PpOperations.Window;
+                }
+                catch
+                {
+                    retries--;
+                    ThreadUtil.WaitFor(1500);
+                }
+            }
+            return IntPtr.Zero;
         }
 
         private void TeardownWindowWatching()
@@ -198,6 +240,7 @@ namespace Test.FunctionalTest
                     WorkingDirectory = PathUtil.GetDocTestPath()
                 }
             };
+            //Process p = Process.Start("C:\\Program Files (x86)\\Microsoft Office\\Office15\\POWERPNT.EXE");
             return pptProcess;
         }
 

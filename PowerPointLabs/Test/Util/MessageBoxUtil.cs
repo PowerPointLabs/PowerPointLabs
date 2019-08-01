@@ -177,6 +177,7 @@ namespace Test.Util
                 NativeUtil.SendMessage(btnHandle, 0x0201 /*left button down*/, IntPtr.Zero, IntPtr.Zero);
                 NativeUtil.SendMessage(btnHandle, 0x0202 /*left button up*/, IntPtr.Zero, IntPtr.Zero);
             }
+            WindowWatcher.Pop();
         }
     }
 }

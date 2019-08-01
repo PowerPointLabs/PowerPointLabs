@@ -17,6 +17,7 @@ namespace Test.Util
             return index != -1 ? original.Substring(index + searchTerm.Length) : "";
         }
 
+        [Obsolete]
         public static IMarshalWindow WaitAndPush<T>(this IWindowStackManager windowStackManager,
             Action action, string name, int timeout = 5000)
             where T : DispatcherObject
