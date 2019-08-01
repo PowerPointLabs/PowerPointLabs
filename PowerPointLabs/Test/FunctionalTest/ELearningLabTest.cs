@@ -159,7 +159,7 @@ namespace Test.FunctionalTest
             Slide expSlide = PpOperations.SelectSlide(TestDeleteExplanationItemSlideNo);
             ThreadUtil.WaitFor(1000);
             Slide actualSlide = PpOperations.SelectSlide(ExpectedDeleteExplanationItemSlideNo);
-            SlideUtil.IsSameLooking(expSlide, actualSlide, similarityTolerance: 0.99);
+            SlideUtil.IsSameLooking(expSlide, actualSlide, similarityTolerance: 0.95);
         }
     }
 }

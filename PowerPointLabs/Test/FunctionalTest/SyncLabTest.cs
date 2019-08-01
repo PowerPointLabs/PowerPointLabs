@@ -224,7 +224,7 @@ namespace Test.FunctionalTest
             {
                 syncLab.DialogSelectItem(dialogItems[i, CategoryIndexPosition], dialogItems[i, FormatItemIndexPosition]);
             }
-            syncLab.DialogClickOk();
+            WindowWatcher.Pop(syncLab.DialogClickOk);
         }
 
         private void ExpectCopyButtonEnabled(ISyncLabController syncLab)

@@ -129,6 +129,11 @@
     <Compile Include="FunctionalTest\CropToSlideTest.cs" />
     <Compile Include="FunctionalTest\ZoomToAreaTest.cs" />
     <Compile Include="Base\TestAssemblyFixture.cs" />
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
     <Compile Include="UnitTest\BaseUnitTest.cs" />
     <Compile Include="UnitTest\CropLab\BaseCropLabTest.cs" />
     <Compile Include="UnitTest\CropLab\CropToSameDimTest.cs" />
@@ -206,6 +211,7 @@
     <Compile Include="UnitTest\TooltipsLab\CreateTooltipTest.cs" />
     <Compile Include="UnitTest\Utils\TempPathTest.cs" />
     <Compile Include="Util\Constants.cs" />
+    <Compile Include="Util\ProcessWrapper.cs" />
     <Compile Include="Util\TagUtil.cs" />
     <Compile Include="Util\DialogUtil.cs" />
     <Compile Include="Util\PresentationUtil.cs" />
@@ -235,6 +241,10 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="UnitTest\ELearningLab\Util\" />
