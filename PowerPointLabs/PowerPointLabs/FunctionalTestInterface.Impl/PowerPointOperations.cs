@@ -290,6 +290,7 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
             Shape shape = FunctionalTestExtensions.GetCurrentSlide().Shapes
                                                                       .Cast<Shape>()
                                                                       .FirstOrDefault(sh => sh.Name == shapeName);
+            shape.Select(); // shape needs to be selected first in 2010
             TextRange2 textRange = shape.TextFrame2.TextRange.Characters[startIndex, endIndex - startIndex];
             textRange.Select();
             return textRange.Text;
