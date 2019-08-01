@@ -40,6 +40,7 @@ namespace Test.UnitTest
             CultureUtil.SetDefaultCulture(CultureInfo.GetCultureInfo("en-US"));
             try
             {
+                App = new PowerPoint.Application();
             }
             catch (COMException)
             {
