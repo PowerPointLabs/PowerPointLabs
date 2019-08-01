@@ -2,7 +2,7 @@
 using System.Globalization;
 using System.IO;
 using System.Runtime.InteropServices;
-using System.Windows;
+
 using Microsoft.Office.Core;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using PowerPointLabs.ActionFramework.Common.Extension;
@@ -40,7 +40,6 @@ namespace Test.UnitTest
             CultureUtil.SetDefaultCulture(CultureInfo.GetCultureInfo("en-US"));
             try
             {
-                App = new PowerPoint.ApplicationClass();
             }
             catch (COMException)
             {
