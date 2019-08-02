@@ -17,8 +17,44 @@ namespace PowerPointLabs.ActionFramework.ShortcutsLab
             this.StartNewUndoEntry();
             PowerPointPresentation pres = this.GetCurrentPresentation();
             PowerPointSlide slide = this.GetCurrentSlide();
-            Selection selection = this.GetCurrentSelection();
+            Selection selection = GetSelection();
+
             ConvertToPicture.Convert(pres, slide, selection);
         }
+
+        private Selection GetSelection()
+        {
+            Selection selection = this.GetCurrentSelection();
+            if (selection.HasChildShapeRange)
+            {
+                return DuplicateChildAsSelection(selection);
+            }
+            return selection;
+        }
+
+        private Selection DuplicateChildAsSelection(Selection selection)
+        {
+            ShapeRange shapeRange = RegroupChildShapeRange(selection);
+
+            selection.Unselect();
+            shapeRange.Select();
+            selection = this.GetCurrentSelection();
+            return selection;
+        }
+
+        private ShapeRange RegroupChildShapeRange(Selection selection)
+        {
+            ShapeRange oldShapeRange = selection.ShapeRange.Ungroup();
+
+            ShapeRange shapeRange = this.GetCurrentSelection().ShapeRange.Duplicate();
+            oldShapeRange.Regroup();
+            return shapeRange;
+        }
+
+        private static int GetRepresentativeShape(ShapeRange shapeRange)
+        {
+            return shapeRange.Count > 1 ? shapeRange.Count - 1 : 1;
+        }
+
     }
 }

@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 
 using Microsoft.Office.Interop.PowerPoint;
-using PowerPointLabs.ActionFramework.Common.Log;
+using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.ELearningLab.Converters;
 using PowerPointLabs.ELearningLab.ELearningWorkspace.Model;
 using PowerPointLabs.ELearningLab.Service;
@@ -97,7 +95,7 @@ namespace PowerPointLabs.ELearningLab.Extensions
             List<Shape> shapes = slide.Shapes.Cast<Shape>().Where(x => regex.Match(x.Name).Success).ToList();
             foreach (Shape s in shapes)
             {
-                s.Delete();
+                s.SafeDelete();
             }
         }
 

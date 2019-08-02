@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Speech.Synthesis;
-
+using PowerPointLabs.ColorThemes.Extensions;
 using PowerPointLabs.ELearningLab.Views;
 
 namespace PowerPointLabs.ELearningLab.AudioGenerator
@@ -49,7 +49,7 @@ namespace PowerPointLabs.ELearningLab.AudioGenerator
 
             SpeechPlayingDialogBox speechPlayingDialog = new SpeechPlayingDialogBox(state);
             speechPlayingDialog.Closed += (sender, e) => SpeechPlayingDialog_Closed(synthesizer, spokenPrompt);
-            speechPlayingDialog.ShowDialog();
+            speechPlayingDialog.ShowThematicDialog();
         }
 
         private static void SpeechPlayingDialog_Closed(SpeechSynthesizer synthesizer, Prompt spokenPrompt)

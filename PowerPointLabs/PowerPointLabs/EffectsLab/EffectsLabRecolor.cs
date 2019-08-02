@@ -6,7 +6,7 @@ namespace PowerPointLabs.EffectsLab
 {
     internal static class EffectsLabRecolor
     {
-        public static void GreyScaleRemainderEffect(PowerPointSlide curSlide, Selection selection)
+        public static void GrayScaleRemainderEffect(PowerPointSlide curSlide, Selection selection)
         {
             PowerPointBgEffectSlide effectSlide = EffectsLabUtil.GenerateEffectSlide(curSlide, selection, true);
 
@@ -15,7 +15,7 @@ namespace PowerPointLabs.EffectsLab
                 return;
             }
 
-            effectSlide.GreyScaleBackground();
+            effectSlide.GrayScaleBackground();
             effectSlide.GetNativeSlide().Select();
         }
 
@@ -59,7 +59,7 @@ namespace PowerPointLabs.EffectsLab
             effectSlide.GetNativeSlide().Select();
         }
 
-        public static void GreyScaleBackgroundEffect(PowerPointSlide curSlide, Selection selection)
+        public static void GrayScaleBackgroundEffect(PowerPointSlide curSlide, Selection selection)
         {
             PowerPointBgEffectSlide effectSlide = EffectsLabUtil.GenerateEffectSlide(curSlide, selection, false);
 
@@ -68,7 +68,7 @@ namespace PowerPointLabs.EffectsLab
                 return;
             }
 
-            effectSlide.GreyScaleBackground();
+            effectSlide.GrayScaleBackground();
             effectSlide.GetNativeSlide().Select();
         }
 

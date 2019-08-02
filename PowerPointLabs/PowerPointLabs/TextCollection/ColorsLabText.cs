@@ -31,7 +31,7 @@
         public const string ResetFavoriteColorsButtonTooltip = "Reset the current favorite color palette to those last loaded.";
         public const string EmptyFavoriteColorsButtonTooltip = "Empty the favorite color palette.";
         public const string ColorRectangleTooltip = "Click the color to select it as the main color. You can drag-and-drop these colors into the favorites palette.";
-        public const string ThemeColorRectangleTooltip = "Click the color to select it as the main color.";
+        public const string FavoriteColorRectangleTooltip = "Click the color to select it as the main color.";
 
         public const string ErrorDialogTitle = "Unable to execute action";
         public const string ErrorNoSelection = "To use this feature, select at least one shape.";

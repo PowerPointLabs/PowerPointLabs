@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 
 using Microsoft.Office.Interop.PowerPoint;
-
+using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.Models;
 using PowerPointLabs.SyncLab.ObjectFormats;
 using PowerPointLabs.Utils;
@@ -33,7 +33,7 @@ namespace PowerPointLabs.PasteLab
                 slide.DeleteShapeAnimations(pastingShape);
                 slide.TransferAnimation(selectedShape, pastingShape);
                 ShapeUtil.ApplyAllPossibleFormats(selectedShape, pastingShape, formatsToIgnore);
-                selectedShape.Delete();
+                selectedShape.SafeDelete();
 
                 return slide.ToShapeRange(pastingShape);
             }
@@ -83,13 +83,13 @@ namespace PowerPointLabs.PasteLab
                 // Remove selected child since it is being replaced
                 ShapeRange shapesToGroup = slide.ToShapeRange(selectedGroupShapeList);
                 selectedGroup.Ungroup();
-                selectedChildShape.Delete();
+                selectedChildShape.SafeDelete();
 
                 ShapeRange result = PasteIntoGroup.Execute(presentation, slide, shapesToGroup, pastingShapes, posLeft, posTop, shapeAbove);
                 result[1].Name = originalGroupName;
                 slide.TransferAnimation(tempShapeForAnimation, result[1]);
 
-                tempShapeForAnimation.Delete();
+                tempShapeForAnimation.SafeDelete();
                 return result;
             }
         }

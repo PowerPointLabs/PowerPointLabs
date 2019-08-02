@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 
 using Microsoft.Office.Interop.PowerPoint;
-
-using PowerPointLabs.ActionFramework.Common.Log;
+using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.ELearningLab.ELearningWorkspace.Model;
 using PowerPointLabs.ELearningLab.Extensions;
 using PowerPointLabs.ELearningLab.Utility;
@@ -177,7 +175,7 @@ namespace PowerPointLabs.ELearningLab.Service
             }
             foreach (Shape shape in shapes)
             {
-                shape.Delete();
+                shape.SafeDelete();
             }
         }
 
@@ -194,7 +192,7 @@ namespace PowerPointLabs.ELearningLab.Service
             }
             foreach (Shape shape in shapes)
             {
-                shape.Delete();
+                shape.SafeDelete();
             }
         }
 
@@ -211,7 +209,7 @@ namespace PowerPointLabs.ELearningLab.Service
             }
             foreach (Shape shape in shapes)
             {
-                shape.Delete();
+                shape.SafeDelete();
             }
         }
     }

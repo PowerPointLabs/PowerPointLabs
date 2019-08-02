@@ -24,7 +24,7 @@ namespace PowerPointLabs.ActionFramework.EffectsLab
             {
                 if (ribbonId.Contains(EffectsLabText.GrayScaleTag))
                 {
-                    EffectsLabRecolor.GreyScaleRemainderEffect(curSlide, selection);
+                    EffectsLabRecolor.GrayScaleRemainderEffect(curSlide, selection);
                 }
                 else if (ribbonId.Contains(EffectsLabText.BlackWhiteTag))
                 {
@@ -47,7 +47,7 @@ namespace PowerPointLabs.ActionFramework.EffectsLab
             {
                 if (ribbonId.Contains(EffectsLabText.GrayScaleTag))
                 {
-                    EffectsLabRecolor.GreyScaleBackgroundEffect(curSlide, selection);
+                    EffectsLabRecolor.GrayScaleBackgroundEffect(curSlide, selection);
                 }
                 else if (ribbonId.Contains(EffectsLabText.BlackWhiteTag))
                 {

@@ -2,7 +2,7 @@
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
-
+using PowerPointLabs.ActionFramework.Common.Extension;
 using Office = Microsoft.Office.Core;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
@@ -41,7 +41,7 @@ namespace PowerPointLabs.CropLab
                 origShape.ScaleHeight(1, Office.MsoTriState.msoTrue);
                 float origWidth = origShape.Width;
                 float origHeight = origShape.Height;
-                origShape.Delete();
+                origShape.SafeDelete();
 
                 Rectangle origImageRect = new Rectangle();
                 Rectangle croppedImageRect = new Rectangle();

@@ -25,6 +25,7 @@ namespace Test.UnitTest.PositionsLab
             return "PositionsLab.pptx";
         }
 
+        // TODO: Reuse from PositionsPaneWPF.xaml.cs
         protected void SyncShapes(PowerPoint.ShapeRange selected, PowerPoint.ShapeRange simulatedShapes)
         {
             for (int i = 1; i <= selected.Count; i++)
@@ -32,8 +33,8 @@ namespace Test.UnitTest.PositionsLab
                 Shape selectedShape = selected[i];
                 Shape simulatedShape = simulatedShapes[i];
 
-                selectedShape.IncrementLeft(ShapeUtil.GetCenterPoint(simulatedShape).X - ShapeUtil.GetCenterPoint(selectedShape).X);
-                selectedShape.IncrementTop(ShapeUtil.GetCenterPoint(simulatedShape).Y - ShapeUtil.GetCenterPoint(selectedShape).Y);
+                selectedShape.IncrementLeft(simulatedShape.GetCenterPoint().X - selectedShape.GetCenterPoint().X);
+                selectedShape.IncrementTop(simulatedShape.GetCenterPoint().Y - selectedShape.GetCenterPoint().Y);
                 selectedShape.Rotation = simulatedShape.Rotation;
             }
         }
@@ -45,8 +46,8 @@ namespace Test.UnitTest.PositionsLab
                 Shape selectedShape = selected[i];
                 Shape simulatedShape = simulatedShapes[i];
 
-                selectedShape.IncrementLeft(ShapeUtil.GetCenterPoint(simulatedShape).X - originalPositions[i - 1, Left]);
-                selectedShape.IncrementTop(ShapeUtil.GetCenterPoint(simulatedShape).Y - originalPositions[i - 1, Top]);
+                selectedShape.IncrementLeft(simulatedShape.GetCenterPoint().X - originalPositions[i - 1, Left]);
+                selectedShape.IncrementTop(simulatedShape.GetCenterPoint().Y - originalPositions[i - 1, Top]);
                 SwapZOrder(selectedShape, simulatedShape);
             }
         }
@@ -150,7 +151,6 @@ namespace Test.UnitTest.PositionsLab
                 if (simulatedShapes != null)
                 {
                     simulatedShapes.Delete();
-                    GC.Collect();
                 }
             }
         }
@@ -191,7 +191,6 @@ namespace Test.UnitTest.PositionsLab
                 if (simulatedShapes != null)
                 {
                     simulatedShapes.Delete();
-                    GC.Collect();
                 }
             }
         }
@@ -232,7 +231,6 @@ namespace Test.UnitTest.PositionsLab
                 if (simulatedShapes != null)
                 {
                     simulatedShapes.Delete();
-                    GC.Collect();
                 }
             }
         }
@@ -265,7 +263,6 @@ namespace Test.UnitTest.PositionsLab
                 if (simulatedShapes != null)
                 {
                     simulatedShapes.Delete();
-                    GC.Collect();
                 }
             }
         }
@@ -305,7 +302,6 @@ namespace Test.UnitTest.PositionsLab
                 if (simulatedShapes != null)
                 {
                     simulatedShapes.Delete();
-                    GC.Collect();
                 }
             }
         }
@@ -338,7 +334,6 @@ namespace Test.UnitTest.PositionsLab
                 if (simulatedShapes != null)
                 {
                     simulatedShapes.Delete();
-                    GC.Collect();
                 }
             }
         }
@@ -371,7 +366,6 @@ namespace Test.UnitTest.PositionsLab
                 if (simulatedShapes != null)
                 {
                     simulatedShapes.Delete();
-                    GC.Collect();
                 }
             }
         }
@@ -404,7 +398,6 @@ namespace Test.UnitTest.PositionsLab
                 if (simulatedShapes != null)
                 {
                     simulatedShapes.Delete();
-                    GC.Collect();
                 }
             }
         }

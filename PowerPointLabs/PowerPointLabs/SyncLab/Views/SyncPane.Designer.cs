@@ -1,8 +1,10 @@
-﻿using Microsoft.Office.Interop.PowerPoint;
+﻿using System.Windows.Controls;
+using Microsoft.Office.Interop.PowerPoint;
+using PowerPointLabs.Utils;
 
 namespace PowerPointLabs.SyncLab.Views
 {
-    partial class SyncPane
+    partial class SyncPane: IWpfContainer
     {
         /// <summary> 
         /// Required designer variable.
@@ -57,12 +59,19 @@ namespace PowerPointLabs.SyncLab.Views
             this.Name = "SyncPane";
             this.Size = new System.Drawing.Size(300, 833);
             this.ResumeLayout(false);
-
         }
 
         #endregion
         
         private System.Windows.Forms.Integration.ElementHost elementHost1;
         public SyncPaneWPF SyncPaneWPF1 { get; private set; }
+
+        public Control WpfControl
+        {
+            get
+            {
+                return SyncPaneWPF1;
+            }
+        }
     }
 }

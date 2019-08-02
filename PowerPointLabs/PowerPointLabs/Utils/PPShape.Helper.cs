@@ -3,11 +3,20 @@ using System.Collections.Generic;
 using System.Drawing;
 
 using Microsoft.Office.Core;
+using PowerPointLabs.ActionFramework.Common.Extension;
 
 namespace PowerPointLabs.Utils
 {
     partial class PPShape
     {
+        private void KeepTextRotation()
+        {
+            if (_shape.HasTextFrame == MsoTriState.msoTrue)
+            {
+                _shape.TextFrame2.ThreeD.RotationZ += _shape.Rotation;
+            }
+        }
+
         /// <summary>
         /// Convert Autoshape to freeform
         /// </summary>
@@ -218,7 +227,7 @@ namespace PowerPointLabs.Utils
 
             if (!isConvertToFreeform)
             {
-                shape.Delete();
+                shape.SafeDelete();
             }
         }
 

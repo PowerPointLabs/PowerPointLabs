@@ -27,11 +27,7 @@ namespace PowerPointLabs.ActionFramework.CropLab
                 return;
             }
 
-            ShapeRange shapeRange = selection.ShapeRange;
-            if (selection.HasChildShapeRange)
-            {
-                shapeRange = selection.ChildShapeRange;
-            }
+            ShapeRange shapeRange = ShapeUtil.GetShapeRange(selection);
 
             if (shapeRange.Count < 1)
             {

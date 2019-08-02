@@ -26,10 +26,10 @@ using PowerPointLabs.PictureSlidesLab.Util;
 using PowerPointLabs.PictureSlidesLab.ViewModel;
 using PowerPointLabs.PictureSlidesLab.Views.Interface;
 using PowerPointLabs.TextCollection;
+using PowerPointLabs.Utils;
 using PowerPointLabs.WPF.Observable;
 
 using ButtonBase = System.Windows.Controls.Primitives.ButtonBase;
-using Clipboard = System.Windows.Forms.Clipboard;
 using DragEventArgs = System.Windows.DragEventArgs;
 using Forms = System.Windows.Forms;
 using KeyEventArgs = System.Windows.Input.KeyEventArgs;
@@ -92,8 +92,8 @@ namespace PowerPointLabs.PictureSlidesLab.Views
             EveryDayPhrase.Text = new EveryDayPhraseService().GetEveryDayPhrase();
             PictureSlidesLabGridLoadingOverlay.Visibility = Visibility.Visible;
             IsOpen = true;
-            SettingsButtonIcon.Source = ImageUtil.BitmapToImageSource(Properties.Resources.PslSettings);
-            PictureAspectRefreshButtonIcon.Source = ImageUtil.BitmapToImageSource(Properties.Resources.PslRefresh);
+            SettingsButtonIcon.Source = GraphicsUtil.BitmapToImageSource(Properties.Resources.PslSettings);
+            PictureAspectRefreshButtonIcon.Source = GraphicsUtil.BitmapToImageSource(Properties.Resources.PslRefresh);
             InitSizePosition();
             Logger.Log("PSL begins");
 
@@ -329,8 +329,8 @@ namespace PowerPointLabs.PictureSlidesLab.Views
         {
             try
             {
-                System.Drawing.Image pastedPicture = Clipboard.GetImage();
-                StringCollection pastedFiles = Clipboard.GetFileDropList();
+                System.Drawing.Image pastedPicture = PPLClipboard.Instance.GetImage();
+                StringCollection pastedFiles = PPLClipboard.Instance.GetFileDropList();
 
                 if (pastedPicture == null &&
                     (pastedFiles == null || pastedFiles.Count == 0))

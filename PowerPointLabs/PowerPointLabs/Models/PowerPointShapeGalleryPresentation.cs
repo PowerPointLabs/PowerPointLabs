@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -6,7 +7,7 @@ using System.Text.RegularExpressions;
 using System.Windows.Forms;
 
 using Microsoft.Office.Interop.PowerPoint;
-
+using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.TextCollection;
 using PowerPointLabs.Utils;
 
@@ -77,6 +78,9 @@ namespace PowerPointLabs.Models
         # endregion
 
         # region API
+        /// <summary>
+        /// Remember to lock/release clipboard when using from clipboard!
+        /// </summary>
         public void AddCategory(string name, bool setAsDefault = true, bool fromClipBoard = false)
         {
             int index = FindCategoryIndex(name, setAsDefault);
@@ -96,6 +100,10 @@ namespace PowerPointLabs.Models
 
             if (fromClipBoard)
             {
+                if (!PPLClipboard.Instance.IsLocked)
+                {
+                    throw new Exception("Clipboard is not locked before pasting!");
+                }
                 newSlide.Shapes.Paste();
                 categoryNameBox = RetrieveCategoryNameBox(newSlide);
             }
@@ -115,7 +123,7 @@ namespace PowerPointLabs.Models
             }
 
             Save();
-            ActionProtection();
+            FlushUndoHistory();
         }
         public string AddShape(PowerPointPresentation pres, PowerPointSlide origSlide, ShapeRange shapeRange, string name, string category = "", bool fromClipBoard = false)
         {
@@ -123,12 +131,20 @@ namespace PowerPointLabs.Models
             {
                 return ClipboardUtil.RestoreClipboardAfterAction(() =>
                 {
-                    shapeRange.Copy();
-                    return AddShape(name, category);
+                    return PPLClipboard.Instance.LockAndRelease(() =>
+                    {
+                        shapeRange.Copy();
+                        return AddShape(name, category);
+                    });
                 }, pres, origSlide);
             }
             else
             {
+                if (!PPLClipboard.Instance.IsLocked)
+                {
+                    throw new Exception("Clipboard is not locked before copying!");
+                }
+
                 return AddShape(name, category);
             }
         }
@@ -142,17 +158,29 @@ namespace PowerPointLabs.Models
 
         public void CopyCategory(string name)
         {
+            if (!PPLClipboard.Instance.IsLocked)
+            {
+                throw new Exception("Clipboard is not locked before copying!");
+            }
             int index = FindCategoryIndex(name);
             Presentation.Slides[index].Shapes.Range().Copy();
         }
 
         public void CopyShape()
         {
+            if (!PPLClipboard.Instance.IsLocked)
+            {
+                throw new Exception("Clipboard is not locked before copying!");
+            }
             _defaultCategory.Shapes.Range().Copy();
         }
 
         public void CopyShape(string name)
         {
+            if (!PPLClipboard.Instance.IsLocked)
+            {
+                throw new Exception("Clipboard is not locked before copying!");
+            }
             List<Shape> shapes = _defaultCategory.GetShapesWithRule(GenerateNameSearchPattern(name));
 
             _defaultCategory.Shapes.Range(shapes.Select(item => item.Name).ToArray()).Copy();
@@ -160,6 +188,10 @@ namespace PowerPointLabs.Models
 
         public void CopyShape(IEnumerable<string> nameList)
         {
+            if (!PPLClipboard.Instance.IsLocked)
+            {
+                throw new Exception("Clipboard is not locked before copying!");
+            }
             List<string> fullList = new List<string>();
 
             foreach (string name in nameList)
@@ -186,13 +218,17 @@ namespace PowerPointLabs.Models
 
             ClipboardUtil.RestoreClipboardAfterAction(() =>
             {
-                _defaultCategory.Shapes.Range(shapes.Select(item => item.Name).ToArray()).Copy();
-                return destCategory.Shapes.Paste();
+                ShapeRange result = PPLClipboard.Instance.LockAndRelease(() =>
+                {
+                    _defaultCategory.Shapes.Range(shapes.Select(item => item.Name).ToArray()).Copy();
+                    return destCategory.Shapes.Paste();
+                });
+                return result;
             }, pres, origSlide);
 
 
             Save();
-            ActionProtection();
+            FlushUndoHistory();
         }
 
         public bool HasCategory(string name)
@@ -215,12 +251,16 @@ namespace PowerPointLabs.Models
 
             ClipboardUtil.RestoreClipboardAfterAction(() =>
             {
-                _defaultCategory.Shapes.Range(shapes.Select(item => item.Name).ToArray()).Cut();
-                return destCategory.Shapes.Paste();
+                ShapeRange result = PPLClipboard.Instance.LockAndRelease(() =>
+                {
+                    _defaultCategory.Shapes.Range(shapes.Select(item => item.Name).ToArray()).Cut();
+                    return destCategory.Shapes.Paste();
+                });
+                return result;
             }, pres, origSlide);
 
             Save();
-            ActionProtection();
+            FlushUndoHistory();
         }
 
         public override bool Open(bool readOnly = false, bool untitled = false,
@@ -262,7 +302,7 @@ namespace PowerPointLabs.Models
             RemoveSlide(index);
 
             Save();
-            ActionProtection();
+            FlushUndoHistory();
         }
 
         public void RemoveShape(string name)
@@ -270,7 +310,7 @@ namespace PowerPointLabs.Models
             _defaultCategory.DeleteShapeWithRule(GenerateNameSearchPattern(name));
             
             Save();
-            ActionProtection();
+            FlushUndoHistory();
         }
 
         public void RenameShape(string oldName, string newName)
@@ -285,7 +325,7 @@ namespace PowerPointLabs.Models
             }
 
             Save();
-            ActionProtection();
+            FlushUndoHistory();
         }
 
         public void RenameCategory(string newName)
@@ -297,12 +337,16 @@ namespace PowerPointLabs.Models
             categoryNameBox.TextFrame.TextRange.Text = string.Format(CategoryNameFormat, newName);
 
             Save();
-            ActionProtection();
+            FlushUndoHistory();
         }
         # endregion
 
         # region Helper Function
-        private void ActionProtection()
+
+        /// <summary>
+        /// Flushes the undo history with a dummy action.
+        /// </summary>
+        private void FlushUndoHistory()
         {
             for (int i = 0; i < MaxUndoAmount; i++)
             {
@@ -369,7 +413,11 @@ namespace PowerPointLabs.Models
                 if (Slides.All(category => category.Name.ToLower() != categoryName.ToLower()))
                 {
                     categoryLost = true;
-                    break;
+                    PPLClipboard.Instance.LockAndRelease(() =>
+                    {
+                        // not sure why fromClipboard is true here
+                        AddCategory(categoryName, false, true);
+                    });
                 }
             }
 
@@ -562,13 +610,26 @@ namespace PowerPointLabs.Models
             bool shapeLost = false;
             bool pngLost = false;
             int untitledCategoryCnt = 0;
+            List<PowerPointSlide> slides = Slides;
 
-            foreach (PowerPointSlide category in Slides)
+            for (int i = Slides.Count - 1; i >= 0; i--)
             {
+                PowerPointSlide category = Slides[i];
                 Shape categoryNameBox = ConsistencyCheckCategoryNameBox(category, ref untitledCategoryCnt);
 
                 // check if we have a corresponding category directory in the Path
-                string shapeFolderPath = ConsistencyCheckCategorySlideToLocal(category);
+                string shapeFolderPath;
+                try
+                {
+                    shapeFolderPath = ConsistencyCheckCategorySlideToLocal(category);
+                }
+                catch (Exception)
+                {
+                    // Unable to get shape folder path. Store the problematic category and continue
+                    // Actual slide index starts from 1, but is accounted for in PowerPointPresentation.removeSlide(int).
+                    RemoveSlide(i);
+                    continue;
+                }
                 string finalCategoryName = new DirectoryInfo(shapeFolderPath).Name;
 
                 List<string> pngShapes = Directory.EnumerateFiles(shapeFolderPath, "*.png").ToList();
@@ -633,7 +694,11 @@ namespace PowerPointLabs.Models
             if (File.Exists(shapeGalleryFileName))
             {
                 File.SetAttributes(shapeGalleryFileName, FileAttributes.Normal);
-                File.Move(shapeGalleryFileName, FullName);
+                // To ensure that the file fullName does not exist before attempting to move
+                if (!File.Exists(FullName))
+                {
+                    File.Move(shapeGalleryFileName, FullName);
+                }
             }
 
             if (File.Exists(FullName))
@@ -705,7 +770,7 @@ namespace PowerPointLabs.Models
             }
 
             Save();
-            ActionProtection();
+            FlushUndoHistory();
 
             return name;
         }
