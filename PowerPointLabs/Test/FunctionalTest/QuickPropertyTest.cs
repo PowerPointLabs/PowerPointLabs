@@ -24,8 +24,9 @@ namespace Test.FunctionalTest
 
             int x = PpOperations.PointsToScreenPixelsX(shape.Left + shape.Width / 2);
             int y = PpOperations.PointsToScreenPixelsY(shape.Top + shape.Height / 2);
-            MouseUtil.SendMouseDoubleClick(x, y);
 
+            WindowWatcher.AddToWhitelist("Format Shape");
+            MouseUtil.SendMouseDoubleClick(x, y);
             ThreadUtil.WaitFor(2000);
 
             if (PpOperations.IsOffice2010())
