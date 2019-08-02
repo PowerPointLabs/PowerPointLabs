@@ -7,14 +7,13 @@ using System.Runtime.InteropServices;
 using System.Speech.Synthesis;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading;
 using System.Windows.Forms;
 
-using Microsoft.Office.Core;
 using Microsoft.Office.Interop.PowerPoint;
-
+using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.AudioMisc;
+using PowerPointLabs.ColorThemes.Extensions;
 using PowerPointLabs.ELearningLab.AudioGenerator;
 using PowerPointLabs.ELearningLab.ELearningWorkspace.Model;
 using PowerPointLabs.Models;
@@ -99,7 +98,7 @@ namespace PowerPointLabs.ELearningLab.Service
 
             ProcessingStatusForm progressBarForm =
                 new ProcessingStatusForm(numberOfSlides, BackgroundWorkerType.AudioGenerationService);
-            progressBarForm.Show();
+            progressBarForm.ShowThematicDialog(false);
         }
 
         public static void EmbedSlideNotes(int i)
@@ -193,7 +192,7 @@ namespace PowerPointLabs.ELearningLab.Service
 
                 currentSlide.TransferAnimation(selectedShape[1], newAudio);
 
-                selectedShape.Delete();
+                selectedShape.SafeDelete();
             }
         }
 

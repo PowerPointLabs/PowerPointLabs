@@ -8,9 +8,11 @@ using System.IO;
 using System.Windows.Forms;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
-
+using Microsoft.Office.Core;
 using Microsoft.Office.Interop.PowerPoint;
 
+using PowerPointLabs.ActionFramework.Common.Extension;
+using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.Models;
 using PowerPointLabs.TextCollection;
 
@@ -83,6 +85,15 @@ namespace PowerPointLabs.Utils
                               slideHeight, PpExportMode.ppScaleToFit);
         }
 
+        public static Shape CutAndPaste(Shape shape, Slide slide)
+        {
+            string tempFilePath = FileDir.GetTemporaryPngFilePath();
+            ExportShape(shape, tempFilePath);
+            Shape resultShape = ImportPictureToSlide(shape, slide, tempFilePath);
+            FileDir.TryDeleteFile(tempFilePath);
+            return resultShape;
+        }
+
         public static Bitmap ShapeToBitmap(Shape shape)
         {
             // we need a lock here to prevent race conditions on the temporary file
@@ -150,7 +161,7 @@ namespace PowerPointLabs.Utils
             DeleteSpecificFilePath(tempFileStoragePath);
 
             // Delete targetShape to prevent duplication
-            targetShape.Delete();
+            targetShape.SafeDelete();
 
             return compressedImgShape;
         }
@@ -249,6 +260,76 @@ namespace PowerPointLabs.Utils
             ExportSlide(slide.GetNativeSlide(), exportPath, magnifyRatio);
         }
 
+        public static Shape AddSlideAsShape(PowerPointSlide slideToAdd, PowerPointSlide targetSlide)
+        {
+            string tempFilePath = FileDir.GetTemporaryPngFilePath();
+            ExportSlide(slideToAdd, tempFilePath);
+            Shape slideAsShape = ImportPictureToSlide(slideToAdd, targetSlide, tempFilePath);
+            FileDir.TryDeleteFile(tempFilePath);
+            return slideAsShape;
+        }
+
+        public static Shape AddAudioShapeFromFile(PowerPointSlide slide, string fileName)
+        {
+            float slideWidth = PowerPointPresentation.Current.SlideWidth;
+            Shape audioShape = slide.Shapes.AddMediaObject2(fileName, MsoTriState.msoFalse, MsoTriState.msoTrue, slideWidth + 20);
+            if (audioShape == null)
+            {
+                MessageBox.Show("The audio file cannot be accessed by PowerPoint. " +
+                    "Try moving it to another location like Documents or Desktop.");
+                return null;
+            }
+            try
+            {
+                slide.RemoveAnimationsForShape(audioShape);
+                return audioShape;
+            }
+            catch
+            {
+                Logger.Log("Audio not generated because text is not in English.");
+                return null;
+            }
+        }
+
+        private static Shape ImportPictureToSlide(Shape shapeToAdd, Slide targetSlide, string tempFilePath)
+        {
+            // The AccessViolationException is no longer catchable
+            if (!FileDir.IsFileReadable(tempFilePath))
+            {
+                return PPLClipboard.Instance.LockAndRelease(() =>
+                {
+                    shapeToAdd.Cut();
+                    return targetSlide.Shapes.PasteSpecial(PpPasteDataType.ppPastePNG)[1];
+                });
+            }
+            else
+            {
+                shapeToAdd.Delete();
+                return targetSlide.Shapes.AddPicture2(tempFilePath,
+                    MsoTriState.msoFalse,
+                    MsoTriState.msoTrue,
+                    0,
+                    0);
+            }
+        }
+
+        private static Shape ImportPictureToSlide(PowerPointSlide slideToAdd, PowerPointSlide targetSlide, string tempFilePath)
+        {
+            // The AccessViolationException is longer catchable
+            if (!FileDir.IsFileReadable(tempFilePath))
+            {
+                return targetSlide.Shapes.SafeCopySlide(slideToAdd);
+            }
+            else
+            {
+                return targetSlide.Shapes.AddPicture2(tempFilePath,
+                                                      MsoTriState.msoFalse,
+                                                      MsoTriState.msoTrue,
+                                                      0,
+                                                      0);
+            }
+        }
+
         #endregion
 
         #region Bitmap
@@ -279,6 +360,23 @@ namespace PowerPointLabs.Utils
 
             return thumbnail;
         }
+
+        public static BitmapImage BitmapToImageSource(Bitmap bitmap)
+        {
+            using (MemoryStream memory = new MemoryStream())
+            {
+                bitmap.Save(memory, System.Drawing.Imaging.ImageFormat.Png);
+                memory.Position = 0;
+                BitmapImage bitmapimage = new BitmapImage();
+                bitmapimage.BeginInit();
+                bitmapimage.StreamSource = memory;
+                bitmapimage.CacheOption = BitmapCacheOption.OnLoad;
+                bitmapimage.EndInit();
+
+                return bitmapimage;
+            }
+        }
+
         #endregion
 
         #region GDI+
@@ -317,9 +415,10 @@ namespace PowerPointLabs.Utils
             b = (byte)((rgb >> 16) & 255);
         }
 
-        public static Drawing.Color DrawingColorFromMediaColor(System.Windows.Media.Color mediaColor)
+        public static Drawing.Color DrawingColorFromMediaColor(System.Windows.Media.Color mediaColor, bool opaque = false)
         {
-            return Drawing.Color.FromArgb(mediaColor.A, mediaColor.R, mediaColor.G, mediaColor.B);
+            return Drawing.Color.FromArgb(opaque ? 255 : mediaColor.A,
+                mediaColor.R, mediaColor.G, mediaColor.B);
         }
 
         public static System.Windows.Media.Color MediaColorFromDrawingColor(Drawing.Color drawingColor)

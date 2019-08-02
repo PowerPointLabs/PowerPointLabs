@@ -1,14 +1,14 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 
-using PowerPointLabs.ELearningLab.ELearningWorkspace.ModelFactory;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+
 using PowerPointLabs.ELearningLab.ELearningWorkspace.Model;
+using PowerPointLabs.ELearningLab.ELearningWorkspace.ModelFactory;
 
 namespace Test.UnitTest.ELearningLab.ModelFactory
 {
-   // AbstractItemFactory _customItemFactory;
+    // AbstractItemFactory _customItemFactory;
     [TestClass]
     public class CustomItemFactoryTest
     {

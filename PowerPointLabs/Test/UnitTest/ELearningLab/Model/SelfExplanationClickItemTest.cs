@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 using PowerPointLabs.ELearningLab.ELearningWorkspace.Model;
 
@@ -135,7 +129,7 @@ namespace Test.UnitTest.ELearningLab.Model
                 }
             };
             item.CaptionText = "callout text";
-            item.HasShortVersion = false;
+            item.IsShortVersionIndicated = false;
             Assert.IsTrue(captionTextChangeNotified);
             Assert.IsTrue(item.CaptionText.Equals(item.CalloutText));
         }
@@ -214,7 +208,7 @@ namespace Test.UnitTest.ELearningLab.Model
             item.CalloutText = string.Empty;
             Assert.IsTrue(item.IsEmpty);
 
-            item.HasShortVersion = true;
+            item.IsShortVersionIndicated = true;
             item.CalloutText = "callout text";
             item.CaptionText = string.Empty;
             Assert.IsFalse(item.IsEmpty);

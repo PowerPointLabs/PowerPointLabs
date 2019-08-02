@@ -8,6 +8,7 @@ namespace PowerPointLabs.Utils
 {
     public static class CommonUtil
     {
+        #region text
         /// <summary>
         /// Used for the method UniqueDigitString().
         /// _sessionGlobalUniqueIndex is guaranteed to be unique within the same powerpoint session.
@@ -129,6 +130,7 @@ namespace PowerPointLabs.Utils
         {
             return Regex.Replace(input, "([A-Z])", " $1", RegexOptions.Compiled).Trim();
         }
+        #endregion // text
 
         #region Math
 
@@ -152,6 +154,14 @@ namespace PowerPointLabs.Utils
         public static double DegreeToRadian(float angle)
         {
             return angle / 180.0 * Math.PI;
+        }
+
+        public static float Wrap(float value, float lower, float upper)
+        {
+            float range = upper - lower;
+            float zeroBasedValue = value - lower;
+            float result = ((zeroBasedValue + range) % range) + lower;
+            return result;
         }
 
         #endregion
@@ -196,6 +206,6 @@ namespace PowerPointLabs.Utils
             }
             return x.ToString();
         }
-        # endregion
+        #endregion
     }
 }

@@ -2,7 +2,7 @@
 using System.Drawing;
 
 using Microsoft.Office.Core;
-
+using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.Utils;
 
@@ -40,7 +40,7 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
             shape.Fill.BackColor.RGB = guessedColor;
             shape.Fill.Solid();
             Bitmap image = GraphicsUtil.ShapeToBitmap(shape);
-            shape.Delete();
+            shape.SafeDelete();
             return image;
         }
 

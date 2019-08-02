@@ -1,12 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-using PowerPointLabs.ActionFramework.Common.Log;
-
-namespace PowerPointLabs.ELearningLab.AudioGenerator
+﻿namespace PowerPointLabs.ELearningLab.AudioGenerator
 {
     public class AzureAccount
     {

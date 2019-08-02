@@ -1,17 +1,13 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 using Microsoft.Office.Core;
 using Microsoft.Office.Interop.PowerPoint;
+
 using PowerPointLabs.ActionFramework.Common.Extension;
-using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.Models;
 using PowerPointLabs.TextCollection;
 using PowerPointLabs.Utils;
+
 using Shape = Microsoft.Office.Interop.PowerPoint.Shape;
 
 namespace PowerPointLabs.ELearningLab.Utility
@@ -36,10 +32,12 @@ namespace PowerPointLabs.ELearningLab.Utility
             Shape calloutBox = slide.Shapes.AddShape(MsoAutoShapeType.msoShapeRoundedRectangularCallout, 10, 10, 100, 10);
             calloutBox.Name = shapeName;
             calloutBox.TextFrame.TextRange.Text = calloutText;
-            calloutBox.Left = 10;
-            calloutBox.Top = 10;
             calloutBox.TextFrame.AutoSize = PpAutoSize.ppAutoSizeShapeToFitText;
             calloutBox.TextEffect.Alignment = MsoTextEffectAlignment.msoTextEffectAlignmentLeft;
+
+            calloutBox.Left = 10;
+            calloutBox.Top = 10;
+
             ShapeUtil.FormatCalloutToDefaultStyle(calloutBox);
 
             return calloutBox;
@@ -98,8 +96,7 @@ namespace PowerPointLabs.ELearningLab.Utility
             {               
                 copiedShape = ClipboardUtil.RestoreClipboardAfterAction(() =>
                 {
-                    templatedShape.Copy();
-                    return slide.Shapes.Paste()[1];
+                    return slide.Shapes.SafeCopyPlaceholder(templatedShape);
                 }, pres, slide);
             }
             catch
@@ -111,6 +108,12 @@ namespace PowerPointLabs.ELearningLab.Utility
                 throw new Exception("Copied shape is null");
             }
             copiedShape.Name = shapeName;
+
+            copiedShape.TextFrame.TextRange.Text = text;
+            copiedShape.TextFrame.WordWrap = MsoTriState.msoTrue;
+
+            copiedShape.TextFrame.AutoSize = PpAutoSize.ppAutoSizeShapeToFitText;
+
             // copy shape to the default callout / caption position
             if (StringUtility.ExtractFunctionFromString(copiedShape.Name) == ELearningLabText.CalloutIdentifier)
             {
@@ -128,9 +131,6 @@ namespace PowerPointLabs.ELearningLab.Utility
                 copiedShape.TextEffect.Alignment = MsoTextEffectAlignment.msoTextEffectAlignmentCentered;
             }
 
-            copiedShape.TextFrame.AutoSize = PpAutoSize.ppAutoSizeShapeToFitText;
-            copiedShape.TextFrame.TextRange.Text = text;
-            copiedShape.TextFrame.WordWrap = MsoTriState.msoTrue;         
             // remove associated animation with copiedShape because we only want the shape to be copied.
             slide.RemoveAnimationsForShape(copiedShape);
             if (StringUtility.ExtractFunctionFromString(copiedShape.Name) == ELearningLabText.CaptionIdentifier)

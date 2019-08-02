@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-
+using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.AnimationLab;
 using PowerPointLabs.Models;
@@ -194,7 +194,7 @@ namespace PowerPointLabs.HighlightLab
             {
                 foreach (PowerPoint.Shape sh in shapesToDelete)
                 {
-                    sh.Delete();
+                    sh.SafeDelete();
                 }
             }
         }

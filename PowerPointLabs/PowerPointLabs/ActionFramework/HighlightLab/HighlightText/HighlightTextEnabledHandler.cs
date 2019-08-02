@@ -1,4 +1,6 @@
-﻿using Microsoft.Office.Interop.PowerPoint;
+﻿using System;
+
+using Microsoft.Office.Interop.PowerPoint;
 
 using PowerPointLabs.ActionFramework.Common.Attribute;
 using PowerPointLabs.ActionFramework.Common.Extension;
@@ -15,8 +17,7 @@ namespace PowerPointLabs.ActionFramework.HighlightLab
         {
             try
             {
-                if (this.GetAddIn().Application.ActiveWindow.Selection.Type == PpSelectionType.ppSelectionText && 
-                    this.GetAddIn().Application.ActiveWindow.Selection.TextRange2.TrimText().Length > 0)
+                if (IsTextSelected())
                 {
                     return HighlightTextFragments.IsHighlightTextFragmentsEnabled;
                 }
@@ -27,6 +28,19 @@ namespace PowerPointLabs.ActionFramework.HighlightLab
             }
             // If this exception is caught, it means nothing has been selected yet
             catch (System.Runtime.InteropServices.COMException)
+            {
+                return false;
+            }
+        }
+
+        private bool IsTextSelected()
+        {
+            try
+            {
+                return this.GetAddIn().Application.ActiveWindow.Selection.Type == PpSelectionType.ppSelectionText &&
+                                    this.GetAddIn().Application.ActiveWindow.Selection.TextRange2.TrimText().Length > 0;
+            }
+            catch (UnauthorizedAccessException)
             {
                 return false;
             }

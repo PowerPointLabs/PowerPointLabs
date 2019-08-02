@@ -1,12 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
-
+using EyeOpen.Imaging.Processing;
 using Microsoft.Office.Core;
 using Microsoft.Office.Interop.PowerPoint;
-
+using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.Models;
 using PowerPointLabs.SyncLab.ObjectFormats;
 
@@ -26,6 +27,8 @@ namespace PowerPointLabs.Utils
         private const int DefaultFontSize = 16;
         private const float DefaultLineWeight = 0.05f;
         private const int MaxShapeNameLength = 255;
+        private const float DisplaceAmount = 20;
+        private const int MaxDisplaceTries = 50;
 
         #endregion
 
@@ -35,18 +38,17 @@ namespace PowerPointLabs.Utils
 
         #region Shape
 
-        // TODO: This could be an extension method of shape.
-        public static bool IsHidden(Shape shape)
+        public static bool IsHidden(this Shape shape)
         {
             return shape.Visible == MsoTriState.msoFalse;
         }
 
-        public static bool IsAGroup(Shape shape)
+        public static bool IsAGroup(this Shape shape)
         {
             return shape.Type == MsoShapeType.msoGroup;
         }
 
-        public static bool IsAChild(Shape shape)
+        public static bool IsAChild(this Shape shape)
         {
             try
             {
@@ -60,7 +62,7 @@ namespace PowerPointLabs.Utils
             }
         }
         
-        public static bool IsStraightLine(Shape shape)
+        public static bool IsStraightLine(this Shape shape)
         {
             return shape.Type == MsoShapeType.msoLine ||
                     (shape.Type == MsoShapeType.msoAutoShape &&
@@ -68,25 +70,25 @@ namespace PowerPointLabs.Utils
                      shape.ConnectorFormat.Type == MsoConnectorType.msoConnectorStraight);
         }
 
-        public static bool IsShape(Shape shape)
+        public static bool IsShape(this Shape shape)
         {
             return shape.Type == MsoShapeType.msoAutoShape
                 || shape.Type == MsoShapeType.msoFreeform
                 || shape.Type == MsoShapeType.msoGroup;
         }
 
-        public static bool IsPicture(Shape shape)
+        public static bool IsPicture(this Shape shape)
         {
             return shape.Type == MsoShapeType.msoPicture ||
                    shape.Type == MsoShapeType.msoLinkedPicture;
         }
 
-        public static bool IsPictureOrShape(Shape shape)
+        public static bool IsPictureOrShape(this Shape shape)
         {
-            return IsPicture(shape) || IsShape(shape);
+            return shape.IsPicture() || shape.IsShape();
         }
 
-        public static bool IsSameType(Shape refShape, Shape candidateShape)
+        public static bool IsSameType(this Shape refShape, Shape candidateShape)
         {
             return refShape != null &&
                    candidateShape != null &&
@@ -95,7 +97,7 @@ namespace PowerPointLabs.Utils
                    refShape.AutoShapeType == candidateShape.AutoShapeType);
         }
 
-        public static bool CanAddArrows(Shape shape)
+        public static bool CanAddArrows(this Shape shape)
         {
             try
             {
@@ -127,13 +129,13 @@ namespace PowerPointLabs.Utils
 
         public static bool IsAllPictureWithReferenceObject(ShapeRange shapeRange)
         {
-            if (!IsPictureOrShape(shapeRange[1]))
+            if (!shapeRange[1].IsPictureOrShape())
             {
                 return false;
             }
             for (int i = 2; i <= shapeRange.Count; i++)
             {
-                if (!IsPicture(shapeRange[i]))
+                if (!shapeRange[i].IsPicture())
                 {
                     return false;
                 }
@@ -210,12 +212,7 @@ namespace PowerPointLabs.Utils
                 return false;
             }
 
-            if (selection.HasChildShapeRange)
-            {
-                return selection.ChildShapeRange.Count == 1;
-            }
-
-            return selection.ShapeRange.Count == 1;
+            return ShapeUtil.GetShapeRange(selection).Count == 1;
         }
 
         public static bool IsSelectionMultipleOrGroup(Selection selection)
@@ -230,7 +227,7 @@ namespace PowerPointLabs.Utils
                 return true;
             }
 
-            if (IsAGroup(selection.ShapeRange[1]))
+            if (selection.ShapeRange[1].IsAGroup())
             {
                 return true;
             }
@@ -267,9 +264,55 @@ namespace PowerPointLabs.Utils
             return result;
         }
 
-        public static bool IsSelectionAllRectangle(Selection selection)
+        public static bool IsSelectionAllShapes(Selection selection)
         {
             if (selection == null || selection.Type != PpSelectionType.ppSelectionShapes)
+            {
+                return false;
+            }
+            return true;
+        }
+
+        public static bool IsShapeRectangleAutoshape(this Shape shape)
+        {
+            if (shape.Type != MsoShapeType.msoAutoShape)
+            {
+                return false;
+            }
+            if (shape.AutoShapeType == MsoAutoShapeType.msoShapeRectangle)
+            {
+                return true;
+            }
+
+            string originalShape = FileDir.GetTemporaryPngFilePath();
+            GraphicsUtil.ExportShape(shape, originalShape);
+            Shape duplicateShape = shape.Duplicate()[1];
+            string rectangleShape = FileDir.GetTemporaryPngFilePath();
+            duplicateShape.AutoShapeType = MsoAutoShapeType.msoShapeRectangle;
+            GraphicsUtil.ExportShape(duplicateShape, rectangleShape);
+            duplicateShape.Delete();
+            return IsSameLooking(originalShape, rectangleShape);
+        }
+
+        public static bool IsSameLooking(string shape1, string shape2, double similarityTolerance = 0.95)
+        {
+            return IsSameLooking(new FileInfo(shape1),
+                new FileInfo(shape2),
+                similarityTolerance);
+        }
+
+        public static bool IsSameLooking(FileInfo expSlideImage, FileInfo actualSlideImage, double similarityTolerance = 0.95)
+        {
+            ComparableImage actualSlideInPic = new ComparableImage(actualSlideImage);
+            ComparableImage expSlideInPic = new ComparableImage(expSlideImage);
+
+            double similarity = actualSlideInPic.CalculateSimilarity(expSlideInPic);
+            return similarity > similarityTolerance;
+        }
+
+        public static bool IsSelectionAllRectangle(Selection selection)
+        {
+            if (!IsSelectionAllShapes(selection))
             {
                 return false;
             }
@@ -277,9 +320,8 @@ namespace PowerPointLabs.Utils
             ShapeRange shapes = selection.ShapeRange;
             foreach (Shape shape in shapes)
             {
-                if ((shape.Type != MsoShapeType.msoAutoShape ||
-                   shape.AutoShapeType != MsoAutoShapeType.msoShapeRectangle) &&
-                   shape.Type != MsoShapeType.msoPicture)
+                if (shape.Type != MsoShapeType.msoPicture &&
+                   !shape.IsShapeRectangleAutoshape())
                 {
                     return false;
                 }
@@ -324,12 +366,11 @@ namespace PowerPointLabs.Utils
             return shapeName.Length > MaxShapeNameLength;
         }
 
-        // TODO: This could be an extension method of shape.
-        public static bool HasDefaultName(Shape shape)
+        public static bool HasDefaultName(this Shape shape)
         {
             Shape copy = shape.Duplicate()[1];
             bool hasDefaultName = copy.Name != shape.Name;
-            copy.Delete();
+            copy.SafeDelete();
             return hasDefaultName;
         }
 
@@ -337,7 +378,7 @@ namespace PowerPointLabs.Utils
 
         #region Corruption Handling
 
-        public static bool IsCorrupted(Shape shape)
+        public static bool IsCorrupted(this Shape shape)
         {
             try
             {
@@ -373,7 +414,7 @@ namespace PowerPointLabs.Utils
             
             if (correctedShape != null)
             {
-                shape.Delete();
+                shape.SafeDelete();
                 return correctedShape;
             }
             else
@@ -397,7 +438,32 @@ namespace PowerPointLabs.Utils
 
         #region Size and Position
 
-        public static bool IsSamePosition(Shape refShape, Shape candidateShape,
+        /// <summary>
+        /// Displaces a shape by <seealso cref="DisplaceAmount"/> until it is not on the
+        /// same position as another shape of the same shape type or until
+        /// <seealso cref="MaxDisplaceTries"/>.
+        /// </summary>
+        /// <param name="presentation">Context for slide dimensions</param>
+        /// <param name="currentSlide">Slide containing shapes to compare with.</param>
+        /// <param name="targetShape">Shape to be displaced</param>
+        /// <param name="samePositionThreshold">Pixel distance required to be different</param>
+        public static void TryDisplaceShape(this Shape targetShape,
+            PowerPointPresentation presentation, PowerPointSlide currentSlide,
+            float samePositionThreshold)
+        {
+            int numTries = 0;
+            while (currentSlide.Shapes.Cast<Shape>().Any(
+                shape => shape != targetShape &&
+                         shape.IsSameType(targetShape) &&
+                         shape.IsSamePosition(targetShape, false, samePositionThreshold))
+                         && numTries < MaxDisplaceTries)
+            {
+                DisplaceShape(targetShape, presentation);
+                numTries++;
+            }
+        }
+
+        public static bool IsSamePosition(this Shape refShape, Shape candidateShape,
                                           bool exactMatch = true, float blurRadius = float.Epsilon)
         {
             if (exactMatch)
@@ -411,7 +477,7 @@ namespace PowerPointLabs.Utils
                    Math.Abs(refShape.Top - candidateShape.Top) < blurRadius;
         }
 
-        public static bool IsSameSize(Shape refShape, Shape candidateShape,
+        public static bool IsSameSize(this Shape refShape, Shape candidateShape,
                                       bool exactMatch = true, float blurRadius = float.Epsilon)
         {
             if (exactMatch)
@@ -425,57 +491,49 @@ namespace PowerPointLabs.Utils
                    Math.Abs(refShape.Height - candidateShape.Height) < blurRadius;
         }
 
-        // TODO: This could be an extension method of shape.
-        public static float GetMidpointX(Shape shape)
+        public static float GetMidpointX(this Shape shape)
         {
             return shape.Left + shape.Width / 2;
         }
 
-        // TODO: This could be an extension method of shape.
-        public static void SetMidpointX(Shape shape, float value)
+        public static void SetMidpointX(this Shape shape, float value)
         {
             shape.Left = value - shape.Width / 2;
         }
 
-        // TODO: This could be an extension method of shape.
-        public static float GetMidpointY(Shape shape)
+        public static float GetMidpointY(this Shape shape)
         {
             return shape.Top + shape.Height / 2;
         }
 
-        // TODO: This could be an extension method of shape.
-        public static void SetMidpointY(Shape shape, float value)
+        public static void SetMidpointY(this Shape shape, float value)
         {
             shape.Top = value - shape.Height / 2;
         }
 
-        // TODO: This could be an extension method of shape.
-        public static float GetRight(Shape shape)
+        public static float GetRight(this Shape shape)
         {
             return shape.Left + shape.Width;
         }
 
-        // TODO: This could be an extension method of shape.
-        public static void SetRight(Shape shape, float value)
+        public static void SetRight(this Shape shape, float value)
         {
             shape.Left = value - shape.Width;
         }
 
-        // TODO: This could be an extension method of shape.
-        public static float GetBottom(Shape shape)
+        public static float GetBottom(this Shape shape)
         {
             return shape.Top + shape.Height;
         }
 
-        // TODO: This could be an extension method of shape.
-        public static void SetBottom(Shape shape, float value)
+        public static void SetBottom(this Shape shape, float value)
         {
             shape.Top = value - shape.Height;
         }
 
-        public static float GetScaleWidth(Shape shape)
+        public static float GetScaleWidth(this Shape shape)
         {
-            if (IsShape(shape))
+            if (shape.IsShape())
             {
                 return 1.0f;
             }
@@ -493,9 +551,9 @@ namespace PowerPointLabs.Utils
             return scaleFactorWidth;
         }
 
-        public static float GetScaleHeight(Shape shape)
+        public static float GetScaleHeight(this Shape shape)
         {
-            if (IsShape(shape))
+            if (shape.IsShape())
             {
                 return 1.0f;
             }
@@ -513,16 +571,15 @@ namespace PowerPointLabs.Utils
             return scaleFactorHeight;
         }
 
-        public static PointF GetCenterPoint(Shape s)
+        public static PointF GetCenterPoint(this Shape s)
         {
             return new PointF(s.Left + s.Width / 2, s.Top + s.Height / 2);
         }
 
-        // TODO: This could be an extension method of shape.
         /// <summary>
         /// anchorFraction = 0 means left side, anchorFraction = 1 means right side.
         /// </summary>
-        public static void SetShapeX(Shape shape, float value, float anchorFraction)
+        public static void SetShapeX(this Shape shape, float value, float anchorFraction)
         {
             shape.Left = value - shape.Width * anchorFraction;
         }
@@ -530,7 +587,7 @@ namespace PowerPointLabs.Utils
         /// <summary>
         /// anchorFraction = 0 means top side, anchorFraction = 1 means bottom side.
         /// </summary>
-        public static void SetShapeY(Shape shape, float value, float anchorFraction)
+        public static void SetShapeY(this Shape shape, float value, float anchorFraction)
         {
             shape.Top = value - shape.Height * anchorFraction;
         }
@@ -626,12 +683,12 @@ namespace PowerPointLabs.Utils
 
             // If shape is a group, our target zOrder needs to be offset by the number of items in the group
             // This is to account for the zOrder of the items in the group
-            if (IsAGroup(lowerZOrderShape))
+            if (lowerZOrderShape.IsAGroup())
             {
                 higherZOrder -= lowerZOrderShape.GroupItems.Count;
             }
 
-            if (IsAGroup(higherZOrderShape))
+            if (higherZOrderShape.IsAGroup())
             {
                 higherZOrder += higherZOrderShape.GroupItems.Count;
             }
@@ -686,8 +743,8 @@ namespace PowerPointLabs.Utils
         {
             double pivotX = shape.Left + anchorX * shape.Width;
             double pivotY = shape.Top + anchorY * shape.Height;
-            double midpointX = GetMidpointX(shape);
-            double midpointY = GetMidpointY(shape);
+            double midpointX = shape.GetMidpointX();
+            double midpointY = shape.GetMidpointY();
 
             double dx = midpointX - pivotX;
             double dy = midpointY - pivotY;
@@ -696,14 +753,19 @@ namespace PowerPointLabs.Utils
             double newdx = Math.Cos(radAngle) * dx - Math.Sin(radAngle) * dy;
             double newdy = Math.Sin(radAngle) * dx + Math.Cos(radAngle) * dy;
 
-            SetMidpointX(shape, (float)(pivotX + newdx));
-            SetMidpointY(shape, (float)(pivotY + newdy));
+            shape.SetMidpointX((float)(pivotX + newdx));
+            shape.SetMidpointY((float)(pivotY + newdy));
             shape.Rotation += angle;
         }
 
         #endregion
 
         #region Shape Finding
+
+        public static ShapeRange GetShapeRange(Selection selection)
+        {
+            return (selection.HasChildShapeRange) ? selection.ChildShapeRange : selection.ShapeRange;
+        }
 
         public static ShapeRange GetShapesWhenTypeMatches(PowerPointSlide slide, ShapeRange shapes, MsoShapeType type)
         {
@@ -735,7 +797,7 @@ namespace PowerPointLabs.Utils
         {
             List<Shape> result = new List<Shape>();
 
-            if (!IsAGroup(shape))
+            if (!shape.IsAGroup())
             {
                 return result;
             }
@@ -853,9 +915,8 @@ namespace PowerPointLabs.Utils
                 return;
             }
 
-            candidateShape.Delete();
-            refShape.Copy();
-            candidateShape = candidateSlide.Shapes.Paste()[1];
+            candidateShape.SafeDelete();
+            candidateShape = candidateSlide.Shapes.SafeCopyPlaceholder(refShape);
             candidateShape.Name = refShape.Name;
         }
 
@@ -920,10 +981,10 @@ namespace PowerPointLabs.Utils
             foreach (object shape in candidateShapeRange)
             {
                 Shape candidateShape = shape as Shape;
-                Shape refShape = refShapeRange.Cast<Shape>().FirstOrDefault(item => IsSameType(item, candidateShape) &&
-                                                                                  IsSamePosition(item, candidateShape,
+                Shape refShape = refShapeRange.Cast<Shape>().FirstOrDefault(item => item.IsSameType(candidateShape) &&
+                                                                                  item.IsSamePosition(candidateShape,
                                                                                                  false, 15) &&
-                                                                                  IsSameSize(item, candidateShape));
+                                                                                  item.IsSameSize(candidateShape));
 
                 if (candidateShape == null || refShape == null)
                 {
@@ -980,31 +1041,27 @@ namespace PowerPointLabs.Utils
             }
         }
 
-        // TODO: This could be an extension method of shape.
-        public static string GetText(Shape shape)
+        public static string GetText(this Shape shape)
         {
             return shape.TextFrame2.TextRange.Text;
         }
 
-        // TODO: This could be an extension method of shape.
-        public static void SetText(Shape shape, params string[] lines)
+        public static void SetText(this Shape shape, params string[] lines)
         {
             shape.TextFrame2.TextRange.Text = string.Join("\r", lines);
         }
 
-        // TODO: This could be an extension method of shape.
-        public static void SetText(Shape shape, IEnumerable<string> lines)
+        public static void SetText(this Shape shape, IEnumerable<string> lines)
         {
             shape.TextFrame2.TextRange.Text = string.Join("\r", lines);
         }
 
-        // TODO: This could be an extension method of shape.
         /// <summary>
         /// Get the paragraphs of the shape as a list.
         /// The paragraphs formats can be modified to change the format of the paragraphs in shape.
         /// This list is 0-indexed.
         /// </summary>
-        public static List<TextRange2> GetParagraphs(Shape shape)
+        public static List<TextRange2> GetParagraphs(this Shape shape)
         {
             return shape.TextFrame2.TextRange.Paragraphs.Cast<TextRange2>().ToList();
         }
@@ -1041,7 +1098,7 @@ namespace PowerPointLabs.Utils
             Shape duplicate = shape.Duplicate()[1];
             duplicate.TextFrame.TextRange.Text = "";
             int color = duplicate.TextFrame.TextRange.Font.Color.RGB;
-            duplicate.Delete();
+            duplicate.SafeDelete();
             return color;
         }
 
@@ -1144,7 +1201,7 @@ namespace PowerPointLabs.Utils
                 return false;
             }
             
-            copyAttempt.Delete();
+            copyAttempt.SafeDelete();
             return true;
         }
 
@@ -1205,8 +1262,8 @@ namespace PowerPointLabs.Utils
                     // as the image's source is not obtainable through the Shape API
                     var tempShape = msoPlaceHolder.Duplicate()[1];
                     tempShape.Copy();
-                    shapeTemplate = shapesSource.Paste()[1];
-                    tempShape.Delete();
+                    shapeTemplate = shapesSource.SafeCopy(tempShape); // DO NOT USE SAFECOPYPLACEHOLDER, INFINITE LOOP
+                    tempShape.SafeDelete();
                     break;
                 case PpPlaceholderType.ppPlaceholderVerticalObject:
                 case PpPlaceholderType.ppPlaceholderObject:
@@ -1274,12 +1331,32 @@ namespace PowerPointLabs.Utils
                 return false;
             }
         }
-        
+
         #endregion
-        
+
         #endregion
 
         #region Helper Methods
+
+        /// <summary>
+        /// Displaces the shape rightwards and downwards by displaceAmount while staying
+        /// within slide boundaries.
+        /// </summary>
+        /// <param name="targetShape">Shape to be displaced</param>
+        /// <param name="presentation">Context for slide dimensions</param>
+        /// <param name="displaceAmount">Amount displaced in pixels</param>
+        private static void DisplaceShape(Shape targetShape,
+            PowerPointPresentation presentation,
+            float displaceAmount = DisplaceAmount)
+        {
+            float newLeft = targetShape.Left + DisplaceAmount;
+            float newTop = targetShape.Top + DisplaceAmount;
+            targetShape.Left = CommonUtil.Wrap(newLeft, 0,
+                presentation.SlideWidth - targetShape.Width);
+            targetShape.Top = CommonUtil.Wrap(newTop, 0,
+                presentation.SlideHeight - targetShape.Height);
+        }
+
         private static void SyncShapeLocation(Shape refShape, Shape candidateShape)
         {
             candidateShape.Left = refShape.Left;

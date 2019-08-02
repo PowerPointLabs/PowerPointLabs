@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
 using System.IO;
-
+using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.EffectsLab;
 using PowerPointLabs.Models;
 using PowerPointLabs.Utils;
@@ -25,11 +25,7 @@ namespace PowerPointLabs.CropLab
         public static Shape Crop(PowerPointSlide currentSlide, Selection selection,
                                 double magnifyRatio = 1.0, bool isInPlace = false, bool handleError = true)
         {
-            ShapeRange shapeRange = selection.ShapeRange;
-            if (selection.HasChildShapeRange)
-            {
-                shapeRange = selection.ChildShapeRange;
-            }
+            ShapeRange shapeRange = ShapeUtil.GetShapeRange(selection);
 
             Shape croppedShape = Crop(currentSlide, shapeRange, isInPlace: isInPlace, handleError: handleError);
             if (croppedShape != null)
@@ -50,7 +46,7 @@ namespace PowerPointLabs.CropLab
                 float left = shape.Left;
                 float top = shape.Top;
                 shapeRange = shape.Duplicate();
-                shape.Delete();
+                shape.SafeDelete();
                 shapeRange.Left = left;
                 shapeRange.Top = top;
                 if (hasManyShapes)
@@ -94,7 +90,7 @@ namespace PowerPointLabs.CropLab
             }
 
             Shape shapeToReturn = shape.Duplicate()[1];
-            shape.Delete();
+            shape.SafeDelete();
             return shapeToReturn;
         }
 
