@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Office.Interop.PowerPoint;
-using PowerPointLabs.ActionFramework.Common.Log;
+
 using PowerPointLabs.ELearningLab.ELearningWorkspace.Model;
 using PowerPointLabs.ELearningLab.Service;
 using PowerPointLabs.ELearningLab.Utility;
-using PowerPointLabs.Models;
 using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.ELearningLab.ELearningWorkspace.ModelFactory

@@ -92,7 +92,6 @@ namespace Test.UnitTest.PositionsLab
                                             CurvedRightArrow20, CurvedLeftArrow21, CurvedDownArrow22, CurvedUpArrow23, StripedRightArrow24, NotchedRightArrow25, Pentagon26,
                                             Chevron27, RightArrowCallout28, DownArrowCallout29, LeftArrowCallout30, UpArrowCallout31, LeftRightArrowCallout32, UpArrowCallout31,
                                             LeftRightArrowCallout32, QuadArrowCallout33, CircularArrow34, RightArrow1 };
-            InitOriginalShapes(OriginalShapes0DegreesSlideNo, _shapeNames);
             PowerPoint.ShapeRange actualShapes = GetShapes(OriginalShapes0DegreesSlideNo, _shapeNames);
 
             Action<IList<Shape>> positionsAction = (shapes) => PositionsLabMain.SnapHorizontal(shapes);
@@ -102,8 +101,6 @@ namespace Test.UnitTest.PositionsLab
             PowerPoint.ShapeRange expectedShapes = PpOperations.SelectShapes(_shapeNames);
 
             CheckShapes(expectedShapes, actualShapes);
-
-            RestoreShapes(OriginalShapes0DegreesSlideNo, _shapeNames);
         }
 
         [TestMethod]
@@ -115,7 +112,6 @@ namespace Test.UnitTest.PositionsLab
                                             CurvedRightArrow20, CurvedLeftArrow21, CurvedDownArrow22, CurvedUpArrow23, StripedRightArrow24, NotchedRightArrow25, Pentagon26,
                                             Chevron27, RightArrowCallout28, DownArrowCallout29, LeftArrowCallout30, UpArrowCallout31, LeftRightArrowCallout32, UpArrowCallout31,
                                             LeftRightArrowCallout32, QuadArrowCallout33, CircularArrow34, RightArrow1 };
-            InitOriginalShapes(OriginalShapes315DegreesSlideNo, _shapeNames);
             PowerPoint.ShapeRange actualShapes = GetShapes(OriginalShapes315DegreesSlideNo, _shapeNames);
 
             Action<IList<Shape>> positionsAction = (shapes) => PositionsLabMain.SnapHorizontal(shapes);
@@ -125,8 +121,6 @@ namespace Test.UnitTest.PositionsLab
             PowerPoint.ShapeRange expectedShapes = PpOperations.SelectShapes(_shapeNames);
 
             CheckShapes(expectedShapes, actualShapes);
-
-            RestoreShapes(OriginalShapes315DegreesSlideNo, _shapeNames);
         }
 
         [TestMethod]
@@ -138,7 +132,6 @@ namespace Test.UnitTest.PositionsLab
                                             CurvedRightArrow20, CurvedLeftArrow21, CurvedDownArrow22, CurvedUpArrow23, StripedRightArrow24, NotchedRightArrow25, Pentagon26,
                                             Chevron27, RightArrowCallout28, DownArrowCallout29, LeftArrowCallout30, UpArrowCallout31, LeftRightArrowCallout32, UpArrowCallout31,
                                             LeftRightArrowCallout32, QuadArrowCallout33, CircularArrow34, RightArrow1 };
-            InitOriginalShapes(OriginalShapes225DegreesSlideNo, _shapeNames);
             PowerPoint.ShapeRange actualShapes = GetShapes(OriginalShapes225DegreesSlideNo, _shapeNames);
 
             Action<IList<Shape>> positionsAction = (shapes) => PositionsLabMain.SnapHorizontal(shapes);
@@ -148,8 +141,6 @@ namespace Test.UnitTest.PositionsLab
             PowerPoint.ShapeRange expectedShapes = PpOperations.SelectShapes(_shapeNames);
 
             CheckShapes(expectedShapes, actualShapes);
-
-            RestoreShapes(OriginalShapes225DegreesSlideNo, _shapeNames);
         }
 
         [TestMethod]
@@ -161,7 +152,6 @@ namespace Test.UnitTest.PositionsLab
                                             CurvedRightArrow20, CurvedLeftArrow21, CurvedDownArrow22, CurvedUpArrow23, StripedRightArrow24, NotchedRightArrow25, Pentagon26,
                                             Chevron27, RightArrowCallout28, DownArrowCallout29, LeftArrowCallout30, UpArrowCallout31, LeftRightArrowCallout32, UpArrowCallout31,
                                             LeftRightArrowCallout32, QuadArrowCallout33, CircularArrow34, RightArrow1 };
-            InitOriginalShapes(OriginalShapes135DegreesSlideNo, _shapeNames);
             PowerPoint.ShapeRange actualShapes = GetShapes(OriginalShapes135DegreesSlideNo, _shapeNames);
 
             Action<IList<Shape>> positionsAction = (shapes) => PositionsLabMain.SnapHorizontal(shapes);
@@ -171,8 +161,6 @@ namespace Test.UnitTest.PositionsLab
             PowerPoint.ShapeRange expectedShapes = PpOperations.SelectShapes(_shapeNames);
 
             CheckShapes(expectedShapes, actualShapes);
-
-            RestoreShapes(OriginalShapes135DegreesSlideNo, _shapeNames);
         }
 
         [TestMethod]
@@ -184,7 +172,6 @@ namespace Test.UnitTest.PositionsLab
                                             CurvedRightArrow20, CurvedLeftArrow21, CurvedDownArrow22, CurvedUpArrow23, StripedRightArrow24, NotchedRightArrow25, Pentagon26,
                                             Chevron27, RightArrowCallout28, DownArrowCallout29, LeftArrowCallout30, UpArrowCallout31, LeftRightArrowCallout32, UpArrowCallout31,
                                             LeftRightArrowCallout32, QuadArrowCallout33, CircularArrow34, RightArrow1 };
-            InitOriginalShapes(OriginalShapes45DegreesSlideNo, _shapeNames);
             PowerPoint.ShapeRange actualShapes = GetShapes(OriginalShapes45DegreesSlideNo, _shapeNames);
 
             Action<IList<Shape>> positionsAction = (shapes) => PositionsLabMain.SnapHorizontal(shapes);
@@ -194,8 +181,6 @@ namespace Test.UnitTest.PositionsLab
             PowerPoint.ShapeRange expectedShapes = PpOperations.SelectShapes(_shapeNames);
 
             CheckShapes(expectedShapes, actualShapes);
-
-            RestoreShapes(OriginalShapes45DegreesSlideNo, _shapeNames);
         }
 
         [TestMethod]
@@ -207,7 +192,6 @@ namespace Test.UnitTest.PositionsLab
                                             CurvedRightArrow20, CurvedLeftArrow21, CurvedDownArrow22, CurvedUpArrow23, StripedRightArrow24, NotchedRightArrow25, Pentagon26,
                                             Chevron27, RightArrowCallout28, DownArrowCallout29, LeftArrowCallout30, UpArrowCallout31, LeftRightArrowCallout32, UpArrowCallout31,
                                             LeftRightArrowCallout32, QuadArrowCallout33, CircularArrow34, RightArrow1 };
-            InitOriginalShapes(OriginalShapes0DegreesSlideNo, _shapeNames);
             PowerPoint.ShapeRange actualShapes = GetShapes(OriginalShapes0DegreesSlideNo, _shapeNames);
 
             Action<IList<Shape>> positionsAction = (shapes) => PositionsLabMain.SnapVertical(shapes);
@@ -217,8 +201,6 @@ namespace Test.UnitTest.PositionsLab
             PowerPoint.ShapeRange expectedShapes = PpOperations.SelectShapes(_shapeNames);
 
             CheckShapes(expectedShapes, actualShapes);
-
-            RestoreShapes(OriginalShapes0DegreesSlideNo, _shapeNames);
         }
 
         [TestMethod]
@@ -230,7 +212,6 @@ namespace Test.UnitTest.PositionsLab
                                             CurvedRightArrow20, CurvedLeftArrow21, CurvedDownArrow22, CurvedUpArrow23, StripedRightArrow24, NotchedRightArrow25, Pentagon26,
                                             Chevron27, RightArrowCallout28, DownArrowCallout29, LeftArrowCallout30, UpArrowCallout31, LeftRightArrowCallout32, UpArrowCallout31,
                                             LeftRightArrowCallout32, QuadArrowCallout33, CircularArrow34, RightArrow1 };
-            InitOriginalShapes(OriginalShapes315DegreesSlideNo, _shapeNames);
             PowerPoint.ShapeRange actualShapes = GetShapes(OriginalShapes315DegreesSlideNo, _shapeNames);
 
             Action<IList<Shape>> positionsAction = (shapes) => PositionsLabMain.SnapVertical(shapes);
@@ -240,8 +221,6 @@ namespace Test.UnitTest.PositionsLab
             PowerPoint.ShapeRange expectedShapes = PpOperations.SelectShapes(_shapeNames);
 
             CheckShapes(expectedShapes, actualShapes);
-
-            RestoreShapes(OriginalShapes315DegreesSlideNo, _shapeNames);
         }
 
         [TestMethod]
@@ -253,7 +232,6 @@ namespace Test.UnitTest.PositionsLab
                                             CurvedRightArrow20, CurvedLeftArrow21, CurvedDownArrow22, CurvedUpArrow23, StripedRightArrow24, NotchedRightArrow25, Pentagon26,
                                             Chevron27, RightArrowCallout28, DownArrowCallout29, LeftArrowCallout30, UpArrowCallout31, LeftRightArrowCallout32, UpArrowCallout31,
                                             LeftRightArrowCallout32, QuadArrowCallout33, CircularArrow34, RightArrow1 };
-            InitOriginalShapes(OriginalShapes225DegreesSlideNo, _shapeNames);
             PowerPoint.ShapeRange actualShapes = GetShapes(OriginalShapes225DegreesSlideNo, _shapeNames);
 
             Action<IList<Shape>> positionsAction = (shapes) => PositionsLabMain.SnapVertical(shapes);
@@ -263,8 +241,6 @@ namespace Test.UnitTest.PositionsLab
             PowerPoint.ShapeRange expectedShapes = PpOperations.SelectShapes(_shapeNames);
 
             CheckShapes(expectedShapes, actualShapes);
-
-            RestoreShapes(OriginalShapes225DegreesSlideNo, _shapeNames);
         }
 
         [TestMethod]
@@ -276,7 +252,6 @@ namespace Test.UnitTest.PositionsLab
                                             CurvedRightArrow20, CurvedLeftArrow21, CurvedDownArrow22, CurvedUpArrow23, StripedRightArrow24, NotchedRightArrow25, Pentagon26,
                                             Chevron27, RightArrowCallout28, DownArrowCallout29, LeftArrowCallout30, UpArrowCallout31, LeftRightArrowCallout32, UpArrowCallout31,
                                             LeftRightArrowCallout32, QuadArrowCallout33, CircularArrow34, RightArrow1 };
-            InitOriginalShapes(OriginalShapes135DegreesSlideNo, _shapeNames);
             PowerPoint.ShapeRange actualShapes = GetShapes(OriginalShapes135DegreesSlideNo, _shapeNames);
 
             Action<IList<Shape>> positionsAction = (shapes) => PositionsLabMain.SnapVertical(shapes);
@@ -286,8 +261,6 @@ namespace Test.UnitTest.PositionsLab
             PowerPoint.ShapeRange expectedShapes = PpOperations.SelectShapes(_shapeNames);
 
             CheckShapes(expectedShapes, actualShapes);
-
-            RestoreShapes(OriginalShapes135DegreesSlideNo, _shapeNames);
         }
 
         [TestMethod]
@@ -299,7 +272,6 @@ namespace Test.UnitTest.PositionsLab
                                             CurvedRightArrow20, CurvedLeftArrow21, CurvedDownArrow22, CurvedUpArrow23, StripedRightArrow24, NotchedRightArrow25, Pentagon26,
                                             Chevron27, RightArrowCallout28, DownArrowCallout29, LeftArrowCallout30, UpArrowCallout31, LeftRightArrowCallout32, UpArrowCallout31,
                                             LeftRightArrowCallout32, QuadArrowCallout33, CircularArrow34, RightArrow1 };
-            InitOriginalShapes(OriginalShapes45DegreesSlideNo, _shapeNames);
             PowerPoint.ShapeRange actualShapes = GetShapes(OriginalShapes45DegreesSlideNo, _shapeNames);
 
             Action<IList<Shape>> positionsAction = (shapes) => PositionsLabMain.SnapVertical(shapes);
@@ -309,8 +281,6 @@ namespace Test.UnitTest.PositionsLab
             PowerPoint.ShapeRange expectedShapes = PpOperations.SelectShapes(_shapeNames);
 
             CheckShapes(expectedShapes, actualShapes);
-
-            RestoreShapes(OriginalShapes45DegreesSlideNo, _shapeNames);
         }
 
         [TestMethod]
@@ -322,7 +292,6 @@ namespace Test.UnitTest.PositionsLab
                                             CurvedRightArrow20, CurvedLeftArrow21, CurvedDownArrow22, CurvedUpArrow23, StripedRightArrow24, NotchedRightArrow25, Pentagon26,
                                             Chevron27, RightArrowCallout28, DownArrowCallout29, LeftArrowCallout30, UpArrowCallout31, LeftRightArrowCallout32, UpArrowCallout31,
                                             LeftRightArrowCallout32, QuadArrowCallout33, CircularArrow34, RightArrow1 };
-            InitOriginalShapes(OriginalShapes0DegreesSlideNo, _shapeNames);
             PowerPoint.ShapeRange actualShapes = GetShapes(OriginalShapes0DegreesSlideNo, _shapeNames);
 
             Action<IList<Shape>> positionsAction = (shapes) => PositionsLabMain.SnapAway(shapes);
@@ -332,8 +301,6 @@ namespace Test.UnitTest.PositionsLab
             PowerPoint.ShapeRange expectedShapes = PpOperations.SelectShapes(_shapeNames);
 
             CheckShapes(expectedShapes, actualShapes);
-
-            RestoreShapes(OriginalShapes0DegreesSlideNo, _shapeNames);
         }
 
         [TestMethod]
@@ -345,7 +312,6 @@ namespace Test.UnitTest.PositionsLab
                                             CurvedRightArrow20, CurvedLeftArrow21, CurvedDownArrow22, CurvedUpArrow23, StripedRightArrow24, NotchedRightArrow25, Pentagon26,
                                             Chevron27, RightArrowCallout28, DownArrowCallout29, LeftArrowCallout30, UpArrowCallout31, LeftRightArrowCallout32, UpArrowCallout31,
                                             LeftRightArrowCallout32, QuadArrowCallout33, CircularArrow34, RightArrow1 };
-            InitOriginalShapes(OriginalShapes0DegreesSlideNo, _shapeNames);
             PowerPoint.ShapeRange actualShapes = GetShapes(OriginalShapes0DegreesSlideNo, _shapeNames);
 
             Action<IList<Shape>> positionsAction = (shapes) => PositionsLabMain.SnapAway(shapes);
@@ -356,8 +322,6 @@ namespace Test.UnitTest.PositionsLab
             PowerPoint.ShapeRange expectedShapes = PpOperations.SelectShapes(_shapeNames);
 
             CheckShapes(expectedShapes, actualShapes);
-
-            RestoreShapes(OriginalShapes0DegreesSlideNo, _shapeNames);
         }
 
         [TestMethod]
@@ -369,7 +333,6 @@ namespace Test.UnitTest.PositionsLab
                                             CurvedRightArrow20, CurvedLeftArrow21, CurvedDownArrow22, CurvedUpArrow23, StripedRightArrow24, NotchedRightArrow25, Pentagon26,
                                             Chevron27, RightArrowCallout28, DownArrowCallout29, LeftArrowCallout30, UpArrowCallout31, LeftRightArrowCallout32, UpArrowCallout31,
                                             LeftRightArrowCallout32, QuadArrowCallout33, CircularArrow34, RightArrow1 };
-            InitOriginalShapes(OriginalShapes0DegreesSlideNo, _shapeNames);
             PowerPoint.ShapeRange actualShapes = GetShapes(OriginalShapes0DegreesSlideNo, _shapeNames);
 
             Action<IList<Shape>> positionsAction = (shapes) => PositionsLabMain.SnapAway(shapes);
@@ -381,8 +344,6 @@ namespace Test.UnitTest.PositionsLab
             PowerPoint.ShapeRange expectedShapes = PpOperations.SelectShapes(_shapeNames);
 
             CheckShapes(expectedShapes, actualShapes);
-
-            RestoreShapes(OriginalShapes0DegreesSlideNo, _shapeNames);
         }
 
         [TestMethod]
@@ -394,7 +355,6 @@ namespace Test.UnitTest.PositionsLab
                                             CurvedRightArrow20, CurvedLeftArrow21, CurvedDownArrow22, CurvedUpArrow23, StripedRightArrow24, NotchedRightArrow25, Pentagon26,
                                             Chevron27, RightArrowCallout28, DownArrowCallout29, LeftArrowCallout30, UpArrowCallout31, LeftRightArrowCallout32, UpArrowCallout31,
                                             LeftRightArrowCallout32, QuadArrowCallout33, CircularArrow34, RightArrow1 };
-            InitOriginalShapes(OriginalShapes0DegreesSlideNo, _shapeNames);
             PowerPoint.ShapeRange actualShapes = GetShapes(OriginalShapes0DegreesSlideNo, _shapeNames);
 
             Action<IList<Shape>> positionsAction = (shapes) => PositionsLabMain.SnapAway(shapes);
@@ -407,8 +367,6 @@ namespace Test.UnitTest.PositionsLab
             PowerPoint.ShapeRange expectedShapes = PpOperations.SelectShapes(_shapeNames);
 
             CheckShapes(expectedShapes, actualShapes);
-
-            RestoreShapes(OriginalShapes0DegreesSlideNo, _shapeNames);
         }
     }
 }

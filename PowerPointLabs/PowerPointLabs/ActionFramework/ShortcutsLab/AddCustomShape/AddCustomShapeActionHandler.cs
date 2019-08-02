@@ -1,11 +1,11 @@
 ﻿using Microsoft.Office.Interop.PowerPoint;
 using Microsoft.Office.Tools;
+
 using PowerPointLabs.ActionFramework.Common.Attribute;
 using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.ActionFramework.Common.Interface;
 using PowerPointLabs.Models;
 using PowerPointLabs.ShapesLab;
-using PowerPointLabs.ShortcutsLab;
 using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.ActionFramework.ShortcutsLab

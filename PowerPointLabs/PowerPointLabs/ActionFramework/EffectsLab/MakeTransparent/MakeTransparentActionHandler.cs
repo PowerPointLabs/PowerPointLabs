@@ -87,7 +87,7 @@ namespace PowerPointLabs.ActionFramework.EffectsLab
 
             int oriZOrder = picture.ZOrderPosition;
 
-            picture.Delete();
+            picture.SafeDelete();
 
             // move shape holder to original z-order
             while (shapeHolder.ZOrderPosition > oriZOrder)

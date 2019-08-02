@@ -233,16 +233,6 @@ namespace PowerPointLabs.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        public static System.Drawing.Bitmap AgendaSettings {
-            get {
-                object obj = ResourceManager.GetObject("AgendaSettings", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
-        /// </summary>
         public static System.Drawing.Bitmap AgendaSidebar {
             get {
                 object obj = ResourceManager.GetObject("AgendaSidebar", resourceCulture);
@@ -1143,9 +1133,9 @@ namespace PowerPointLabs.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        public static System.Drawing.Bitmap halfWidth {
+        public static System.Drawing.Bitmap HalfWidth {
             get {
-                object obj = ResourceManager.GetObject("halfWidth", resourceCulture);
+                object obj = ResourceManager.GetObject("HalfWidth", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -1363,9 +1353,9 @@ namespace PowerPointLabs.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        public static System.Drawing.Bitmap maxWidth {
+        public static System.Drawing.Bitmap MaxWidth {
             get {
-                object obj = ResourceManager.GetObject("maxWidth", resourceCulture);
+                object obj = ResourceManager.GetObject("MaxWidth", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -1393,9 +1383,9 @@ namespace PowerPointLabs.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        public static System.Drawing.Bitmap minWidth {
+        public static System.Drawing.Bitmap MinWidth {
             get {
-                object obj = ResourceManager.GetObject("minWidth", resourceCulture);
+                object obj = ResourceManager.GetObject("MinWidth", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }
@@ -2093,9 +2083,19 @@ namespace PowerPointLabs.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
-        public static System.Drawing.Bitmap SettingsGear {
+        public static System.Drawing.Bitmap SettingsGearBlue {
             get {
-                object obj = ResourceManager.GetObject("SettingsGear", resourceCulture);
+                object obj = ResourceManager.GetObject("SettingsGearBlue", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        public static System.Drawing.Bitmap SettingsGearWhite {
+            get {
+                object obj = ResourceManager.GetObject("SettingsGearWhite", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

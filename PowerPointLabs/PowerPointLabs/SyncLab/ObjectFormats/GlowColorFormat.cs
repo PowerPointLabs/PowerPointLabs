@@ -2,7 +2,7 @@
 using System.Drawing;
 
 using Microsoft.Office.Core;
-
+using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.Utils;
 
@@ -42,7 +42,7 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
             shape.Fill.Solid();
             
             Bitmap image = GraphicsUtil.ShapeToBitmap(shape);
-            shape.Delete();
+            shape.SafeDelete();
             return image;
         }
 
@@ -57,7 +57,7 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
                 // Color.ObjectThemeColor must be set despite the unrelated description in documentation.
                 // The color intensity of glow will not match otherwise
                 
-                // syncing NotThemeColor throws an exception
+                // syncing NotFavoriteColor throws an exception
                 if (source.Color.ObjectThemeColor != MsoThemeColorIndex.msoNotThemeColor)
                 {
                     dest.Color.ObjectThemeColor = source.Color.ObjectThemeColor;

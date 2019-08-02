@@ -3,7 +3,6 @@ using System.Collections.ObjectModel;
 using System.Drawing;
 using System.IO;
 using System.Text.RegularExpressions;
-using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -12,6 +11,7 @@ using System.Windows.Media.Imaging;
 
 using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.TextCollection;
+using PowerPointLabs.Utils;
 
 namespace PowerPointLabs.ShapesLab.Views
 {
@@ -294,11 +294,7 @@ namespace PowerPointLabs.ShapesLab.Views
             }
             else
             {
-                BitmapSource source = Imaging.CreateBitmapSourceFromHBitmap(
-                                        image.GetHbitmap(),
-                                        IntPtr.Zero,
-                                        Int32Rect.Empty,
-                                        BitmapSizeOptions.FromEmptyOptions());
+                BitmapSource source = GraphicsUtil.BitmapToImageSource(image);
                 imageBox.Source = source;
                 imageBox.Visibility = Visibility.Visible;
                 col1.Width = new GridLength(60);

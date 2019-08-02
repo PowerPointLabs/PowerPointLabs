@@ -6,6 +6,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 
 using PowerPointLabs.ActionFramework.Common.Extension;
+using PowerPointLabs.ColorThemes.Extensions;
 using PowerPointLabs.ResizeLab.Views;
 
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
@@ -110,7 +111,7 @@ namespace PowerPointLabs.ResizeLab
             if (_stretchSettingsDialog == null || !_stretchSettingsDialog.IsOpen)
             {
                 _stretchSettingsDialog = new StretchSettingsDialog(_resizeLab);
-                _stretchSettingsDialog.ShowDialog();
+                _stretchSettingsDialog.ShowThematicDialog();
             }
             else
             {
@@ -234,7 +235,7 @@ namespace PowerPointLabs.ResizeLab
             if (_slightAdjustSettingsDialog == null || !_slightAdjustSettingsDialog.IsOpen)
             {
                 _slightAdjustSettingsDialog = new SlightAdjustSettingsDialog(_resizeLab);
-                _slightAdjustSettingsDialog.ShowDialog();
+                _slightAdjustSettingsDialog.ShowThematicDialog();
             }
             else
             {
@@ -313,7 +314,7 @@ namespace PowerPointLabs.ResizeLab
             if (_adjustProportionallySettingsDialog == null || !_adjustProportionallySettingsDialog.IsOpen)
             {
                 _adjustProportionallySettingsDialog = new AdjustProportionallySettingsDialog(_resizeLab, noOfShapes.GetValueOrDefault());
-                _adjustProportionallySettingsDialog.ShowDialog();
+                _adjustProportionallySettingsDialog.ShowThematicDialog();
             }
             else
             {
@@ -394,7 +395,7 @@ namespace PowerPointLabs.ResizeLab
                     duplicateCurrentShape.Top = referenceShape.Top;
                     Utils.PPShape currentPPShape = new Utils.PPShape(duplicateCurrentShape, false);
                     List<System.Drawing.PointF> currentShapePoints = currentPPShape.Points;
-                    duplicateCurrentShape.Delete();
+                    duplicateCurrentShape.SafeDelete();
 
                     selectedShapes.LockAspectRatio = isAspectRatio;
 

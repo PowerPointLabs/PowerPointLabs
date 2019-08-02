@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Drawing;
-
 using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.EffectsLab;
 using PowerPointLabs.FunctionalTestInterface.Impl.Controller;
@@ -117,6 +116,7 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
             });
         }
 
+        // Trying to deprecate
         public void SetSpotlightProperties(float newTransparency, float newSoftEdge, Color newColor)
         {
             UIThreadExecutor.Execute(() =>
@@ -131,7 +131,7 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
         {
             UIThreadExecutor.Execute(() =>
             {
-                Ribbon.OnAction(new RibbonControl("SpotlightSettings"));
+                Ribbon.OnAction(new RibbonControl(EffectsLabText.SpotlightSettingsTag));
             });
         }
 
@@ -167,6 +167,15 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
             }));
         }
 
+        public void OpenZoomLabSettings()
+        {
+            UIThreadExecutor.Execute((Action)(() =>
+            {
+                Ribbon.OnAction(new RibbonControl(ZoomLabText.SettingsTag));
+            }));
+        }
+
+        [Obsolete("Use PplFeatures.SetZoomProperties instead")]
         public void SetZoomProperties(bool backgroundChecked, bool multiSlideChecked)
         {
             UIThreadExecutor.Execute(() =>
@@ -317,7 +326,7 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
             }));
         }
 
-        public void GreyScaleRemainderEffect()
+        public void GrayScaleRemainderEffect()
         {
             UIThreadExecutor.Execute((Action)(() =>
             {
@@ -357,7 +366,7 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
             }));
         }
 
-        public void GreyScaleBackgroundEffect()
+        public void GrayScaleBackgroundEffect()
         {
             UIThreadExecutor.Execute((Action)(() =>
             {

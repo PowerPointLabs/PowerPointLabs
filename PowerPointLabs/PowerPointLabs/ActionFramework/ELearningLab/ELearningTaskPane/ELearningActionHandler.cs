@@ -1,11 +1,11 @@
 ﻿using System;
-using System.Windows.Forms;
+
 using Microsoft.Office.Tools;
 
 using PowerPointLabs.ActionFramework.Common.Attribute;
 using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.ActionFramework.Common.Interface;
-using PowerPointLabs.ActionFramework.Common.Log;
+using PowerPointLabs.ColorThemes.Extensions;
 using PowerPointLabs.ELearningLab.ELearningWorkspace.Views;
 using PowerPointLabs.ELearningLab.Service;
 using PowerPointLabs.ELearningLab.Service.StorageService;
@@ -20,7 +20,7 @@ namespace PowerPointLabs.ActionFramework.ELearningLab.ELearningTaskPane
         protected override void ExecuteAction(string ribbonId)
         {
             LoadingDialogBox splashView = new LoadingDialogBox();
-            splashView.Show();
+            splashView.ShowThematicDialog(false);
             AzureAccountStorageService.LoadUserAccount();
             WatsonAccountStorageService.LoadUserAccount();
             AudioSettingStorageService.LoadAudioSettingPreference();

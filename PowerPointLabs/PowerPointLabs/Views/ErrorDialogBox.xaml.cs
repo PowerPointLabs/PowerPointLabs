@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Windows;
 using System.Windows.Navigation;
-
+using PowerPointLabs.ColorThemes.Extensions;
 using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.Views
@@ -14,7 +14,7 @@ namespace PowerPointLabs.Views
         public static void ShowDialog(string title, string message, Exception exception)
         {
             ErrorDialogBox dialog = new ErrorDialogBox(title, message, exception);
-            dialog.ShowDialog();
+            dialog.ShowThematicDialog();
         }
 
         private ErrorDialogBox(string title, string message, Exception exception)

@@ -1,6 +1,8 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.Security.Permissions;
+using PowerPointLabs.ActionFramework.Common.Log;
 
 namespace PowerPointLabs.Utils
 {
@@ -43,8 +45,9 @@ namespace PowerPointLabs.Utils
                     {
                         File.SetAttributes(file, FileAttributes.Normal);
                     }
-                    catch (Exception)
+                    catch (Exception e)
                     {
+                        Logger.LogException(e, "File.SetAttributes");
                     }
                     
                     CopyFile(file, dest, fileAttribute);
@@ -204,6 +207,30 @@ namespace PowerPointLabs.Utils
 
             File.SetAttributes(filePath, FileAttributes.Normal);
             File.Delete(filePath);
+        }
+
+        /// <summary>
+        /// Attempts to delete the file and does not delete the file if undeletable
+        /// </summary>
+        public static void TryDeleteFile(string filePath)
+        {
+            try
+            {
+                DeleteFile(filePath);
+            }
+            catch (Exception e)
+            {
+                Logger.LogException(e, nameof(TryDeleteFile));
+            }
+        }
+
+        public static bool IsFileReadable(string filePath)
+        {
+            FileIOPermission fileIOPermission = new FileIOPermission(FileIOPermissionAccess.Read,
+                                            System.Security.AccessControl.AccessControlActions.View,
+                                            filePath);
+
+            return fileIOPermission.AllFiles == FileIOPermissionAccess.Read;
         }
         # endregion
     }

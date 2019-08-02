@@ -4,8 +4,10 @@ using System.Windows;
 
 using Microsoft.Office.Core;
 using Microsoft.Office.Interop.PowerPoint;
+using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.SyncLab;
 using PowerPointLabs.Utils;
+
 using Shape = Microsoft.Office.Interop.PowerPoint.Shape;
 using Shapes = Microsoft.Office.Interop.PowerPoint.Shapes;
 
@@ -82,7 +84,7 @@ namespace PowerPointLabs.TooltipsLab.Views
                         TooltipsLabConstants.DisplayImageSize.Height);
                     ShapeUtil.FormatCalloutToDefaultStyle(shape);
                     bitmaps[i] = new Bitmap(GraphicsUtil.ShapeToBitmap(shape));
-                    shape.Delete();
+                    shape.SafeDelete();
                 }
                 catch
                 {
