@@ -1,19 +1,26 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-
+using System.Windows;
 using Microsoft.Office.Interop.PowerPoint;
+using TestInterface.Windows;
 
 namespace TestInterface
 {
     public interface IPowerPointOperations
     {
         # region PowerPoint Application API
+        IntPtr Window { get; }
 
         void MaximizeWindow();
         void EnterFunctionalTest();
         void ExitFunctionalTest();
         bool IsInFunctionalTest();
+        void MaximizeWindow(int windowNumber);
+        void NewWindow();
+        int GetNumWindows();
+        void SetTagToAssociatedWindow();
+        HashSet<Type> GetOpenPaneTypes();
         List<ISlideData> FetchPresentationData(string pathToPresentation);
         List<ISlideData> FetchCurrentPresentationData();
         void SavePresentationAs(string presName);

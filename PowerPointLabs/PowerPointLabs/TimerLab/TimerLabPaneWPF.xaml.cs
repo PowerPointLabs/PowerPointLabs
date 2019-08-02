@@ -4,7 +4,7 @@ using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using Microsoft.Office.Interop.PowerPoint;
+
 using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.Utils;
 
@@ -910,14 +910,14 @@ namespace PowerPointLabs.TimerLab
             if (timeMarkerGroup != null)
             {
                 timeMarkerColor = timeMarkerGroup.TextFrame.TextRange.Font.Color.RGB;
-                timeMarkerGroup.Delete();
+                timeMarkerGroup.SafeDelete();
             }
 
             int lineMarkerColor = LineMarkerColor();
             if (lineMarkerGroup != null)
             {
                 lineMarkerColor = lineMarkerGroup.Line.ForeColor.RGB;
-                lineMarkerGroup.Delete();
+                lineMarkerGroup.SafeDelete();
             }
 
             // add new markers
@@ -929,8 +929,8 @@ namespace PowerPointLabs.TimerLab
         {
             sliderHead = GetShapeByName(TimerLabConstants.TimerSliderHeadId);
             sliderBody = GetShapeByName(TimerLabConstants.TimerSliderBodyId);
-            sliderHead.Delete();
-            sliderBody.Delete();
+            sliderHead.SafeDelete();
+            sliderBody.SafeDelete();
         }
 
         private void RecreateSlider()
@@ -941,12 +941,12 @@ namespace PowerPointLabs.TimerLab
             if (sliderHead != null)
             {
                 sliderColor = sliderHead.Fill.ForeColor.RGB;
-                sliderHead.Delete();
+                sliderHead.SafeDelete();
             }
             if (sliderBody != null)
             {
                 sliderColor = sliderBody.Fill.ForeColor.RGB;
-                sliderBody.Delete();
+                sliderBody.SafeDelete();
             }
             
             AddSlider(Duration(), timerBody.Width, timerBody.Height, sliderColor, SlideWidth());
@@ -955,7 +955,7 @@ namespace PowerPointLabs.TimerLab
         private void RemoveProgressBar()
         {
             progressBar = GetShapeByName(TimerLabConstants.ProgressBarId);
-            progressBar.Delete();
+            progressBar.SafeDelete();
         }
 
         private void RecreateProgressBar()

@@ -5,10 +5,12 @@ using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices;
 using System.Text.RegularExpressions;
+using System.Windows.Forms;
 
 using Microsoft.Office.Core;
 using Microsoft.Office.Interop.PowerPoint;
-using PowerPointLabs.ActionFramework.Common.Log;
+
+using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.ELearningLab.Service;
 using PowerPointLabs.ELearningLab.Utility;
 using PowerPointLabs.TextCollection;
@@ -33,6 +35,8 @@ namespace PowerPointLabs.Models
 
         private List<MsoAnimEffect> entryEffects = new List<MsoAnimEffect>()
         {
+            MsoAnimEffect.msoAnimEffectAscend,
+
             MsoAnimEffect.msoAnimEffectAppear, MsoAnimEffect.msoAnimEffectBlinds, MsoAnimEffect.msoAnimEffectBox,
             MsoAnimEffect.msoAnimEffectCheckerboard, MsoAnimEffect.msoAnimEffectCircle, MsoAnimEffect.msoAnimEffectDiamond,
             MsoAnimEffect.msoAnimEffectDissolve, MsoAnimEffect.msoAnimEffectFly, MsoAnimEffect.msoAnimEffectPeek, 
@@ -166,9 +170,9 @@ namespace PowerPointLabs.Models
         }
 
         /// <summary>
-        /// It only copies the background colour for now. Is there really no way to copy over background in general?
+        /// It only copies the background color for now. Is there really no way to copy over background in general?
         /// </summary>
-        public void CopyBackgroundColourFrom(PowerPointSlide refSlide)
+        public void CopyBackgroundColorFrom(PowerPointSlide refSlide)
         {
             Microsoft.Office.Interop.PowerPoint.FillFormat myFill = _slide.Background[1].Fill;
             Microsoft.Office.Interop.PowerPoint.FillFormat refFill = refSlide._slide.Background[1].Fill;
@@ -287,7 +291,7 @@ namespace PowerPointLabs.Models
             
             foreach (Shape s in matchingShapes)
             {
-                s.Delete();
+                s.SafeDelete();
             }
         }
 
@@ -298,7 +302,7 @@ namespace PowerPointLabs.Models
             IEnumerable<Shape> matchingShapes = shapes.Where(current => regex.IsMatch(current.Name));
             foreach (Shape s in matchingShapes)
             {
-                s.Delete();
+                s.SafeDelete();
             }
         }
 
@@ -309,7 +313,7 @@ namespace PowerPointLabs.Models
 
             foreach (Shape s in matchingShapes)
             {
-                s.Delete();
+                s.SafeDelete();
             }
         }
 
@@ -319,7 +323,21 @@ namespace PowerPointLabs.Models
                 .Cast<Shape>()
                 .Where(sh => sh.Visible == MsoTriState.msoFalse)
                 .ToList()
-                .ForEach(sh => sh.Delete());
+                .ForEach(sh => sh.SafeDelete());
+        }
+
+        public void DeleteEntryAnimationShapes()
+        {
+            IEnumerable<Effect> sequence = _slide.TimeLine.MainSequence
+                .Cast<Effect>().Where(effect =>
+                {
+                    return IsEntryEffect(effect);
+                });
+            foreach (Effect effect in sequence)
+            {
+                // TODO: Support TextRange entry animations
+                effect.Shape.Visible = MsoTriState.msoFalse;
+            }
         }
 
         public void DeleteAllShapes()
@@ -329,7 +347,7 @@ namespace PowerPointLabs.Models
             List<Shape> matchingShapes = shapes;
             foreach (Shape s in matchingShapes)
             {
-                s.Delete();
+                s.SafeDelete();
             }
         }
 
@@ -385,10 +403,9 @@ namespace PowerPointLabs.Models
                             .Cast<Shape>()
                             .Where(shape => nextSlideCopy.HasEntryAnimation(shape))
                             .ToList()
-                            .ForEach(shape => shape.Delete());
+                            .ForEach(shape => shape.SafeDelete());
 
-            nextSlideCopy.Copy();
-            Shape slidePicture = _slide.Shapes.PasteSpecial(PpPasteDataType.ppPastePNG)[1];
+            Shape slidePicture = _slide.Shapes.SafeCopySlide(nextSlideCopy);
             nextSlideCopy.Delete();
             return slidePicture;
         }
@@ -405,10 +422,9 @@ namespace PowerPointLabs.Models
                             .Cast<Shape>()
                             .Where(shape => previousSlideCopy.HasExitAnimation(shape))
                             .ToList()
-                            .ForEach(shape => shape.Delete());
+                            .ForEach(shape => shape.SafeDelete());
 
-            previousSlideCopy.Copy();
-            Shape slidePicture = _slide.Shapes.PasteSpecial(PpPasteDataType.ppPastePNG)[1];
+            Shape slidePicture = _slide.Shapes.SafeCopySlide(previousSlideCopy);
             previousSlideCopy.Delete();
             return slidePicture;
         }
@@ -581,8 +597,7 @@ namespace PowerPointLabs.Models
             try
             {
                 // Will affect clipboard
-                shape.Copy();
-                Shape newShape = _slide.Shapes.Paste()[1];
+                Shape newShape = _slide.Shapes.SafeCopyPlaceholder(shape);
 
                 newShape.Name = shape.Name;
                 newShape.Left = shape.Left;
@@ -646,8 +661,11 @@ namespace PowerPointLabs.Models
             }
 
             // Copy all the shapes over.
-            shapes.Copy();
-            ShapeRange newShapes = _slide.Shapes.Paste();
+            ShapeRange newShapes = PPLClipboard.Instance.LockAndRelease(() =>
+            {
+                shapes.Copy();
+                return _slide.Shapes.Paste();
+            });
 
             // Now use the indexed names to set back the names and positions to the original shapes'
             foreach (Shape shape in newShapes)
@@ -897,7 +915,7 @@ namespace PowerPointLabs.Models
 
         public void DeletePlaceholderShapes()
         {
-            _slide.Shapes.Placeholders.Cast<Shape>().ToList().ForEach(shape => shape.Delete());
+            _slide.Shapes.Placeholders.Cast<Shape>().ToList().ForEach(shape => shape.SafeDelete());
         }
 
         public Shape AddTemplateSlideMarker()
@@ -955,7 +973,7 @@ namespace PowerPointLabs.Models
             _slide.Shapes.Cast<Shape>()
                         .Where(IsIndicator)
                         .ToList()
-                        .ForEach(shape => shape.Delete());
+                        .ForEach(shape => shape.SafeDelete());
         }
 
 
@@ -1189,7 +1207,7 @@ namespace PowerPointLabs.Models
             IEnumerable<Shape> shapes = _slide.Shapes.Cast<Shape>();
             foreach (Shape shape in shapes)
             {
-                if (ShapeUtil.HasDefaultName(shape))
+                if (shape.HasDefaultName())
                 {
                     shape.Name = UnnamedShapeName + CommonUtil.UniqueDigitString();
                 }
@@ -1229,7 +1247,7 @@ namespace PowerPointLabs.Models
 
             foreach (Shape s in matchingShapes)
             {
-                s.Delete();
+                s.SafeDelete();
             }
         }
 
@@ -1271,7 +1289,7 @@ namespace PowerPointLabs.Models
             {
                 if (sh.Type == MsoShapeType.msoMedia)
                 {
-                    sh.Delete();
+                    sh.SafeDelete();
                 }
             }
         }

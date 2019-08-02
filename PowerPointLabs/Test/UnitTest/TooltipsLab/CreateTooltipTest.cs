@@ -1,10 +1,10 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.Office.Interop.PowerPoint;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-using PowerPointLabs.TooltipsLab;
 using PowerPointLabs.Models;
+using PowerPointLabs.TooltipsLab;
 
 using Test.Util;
-using Microsoft.Office.Interop.PowerPoint;
 
 namespace Test.UnitTest.TooltipsLab
 {
@@ -76,7 +76,9 @@ namespace Test.UnitTest.TooltipsLab
         private void CreateTooltipOnSlide(int slideNo)
         {
             PowerPointSlide currentSlide = PowerPointSlide.FromSlideFactory(PpOperations.GetCurrentSlide());
-            Shape triggerShape = PowerPointLabs.TooltipsLab.CreateTooltip.GenerateTriggerShape(currentSlide);
+            PowerPointPresentation presentation = new PowerPointPresentation(Pres);
+            Shape triggerShape = PowerPointLabs.TooltipsLab.CreateTooltip.GenerateTriggerShape(
+                presentation, currentSlide);
             Shape callout = PowerPointLabs.TooltipsLab.CreateTooltip.GenerateCalloutWithReferenceTriggerShape(currentSlide, triggerShape);
             ConvertToTooltip.AddTriggerAnimation(currentSlide, triggerShape, callout);
         }

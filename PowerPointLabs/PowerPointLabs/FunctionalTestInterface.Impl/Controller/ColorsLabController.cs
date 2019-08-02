@@ -4,13 +4,13 @@ using System.Drawing;
 using System.Windows;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
+
 using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.ColorsLab;
 using PowerPointLabs.TextCollection;
 
 using TestInterface;
 
-using Button = System.Windows.Controls.Button;
 using Point = System.Windows.Point;
 using Rectangle = System.Windows.Shapes.Rectangle;
 
@@ -331,9 +331,9 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl.Controller
             }
         }
 
-        public List<Color> GetCurrentFavoritePanel()
+        public IList<Color> GetCurrentFavoritePanel()
         {
-            List<Color> list = null;
+            IList<Color> list = null;
             if (_pane != null)
             {
                 UIThreadExecutor.Execute((Action)(() =>
@@ -344,9 +344,9 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl.Controller
             return list;
         }
 
-        public List<Color> GetCurrentRecentPanel()
+        public IList<Color> GetCurrentRecentPanel()
         {
-            List<Color> list = null;
+            IList<Color> list = null;
             if (_pane != null)
             {
                 UIThreadExecutor.Execute((Action)(() =>

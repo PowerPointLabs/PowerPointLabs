@@ -1,8 +1,10 @@
-﻿using PowerPointLabs.ELearningLab.Views;
+﻿using System.Windows.Controls;
+using PowerPointLabs.ELearningLab.Views;
+using PowerPointLabs.Utils;
 
 namespace PowerPointLabs.ELearningLab.ELearningWorkspace.Views
 {
-    partial class ELearningLabTaskpane
+    partial class ELearningLabTaskpane: IWpfContainer
     {
         /// <summary> 
         /// Required designer variable.
@@ -58,5 +60,7 @@ namespace PowerPointLabs.ELearningLab.ELearningWorkspace.Views
         #endregion
 
         private System.Windows.Forms.Integration.ElementHost elementHost1;
+
+        public Control WpfControl => ELearningLabMainPanel;
     }
 }

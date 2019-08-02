@@ -1,5 +1,5 @@
 ﻿using Microsoft.Office.Interop.PowerPoint;
-
+using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.Models;
 using PowerPointLabs.PictureSlidesLab.Model;
@@ -82,7 +82,7 @@ namespace PowerPointLabs.PictureSlidesLab.Service
                 Shape shape = ShapeUtil.GetTextShapeToProcess(Shapes);
                 if (shape != null)
                 {
-                    shape.Delete();
+                    shape.SafeDelete();
                 }
             }
             else
@@ -97,8 +97,7 @@ namespace PowerPointLabs.PictureSlidesLab.Service
             try
             {
                 // copy shapes from content slide to preview slide
-                contentSlide.Shapes.Range().Copy();
-                _slide.Shapes.Paste();
+                _slide.Shapes.SafeCopy(contentSlide.Shapes.Range());
             }
             catch
             {

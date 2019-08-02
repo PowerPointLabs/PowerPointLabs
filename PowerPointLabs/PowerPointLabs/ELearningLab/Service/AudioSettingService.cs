@@ -1,9 +1,10 @@
-﻿using System.Collections.Generic;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 using System.Linq;
+
 using Microsoft.Office.Tools;
 
 using PowerPointLabs.ActionFramework.Common.Extension;
+using PowerPointLabs.ColorThemes.Extensions;
 using PowerPointLabs.ELearningLab.AudioGenerator;
 using PowerPointLabs.ELearningLab.ELearningWorkspace.Views;
 using PowerPointLabs.ELearningLab.Views;
@@ -35,14 +36,14 @@ namespace PowerPointLabs.ELearningLab.Service
             page.DialogConfirmedHandler += OnSettingsDialogConfirmed;
             if (eLearningTaskpane == null)
             {
-                dialog.ShowDialog();
+                dialog.ShowThematicDialog();
                 return;
             }
             ELearningLabTaskpane taskpane = eLearningTaskpane.Control as ELearningLabTaskpane;
             page.DefaultVoiceChangedHandler +=
                 taskpane.ELearningLabMainPanel.RefreshVoiceLabelOnAudioSettingChanged;
             page.IsDefaultVoiceChangedHandlerAssigned = true;
-            dialog.ShowDialog();
+            dialog.ShowThematicDialog();
         }
 
         private static void OnSettingsDialogConfirmed(VoiceType selectedVoiceType, IVoice selectedVoice, bool isPreviewCurrentSlide)

@@ -2,7 +2,7 @@
 using System.Drawing;
 
 using Microsoft.Office.Core;
-
+using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.Utils;
 
@@ -53,7 +53,7 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
             shape.ThreeD.SetPresetCamera(MsoPresetCamera.msoCameraPerspectiveAbove);
             shape.ThreeD.PresetLighting = MsoLightRigType.msoLightRigBalanced;
             Bitmap image = new Bitmap(GraphicsUtil.ShapeToBitmap(shape));
-            shape.Delete();
+            shape.SafeDelete();
             return image;
         }
         

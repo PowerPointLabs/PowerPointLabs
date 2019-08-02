@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using System.Linq;
-
+using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.EffectsLab;
 using PowerPointLabs.Utils;
@@ -46,7 +46,7 @@ namespace PowerPointLabs.Models
             IEnumerable<PowerPoint.Shape> matchingShapes = shapes.Where(current => (HasExitAnimation(current)));
             foreach (PowerPoint.Shape s in matchingShapes)
             {
-                s.Delete();
+                s.SafeDelete();
             }
 
             foreach (PowerPoint.Shape s in _slide.Shapes)
@@ -62,7 +62,6 @@ namespace PowerPointLabs.Models
         //Edit selected spotlight shape to fit within the current slide
         public PowerPoint.Shape CreateSpotlightShape(PowerPoint.Shape spotShape)
         {
-            spotShape.Copy();
             bool isCallout = false;
             PowerPoint.Shape spotlightShape;
             
@@ -73,13 +72,13 @@ namespace PowerPointLabs.Models
 
             if (isCallout)
             {
-                spotlightShape = this.Shapes.Paste()[1];
-                LegacyShapeUtil.CopyShapePosition(spotShape, ref spotlightShape);
+                spotlightShape = this.Shapes.SafeCopy(spotShape); // confident it is not a placeholder
+                LegacyShapeUtil.CopyCenterShapePosition(spotShape, ref spotlightShape);
             }
             else
             {
-                spotlightShape = this.Shapes.PasteSpecial(PowerPoint.PpPasteDataType.ppPastePNG)[1];
-                LegacyShapeUtil.CopyShapePosition(spotShape, ref spotlightShape);
+                spotlightShape = this.Shapes.SafeCopyPNG(spotShape);
+                LegacyShapeUtil.CopyCenterShapePosition(spotShape, ref spotlightShape);
                 CropSpotlightPictureToSlide(ref spotlightShape);
             }
 
@@ -127,7 +126,7 @@ namespace PowerPointLabs.Models
             //get rid of extra padding
             CropSpotlightPictureToSlide(ref renderedPicture);
 
-            spotlightPicture.Delete();
+            spotlightPicture.SafeDelete();
         }
 
         private void ManageSlideTransitions()
@@ -139,8 +138,8 @@ namespace PowerPointLabs.Models
 
         private void CropSpotlightPictureToSlide(ref PowerPoint.Shape shapeToCrop)
         {
-            float scaleFactorWidth = ShapeUtil.GetScaleWidth(shapeToCrop);
-            float scaleFactorHeight = ShapeUtil.GetScaleHeight(shapeToCrop);
+            float scaleFactorWidth = shapeToCrop.GetScaleWidth();
+            float scaleFactorHeight = shapeToCrop.GetScaleHeight();
 
             if (shapeToCrop.Left < 0)
             {
@@ -209,9 +208,8 @@ namespace PowerPointLabs.Models
             // Save the original dimensions because ppPastePNG is resized in PowerPoint 2016
             float originalWidth = currentSelection.ShapeRange[1].Width;
             float originalHeight = currentSelection.ShapeRange[1].Height;
-            currentSelection.Cut();
 
-            PowerPoint.Shape spotlightPicture = this.Shapes.PasteSpecial(PowerPoint.PpPasteDataType.ppPastePNG)[1];
+            PowerPoint.Shape spotlightPicture = this.Shapes.SafeCut(currentSelection.ShapeRange);
             spotlightPicture.Width = originalWidth;
             spotlightPicture.Height = originalHeight;
 

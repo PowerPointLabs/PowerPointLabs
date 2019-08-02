@@ -3,8 +3,10 @@
 using PowerPointLabs.ActionFramework.Common.Attribute;
 using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.ActionFramework.Common.Interface;
+using PowerPointLabs.ColorThemes.Extensions;
 using PowerPointLabs.ShortcutsLab.Views;
 using PowerPointLabs.TextCollection;
+using PowerPointLabs.Utils;
 
 namespace PowerPointLabs.ActionFramework.ShortcutsLab
 {
@@ -14,14 +16,10 @@ namespace PowerPointLabs.ActionFramework.ShortcutsLab
         protected override void ExecuteAction(string ribbonId)
         {
             Selection selection = this.GetCurrentSelection();
-            Shape selectedShape = selection.ShapeRange[1];
-            if (selection.HasChildShapeRange)
-            {
-                selectedShape = selection.ChildShapeRange[1];
-            }
+            Shape selectedShape = ShapeUtil.GetShapeRange(selection)[1];
             
             EditNameDialogBox editForm = new EditNameDialogBox(selectedShape);
-            editForm.ShowDialog();
+            editForm.ShowThematicDialog();
 
             if (!this.GetApplication().CommandBars.GetPressedMso("SelectionPane"))
             {

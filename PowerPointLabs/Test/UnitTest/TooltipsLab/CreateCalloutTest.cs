@@ -1,10 +1,10 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.Office.Interop.PowerPoint;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-using PowerPointLabs.TooltipsLab;
 using PowerPointLabs.Models;
+using PowerPointLabs.TooltipsLab;
 
 using Test.Util;
-using Microsoft.Office.Interop.PowerPoint;
 
 namespace Test.UnitTest.TooltipsLab
 {

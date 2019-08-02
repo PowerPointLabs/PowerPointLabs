@@ -8,8 +8,7 @@ namespace PowerPointLabs
 {
     public class LegacyShapeUtil
     {
-        // TODO: the following three functions must be renamed, the function name does not match what the function does
-        public static void CopyShapePosition(PowerPoint.Shape shapeToCopy, ref PowerPoint.Shape shapeToMove)
+        public static void CopyCenterShapePosition(PowerPoint.Shape shapeToCopy, ref PowerPoint.Shape shapeToMove)
         {
             shapeToMove.Left = shapeToCopy.Left + (shapeToCopy.Width / 2) - (shapeToMove.Width / 2);
             shapeToMove.Top = shapeToCopy.Top + (shapeToCopy.Height / 2) - (shapeToMove.Height / 2);
@@ -25,7 +24,7 @@ namespace PowerPointLabs
         public static void CopyShapeAttributes(PowerPoint.Shape shapeToCopy, ref PowerPoint.Shape shapeToMove)
         {
             CopyShapeSize(shapeToCopy, ref shapeToMove);
-            CopyShapePosition(shapeToCopy, ref shapeToMove);
+            CopyCenterShapePosition(shapeToCopy, ref shapeToMove);
         }
 
         public static float GetMinimumRotation(float fromAngle, float toAngle)

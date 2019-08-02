@@ -34,7 +34,10 @@ As a rule of thumb:
    1. GIFs (if applicable): Showcase the use of the feature. Keep the GIFs consistent with existing ones and small in size.
    1. Updating of Tutorial file to show users how to use the new features
    1. Please refer to current documentation in the [website](http://www.comp.nus.edu.sg/~pptlabs/docs/)
-   
+
+## Coding Standards Tools
+The [Visual Studio Directive Macro](https://github.com/yuhongherald/VisualStudioDirectiveMacro) can help with reorganizing the using directives in your C# files to follow the OSS Generics coding standards. You can refer to the full list here [here](https://github.com/oss-generic/process/blob/master/codingStandards/CodingStandard-CSharp.adoc).
+
 ## SonarQube
 SonarQube is the tool we are using to monitor the code quality of PowerPointLabs. Some of the issues that SonarQube raises can be ignored, such as `This class has 10 parents which is greater than 5 authorized.`
 

@@ -2,15 +2,15 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-
+using System.Windows;
 using Microsoft.Office.Core;
 using Microsoft.Office.Interop.PowerPoint;
-
 using PowerPointLabs.FunctionalTestInterface.Impl;
 using PowerPointLabs.Utils;
 
 using TestInterface;
-
+using TestInterface.Windows;
+using Application = Microsoft.Office.Interop.PowerPoint.Application;
 using Shape = Microsoft.Office.Interop.PowerPoint.Shape;
 using ShapeRange = Microsoft.Office.Interop.PowerPoint.ShapeRange;
 
@@ -18,6 +18,8 @@ namespace Test.Util
 {
     class UnitTestPpOperations : IPowerPointOperations
     {
+        public IntPtr Window => new IntPtr(App.HWND);
+
         public Presentation Pres { get; set; }
 
         public Application App { get; set; }
@@ -54,6 +56,31 @@ namespace Test.Util
         }
 
         public bool IsInFunctionalTest()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void MaximizeWindow(int windowNumber)
+        {
+            throw new NotImplementedException();
+        }
+
+        public void NewWindow()
+        {
+            throw new NotImplementedException();
+        }
+
+        public int GetNumWindows()
+        {
+            throw new NotImplementedException();
+        }
+
+        public void SetTagToAssociatedWindow()
+        {
+            throw new NotImplementedException();
+        }
+
+        public HashSet<Type> GetOpenPaneTypes()
         {
             throw new NotImplementedException();
         }

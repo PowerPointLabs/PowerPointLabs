@@ -2,14 +2,12 @@
 using System.Diagnostics.CodeAnalysis;
 using System.Drawing;
 using System.IO;
-using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
 
 using PowerPointLabs.ActionFramework.Common.Factory;
 using PowerPointLabs.ActionFramework.Common.Log;
-using PowerPointLabs.ELearningLab.Service;
 using PowerPointLabs.PictureSlidesLab.Views;
 using PowerPointLabs.TextCollection;
 using PowerPointLabs.Utils;

@@ -11,7 +11,7 @@ namespace PowerPointLabs.ActionFramework.ELearningLab
     {
         protected override Bitmap GetImage(string ribbonId)
         {
-            return new Bitmap(Properties.Resources.AgendaSettings);
+            return new Bitmap(Properties.Resources.SettingsGearBlue);
         }
     }
 }

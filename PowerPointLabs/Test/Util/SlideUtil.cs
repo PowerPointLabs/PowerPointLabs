@@ -185,7 +185,7 @@ namespace Test.Util
 
         public static bool IsRoughlySame(float a, float b)
         {
-            return IsSame(a, b, 0.5);
+            return IsSame(a, b, 1);
         }
 
         public static bool IsAnimationsRemoved(Slide slide, string animPrefix)

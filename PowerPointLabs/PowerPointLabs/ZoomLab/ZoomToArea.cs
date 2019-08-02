@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-
+using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.Models;
 using PowerPointLabs.Utils;
@@ -92,7 +92,7 @@ namespace PowerPointLabs.ZoomLab
                     addedSlides.Add(deMagnifyingSlide);
                 }
 
-                selectedShape.Delete();
+                selectedShape.SafeDelete();
 
                 if (shapeCount != 1)
                 {
@@ -140,13 +140,13 @@ namespace PowerPointLabs.ZoomLab
                 zoomRectangle.TextFrame2.TextRange.Font.Fill.ForeColor.RGB = 0xffffff;
                 zoomRectangle.TextFrame2.TextRange.Font.Bold = Office.MsoTriState.msoTrue;
 
-                // Set Colour
+                // Set Color
                 zoomRectangle.Fill.ForeColor.RGB = 0xaaaaaa;
                 zoomRectangle.Fill.Transparency = 0.7f;
                 zoomRectangle.Line.ForeColor.RGB = 0x000000;
 
                 zoomRectangles.Add(zoomRectangle);
-                zoomShape.Delete();
+                zoomShape.SafeDelete();
                 shapeCount++;
             }
             return zoomRectangles;
@@ -174,7 +174,7 @@ namespace PowerPointLabs.ZoomLab
                 zoomShapeCopy.Height = zoomShape.Height;
                 zoomShapeCopy.Width = PowerPointPresentation.Current.SlideWidth * zoomShapeCopy.Height / PowerPointPresentation.Current.SlideHeight;
             }
-            LegacyShapeUtil.CopyShapePosition(zoomShape, ref zoomShapeCopy);
+            LegacyShapeUtil.CopyCenterShapePosition(zoomShape, ref zoomShapeCopy);
 
             if (zoomShapeCopy.Width > PowerPointPresentation.Current.SlideWidth)
             {

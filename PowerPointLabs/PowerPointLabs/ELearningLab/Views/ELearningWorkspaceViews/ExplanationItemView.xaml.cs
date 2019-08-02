@@ -2,15 +2,12 @@
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media.Imaging;
-using System.Windows.Threading;
-
-using PowerPointLabs.ActionFramework.Common.Log;
+using PowerPointLabs.ColorThemes.Extensions;
 using PowerPointLabs.ELearningLab.AudioGenerator;
-using PowerPointLabs.ELearningLab.ELearningWorkspace.Model;
 using PowerPointLabs.ELearningLab.Service;
 using PowerPointLabs.ELearningLab.Utility;
-using PowerPointLabs.ELearningLab.Views;
 using PowerPointLabs.TextCollection;
+using PowerPointLabs.Utils;
 
 namespace PowerPointLabs.ELearningLab.Views
 {
@@ -78,31 +75,11 @@ namespace PowerPointLabs.ELearningLab.Views
         public ExplanationItemView()
         {
             InitializeComponent();
-            upImage.Source = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(
-                Properties.Resources.Up.GetHbitmap(),
-                IntPtr.Zero,
-                Int32Rect.Empty,
-                BitmapSizeOptions.FromEmptyOptions());
-            deleteImage.Source = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(
-                Properties.Resources.SyncLabDeleteButton.GetHbitmap(),
-                IntPtr.Zero,
-                Int32Rect.Empty,
-                BitmapSizeOptions.FromEmptyOptions());
-            downImage.Source = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(
-                Properties.Resources.Down.GetHbitmap(),
-                IntPtr.Zero,
-                Int32Rect.Empty,
-                BitmapSizeOptions.FromEmptyOptions());
-            audioImage.Source = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(
-              Properties.Resources.SpeakTextContext.GetHbitmap(),
-              IntPtr.Zero,
-              Int32Rect.Empty,
-              BitmapSizeOptions.FromEmptyOptions());
-            cancelCalloutImage.Source = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(
-              Properties.Resources.CancelCalloutButton.GetHbitmap(),
-              IntPtr.Zero,
-              Int32Rect.Empty,
-              BitmapSizeOptions.FromEmptyOptions());
+            upImage.Source = GraphicsUtil.BitmapToImageSource(Properties.Resources.Up);
+            deleteImage.Source = GraphicsUtil.BitmapToImageSource(Properties.Resources.SyncLabDeleteButton);
+            downImage.Source = GraphicsUtil.BitmapToImageSource(Properties.Resources.Down);
+            audioImage.Source = GraphicsUtil.BitmapToImageSource(Properties.Resources.SpeakTextContext);
+            cancelCalloutImage.Source = GraphicsUtil.BitmapToImageSource(Properties.Resources.CancelCalloutButton);
         }
 
         #region XAML-Binded Action Handler
@@ -151,7 +128,7 @@ namespace PowerPointLabs.ELearningLab.Views
             page.PreviewDialogConfirmedHandler = OnSettingsDialogConfirmed;
             ConfigureAudioPreviewSettings(page);
             dialog.Title = "Audio Preview Window";
-            dialog.ShowDialog();
+            dialog.ShowThematicDialog();
         }
 
         private void ShorterCalloutCancelButton_Click(object sender, RoutedEventArgs e)

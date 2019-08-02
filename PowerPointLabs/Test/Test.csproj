@@ -78,6 +78,8 @@
     <Reference Include="System.Windows.Forms" />
     <Reference Include="System.XML" />
     <Reference Include="System.Xml.Linq" />
+    <Reference Include="UIAutomationClient" />
+    <Reference Include="UIAutomationTypes" />
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <Choose>
@@ -108,6 +110,7 @@
     <Compile Include="FunctionalTest\AutoZoomTest.cs" />
     <Compile Include="FunctionalTest\BaseFunctionalTest.cs" />
     <Compile Include="FunctionalTest\ELearningLabTest.cs" />
+    <Compile Include="FunctionalTest\LimitOpenPanesTest.cs" />
     <Compile Include="FunctionalTest\SaveLabTest.cs" />
     <Compile Include="FunctionalTest\FillSlideTest.cs" />
     <Compile Include="FunctionalTest\PasteLabTest.cs" />
@@ -126,6 +129,11 @@
     <Compile Include="FunctionalTest\CropToSlideTest.cs" />
     <Compile Include="FunctionalTest\ZoomToAreaTest.cs" />
     <Compile Include="Base\TestAssemblyFixture.cs" />
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
     <Compile Include="UnitTest\BaseUnitTest.cs" />
     <Compile Include="UnitTest\CropLab\BaseCropLabTest.cs" />
     <Compile Include="UnitTest\CropLab\CropToSameDimTest.cs" />
@@ -164,6 +172,7 @@
     <Compile Include="UnitTest\PictureSlidesLab\Util\StoragePathTest.cs" />
     <Compile Include="UnitTest\PictureSlidesLab\Util\UrlUtilTest.cs" />
     <Compile Include="UnitTest\PictureSlidesLab\ViewModel\PictureSlidesLabWindowViewModelTest.cs" />
+    <Compile Include="UnitTest\PPShape\PPShapeTest.cs" />
     <Compile Include="UnitTest\ResizeLab\AdjustProportionallyTest.cs" />
     <Compile Include="UnitTest\ResizeLab\FitToSlideTest.cs" />
     <Compile Include="UnitTest\ResizeLab\BaseResizeLabTest.cs" />
@@ -196,10 +205,13 @@
     <Compile Include="UnitTest\TagMatchers\StartSpeedTests.cs" />
     <Compile Include="UnitTest\TagMatchers\StartVoiceTests.cs" />
     <Compile Include="UnitTest\TagMatchers\TaggedTextTest.cs" />
+    <Compile Include="UnitTest\TooltipsLab\ConvertToTooltipTest.cs" />
     <Compile Include="UnitTest\TooltipsLab\CreateTriggerTest.cs" />
     <Compile Include="UnitTest\TooltipsLab\CreateCalloutTest.cs" />
     <Compile Include="UnitTest\TooltipsLab\CreateTooltipTest.cs" />
     <Compile Include="UnitTest\Utils\TempPathTest.cs" />
+    <Compile Include="Util\Constants.cs" />
+    <Compile Include="Util\ProcessWrapper.cs" />
     <Compile Include="Util\TagUtil.cs" />
     <Compile Include="Util\DialogUtil.cs" />
     <Compile Include="Util\PresentationUtil.cs" />
@@ -212,6 +224,9 @@
     <Compile Include="Util\PathUtil.cs" />
     <Compile Include="Util\SlideUtil.cs" />
     <Compile Include="Util\ThreadUtil.cs" />
+    <Compile Include="Util\WindowOpenTrigger.cs" />
+    <Compile Include="Util\WindowWatcher.cs" />
+    <Compile Include="Util\WPFWindowUtil.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\PowerPointLabs\PowerPointLabs.csproj">
@@ -226,6 +241,10 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="UnitTest\ELearningLab\Util\" />

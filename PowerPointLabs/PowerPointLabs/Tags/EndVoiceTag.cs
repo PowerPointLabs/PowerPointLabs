@@ -1,6 +1,5 @@
 ﻿using System.Speech.Synthesis;
 
-using PowerPointLabs.ELearningLab.AudioGenerator;
 using PowerPointLabs.ELearningLab.Service;
 
 namespace PowerPointLabs.Tags
