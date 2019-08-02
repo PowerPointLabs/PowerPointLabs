@@ -3,10 +3,10 @@
   <Profiles />
   <Settings>
     <Setting Name="ReleaseType" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">dev</Value>
+      <Value Profile="(Default)">release</Value>
     </Setting>
     <Setting Name="InstallerType" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">online</Value>
+      <Value Profile="(Default)">offline</Value>
     </Setting>
     <Setting Name="ReleaseAddr" Type="System.String" Scope="Application">
       <Value Profile="(Default)">https://www.comp.nus.edu.sg/~pptlabs/download-78563/</Value>
