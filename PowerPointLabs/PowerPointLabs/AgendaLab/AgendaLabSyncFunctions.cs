@@ -5,7 +5,7 @@ using System.Text.RegularExpressions;
 
 using Microsoft.Office.Core;
 using Microsoft.Office.Interop.PowerPoint;
-
+using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.AgendaLab.Templates;
 using PowerPointLabs.Models;
 using PowerPointLabs.Utils;
@@ -25,7 +25,7 @@ namespace PowerPointLabs.AgendaLab
         #region Bullet Agenda
 
         /// <summary>
-        /// The SyncFunction used for synchronising the front bullet agenda slides.
+        /// The SyncFunction used for synchronizing the front bullet agenda slides.
         /// </summary>
         public static readonly SyncFunction SyncStartBulletAgendaSlide = (refSlide, sections, currentSection, deletedShapeNames, isNewlyGenerated, targetSlide) =>
         {
@@ -46,7 +46,7 @@ namespace PowerPointLabs.AgendaLab
         };
 
         /// <summary>
-        /// The SyncFunction used for synchronising the end bullet agenda slides.
+        /// The SyncFunction used for synchronizing the end bullet agenda slides.
         /// </summary>
         public static readonly SyncFunction SyncEndBulletAgendaSlide = (refSlide, sections, currentSection, deletedShapeNames, isNewlyGenerated, targetSlide) =>
         {
@@ -60,7 +60,7 @@ namespace PowerPointLabs.AgendaLab
         };
 
         /// <summary>
-        /// The SyncFunction used for synchronising the final bullet agenda slide.
+        /// The SyncFunction used for synchronizing the final bullet agenda slide.
         /// </summary>
         public static readonly SyncFunction SyncFinalBulletAgendaSlide = (refSlide, sections, currentSection, deletedShapeNames, isNewlyGenerated, targetSlide) =>
         {
@@ -76,7 +76,7 @@ namespace PowerPointLabs.AgendaLab
             Shape targetContentShape = targetSlide.GetShape(AgendaShape.WithPurpose(ShapePurpose.ContentShape));
             BulletFormats bulletFormats = BulletFormats.ExtractFormats(referenceContentShape);
 
-            ShapeUtil.SetText(targetContentShape, sections.Where(section => section.Index > 1)
+            targetContentShape.SetText(sections.Where(section => section.Index > 1)
                 .Select(section => section.Name));
             ShapeUtil.SyncShape(referenceContentShape, targetContentShape, pickupTextContent: false,
                 pickupTextFormat: false);
@@ -122,7 +122,7 @@ namespace PowerPointLabs.AgendaLab
         #region Visual Agenda
 
         /// <summary>
-        /// The SyncFunction used for synchronising the Visual agenda slides (other than the last visual agenda slide).
+        /// The SyncFunction used for synchronizing the Visual agenda slides (other than the last visual agenda slide).
         /// </summary>
         public static readonly SyncFunction SyncVisualAgendaSlide = (refSlide, sections, currentSection, deletedShapeNames, isNewlyGenerated, targetSlide) =>
         {
@@ -144,7 +144,7 @@ namespace PowerPointLabs.AgendaLab
         };
 
         /// <summary>
-        /// The SyncFunction used for synchronising the last visual agenda slide.
+        /// The SyncFunction used for synchronizing the last visual agenda slide.
         /// </summary>
         public static readonly SyncFunction SyncVisualAgendaEndSlide = (refSlide, sections, currentSection, deletedShapeNames, isNewlyGenerated, targetSlide) =>
         {
@@ -163,7 +163,7 @@ namespace PowerPointLabs.AgendaLab
             slide.Shapes.Cast<Shape>()
                 .Where(AgendaShape.WithPurpose(ShapePurpose.VisualAgendaImage))
                 .ToList()
-                .ForEach(shape => shape.Delete());
+                .ForEach(shape => shape.SafeDelete());
         }
 
         /// <summary>
@@ -186,7 +186,7 @@ namespace PowerPointLabs.AgendaLab
                 Shape snapshotShape = slide.InsertExitSnapshotOfSlide(sectionEndSlide);
                 snapshotShape.Name = imageShape.Name;
                 ShapeUtil.SyncShape(imageShape, snapshotShape, pickupShapeFormat: true, pickupTextContent: false, pickupTextFormat: false);
-                imageShape.Delete();
+                imageShape.SafeDelete();
             }
         }
 
@@ -206,7 +206,7 @@ namespace PowerPointLabs.AgendaLab
         {
             PowerPointDrillDownSlide addedSlide;
             AutoZoom.AddDrillDownAnimation(zoomInShape, slide, out addedSlide, includeAckSlide: false, deletePreviouslyAdded: false);
-            slide.GetShapesWithRule(new Regex("PPTZoomIn"))[0].Delete();
+            slide.GetShapesWithRule(new Regex("PPTZoomIn"))[0].SafeDelete();
             AgendaSection section = AgendaSlide.Decode(slide).Section;
             AgendaSlide.SetSlideName(addedSlide, Type.Visual, SlidePurpose.ZoomIn, section);
             zoomInShape.Visible = MsoTriState.msoTrue;
@@ -219,7 +219,7 @@ namespace PowerPointLabs.AgendaLab
         {
             PowerPointStepBackSlide addedSlide;
             AutoZoom.AddStepBackAnimation(zoomOutShape, slide, out addedSlide, includeAckSlide: false, deletePreviouslyAdded: false);
-            slide.GetShapesWithRule(new Regex("PPTZoomOut"))[0].Delete();
+            slide.GetShapesWithRule(new Regex("PPTZoomOut"))[0].SafeDelete();
             AgendaSection section = AgendaSlide.Decode(slide).Section;
             AgendaSlide.SetSlideName(addedSlide, Type.Visual, finalZoomOut ? SlidePurpose.FinalZoomOut : SlidePurpose.ZoomOut, section);
             zoomOutShape.Visible = MsoTriState.msoTrue;
@@ -237,7 +237,7 @@ namespace PowerPointLabs.AgendaLab
         #region General
 
         /// <summary>
-        /// Synchronises the shapes in the candidate slide with the shapes in the reference slide.
+        /// Synchronizes the shapes in the candidate slide with the shapes in the reference slide.
         /// Adds any shape that exists in the reference slide but is missing in the candidate slide.
         /// </summary>
         private static void SyncShapesFromReferenceSlide(PowerPointSlide refSlide, PowerPointSlide candidate, List<string> markedForDeletion)
@@ -285,7 +285,7 @@ namespace PowerPointLabs.AgendaLab
                 shapeOriginalZOrders.Add(refShape.ZOrderPosition, candidateShape);
             }
 
-            SynchroniseZOrders(shapeOriginalZOrders);
+            SynchronizeZOrders(shapeOriginalZOrders);
         }
 
         private static void CopyShapesTo(ShapeRange refShapes, PowerPointSlide candidate)
@@ -296,6 +296,7 @@ namespace PowerPointLabs.AgendaLab
                 {
                     shape.Copy();
                     candidate.Shapes.Paste();
+                    //candidate.Shapes.SafeCopyPlaceholder(shape);
                 }
                 catch (COMException)
                 {
@@ -323,12 +324,12 @@ namespace PowerPointLabs.AgendaLab
                     continue;
                 }
                 
-                shapeInSlide.Delete();
+                shapeInSlide.SafeDelete();
                 candidateSlideShapes[shapeName] = null;
             }
         }
 
-        private static void SynchroniseZOrders(SortedDictionary<int, Shape> shapeOriginalZOrders)
+        private static void SynchronizeZOrders(SortedDictionary<int, Shape> shapeOriginalZOrders)
         {
             Shape lastShape = null;
             foreach (KeyValuePair<int, Shape> entry in shapeOriginalZOrders.Reverse())

@@ -2,7 +2,7 @@
 using System.ComponentModel.Composition;
 
 using Microsoft.Office.Interop.PowerPoint;
-
+using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.PictureSlidesLab.Model;
 using PowerPointLabs.PictureSlidesLab.Service.StylesWorker.Interface;
 
@@ -22,7 +22,7 @@ namespace PowerPointLabs.PictureSlidesLab.Service.StylesWorker
                     : designer.ApplyBlurEffect(degree: blurDegreeForFrostedGlass);
                 designer.ApplyFrostedGlassTextBoxEffect(option.FrostedGlassTextBoxColor, option.FrostedGlassTextBoxTransparency,
                     blurImageShape, option.FontSizeIncrease);
-                blurImageShape.Delete();
+                blurImageShape.SafeDelete();
             }
             return new List<Shape>();
         }

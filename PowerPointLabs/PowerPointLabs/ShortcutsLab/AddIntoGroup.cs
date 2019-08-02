@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 
 using Microsoft.Office.Interop.PowerPoint;
-
+using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.Models;
 using PowerPointLabs.Utils;
 
@@ -23,11 +23,11 @@ namespace PowerPointLabs.ShortcutsLab
             bool isFirstSelectionGroup = false;
             List<Shape> newShapesList = new List<Shape>();
 
-            if (ShapeUtil.IsCorrupted(firstSelectedShape))
+            if (firstSelectedShape.IsCorrupted())
             {
                 firstSelectedShape = ShapeUtil.CorruptionCorrection(firstSelectedShape, slide);
             }
-            if (ShapeUtil.IsAGroup(firstSelectedShape))
+            if (firstSelectedShape.IsAGroup())
             {
                 isFirstSelectionGroup = true;
                 ShapeRange ungroupedShapes = firstSelectedShape.Ungroup();
@@ -45,7 +45,7 @@ namespace PowerPointLabs.ShortcutsLab
             for (int i = 2; i <= selectedShapes.Count; i++)
             {
                 Shape shape = selectedShapes[i];
-                if (ShapeUtil.IsCorrupted(shape))
+                if (shape.IsCorrupted())
                 {
                     shape = ShapeUtil.CorruptionCorrection(shape, slide);
                 }
@@ -59,7 +59,7 @@ namespace PowerPointLabs.ShortcutsLab
 
             // Transfer the animation
             slide.TransferAnimation(tempShapeForAnimation, selectedGroup);
-            tempShapeForAnimation.Delete();
+            tempShapeForAnimation.SafeDelete();
 
             return slide.ToShapeRange(selectedGroup);
         }

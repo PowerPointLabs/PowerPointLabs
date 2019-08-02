@@ -80,7 +80,7 @@ namespace Test.Util
         internal static extern bool SetForegroundWindow(IntPtr hWnd);
 
         [DllImport("user32.dll", CallingConvention = CallingConvention.StdCall, CharSet = CharSet.Auto)]
-        internal static extern int GetWindowThreadProcessId(IntPtr hwnd, int ID);
+        internal static extern int GetWindowThreadProcessId(IntPtr hwnd, out int ID);
 
         [DllImport("user32.dll", SetLastError = true)]
         public static extern IntPtr FindWindow(string lpClassName, string lpWindowName);

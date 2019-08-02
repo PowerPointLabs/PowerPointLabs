@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Interop;
-
+using System.Windows.Threading;
 using PowerPointLabs.ActionFramework.Common.Log;
 
 using PPExtraEventHelper;
@@ -17,7 +17,7 @@ namespace PowerPointLabs.ColorsLab
     {
         private MagnifierOverlay magnifierOverlay;
         private MagnificationControlHost magnificationControl;
-        private System.Windows.Forms.Timer timer;
+        private System.Windows.Threading.DispatcherTimer timer;
 
         private IntPtr hwndMag;
         private bool isMagInitialized;
@@ -32,8 +32,8 @@ namespace PowerPointLabs.ColorsLab
         {
             InitializeComponent();
 
-            timer = new System.Windows.Forms.Timer();
-            timer.Interval = 100;
+            timer = new DispatcherTimer(DispatcherPriority.Background, Dispatcher);
+            timer.Interval = new TimeSpan(0, 0, 0, 0, 100);
             timer.Tick += new EventHandler(Timer_Tick);
             
             magnifierOverlay = new MagnifierOverlay();

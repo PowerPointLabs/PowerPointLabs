@@ -8,6 +8,7 @@ using Microsoft.Office.Core;
 using Microsoft.Office.Interop.PowerPoint;
 
 using PowerPointLabs.ActionFramework.Common.Extension;
+using PowerPointLabs.ColorThemes.Extensions;
 using PowerPointLabs.SyncLab.ObjectFormats;
 using PowerPointLabs.TextCollection;
 using PowerPointLabs.Utils;
@@ -30,11 +31,7 @@ namespace PowerPointLabs.SyncLab.Views
             InitializeComponent();
             shapeStorage = SyncLabShapeStorage.Instance;
 
-            copyImage.Source = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(
-                    Properties.Resources.SyncLabCopyButton.GetHbitmap(),
-                    IntPtr.Zero,
-                    Int32Rect.Empty,
-                    BitmapSizeOptions.FromEmptyOptions());
+            copyImage.Source = GraphicsUtil.BitmapToImageSource(Properties.Resources.SyncLabCopyButton);
         }
 
         public void SyncPaneWPF_Loaded(object sender, RoutedEventArgs e)
@@ -233,12 +230,12 @@ namespace PowerPointLabs.SyncLab.Views
 
             Shape shape = selection.ShapeRange[1];
 
-            if (shape.Type == MsoShapeType.msoSmartArt) 
+            if (shape.Type == MsoShapeType.msoSmartArt)
             {
                 MessageBox.Show(SyncLabText.ErrorSmartArtUnsupported, SyncLabText.ErrorDialogTitle);
                 return;
             }
-            
+
             if (selection.HasChildShapeRange)
             {
                 if (selection.ChildShapeRange.Count != 1)
@@ -249,22 +246,15 @@ namespace PowerPointLabs.SyncLab.Views
                 shape = selection.ChildShapeRange[1];
             }
 
-            bool canSyncPlaceHolder =
-                shape.Type == MsoShapeType.msoPlaceholder && 
-                ShapeUtil.CanCopyMsoPlaceHolder(shape, SyncFormatUtil.GetTemplateShapes());
-
-            if (shape.Type != MsoShapeType.msoAutoShape &&
-                shape.Type != MsoShapeType.msoLine &&
-                shape.Type != MsoShapeType.msoPicture &&
-                shape.Type != MsoShapeType.msoTextBox &&
-                !canSyncPlaceHolder)
+            if (!shape.IsNormalShape() &&
+                !shape.IsPlaceholderSyncable())
             {
                 MessageBox.Show(SyncLabText.ErrorCopySelectionInvalid, SyncLabText.ErrorDialogTitle);
                 return;
             }
             Dialog = new SyncFormatDialog(shape);
             Dialog.ObjectName = shape.Name;
-            bool? result = Dialog.ShowDialog();
+            bool? result = Dialog.ShowThematicDialog();
             if (!result.HasValue || !(bool)result)
             {
                 return;
@@ -272,6 +262,7 @@ namespace PowerPointLabs.SyncLab.Views
             AddFormatToList(shape, Dialog.ObjectName, Dialog.Formats);
             Dialog = null;
         }
+
         #endregion
 
         #region Shape Saving

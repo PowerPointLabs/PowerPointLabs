@@ -5,26 +5,29 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
 using System.Windows.Threading;
+
 using Microsoft.Office.Core;
+
 using PowerPointLabs.ActionFramework.Common.Extension;
-using PowerPointLabs.ColorsLab;
+using PowerPointLabs.ColorThemes.Extensions;
 using PowerPointLabs.DataSources;
 using PowerPointLabs.TextCollection;
+using PowerPointLabs.Utils;
 using PowerPointLabs.Views;
+
 using Color = System.Drawing.Color;
+using Path = System.IO.Path;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
 
 namespace PowerPointLabs.ColorsLab
 {
-    
+
     /// <summary>
-    /// Interaction logic for TimerLabPaneWPF.xaml
+    /// Interaction logic for ColorsLabPaneWPF.xaml
     /// </summary>
     public partial class ColorsLabPaneWPF : UserControl
     {
-
         #region Functional Test API
 
         public Point GetApplyTextButtonLocationAsPoint()
@@ -72,33 +75,26 @@ namespace PowerPointLabs.ColorsLab
                 topLeftOfButton.Y + eyeDropperButton.ActualHeight / 2);
         }
 
-        public List<Color> GetFavoriteColorsPanelAsList()
+        public IList<Color> GetFavoriteColorsPanelAsList()
         {
-            List<Color> list = new List<Color>();
-            list.Add(dataSource.ThemeColorOne);
-            list.Add(dataSource.ThemeColorTwo);
-            list.Add(dataSource.ThemeColorThree);
-            list.Add(dataSource.ThemeColorFour);
-            list.Add(dataSource.ThemeColorFive);
-            list.Add(dataSource.ThemeColorSix);
-            list.Add(dataSource.ThemeColorSeven);
-            list.Add(dataSource.ThemeColorEight);
-            list.Add(dataSource.ThemeColorNine);
-            list.Add(dataSource.ThemeColorTen);
-            list.Add(dataSource.ThemeColorEleven);
-            list.Add(dataSource.ThemeColorTwelve);
-            return list;
+            IList<HSLColor> favoriteHslColors = dataSource.GetListOfFavoriteColors();
+            IList<Color> favoriteColors = new List<Color>();
+            foreach (HSLColor favoriteHslColor in favoriteHslColors)
+            {
+                favoriteColors.Add(favoriteHslColor);
+            }
+            return favoriteColors;
         }
 
         public void LoadFavoriteColorsFromPath(string filePath)
         {
-            dataSource.LoadThemeColorsFromFile(filePath);
+            dataSource.LoadFavoriteColorsFromFile(filePath);
         }
 
-        public List<Color> GetRecentColorsPanelAsList()
+        public IList<Color> GetRecentColorsPanelAsList()
         {
-            List<HSLColor> recentHslColors = dataSource.GetListOfRecentColors();
-            List<Color> recentColors = new List<Color>();
+            IList<HSLColor> recentHslColors = dataSource.GetListOfRecentColors();
+            IList<Color> recentColors = new List<Color>();
             foreach (HSLColor recentHslColor in recentHslColors)
             {
                 recentColors.Add(recentHslColor);
@@ -115,18 +111,7 @@ namespace PowerPointLabs.ColorsLab
             {
                 if (this.GetCurrentSlide() != null)
                 {
-                    dataSource.RecentColorOne = Color.White;
-                    dataSource.RecentColorTwo = Color.White;
-                    dataSource.RecentColorThree = Color.White;
-                    dataSource.RecentColorFour = Color.White;
-                    dataSource.RecentColorFive = Color.White;
-                    dataSource.RecentColorSix = Color.White;
-                    dataSource.RecentColorSeven = Color.White;
-                    dataSource.RecentColorEight = Color.White;
-                    dataSource.RecentColorNine = Color.White;
-                    dataSource.RecentColorTen = Color.White;
-                    dataSource.RecentColorEleven = Color.White;
-                    dataSource.RecentColorTwelve = Color.White;
+                    dataSource.ClearRecentColors();
                 }
             }
             catch (Exception e)
@@ -161,18 +146,19 @@ namespace PowerPointLabs.ColorsLab
         // Data-bindings datasource
         ColorDataSource dataSource = new ColorDataSource();
 
+
         // Eyedropper-related
         private const float MAGNIFICATION_FACTOR = 2.5f;
         private Cursor eyeDropperCursor = new Cursor(new MemoryStream(Properties.Resources.EyeDropper));
         private Magnifier magnifier = new Magnifier(MAGNIFICATION_FACTOR);
-        private System.Windows.Forms.Timer eyeDropperTimer = new System.Windows.Forms.Timer(new System.ComponentModel.Container());
+        private DispatcherTimer eyeDropperTimer;
         private const int CLICK_THRESHOLD = 2;
         private int timer1Ticks;
 
-        // Saving color themes
-        private string _defaultThemeColorDirectory = Path.Combine(
+        // Saving color favorites
+        private string _defaultFavoriteColorDirectory = System.IO.Path.Combine(
             Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments), 
-            "PowerPointLabs.defaultThemeColor.thm");
+            "PowerPointLabs.defaultFavoriteColor.thm");
         private string _defaultRecentColorDirectory = Path.Combine(
             Environment.GetFolderPath(Environment.SpecialFolder.MyDocuments),
             "PowerPointLabs.defaultRecentColor.thm");
@@ -183,6 +169,7 @@ namespace PowerPointLabs.ColorsLab
 
         public ColorsLabPaneWPF()
         {
+            eyeDropperTimer = new DispatcherTimer(DispatcherPriority.Background, Dispatcher);
             // Set data context to data source for XAML to reference.
             DataContext = dataSource;
 
@@ -193,7 +180,7 @@ namespace PowerPointLabs.ColorsLab
             SetupImageSources();
             SetupEyedropperTimer();
             SetDefaultColor(Color.CornflowerBlue);
-            SetDefaultThemeColors();
+            SetDefaultFavoriteColors();
             SetRecentColors();
 
             // Hook the mouse process if it has not
@@ -209,65 +196,25 @@ namespace PowerPointLabs.ColorsLab
         /// </summary>
         private void SetupImageSources()
         {
-            textColorIcon.Source = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(
-                    Properties.Resources.TextColor_icon.GetHbitmap(),
-                    IntPtr.Zero,
-                    Int32Rect.Empty,
-                    BitmapSizeOptions.FromEmptyOptions());
+            textColorIcon.Source = GraphicsUtil.BitmapToImageSource(Properties.Resources.TextColor_icon);
 
-            lineColorIcon.Source = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(
-                    Properties.Resources.LineColor_icon.GetHbitmap(),
-                    IntPtr.Zero,
-                    Int32Rect.Empty,
-                    BitmapSizeOptions.FromEmptyOptions());
+            lineColorIcon.Source = GraphicsUtil.BitmapToImageSource(Properties.Resources.LineColor_icon);
 
-            fillColorIcon.Source = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(
-                    Properties.Resources.FillColor_icon.GetHbitmap(),
-                    IntPtr.Zero,
-                    Int32Rect.Empty,
-                    BitmapSizeOptions.FromEmptyOptions());
+            fillColorIcon.Source = GraphicsUtil.BitmapToImageSource(Properties.Resources.FillColor_icon);
 
-            eyeDropperIcon.Source = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(
-                    Properties.Resources.EyeDropper_icon.GetHbitmap(),
-                    IntPtr.Zero,
-                    Int32Rect.Empty,
-                    BitmapSizeOptions.FromEmptyOptions());
+            eyeDropperIcon.Source = GraphicsUtil.BitmapToImageSource(Properties.Resources.EyeDropper_icon);
 
-            brightnessIcon.Source = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(
-                    Properties.Resources.Brightness_icon_25x25.GetHbitmap(),
-                    IntPtr.Zero,
-                    Int32Rect.Empty,
-                    BitmapSizeOptions.FromEmptyOptions());
+            brightnessIcon.Source = GraphicsUtil.BitmapToImageSource(Properties.Resources.Brightness_icon_25x25);
 
-            saturationIcon.Source = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(
-                    Properties.Resources.Saturation_icon_18x18.GetHbitmap(),
-                    IntPtr.Zero,
-                    Int32Rect.Empty,
-                    BitmapSizeOptions.FromEmptyOptions());
+            saturationIcon.Source = GraphicsUtil.BitmapToImageSource(Properties.Resources.Saturation_icon_18x18);
 
-            saveColorIcon.Source = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(
-                    Properties.Resources.Save_icon.GetHbitmap(),
-                    IntPtr.Zero,
-                    Int32Rect.Empty,
-                    BitmapSizeOptions.FromEmptyOptions());
+            saveColorIcon.Source = GraphicsUtil.BitmapToImageSource(Properties.Resources.Save_icon);
 
-            loadColorIcon.Source = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(
-                    Properties.Resources.Load_icon.GetHbitmap(),
-                    IntPtr.Zero,
-                    Int32Rect.Empty,
-                    BitmapSizeOptions.FromEmptyOptions());
+            loadColorIcon.Source = GraphicsUtil.BitmapToImageSource(Properties.Resources.Load_icon);
 
-            reloadColorIcon.Source = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(
-                    Properties.Resources.Reload_icon.GetHbitmap(),
-                    IntPtr.Zero,
-                    Int32Rect.Empty,
-                    BitmapSizeOptions.FromEmptyOptions());
+            reloadColorIcon.Source = GraphicsUtil.BitmapToImageSource(Properties.Resources.Reload_icon);
 
-            clearColorIcon.Source = System.Windows.Interop.Imaging.CreateBitmapSourceFromHBitmap(
-                    Properties.Resources.Clear_icon.GetHbitmap(),
-                    IntPtr.Zero,
-                    Int32Rect.Empty,
-                    BitmapSizeOptions.FromEmptyOptions());
+            clearColorIcon.Source = GraphicsUtil.BitmapToImageSource(Properties.Resources.Clear_icon);
         }
 
         /// <summary>
@@ -280,11 +227,11 @@ namespace PowerPointLabs.ColorsLab
         }
 
         /// <summary>
-        /// Set default theme colors for favourite colors panel.
+        /// Set default favorite colors for favourite colors panel.
         /// </summary>
-        private void SetDefaultThemeColors()
+        private void SetDefaultFavoriteColors()
         {
-            LoadDefaultThemePanel();
+            LoadDefaultFavoritePanel();
         }
 
         /// <summary>
@@ -306,7 +253,7 @@ namespace PowerPointLabs.ColorsLab
         #endregion
 
         #region Event Handlers
-
+        
         #region ColorsLabPane Handlers
 
         /// <summary>
@@ -336,7 +283,7 @@ namespace PowerPointLabs.ColorsLab
         /// <param name="e"></param>
         private void ColorsLab_Closing(Object sender, EventArgs e)
         {
-            SaveDefaultColorPaneThemeColors();
+            SaveDefaultColorPaneFavoriteColors();
             SaveColorPaneRecentColors();
         }
 
@@ -538,7 +485,7 @@ namespace PowerPointLabs.ColorsLab
             rect.MouseUp -= ColorRectangle_MouseUp;
 
             System.Windows.Media.Color color = ((SolidColorBrush)rect.Fill).Color;
-            Color selectedColor = Color.FromArgb(color.A, color.R, color.G, color.B);
+            Color selectedColor = GraphicsUtil.DrawingColorFromMediaColor(color);
             dataSource.SelectedColor = new HSLColor(selectedColor);
         }
 
@@ -557,7 +504,7 @@ namespace PowerPointLabs.ColorsLab
             System.Windows.Shapes.Rectangle rect = (System.Windows.Shapes.Rectangle)sender;
 
             System.Windows.Media.Color prevMediaColor = ((SolidColorBrush)rect.Fill).Color;
-            _previousFillColor = Color.FromArgb(prevMediaColor.A, prevMediaColor.R, prevMediaColor.G, prevMediaColor.B);
+            _previousFillColor = GraphicsUtil.DrawingColorFromMediaColor(prevMediaColor);
 
             if (rect != null)
             {
@@ -572,9 +519,9 @@ namespace PowerPointLabs.ColorsLab
                     if (converter.IsValid(dataString))
                     {
                         System.Windows.Media.Color mediaColor = (System.Windows.Media.Color)ColorConverter.ConvertFromString(dataString);
-                        Color color = Color.FromArgb(mediaColor.A, mediaColor.R, mediaColor.G, mediaColor.B);
-
-                        SetThemeColorRectangle(rect.Name, color);
+                        Color color = GraphicsUtil.DrawingColorFromMediaColor(mediaColor);
+                        
+                        SetFavoriteColorRectangle((int)rect.Tag, color);
                     }
                 }
             }
@@ -623,7 +570,7 @@ namespace PowerPointLabs.ColorsLab
             System.Windows.Shapes.Rectangle rect = (System.Windows.Shapes.Rectangle)sender;
             if (rect != null)
             {
-                SetThemeColorRectangle(rect.Name, _previousFillColor);
+                SetFavoriteColorRectangle((int)rect.Tag, _previousFillColor);
             }
         }
 
@@ -653,9 +600,9 @@ namespace PowerPointLabs.ColorsLab
                     if (converter.IsValid(dataString))
                     {
                         System.Windows.Media.Color mediaColor = (System.Windows.Media.Color)ColorConverter.ConvertFromString(dataString);
-                        Color color = Color.FromArgb(mediaColor.A, mediaColor.R, mediaColor.G, mediaColor.B);
+                        Color color = GraphicsUtil.DrawingColorFromMediaColor(mediaColor);
 
-                        SetThemeColorRectangle(rect.Name, color);
+                        SetFavoriteColorRectangle((int)rect.Tag, color);
                     }
                 }
             }
@@ -673,6 +620,9 @@ namespace PowerPointLabs.ColorsLab
         private void Timer1_Tick(object sender, EventArgs e)
         {
             timer1Ticks++;
+
+            // Force the magnifier to update
+            magnifier.Show();
 
             System.Drawing.Point mousePos = System.Windows.Forms.Control.MousePosition;
             IntPtr deviceContext = PPExtraEventHelper.Native.GetDC(IntPtr.Zero);
@@ -710,7 +660,7 @@ namespace PowerPointLabs.ColorsLab
             if (_eyedropperMode == MODE.MAIN)
             {
                 selectedColorRectangle.Opacity = 1;
-                if (timer1Ticks > CLICK_THRESHOLD)
+                if (timer1Ticks >= CLICK_THRESHOLD)
                 {
                     dataSource.SelectedColor = _currentEyedroppedColor;
                 }
@@ -719,7 +669,7 @@ namespace PowerPointLabs.ColorsLab
             // Update recent colors if color has been used
             if (_eyedropperMode == MODE.FILL || _eyedropperMode == MODE.FONT || _eyedropperMode == MODE.LINE)
             {
-                if (timer1Ticks > CLICK_THRESHOLD)
+                if (timer1Ticks >= CLICK_THRESHOLD)
                 {
                     dataSource.AddColorToRecentColors(_currentSelectedColor);
                 }
@@ -752,7 +702,7 @@ namespace PowerPointLabs.ColorsLab
         #region Favourite Colors Button Handlers
 
         /// <summary>
-        /// Saves the current theme panel as a custom theme file.
+        /// Saves the current favorite panel as a custom favorite file.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -760,20 +710,20 @@ namespace PowerPointLabs.ColorsLab
         {
             System.Windows.Forms.SaveFileDialog saveFileDialog = new System.Windows.Forms.SaveFileDialog();
             saveFileDialog.DefaultExt = "thm";
-            saveFileDialog.Filter = "PPTLabsThemes|*.thm";
-            saveFileDialog.Title = "Save Theme";
+            saveFileDialog.Filter = "PPTLabsFavorites|*.thm";
+            saveFileDialog.Title = "Save Favorite";
             
             System.Windows.Forms.DialogResult result = saveFileDialog.ShowDialog();
 
             if (result == System.Windows.Forms.DialogResult.OK &&
-                dataSource.SaveThemeColorsInFile(saveFileDialog.FileName))
+                dataSource.SaveFavoriteColorsInFile(saveFileDialog.FileName))
             {
-                SaveDefaultColorPaneThemeColors();
+                SaveDefaultColorPaneFavoriteColors();
             }
         }
 
         /// <summary>
-        /// Loads a theme panel from an existing theme file.
+        /// Loads a favorite panel from an existing favorite file.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -781,36 +731,36 @@ namespace PowerPointLabs.ColorsLab
         {
             System.Windows.Forms.OpenFileDialog openFileDialog = new System.Windows.Forms.OpenFileDialog();
             openFileDialog.DefaultExt = "thm";
-            openFileDialog.Filter = "PPTLabsTheme|*.thm";
-            openFileDialog.Title = "Load Theme";
+            openFileDialog.Filter = "PPTLabsFavorite|*.thm";
+            openFileDialog.Title = "Load Favorite";
 
             System.Windows.Forms.DialogResult result = openFileDialog.ShowDialog();
 
             if (result == System.Windows.Forms.DialogResult.OK &&
-                dataSource.LoadThemeColorsFromFile(openFileDialog.FileName))
+                dataSource.LoadFavoriteColorsFromFile(openFileDialog.FileName))
             {
-                SaveDefaultColorPaneThemeColors();
+                SaveDefaultColorPaneFavoriteColors();
             }
         }
 
         /// <summary>
-        /// Reset to the last loaded theme panel.
+        /// Reset to the last loaded favorite panel.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void ReloadColorButton_Click(object sender, EventArgs e)
         {
-            ResetThemePanel();
+            ResetFavoritePanel();
         }
 
         /// <summary>
-        /// Clears the current theme panel, i.e. set all favourite colors to white.
+        /// Clears the current favorite panel, i.e. set all favourite colors to white.
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        private void ClearColorButton_Click(object sender, EventArgs e)
+        private void ClearColorButton_Click(object sender, RoutedEventArgs e)
         {
-            EmptyThemePanel();
+            EmptyFavoritePanel();
         }
 
         #endregion
@@ -826,9 +776,9 @@ namespace PowerPointLabs.ColorsLab
             }
             System.Windows.Shapes.Rectangle rect = ((ContextMenu)(menuItem.Parent)).PlacementTarget as System.Windows.Shapes.Rectangle;
             System.Windows.Media.Color color = ((SolidColorBrush)rect.Fill).Color;
-            Color selectedColor = Color.FromArgb(color.A, color.R, color.G, color.B);
+            Color selectedColor = GraphicsUtil.DrawingColorFromMediaColor(color);
             ColorInformationDialog dialog = new ColorInformationDialog(selectedColor);
-            dialog.Show();
+            dialog.ShowThematicDialog();
         }
 
         private void Set_Main_Color_Click(object sender, RoutedEventArgs e)
@@ -840,7 +790,7 @@ namespace PowerPointLabs.ColorsLab
             }
             System.Windows.Shapes.Rectangle rect = ((ContextMenu)(menuItem.Parent)).PlacementTarget as System.Windows.Shapes.Rectangle;
             System.Windows.Media.Color color = ((SolidColorBrush)rect.Fill).Color;
-            Color selectedColor = Color.FromArgb(color.A, color.R, color.G, color.B);
+            Color selectedColor = GraphicsUtil.DrawingColorFromMediaColor(color);
             dataSource.SelectedColor = new HSLColor(selectedColor);
         }
 
@@ -853,7 +803,7 @@ namespace PowerPointLabs.ColorsLab
             }
             System.Windows.Shapes.Rectangle rect = ((ContextMenu)(menuItem.Parent)).PlacementTarget as System.Windows.Shapes.Rectangle;
             System.Windows.Media.Color color = ((SolidColorBrush)rect.Fill).Color;
-            HSLColor clickedColor = Color.FromArgb(color.A, color.R, color.G, color.B);
+            HSLColor clickedColor = GraphicsUtil.DrawingColorFromMediaColor(color);
             dataSource.AddColorToFavorites(clickedColor);
         }
 
@@ -924,14 +874,9 @@ namespace PowerPointLabs.ColorsLab
                     return;
                 }
 
-                if (selection.Type == PowerPoint.PpSelectionType.ppSelectionShapes &&
-                    selection.HasChildShapeRange)
+                if (selection.Type == PowerPoint.PpSelectionType.ppSelectionShapes)
                 {
-                    _selectedShapes = selection.ChildShapeRange;
-                }
-                else if (selection.Type == PowerPoint.PpSelectionType.ppSelectionShapes)
-                {
-                    _selectedShapes = selection.ShapeRange;
+                    _selectedShapes = ShapeUtil.GetShapeRange(selection);
                 }
                 else if (selection.Type == PowerPoint.PpSelectionType.ppSelectionText)
                 {
@@ -1032,8 +977,7 @@ namespace PowerPointLabs.ColorsLab
         /// <param name="s"></param>
         private void RecreateCorruptedShape(PowerPoint.Shape s)
         {
-            s.Copy();
-            PowerPoint.Shape newShape = this.GetCurrentSlide().Shapes.Paste()[1];
+            PowerPoint.Shape newShape = this.GetCurrentSlide().Shapes.SafeCopyPlaceholder(s);
 
             newShape.Select();
 
@@ -1044,7 +988,7 @@ namespace PowerPointLabs.ColorsLab
             {
                 newShape.ZOrder(Microsoft.Office.Core.MsoZOrderCmd.msoSendBackward);
             }
-            s.Delete();
+            s.SafeDelete();
         }
 
         /// <summary>
@@ -1196,8 +1140,10 @@ namespace PowerPointLabs.ColorsLab
 
         private void ColorMainColorRect(Color color)
         {
-            eyeDropperPreviewRectangle.Fill = 
-                new SolidColorBrush(System.Windows.Media.Color.FromArgb(color.A, color.R, color.G, color.B));
+            eyeDropperPreviewRectangle.Dispatcher.Invoke(() =>
+            {
+               eyeDropperPreviewRectangle.Fill = GraphicsUtil.MediaBrushFromDrawingColor(color);
+            });
         }
 
         #endregion
@@ -1207,56 +1153,45 @@ namespace PowerPointLabs.ColorsLab
         /// <summary>
         /// Load default panel from default file, or clear the panel if unsuccessful.
         /// </summary>
-        private void LoadDefaultThemePanel()
+        private void LoadDefaultFavoritePanel()
         {
-            bool isSuccessful = dataSource.LoadThemeColorsFromFile(_defaultThemeColorDirectory);
+            bool isSuccessful = dataSource.LoadFavoriteColorsFromFile(_defaultFavoriteColorDirectory);
             if (!isSuccessful)
             {
-                EmptyThemePanel();
+                EmptyFavoritePanel();
             }
         }
 
         /// <summary>
-        /// Reset panel to the last loaded theme panel.
+        /// Reset panel to the last loaded favorite panel.
         /// </summary>
-        private void ResetThemePanel()
+        private void ResetFavoritePanel()
         {
             try
             {
-                LoadDefaultThemePanel();
+                LoadDefaultFavoritePanel();
             }
             catch (Exception e)
             {
-                ErrorDialogBox.ShowDialog("Theme Panel Reset Failed", e.Message, e);
+                ErrorDialogBox.ShowDialog("Favorite Panel Reset Failed", e.Message, e);
             }
         }
 
         /// <summary>
         /// Clear the panel to all white color.
         /// </summary>
-        private void EmptyThemePanel()
+        private void EmptyFavoritePanel()
         {
             try
             {
                 if (this.GetCurrentSlide() != null)
                 {
-                    dataSource.ThemeColorOne = Color.White;
-                    dataSource.ThemeColorTwo = Color.White;
-                    dataSource.ThemeColorThree = Color.White;
-                    dataSource.ThemeColorFour = Color.White;
-                    dataSource.ThemeColorFive = Color.White;
-                    dataSource.ThemeColorSix = Color.White;
-                    dataSource.ThemeColorSeven = Color.White;
-                    dataSource.ThemeColorEight = Color.White;
-                    dataSource.ThemeColorNine = Color.White;
-                    dataSource.ThemeColorTen = Color.White;
-                    dataSource.ThemeColorEleven = Color.White;
-                    dataSource.ThemeColorTwelve = Color.White;
+                    dataSource.ClearFavoriteColors();
                 }
             }
             catch (Exception e)
             {
-                ErrorDialogBox.ShowDialog("Theme Panel Reset Failed", e.Message, e);
+                ErrorDialogBox.ShowDialog("Favorite Panel Reset Failed", e.Message, e);
             }
         }
 
@@ -1265,57 +1200,17 @@ namespace PowerPointLabs.ColorsLab
         /// </summary>
         /// <param name="name"></param>
         /// <param name="color"></param>
-        private void SetThemeColorRectangle(string name, Color color)
+        private void SetFavoriteColorRectangle(int column, Color color)
         {
-            switch (name)
-            {
-                case "favoriteColorRectangleOne":
-                dataSource.ThemeColorOne = color;
-                break;
-                case "favoriteColorRectangleTwo":
-                dataSource.ThemeColorTwo = color;
-                break;
-                case "favoriteColorRectangleThree":
-                dataSource.ThemeColorThree = color;
-                break;
-                case "favoriteColorRectangleFour":
-                dataSource.ThemeColorFour = color;
-                break;
-                case "favoriteColorRectangleFive":
-                dataSource.ThemeColorFive = color;
-                break;
-                case "favoriteColorRectangleSix":
-                dataSource.ThemeColorSix = color;
-                break;
-                case "favoriteColorRectangleSeven":
-                dataSource.ThemeColorSeven = color;
-                break;
-                case "favoriteColorRectangleEight":
-                dataSource.ThemeColorEight = color;
-                break;
-                case "favoriteColorRectangleNine":
-                dataSource.ThemeColorNine = color;
-                break;
-                case "favoriteColorRectangleTen":
-                dataSource.ThemeColorTen = color;
-                break;
-                case "favoriteColorRectangleEleven":
-                dataSource.ThemeColorEleven = color;
-                break;
-                case "favoriteColorRectangleTwelve":
-                dataSource.ThemeColorTwelve = color;
-                break;
-                default:
-                break;
-            }
+            dataSource.SetFavoriteColor(column, color);
         }
 
         /// <summary>
-        /// Save current panel as default theme color.
+        /// Save current panel as default favorite color.
         /// </summary>
-        private void SaveDefaultColorPaneThemeColors()
+        private void SaveDefaultColorPaneFavoriteColors()
         {
-            dataSource.SaveThemeColorsInFile(_defaultThemeColorDirectory);
+            dataSource.SaveFavoriteColorsInFile(_defaultFavoriteColorDirectory);
         }
 
         #endregion
@@ -1342,10 +1237,9 @@ namespace PowerPointLabs.ColorsLab
             }
         }
 
-        #endregion
 
         #endregion
 
-
+        #endregion
     }
 }

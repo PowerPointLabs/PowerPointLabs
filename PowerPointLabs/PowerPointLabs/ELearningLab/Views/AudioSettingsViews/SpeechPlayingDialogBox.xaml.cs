@@ -1,6 +1,4 @@
 ﻿using System;
-using System.IO;
-using System.Media;
 using System.Speech.Synthesis;
 using System.Windows;
 

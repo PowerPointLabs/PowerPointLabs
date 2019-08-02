@@ -13,13 +13,13 @@ namespace PowerPointLabs.AgendaLab
     internal static partial class AgendaLabMain
     {
 #pragma warning disable 0618
-        #region Main Synchronisation Function
+        #region Main Synchronization Function
         /// <summary>
         /// Call the function like this for example:
-        /// SynchroniseSlidesUsingTemplate(slideTracker, refSlide, () => new VisualAgendaTemplate());
+        /// SynchronizeSlidesUsingTemplate(slideTracker, refSlide, () => new VisualAgendaTemplate());
         /// generateTemplate is a function that returns a newly created template.
         /// </summary>
-        private static void SynchroniseSlidesUsingTemplate(SlideSelectionTracker slideTracker, PowerPointSlide refSlide, Func<AgendaTemplate> generateTemplate)
+        private static void SynchronizeSlidesUsingTemplate(SlideSelectionTracker slideTracker, PowerPointSlide refSlide, Func<AgendaTemplate> generateTemplate)
         {
             List<AgendaSection> sections = Sections;
 
@@ -37,7 +37,7 @@ namespace PowerPointLabs.AgendaLab
                 ConfigureTemplate(currentSection, template);
 
                 TemplateIndexTable templateTable = RebuildSectionUsingTemplate(slideTracker, currentSection, template);
-                SynchroniseAllSlides(template, templateTable, refSlide, sections, deletedShapeNames, currentSection);
+                SynchronizeAllSlides(template, templateTable, refSlide, sections, deletedShapeNames, currentSection);
             }
 
             TrackShapesInSlide(refSlide);
@@ -280,9 +280,9 @@ namespace PowerPointLabs.AgendaLab
         #endregion
 
 
-        #region Synchronising the content of slides
+        #region Synchronizing the content of slides
 
-        private static void SynchroniseAllSlides(AgendaTemplate template, TemplateIndexTable templateTable,
+        private static void SynchronizeAllSlides(AgendaTemplate template, TemplateIndexTable templateTable,
             PowerPointSlide refSlide, List<AgendaSection> sections, List<string> deletedShapeNames, AgendaSection currentSection)
         {
             if (template.NotConfigured)
