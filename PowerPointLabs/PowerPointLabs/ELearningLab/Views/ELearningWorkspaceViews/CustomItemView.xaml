@@ -30,7 +30,7 @@
                             <ColumnDefinition Name="test" Width="*" />
                         </Grid.ColumnDefinitions>
                         <Image Grid.Column="0" MinHeight="15" MaxHeight="15" MinWidth="15" MaxWidth="15" VerticalAlignment="Center"
-                   Source="{Binding Type, Converter={converters:AnimationTypeToImageSourceConverter}}" 
+                               Source="{Binding Type, Converter={converters:AnimationTypeToImageSourceConverter}}" 
                                Stretch="Uniform" HorizontalAlignment="Center"/>
                         <TextBlock Grid.Column="1" 
                                    Width="{Binding ActualWidth, ElementName=list, Converter={StaticResource ShapeNameConverter}}"
