@@ -27,7 +27,7 @@
                     <Grid>
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="30"/>
-                            <ColumnDefinition Name="test" Width="*" />
+                            <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
                         <Image Grid.Column="0" MinHeight="15" MaxHeight="15" MinWidth="15" MaxWidth="15" VerticalAlignment="Center"
                                Source="{Binding Type, Converter={converters:AnimationTypeToImageSourceConverter}}" 
