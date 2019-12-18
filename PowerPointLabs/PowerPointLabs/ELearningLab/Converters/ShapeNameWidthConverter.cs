@@ -7,11 +7,12 @@ namespace PowerPointLabs.ELearningLab.Converters
 {
     public class ShapeNameWidthConverter : IValueConverter
     {
+        private const int leftIconWidth = 45;
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
             if (value is double)
             {
-                return (double)value - 45;
+                return (double)value - leftIconWidth;
             }
             return null;
         }
@@ -20,7 +21,7 @@ namespace PowerPointLabs.ELearningLab.Converters
         {
             if (value is double)
             {
-                return (double)value + 45;
+                return (double)value + leftIconWidth;
             }
             return null;
         }
