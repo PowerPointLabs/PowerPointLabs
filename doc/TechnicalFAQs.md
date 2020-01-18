@@ -25,8 +25,8 @@ If better solutions to any issue are found, or if there is a need for any clarif
 1. If standalone is not working, click OK for the batch file and install again
 1. Else, verify admin permission and install again
 1. If error persists after above steps, launch PowerPoint and go to File > Options > Certificate
-![Alt text](../doc/images/TechnicalFAQ/certificate-error1.png)
-![Alt text](../doc/images/TechnicalFAQ/certificate-error2.png)
+![Alt text](../doc/images/TechnicalFAQ/certificate-error1.png | width=200)
+![Alt text](../doc/images/TechnicalFAQ/certificate-error2.png | width=200)
 1. A window should open. Go to Trust Center > Trust Center Settings
 ![Alt text](../doc/images/TechnicalFAQ/certificate-error3.png)
 1. In the new window, go to Add-ins. Uncheck "Require Application Add-ins to be signed by Trusted Publisher"
