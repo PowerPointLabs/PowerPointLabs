@@ -27,6 +27,7 @@ If better solutions to any issue are found, or if there is a need for any clarif
 1. If error persists after above steps, launch PowerPoint and go to File > Options > Certificate
 <img src="../doc/images/TechnicalFAQ/certificate-error1.png" width="200"/>
 <img src="../doc/images/TechnicalFAQ/certificate-error2.png" width="200"/>
+
 1. A window should open. Go to Trust Center > Trust Center Settings
 ![Alt text](../doc/images/TechnicalFAQ/certificate-error3.png)
 1. In the new window, go to Add-ins. Uncheck "Require Application Add-ins to be signed by Trusted Publisher"
