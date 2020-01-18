@@ -2,7 +2,6 @@
 using System.Drawing;
 
 using Point = System.Windows.Point;
-using Rectangle = System.Windows.Shapes.Rectangle;
 
 namespace TestInterface
 {
@@ -30,8 +29,8 @@ namespace TestInterface
 
         void ClearRecentColors();
 
-        List<Color> GetCurrentFavoritePanel();
-        List<Color> GetCurrentRecentPanel();
+        IList<Color> GetCurrentFavoritePanel();
+        IList<Color> GetCurrentRecentPanel();
 
     }
 }

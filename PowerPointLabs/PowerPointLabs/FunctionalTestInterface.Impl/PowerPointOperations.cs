@@ -2,16 +2,22 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading;
+using System.Windows;
 using System.Windows.Forms;
+using System.Windows.Interop;
 
 using Microsoft.Office.Core;
 using Microsoft.Office.Interop.PowerPoint;
 
 using PowerPointLabs.ActionFramework.Common.Extension;
+using PowerPointLabs.FunctionalTestInterface.Windows;
 using PowerPointLabs.Utils;
 
 using TestInterface;
+using TestInterface.Windows;
 
+using MessageBox = System.Windows.Forms.MessageBox;
 using Shape = Microsoft.Office.Interop.PowerPoint.Shape;
 using ShapeRange = Microsoft.Office.Interop.PowerPoint.ShapeRange;
 
@@ -20,6 +26,8 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
     [Serializable]
     class PowerPointOperations : MarshalByRefObject, IPowerPointOperations
     {
+        public IntPtr Window => new IntPtr(FunctionalTestExtensions.GetApplication().HWND);
+
         public void MaximizeWindow()
         {
             FunctionalTestExtensions.GetCurrentWindow().WindowState = PpWindowState.ppWindowMaximized;
@@ -38,6 +46,42 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
         public bool IsInFunctionalTest()
         {
             return PowerPointLabsFT.IsFunctionalTestOn;
+        }
+
+        public void MaximizeWindow(int windowNumber)
+        {
+            FunctionalTestExtensions.GetApplication().Windows[windowNumber].Activate();
+            FunctionalTestExtensions.GetApplication().Windows[windowNumber].WindowState = PpWindowState.ppWindowMaximized;
+        }
+
+        public void NewWindow()
+        {
+            Presentation presentation = FunctionalTestExtensions.GetPresentations().Add();
+        }
+
+        public int GetNumWindows()
+        {
+            return FunctionalTestExtensions.GetApplication().Windows.Count;
+        }
+
+        public void SetTagToAssociatedWindow()
+        {
+            DocumentWindow docWindow = FunctionalTestExtensions.GetCurrentWindow();
+            foreach (Microsoft.Office.Tools.CustomTaskPane pane in FunctionalTestExtensions.GetAddIn().CustomTaskPanes)
+            {
+                if (pane.Control.Tag == null) { pane.Control.Tag = docWindow.HWND; }
+            }
+        }
+
+        public HashSet<Type> GetOpenPaneTypes()
+        {
+            DocumentWindow docWindow = FunctionalTestExtensions.GetCurrentWindow(); //.GetApplication().Windows[1];
+            HashSet<Type> result = new HashSet<Type>();
+            foreach (Microsoft.Office.Tools.CustomTaskPane pane in FunctionalTestExtensions.GetAddIn().CustomTaskPanes)
+            {
+                if (pane.Control.Tag is int && (int)pane.Control.Tag == docWindow.HWND) { result.Add(pane.Control.GetType()); }
+            }
+            return result;
         }
 
         public List<ISlideData> FetchPresentationData(string pathToPresentation)
@@ -246,6 +290,7 @@ namespace PowerPointLabs.FunctionalTestInterface.Impl
             Shape shape = FunctionalTestExtensions.GetCurrentSlide().Shapes
                                                                       .Cast<Shape>()
                                                                       .FirstOrDefault(sh => sh.Name == shapeName);
+            shape.Select(); // shape needs to be selected first in 2010
             TextRange2 textRange = shape.TextFrame2.TextRange.Characters[startIndex, endIndex - startIndex];
             textRange.Select();
             return textRange.Text;

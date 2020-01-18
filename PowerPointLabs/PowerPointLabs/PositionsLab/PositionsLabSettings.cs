@@ -1,4 +1,5 @@
-﻿using PowerPointLabs.PositionsLab.Views;
+﻿using PowerPointLabs.ColorThemes.Extensions;
+using PowerPointLabs.PositionsLab.Views;
 
 namespace PowerPointLabs.PositionsLab
 {
@@ -76,7 +77,7 @@ namespace PowerPointLabs.PositionsLab
         {
             AlignSettingsDialog dialog = new AlignSettingsDialog(AlignReference);
             dialog.DialogConfirmedHandler += OnAlignSettingsDialogConfirmed;
-            dialog.ShowDialog();
+            dialog.ShowThematicDialog();
         }
 
         public static void ShowDistributeSettingsDialog()
@@ -84,21 +85,21 @@ namespace PowerPointLabs.PositionsLab
             DistributeSettingsDialog dialog = new DistributeSettingsDialog(DistributeReference, DistributeRadialReference, 
                                                                         DistributeSpaceReference, DistributeShapeOrientation);
             dialog.DialogConfirmedHandler += OnAlignSettingsDialogConfirmed;
-            dialog.ShowDialog();
+            dialog.ShowThematicDialog();
         }
 
         public static void ShowReorderSettingsDialog()
         {
             ReorderSettingsDialog dialog = new ReorderSettingsDialog(IsSwapByClickOrder, SwapReferencePoint);
             dialog.DialogConfirmedHandler += OnReorderSettingsDialogConfirmed;
-            dialog.ShowDialog();
+            dialog.ShowThematicDialog();
         }
 
         public static void ShowReorientSettingsDialog()
         {
             ReorientSettingsDialog dialog = new ReorientSettingsDialog(ReorientShapeOrientation);
             dialog.DialogConfirmedHandler += OnReorientSettingsDialogConfirmed;
-            dialog.ShowDialog();
+            dialog.ShowThematicDialog();
         }
 
         private static void OnAlignSettingsDialogConfirmed(AlignReferenceObject alignReference)

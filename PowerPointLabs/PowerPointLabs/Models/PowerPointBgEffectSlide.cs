@@ -7,7 +7,7 @@ using ImageProcessor;
 using ImageProcessor.Imaging.Filters;
 
 using Microsoft.Office.Interop.PowerPoint;
-
+using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.CropLab;
 using PowerPointLabs.Utils;
 
@@ -45,13 +45,17 @@ namespace PowerPointLabs.Models
             // TODO: make use of PowerPointLabs.Presentation Model!!!
             // cut the original shape cover again and duplicate the slide
             // here the slide will be duplicated without the original shape cover
-            oriShapeRange.Cut();
-            PowerPointSlide newSlide = FromSlideFactory(refSlide.Duplicate()[1]);
-            
-            // get a copy of original cover shapes
-            ShapeRange copyShapeRange = newSlide.Shapes.Paste();
-            // paste the original shape cover back
-            oriShapeRange = refSlide.Shapes.Paste();
+            PowerPointSlide newSlide = null;
+            ShapeRange copyShapeRange = PPLClipboard.Instance.LockAndRelease(() =>
+            {
+                oriShapeRange.Cut();
+                newSlide = FromSlideFactory(refSlide.Duplicate()[1]);
+                // get a copy of original cover shapes
+                ShapeRange resultCopyShapeRange = newSlide.Shapes.Paste();
+                // paste the original shape cover back
+                oriShapeRange = refSlide.Shapes.Paste();
+                return resultCopyShapeRange;
+            });
             
             // make the range invisible before animated the slide
             copyShapeRange.Visible = Core.MsoTriState.msoFalse;
@@ -94,7 +98,7 @@ namespace PowerPointLabs.Models
             AddBackgroundImage(null, percentage: percentage, isTint: isTint);
         }
 
-        public void GreyScaleBackground()
+        public void GrayScaleBackground()
         {
             AddBackgroundImage(MatrixFilters.GreyScale);
         }
@@ -153,7 +157,7 @@ namespace PowerPointLabs.Models
             foreach (Shape shape in shapeRange)
             {
                 float softEdgeRadius = Math.Min(Math.Min(shape.Width, shape.Height) * 0.15f, 10f);
-                if (ShapeUtil.IsAGroup(shape))
+                if (shape.IsAGroup())
                 {
                     for (int i = 1; i <= shape.GroupItems.Count; i++)
                     {
@@ -176,7 +180,7 @@ namespace PowerPointLabs.Models
         {
             foreach (Shape shape in curSlide.Shapes.Cast<Shape>().Where(curSlide.HasExitAnimation))
             {
-                shape.Delete();
+                shape.SafeDelete();
             }
 
             curSlide.MoveMotionAnimation();
@@ -187,7 +191,7 @@ namespace PowerPointLabs.Models
             
             foreach (Shape shape in visibleShape)
             {
-                shape.Delete();
+                shape.SafeDelete();
             }
 
             List<Shape> placeHolders =
@@ -195,7 +199,7 @@ namespace PowerPointLabs.Models
 
             foreach (Shape placeHolder in placeHolders)
             {
-                placeHolder.Delete();
+                placeHolder.SafeDelete();
             }
         }
 
@@ -207,10 +211,13 @@ namespace PowerPointLabs.Models
                 // crop in the original slide and put into clipboard
                 Shape croppedShape = MakeFrontImage(refSlide, oriShapeRange);
 
-                croppedShape.Cut();
 
                 // swap the uncropped shapes and cropped shapes
-                ShapeRange pastedCrop = newSlide.Shapes.Paste();
+                ShapeRange pastedCrop = PPLClipboard.Instance.LockAndRelease(() =>
+                {
+                    croppedShape.Cut();
+                    return newSlide.Shapes.Paste();
+                });
 
                 // calibrate pasted shapes
                 pastedCrop.Left -= 12;
@@ -222,8 +229,11 @@ namespace PowerPointLabs.Models
                     pastedCrop[1].Ungroup();
                 }
 
-                copyShapeRange.Cut();
-                oriShapeRange = refSlide.Shapes.Paste();
+                PPLClipboard.Instance.LockAndRelease(() =>
+                {
+                    copyShapeRange.Cut();
+                    oriShapeRange = refSlide.Shapes.Paste();
+                });
 
                 oriShapeRange.Fill.ForeColor.RGB = 0xaaaaaa;
                 oriShapeRange.Fill.Transparency = 0.7f;

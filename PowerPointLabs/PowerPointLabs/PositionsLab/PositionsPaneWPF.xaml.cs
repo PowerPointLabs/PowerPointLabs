@@ -4,11 +4,12 @@ using System.Diagnostics.CodeAnalysis;
 using System.Windows;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
-
+using System.Windows.Threading;
 using Microsoft.Office.Interop.PowerPoint;
 
 using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.ActionFramework.Common.Log;
+using PowerPointLabs.ColorThemes.Extensions;
 using PowerPointLabs.PositionsLab.Views;
 using PowerPointLabs.TextCollection;
 using PowerPointLabs.Utils;
@@ -30,9 +31,9 @@ namespace PowerPointLabs.PositionsLab
         private PositionsDistributeGridDialog _positionsDistributeGridDialog;
 
         #pragma warning disable 0618
-        private static LMouseUpListener _leftMouseUpListener;
-        private static LMouseDownListener _leftMouseDownListener;
-        private static System.Windows.Threading.DispatcherTimer _dispatcherTimer = new System.Windows.Threading.DispatcherTimer();
+        private LMouseUpListener _leftMouseUpListener;
+        private LMouseDownListener _leftMouseDownListener;
+        private DispatcherTimer _dispatcherTimer;
 
         //Variable for preview
         private bool _previewIsExecuted = false;
@@ -63,10 +64,17 @@ namespace PowerPointLabs.PositionsLab
             PositionsLabMain.InitPositionsLab();
             InitializeComponent();
             InitializeHotKeys();
+            _dispatcherTimer = new DispatcherTimer(DispatcherPriority.Background, Dispatcher);
             _dispatcherTimer.Interval = TimeSpan.FromMilliseconds(10);
             Focusable = true;
+
         }
-        
+
+        ~PositionsPaneWpf()
+        {
+            ClearAllEventHandlers();
+        }
+
         private void InitializeHotKeys()
         {
             Dictionary<ToggleButton, Action<bool, bool>> buttonActionMapping = new Dictionary<ToggleButton, Action<bool, bool>>();
@@ -114,7 +122,7 @@ namespace PowerPointLabs.PositionsLab
         
         private void RotateSlightly(bool isClockwise, bool isLarge)
         {
-            System.Drawing.PointF origin = ShapeUtil.GetCenterPoint(_refPoint);
+            System.Drawing.PointF origin = _refPoint.GetCenterPoint();
             float angle = (isClockwise) ? 1f : -1f;
             if (isLarge)
             {
@@ -258,7 +266,7 @@ namespace PowerPointLabs.PositionsLab
                                                                                     PositionsLabSettings.GridMarginLeft,
                                                                                     PositionsLabSettings.GridMarginRight);
                 _positionsDistributeGridDialog.DialogConfirmedHandler += OnDistributeGridDialogConfirmed;
-                _positionsDistributeGridDialog.ShowDialog();
+                _positionsDistributeGridDialog.ShowThematicDialog();
             }
             catch (Exception ex)
             {
@@ -340,10 +348,10 @@ namespace PowerPointLabs.PositionsLab
             this.GetCurrentSelection().Unselect();
             System.Drawing.Point p = System.Windows.Forms.Control.MousePosition;
 
-            float prevAngle = (float)PositionsLabMain.AngleBetweenTwoPoints(ConvertSlidePointToScreenPoint(ShapeUtil.GetCenterPoint(_refPoint)), _prevMousePos);
-            float angle = (float)PositionsLabMain.AngleBetweenTwoPoints(ConvertSlidePointToScreenPoint(ShapeUtil.GetCenterPoint(_refPoint)), p) - prevAngle;
+            float prevAngle = (float)PositionsLabMain.AngleBetweenTwoPoints(ConvertSlidePointToScreenPoint(_refPoint.GetCenterPoint()), _prevMousePos);
+            float angle = (float)PositionsLabMain.AngleBetweenTwoPoints(ConvertSlidePointToScreenPoint(_refPoint.GetCenterPoint()), p) - prevAngle;
 
-            System.Drawing.PointF origin = ShapeUtil.GetCenterPoint(_refPoint);
+            System.Drawing.PointF origin = _refPoint.GetCenterPoint();
 
             foreach (Shape currentShape in _shapesToBeRotated)
             {
@@ -794,7 +802,7 @@ namespace PowerPointLabs.PositionsLab
         {
             float epsilon = 0.00001f;
 
-            System.Drawing.PointF centerPoint = ConvertSlidePointToScreenPoint(ShapeUtil.GetCenterPoint(shape));
+            System.Drawing.PointF centerPoint = ConvertSlidePointToScreenPoint(shape.GetCenterPoint());
             System.Drawing.PointF rotatedMousePos = CommonUtil.RotatePoint(p, centerPoint, -shape.Rotation);
 
             float x1 = PointsToScreenPixelsX(shape.Left);
@@ -917,7 +925,7 @@ namespace PowerPointLabs.PositionsLab
         }
         #endregion
 
-        public static void ClearAllEventHandlers()
+        public void ClearAllEventHandlers()
         {
             if (_leftMouseUpListener != null)
             {
@@ -930,7 +938,7 @@ namespace PowerPointLabs.PositionsLab
             }
 
             _dispatcherTimer.Stop();
-            _dispatcherTimer = new System.Windows.Threading.DispatcherTimer();
+            _dispatcherTimer = new DispatcherTimer(DispatcherPriority.Background, Dispatcher);
         }
 
         private void StartRotationMode()
@@ -1103,8 +1111,7 @@ namespace PowerPointLabs.PositionsLab
                 {
                     try
                     {
-                        simulatedShapes.Delete();
-                        GC.Collect();
+                        simulatedShapes.SafeDelete();
                     }
                     // Catch corrupted shapes
                     catch (System.Runtime.InteropServices.COMException)
@@ -1115,7 +1122,7 @@ namespace PowerPointLabs.PositionsLab
                             // This method to remove duplicated shapes might fail for non-corrupted shapes when mixing good/bad shapes
                             if (this.GetCurrentSlide().Shapes[1].Name.Contains("_Copy"))
                             {
-                                this.GetCurrentSlide().Shapes[1].Delete();
+                                this.GetCurrentSlide().Shapes[1].SafeDelete();
                             }
                             else
                             {
@@ -1198,8 +1205,7 @@ namespace PowerPointLabs.PositionsLab
             {
                 if (simulatedShapes != null)
                 {
-                    simulatedShapes.Delete();
-                    GC.Collect();
+                    simulatedShapes.SafeDelete();
                 }
             }
         }
@@ -1263,8 +1269,7 @@ namespace PowerPointLabs.PositionsLab
             {
                 if (simulatedShapes != null)
                 {
-                    simulatedShapes.Delete();
-                    GC.Collect();
+                    simulatedShapes.SafeDelete();
                 }
             }
         }
@@ -1322,8 +1327,7 @@ namespace PowerPointLabs.PositionsLab
                 {
                     if (simulatedShapes != null)
                     {
-                        simulatedShapes.Delete();
-                        GC.Collect();
+                        simulatedShapes.SafeDelete();
                     }
                 }
             }
@@ -1386,8 +1390,7 @@ namespace PowerPointLabs.PositionsLab
             {
                 if (simulatedShapes != null)
                 {
-                    simulatedShapes.Delete();
-                    GC.Collect();
+                    simulatedShapes.SafeDelete();
                 }
             }
         }
@@ -1448,8 +1451,7 @@ namespace PowerPointLabs.PositionsLab
                 {
                     if (simulatedShapes != null)
                     {
-                        simulatedShapes.Delete();
-                        GC.Collect();
+                        simulatedShapes.SafeDelete();
                     }
                 }
             }
@@ -1513,8 +1515,7 @@ namespace PowerPointLabs.PositionsLab
                 {
                     if (simulatedShapes != null)
                     {
-                        simulatedShapes.Delete();
-                        GC.Collect();
+                        simulatedShapes.SafeDelete();
                     }
                 }
             }
@@ -1589,8 +1590,7 @@ namespace PowerPointLabs.PositionsLab
                 {
                     try
                     {
-                        simulatedShapes.Delete();
-                        GC.Collect();
+                        simulatedShapes.SafeDelete();
                     }
                     // Catch corrupted shapes
                     catch (System.Runtime.InteropServices.COMException)
@@ -1601,7 +1601,7 @@ namespace PowerPointLabs.PositionsLab
                             // This method to remove duplicated shapes might fail for non-corrupted shapes when mixing good/bad shapes
                             if (this.GetCurrentSlide().Shapes[1].Name.Contains("_Copy"))
                             {
-                                this.GetCurrentSlide().Shapes[1].Delete();
+                                this.GetCurrentSlide().Shapes[1].SafeDelete();
                             }
                             else
                             {
@@ -1697,8 +1697,8 @@ namespace PowerPointLabs.PositionsLab
                 Shape selectedShape = selected[i];
                 Shape simulatedShape = simulatedShapes[i];
 
-                selectedShape.IncrementLeft(ShapeUtil.GetCenterPoint(simulatedShape).X - ShapeUtil.GetCenterPoint(selectedShape).X);
-                selectedShape.IncrementTop(ShapeUtil.GetCenterPoint(simulatedShape).Y - ShapeUtil.GetCenterPoint(selectedShape).Y);
+                selectedShape.IncrementLeft(simulatedShape.GetCenterPoint().X - selectedShape.GetCenterPoint().X);
+                selectedShape.IncrementTop(simulatedShape.GetCenterPoint().Y - selectedShape.GetCenterPoint().Y);
                 selectedShape.Rotation = simulatedShape.Rotation;
             }
         }
@@ -1710,8 +1710,8 @@ namespace PowerPointLabs.PositionsLab
                 Shape selectedShape = selected[i];
                 Shape simulatedShape = simulatedShapes[i];
 
-                selectedShape.IncrementLeft(ShapeUtil.GetCenterPoint(simulatedShape).X - originalPositions[i - 1, Left]);
-                selectedShape.IncrementTop(ShapeUtil.GetCenterPoint(simulatedShape).Y - originalPositions[i - 1, Top]);
+                selectedShape.IncrementLeft(simulatedShape.GetCenterPoint().X - originalPositions[i - 1, Left]);
+                selectedShape.IncrementTop(simulatedShape.GetCenterPoint().Y - originalPositions[i - 1, Top]);
             }
         }
 

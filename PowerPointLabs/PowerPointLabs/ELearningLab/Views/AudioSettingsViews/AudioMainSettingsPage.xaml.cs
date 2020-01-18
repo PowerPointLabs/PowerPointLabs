@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Input;
-using PowerPointLabs.ActionFramework.Common.Log;
+
 using PowerPointLabs.ELearningLab.AudioGenerator;
 using PowerPointLabs.ELearningLab.AudioGenerator.WatsonVoiceGenerator.Model;
 using PowerPointLabs.ELearningLab.Service;
@@ -248,7 +244,7 @@ namespace PowerPointLabs.ELearningLab.Views
                     ComboBox previousComboBox = rankToComboBoxMapping[rank];
                     // if another combobox item with the same ranking exists, we will 
                     // remove the ranking for the previous combobox item.
-                    if (!comboBox.Equals(previousComboBox))
+                    if (previousComboBox.SelectedIndex == rank && !comboBox.Equals(previousComboBox))
                     {
                         previousComboBox.SelectedIndex = 0;
                     }

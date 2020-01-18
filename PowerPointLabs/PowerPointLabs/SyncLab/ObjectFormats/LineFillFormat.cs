@@ -2,7 +2,7 @@
 using System.Drawing;
 
 using Microsoft.Office.Interop.PowerPoint;
-
+using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.Utils;
 
@@ -33,7 +33,7 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
             shape.Line.Visible = Microsoft.Office.Core.MsoTriState.msoFalse;
             shape.Fill.ForeColor = formatShape.Line.ForeColor;
             Bitmap image = GraphicsUtil.ShapeToBitmap(shape);
-            shape.Delete();
+            shape.SafeDelete();
             return image;
         }
 

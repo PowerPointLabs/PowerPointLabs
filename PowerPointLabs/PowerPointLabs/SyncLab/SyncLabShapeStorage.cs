@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 
 using Microsoft.Office.Core;
-
+using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.Models;
 using PowerPointLabs.SyncLab.ObjectFormats;
 using PowerPointLabs.TextCollection;
@@ -29,22 +29,22 @@ namespace PowerPointLabs.SyncLab
         public const int FormatStorageSlide = 0;
 
         private int nextKey = 0;
-        
+
         // only for 2013
-        private readonly Dictionary<String, List<MsoPictureEffectType>> _backupArtisticEffects = 
+        private readonly Dictionary<String, List<MsoPictureEffectType>> _backupArtisticEffects =
             new Dictionary<string, List<MsoPictureEffectType>>();
-        
+
         // only for 2013
         // need to sync all glow formats, syncing color alone resets transparency & radius
         // color must be synced first, it resets the transparency
-        private readonly List<Format> _glowFormats = 
-            new List<Format> 
+        private readonly List<Format> _glowFormats =
+            new List<Format>
             {
                 new GlowColorFormat(),
                 new GlowTransparencyFormat(),
                 new GlowSizeFormat()
             };
-        
+
         // only for 2013
         private readonly List<Format> _fillFormats =
             new List<Format>
@@ -52,12 +52,28 @@ namespace PowerPointLabs.SyncLab
                 new FillFormat()
             };
 
-        private static readonly Lazy<SyncLabShapeStorage> StorageInstance =
-            new Lazy<SyncLabShapeStorage>(() => new SyncLabShapeStorage());
+        private static Lazy<SyncLabShapeStorage> storageInstance =
+            new Lazy<SyncLabShapeStorage>(() =>
+            {
+                try
+                {
+                    return new SyncLabShapeStorage();
+                }
+                catch
+                {
+                    throw new SyncLabShapeStorageException(
+                        "Failed to initialized sync lab shape storage");
+                }
+            });
 
         public static SyncLabShapeStorage Instance
         {
-            get { return StorageInstance.Value; }
+            get { return storageInstance.Value; }
+        }
+
+        public static void ReInit()
+        {
+            storageInstance = new Lazy<SyncLabShapeStorage>(() => new SyncLabShapeStorage());
         }
 
         private SyncLabShapeStorage() : base()
@@ -92,8 +108,7 @@ namespace PowerPointLabs.SyncLab
             {
                 try
                 {
-                    shape.Copy();
-                    copiedShape = Slides[0].Shapes.Paste()[1];
+                    copiedShape = Slides[0].Shapes.SafeCopyPlaceholder(shape);
                 }
                 catch
                 {
@@ -158,7 +173,7 @@ namespace PowerPointLabs.SyncLab
             {
                 if (shapes[index].Name.Equals(shapeKey))
                 {
-                    shapes[index].Delete();
+                    shapes[index].SafeDelete();
                     _backupArtisticEffects.Remove(shapeKey);
                 }
                 else

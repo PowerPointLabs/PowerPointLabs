@@ -1,7 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Windows.Forms;
+
 using Microsoft.Office.Interop.PowerPoint;
+
 using PowerPointLabs.Models;
 using PowerPointLabs.TextCollection;
 
@@ -14,10 +15,8 @@ namespace PowerPointLabs.TooltipsLab
     /// </summary>
     internal static class ConvertToTooltip
     {
-        public static bool AddTriggerAnimation(PowerPointSlide currentSlide, Selection selection)
+        public static bool AddTriggerAnimation(PowerPointSlide currentSlide, ShapeRange selectedShapes)
         {
-            ShapeRange selectedShapes = selection.ShapeRange;
-            
             if (selectedShapes.Count < 2)
             {
                 MessageBox.Show(TooltipsLabText.ErrorLessThanTwoShapesSelected,

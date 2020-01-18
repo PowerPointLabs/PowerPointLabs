@@ -2,6 +2,7 @@
 
 using Microsoft.Office.Interop.PowerPoint;
 
+using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.Models;
 using PowerPointLabs.Utils;
 
@@ -19,7 +20,7 @@ namespace PowerPointLabs.PasteLab
             ShapeUtil.MoveZToJustInFront(tempShapeForAnimation, firstSelectedShape);
 
             string originalGroupName = null;
-            if (selectedShapes.Count == 1 && ShapeUtil.IsAGroup(firstSelectedShape))
+            if (selectedShapes.Count == 1 && firstSelectedShape.IsAGroup())
             {
                 originalGroupName = firstSelectedShape.Name;
                 selectedShapes = firstSelectedShape.Ungroup();
@@ -59,7 +60,7 @@ namespace PowerPointLabs.PasteLab
             resultGroup.Name = originalGroupName ?? resultGroup.Name;
             slide.TransferAnimation(tempShapeForAnimation, resultGroup);
             ShapeUtil.MoveZToJustInFront(resultGroup, tempShapeForAnimation);
-            tempShapeForAnimation.Delete();
+            tempShapeForAnimation.SafeDelete();
             if (shapeAbove == null)
             {
                 pastingShapes.ZOrder(Microsoft.Office.Core.MsoZOrderCmd.msoBringToFront);

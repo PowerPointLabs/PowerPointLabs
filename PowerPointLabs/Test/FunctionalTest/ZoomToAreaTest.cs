@@ -103,7 +103,8 @@ namespace Test.FunctionalTest
         {
             Microsoft.Office.Interop.PowerPoint.Slide actualSlide = PpOperations.SelectSlide(actualSlideIndex);
             Microsoft.Office.Interop.PowerPoint.Slide expectedSlide = PpOperations.SelectSlide(expectedSlideIndex);
-            SlideUtil.IsSameLooking(expectedSlide, actualSlide);
+            // Similarity tolerance adjusted because different machines generate slightly different slides
+            SlideUtil.IsSameLooking(expectedSlide, actualSlide, 0.88);
             SlideUtil.IsSameAnimations(expectedSlide, actualSlide);
         }
     }
