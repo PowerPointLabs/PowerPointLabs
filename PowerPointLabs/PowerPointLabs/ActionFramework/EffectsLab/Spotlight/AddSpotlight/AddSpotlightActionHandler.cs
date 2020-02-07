@@ -2,6 +2,7 @@
 using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.ActionFramework.Common.Interface;
 using PowerPointLabs.EffectsLab;
+using PowerPointLabs.Models;
 using PowerPointLabs.TextCollection;
 
 namespace PowerPointLabs.ActionFramework.EffectsLab
@@ -18,8 +19,10 @@ namespace PowerPointLabs.ActionFramework.EffectsLab
             }
 
             this.StartNewUndoEntry();
+            PowerPointPresentation pres = this.GetCurrentPresentation();
+            PowerPointSlide slide = this.GetCurrentSlide();
 
-            Spotlight.AddSpotlightEffect();
+            Spotlight.AddSpotlightEffect(pres, slide);
         }
     }
 }

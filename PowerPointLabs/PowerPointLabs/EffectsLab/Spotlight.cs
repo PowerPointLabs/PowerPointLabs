@@ -3,6 +3,7 @@ using System.Collections.Generic;
 
 using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.Models;
+using PowerPointLabs.Utils;
 
 using Office = Microsoft.Office.Core;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
@@ -12,31 +13,35 @@ namespace PowerPointLabs.EffectsLab
     internal static class Spotlight
     {
 #pragma warning disable 0618
-        public static void AddSpotlightEffect()
+        public static void AddSpotlightEffect(PowerPointPresentation pres, PowerPointSlide slide)
         {
             try
             {
-                PowerPointSlide currentSlide = PowerPointCurrentPresentationInfo.CurrentSlide;
-                PowerPoint.ShapeRange selectedShapes = Globals.ThisAddIn.Application.ActiveWindow.Selection.ShapeRange;
-
-                PowerPointSpotlightSlide addedSlide = currentSlide.CreateSpotlightSlide() as PowerPointSpotlightSlide;
-                List<PowerPoint.Shape> spotlightShapes = new List<PowerPoint.Shape>();
-
-                addedSlide.DeleteShapesWithPrefix("SpotlightShape");
-                foreach (PowerPoint.Shape spotShape in selectedShapes)
+                ClipboardUtil.RestoreClipboardAfterAction(() =>
                 {
-                    addedSlide.DeleteShapesWithPrefix(spotShape.Name);
-                    PreFormatShapeOnCurrentSlide(spotShape);
-                    PowerPoint.Shape spotlightShape = addedSlide.CreateSpotlightShape(spotShape);
-                    CreateSpotlightDuplicate(spotlightShape);
-                    spotlightShapes.Add(spotlightShape);
-                    PostFormatShapeOnCurrentSlide(currentSlide, spotShape);
-                }
-                
-                addedSlide.PrepareForSpotlight();
-                addedSlide.AddSpotlightEffect(spotlightShapes);
-                currentSlide.DeleteShapesWithPrefix("SpotlightShape");
-                PowerPointPresentation.Current.AddAckSlide();
+                    PowerPointSlide currentSlide = PowerPointCurrentPresentationInfo.CurrentSlide;
+                    PowerPoint.ShapeRange selectedShapes = Globals.ThisAddIn.Application.ActiveWindow.Selection.ShapeRange;
+
+                    PowerPointSpotlightSlide addedSlide = currentSlide.CreateSpotlightSlide() as PowerPointSpotlightSlide;
+                    List<PowerPoint.Shape> spotlightShapes = new List<PowerPoint.Shape>();
+
+                    addedSlide.DeleteShapesWithPrefix("SpotlightShape");
+                    foreach (PowerPoint.Shape spotShape in selectedShapes)
+                    {
+                        addedSlide.DeleteShapesWithPrefix(spotShape.Name);
+                        PreFormatShapeOnCurrentSlide(spotShape);
+                        PowerPoint.Shape spotlightShape = addedSlide.CreateSpotlightShape(spotShape);
+                        CreateSpotlightDuplicate(spotlightShape);
+                        spotlightShapes.Add(spotlightShape);
+                        PostFormatShapeOnCurrentSlide(currentSlide, spotShape);
+                    }
+
+                    addedSlide.PrepareForSpotlight();
+                    addedSlide.AddSpotlightEffect(spotlightShapes);
+                    currentSlide.DeleteShapesWithPrefix("SpotlightShape");
+                    PowerPointPresentation.Current.AddAckSlide();
+                    return null;
+                }, pres, slide);
             }
             catch (Exception e)
             {
