@@ -15,6 +15,7 @@ namespace PowerPointLabs.ActionFramework.EffectsLab
         protected override void ExecuteAction(string ribbonId)
         {
             this.StartNewUndoEntry();
+            Models.PowerPointPresentation pres = this.GetCurrentPresentation();
 
             bool isButton = false;
             bool isCustom = ribbonId.Contains(EffectsLabText.BlurrinessCustom);
@@ -43,7 +44,7 @@ namespace PowerPointLabs.ActionFramework.EffectsLab
             {
                 int startIndex = keywordIndex + CommonText.DynamicMenuOptionId.Length;
                 int percentage = isCustom ? GetCustomPercentage(feature) : int.Parse(ribbonId.Substring(startIndex, ribbonId.Length - startIndex));
-                ExecuteBlurAction(feature, selection, slide, percentage);
+                ExecuteBlurAction(feature, selection, pres, slide, percentage);
             }
         }
 
@@ -63,23 +64,27 @@ namespace PowerPointLabs.ActionFramework.EffectsLab
             }
         }
 
-        private void ExecuteBlurAction(string feature, Selection selection, Models.PowerPointSlide slide, int percentage)
+        private void ExecuteBlurAction(string feature, Selection selection, Models.PowerPointPresentation pres, Models.PowerPointSlide slide, int percentage)
         {
-            switch (feature)
+            Utils.ClipboardUtil.RestoreClipboardAfterAction(() =>
             {
-                case EffectsLabText.BlurrinessFeatureSelected:
-                    EffectsLabBlur.ExecuteBlurSelected(slide, selection, percentage);
-                    break;
-                case EffectsLabText.BlurrinessFeatureRemainder:
-                    EffectsLabBlur.ExecuteBlurRemainder(slide, selection, percentage);
-                    break;
-                case EffectsLabText.BlurrinessFeatureBackground:
-                    EffectsLabBlur.ExecuteBlurBackground(slide, selection, percentage);
-                    break;
-                default:
-                    Logger.Log(feature + " does not exist!", Common.Logger.LogType.Error);
-                    break;
-            }
+                switch (feature)
+                {
+                    case EffectsLabText.BlurrinessFeatureSelected:
+                        EffectsLabBlur.ExecuteBlurSelected(slide, selection, percentage);
+                        break;
+                    case EffectsLabText.BlurrinessFeatureRemainder:
+                        EffectsLabBlur.ExecuteBlurRemainder(slide, selection, percentage);
+                        break;
+                    case EffectsLabText.BlurrinessFeatureBackground:
+                        EffectsLabBlur.ExecuteBlurBackground(slide, selection, percentage);
+                        break;
+                    default:
+                        Logger.Log(feature + " does not exist!", Common.Logger.LogType.Error);
+                        break;
+                }
+                return 0; // TEMPORARY
+            }, pres, slide);
         }
     }
 }
