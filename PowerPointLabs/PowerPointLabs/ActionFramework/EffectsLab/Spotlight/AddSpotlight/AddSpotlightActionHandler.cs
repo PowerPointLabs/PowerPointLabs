@@ -22,7 +22,11 @@ namespace PowerPointLabs.ActionFramework.EffectsLab
             PowerPointPresentation pres = this.GetCurrentPresentation();
             PowerPointSlide slide = this.GetCurrentSlide();
 
-            Spotlight.AddSpotlightEffect(pres, slide);
+            Utils.ClipboardUtil.RestoreClipboardAfterAction(() =>
+            {
+                Spotlight.AddSpotlightEffect();
+                return 0; //TEMPORARY
+            }, pres, slide);
         }
     }
 }
