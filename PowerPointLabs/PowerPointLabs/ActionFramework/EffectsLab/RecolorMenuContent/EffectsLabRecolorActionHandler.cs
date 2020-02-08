@@ -16,60 +16,64 @@ namespace PowerPointLabs.ActionFramework.EffectsLab
         protected override void ExecuteAction(string ribbonId)
         {
             this.StartNewUndoEntry();
-
+            PowerPointPresentation pres = this.GetCurrentPresentation();
             PowerPointSlide curSlide = this.GetCurrentSlide();
             Selection selection = this.GetCurrentSelection();
 
-            if (ribbonId.Contains(EffectsLabText.RecolorRemainderMenuId))
+            Utils.ClipboardUtil.RestoreClipboardAfterAction(() =>
             {
-                if (ribbonId.Contains(EffectsLabText.GrayScaleTag))
+                if (ribbonId.Contains(EffectsLabText.RecolorRemainderMenuId))
                 {
-                    EffectsLabRecolor.GrayScaleRemainderEffect(curSlide, selection);
+                    if (ribbonId.Contains(EffectsLabText.GrayScaleTag))
+                    {
+                        EffectsLabRecolor.GrayScaleRemainderEffect(curSlide, selection);
+                    }
+                    else if (ribbonId.Contains(EffectsLabText.BlackWhiteTag))
+                    {
+                        EffectsLabRecolor.BlackWhiteRemainderEffect(curSlide, selection);
+                    }
+                    else if (ribbonId.Contains(EffectsLabText.GothamTag))
+                    {
+                        EffectsLabRecolor.GothamRemainderEffect(curSlide, selection);
+                    }
+                    else if (ribbonId.Contains(EffectsLabText.SepiaTag))
+                    {
+                        EffectsLabRecolor.SepiaRemainderEffect(curSlide, selection);
+                    }
+                    else
+                    {
+                        Logger.Log(ribbonId + " does not exist!", Common.Logger.LogType.Error);
+                    }
                 }
-                else if (ribbonId.Contains(EffectsLabText.BlackWhiteTag))
+                else if (ribbonId.Contains(EffectsLabText.RecolorBackgroundMenuId))
                 {
-                    EffectsLabRecolor.BlackWhiteRemainderEffect(curSlide, selection);
-                }
-                else if (ribbonId.Contains(EffectsLabText.GothamTag))
-                {
-                    EffectsLabRecolor.GothamRemainderEffect(curSlide, selection);
-                }
-                else if (ribbonId.Contains(EffectsLabText.SepiaTag))
-                {
-                    EffectsLabRecolor.SepiaRemainderEffect(curSlide, selection);
+                    if (ribbonId.Contains(EffectsLabText.GrayScaleTag))
+                    {
+                        EffectsLabRecolor.GrayScaleBackgroundEffect(curSlide, selection);
+                    }
+                    else if (ribbonId.Contains(EffectsLabText.BlackWhiteTag))
+                    {
+                        EffectsLabRecolor.BlackWhiteBackgroundEffect(curSlide, selection);
+                    }
+                    else if (ribbonId.Contains(EffectsLabText.GothamTag))
+                    {
+                        EffectsLabRecolor.GothamBackgroundEffect(curSlide, selection);
+                    }
+                    else if (ribbonId.Contains(EffectsLabText.SepiaTag))
+                    {
+                        EffectsLabRecolor.SepiaBackgroundEffect(curSlide, selection);
+                    }
+                    else
+                    {
+                        Logger.Log(ribbonId + " does not exist!", Common.Logger.LogType.Error);
+                    }
                 }
                 else
                 {
                     Logger.Log(ribbonId + " does not exist!", Common.Logger.LogType.Error);
                 }
-            }
-            else if (ribbonId.Contains(EffectsLabText.RecolorBackgroundMenuId))
-            {
-                if (ribbonId.Contains(EffectsLabText.GrayScaleTag))
-                {
-                    EffectsLabRecolor.GrayScaleBackgroundEffect(curSlide, selection);
-                }
-                else if (ribbonId.Contains(EffectsLabText.BlackWhiteTag))
-                {
-                    EffectsLabRecolor.BlackWhiteBackgroundEffect(curSlide, selection);
-                }
-                else if (ribbonId.Contains(EffectsLabText.GothamTag))
-                {
-                    EffectsLabRecolor.GothamBackgroundEffect(curSlide, selection);
-                }
-                else if (ribbonId.Contains(EffectsLabText.SepiaTag))
-                {
-                    EffectsLabRecolor.SepiaBackgroundEffect(curSlide, selection);
-                }
-                else
-                {
-                    Logger.Log(ribbonId + " does not exist!", Common.Logger.LogType.Error);
-                }
-            }
-            else
-            {
-                Logger.Log(ribbonId + " does not exist!", Common.Logger.LogType.Error);
-            }
+                return 0; //TEMPORARY
+            }, pres, curSlide);
         }
     }
 }
