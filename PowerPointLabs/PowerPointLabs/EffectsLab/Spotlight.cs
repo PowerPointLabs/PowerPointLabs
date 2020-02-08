@@ -40,7 +40,7 @@ namespace PowerPointLabs.EffectsLab
                     addedSlide.AddSpotlightEffect(spotlightShapes);
                     currentSlide.DeleteShapesWithPrefix("SpotlightShape");
                     PowerPointPresentation.Current.AddAckSlide();
-                    return null;
+                    return 0; //TEMPORARY RETURN FOR TESTING
                 }, pres, slide);
             }
             catch (Exception e)
