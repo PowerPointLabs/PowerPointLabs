@@ -6,6 +6,7 @@ using PowerPointLabs.ActionFramework.Common.Interface;
 using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.EffectsLab;
 using PowerPointLabs.TextCollection;
+using PowerPointLabs.Utils;
 
 namespace PowerPointLabs.ActionFramework.EffectsLab
 {
@@ -66,7 +67,7 @@ namespace PowerPointLabs.ActionFramework.EffectsLab
 
         private void ExecuteBlurAction(string feature, Selection selection, Models.PowerPointPresentation pres, Models.PowerPointSlide slide, int percentage)
         {
-            Utils.ClipboardUtil.RestoreClipboardAfterAction(() =>
+            ClipboardUtil.RestoreClipboardAfterAction(() =>
             {
                 switch (feature)
                 {
@@ -83,7 +84,7 @@ namespace PowerPointLabs.ActionFramework.EffectsLab
                         Logger.Log(feature + " does not exist!", Common.Logger.LogType.Error);
                         break;
                 }
-                return 0; // TEMPORARY
+                return ClipboardUtil.ClipboardRestoreSuccess;
             }, pres, slide);
         }
     }

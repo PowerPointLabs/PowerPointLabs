@@ -7,6 +7,7 @@ using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.EffectsLab;
 using PowerPointLabs.Models;
 using PowerPointLabs.TextCollection;
+using PowerPointLabs.Utils;
 
 namespace PowerPointLabs.ActionFramework.EffectsLab
 {
@@ -20,7 +21,7 @@ namespace PowerPointLabs.ActionFramework.EffectsLab
             PowerPointSlide curSlide = this.GetCurrentSlide();
             Selection selection = this.GetCurrentSelection();
 
-            Utils.ClipboardUtil.RestoreClipboardAfterAction(() =>
+            ClipboardUtil.RestoreClipboardAfterAction(() =>
             {
                 if (ribbonId.Contains(EffectsLabText.RecolorRemainderMenuId))
                 {
@@ -72,7 +73,7 @@ namespace PowerPointLabs.ActionFramework.EffectsLab
                 {
                     Logger.Log(ribbonId + " does not exist!", Common.Logger.LogType.Error);
                 }
-                return 0; //TEMPORARY
+                return ClipboardUtil.ClipboardRestoreSuccess;
             }, pres, curSlide);
         }
     }

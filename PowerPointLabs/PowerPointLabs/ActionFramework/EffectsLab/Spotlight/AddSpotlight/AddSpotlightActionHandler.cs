@@ -4,6 +4,7 @@ using PowerPointLabs.ActionFramework.Common.Interface;
 using PowerPointLabs.EffectsLab;
 using PowerPointLabs.Models;
 using PowerPointLabs.TextCollection;
+using PowerPointLabs.Utils;
 
 namespace PowerPointLabs.ActionFramework.EffectsLab
 {
@@ -22,10 +23,10 @@ namespace PowerPointLabs.ActionFramework.EffectsLab
             PowerPointPresentation pres = this.GetCurrentPresentation();
             PowerPointSlide slide = this.GetCurrentSlide();
 
-            Utils.ClipboardUtil.RestoreClipboardAfterAction(() =>
+            ClipboardUtil.RestoreClipboardAfterAction(() =>
             {
                 Spotlight.AddSpotlightEffect();
-                return 0; //TEMPORARY
+                return ClipboardUtil.ClipboardRestoreSuccess;
             }, pres, slide);
         }
     }

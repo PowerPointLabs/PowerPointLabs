@@ -149,7 +149,7 @@ namespace PowerPointLabs.AgendaLab
                             CreateVisualAgenda(slideTracker);
                             break;
                     }
-                    return 0; //TEMPORARY
+                    return ClipboardUtil.ClipboardRestoreSuccess;
                 }, pres, slide);
 
                 pres.AddAckSlide();
@@ -257,7 +257,7 @@ namespace PowerPointLabs.AgendaLab
                             SyncVisualAgenda(slideTracker, refSlide);
                             break;
                     }
-                    return 0; // TEMPORARY
+                    return ClipboardUtil.ClipboardRestoreSuccess;
                 }, pres, slide);
 
                 pres.AddAckSlide();
