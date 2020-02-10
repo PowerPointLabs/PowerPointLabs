@@ -135,7 +135,7 @@ namespace PowerPointLabs.SyncLab
             string shapeKey = nextKey.ToString();
             nextKey++;
             copiedShape.Name = shapeKey;
-            
+
             #pragma warning disable 618
             if (Globals.ThisAddIn.IsApplicationVersion2013())
             {
