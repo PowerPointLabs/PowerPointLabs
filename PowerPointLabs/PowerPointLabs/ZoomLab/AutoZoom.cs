@@ -22,8 +22,15 @@ namespace PowerPointLabs.ZoomLab
                 return;
             }
 
-            AddDrillDownAnimation(Globals.ThisAddIn.Application.ActiveWindow.Selection.ShapeRange[1],
+            PowerPointPresentation pres = PowerPointPresentation.Current;
+            PowerPointSlide slide = PowerPointCurrentPresentationInfo.CurrentSlide;
+
+            ClipboardUtil.RestoreClipboardAfterAction(() =>
+            {
+                AddDrillDownAnimation(Globals.ThisAddIn.Application.ActiveWindow.Selection.ShapeRange[1],
                 PowerPointCurrentPresentationInfo.CurrentSlide);
+                return ClipboardUtil.ClipboardRestoreSuccess;
+            }, pres, slide);
         }
 
         public static void AddDrillDownAnimation(PowerPoint.Shape selectedShape, PowerPointSlide currentSlide)
@@ -37,7 +44,8 @@ namespace PowerPointLabs.ZoomLab
         {
             try
             {
-                if (currentSlide == null || currentSlide.Index == PowerPointPresentation.Current.SlideCount)
+                //SlideCount - 1 due to #RestoreClipboardAfterAction creating a temporary slide to store clipboard
+                if (currentSlide == null || currentSlide.Index == PowerPointPresentation.Current.SlideCount - 1)
                 {
                     System.Windows.Forms.MessageBox.Show(TextCollection.ZoomLabText.ErrorInvalidNextSlide, TextCollection.ZoomLabText.ErrorUnableToAddAnimationsCaption);
                     addedSlide = null;
@@ -120,8 +128,15 @@ namespace PowerPointLabs.ZoomLab
                 return;
             }
 
-            AddStepBackAnimation(Globals.ThisAddIn.Application.ActiveWindow.Selection.ShapeRange[1],
-                PowerPointCurrentPresentationInfo.CurrentSlide);
+            PowerPointPresentation pres = PowerPointPresentation.Current;
+            PowerPointSlide slide = PowerPointCurrentPresentationInfo.CurrentSlide;
+
+            ClipboardUtil.RestoreClipboardAfterAction(() =>
+            {
+                AddStepBackAnimation(Globals.ThisAddIn.Application.ActiveWindow.Selection.ShapeRange[1],
+                    PowerPointCurrentPresentationInfo.CurrentSlide);
+                return ClipboardUtil.ClipboardRestoreSuccess;
+            }, pres, slide);
         }
 
         public static void AddStepBackAnimation(PowerPoint.Shape selectedShape, PowerPointSlide currentSlide)
