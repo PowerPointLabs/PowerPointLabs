@@ -3,7 +3,6 @@ using System.Collections.Generic;
 
 using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.Models;
-using PowerPointLabs.Utils;
 
 using Office = Microsoft.Office.Core;
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
