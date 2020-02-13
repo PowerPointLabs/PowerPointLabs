@@ -14,8 +14,10 @@ namespace PowerPointLabs.ActionFramework.ZoomLab
         protected override void ExecuteAction(string ribbonId)
         {
             this.StartNewUndoEntry();
+            PowerPointPresentation pres = this.GetCurrentPresentation();
+            PowerPointSlide slide = this.GetCurrentSlide();
 
-            AutoZoom.AddStepBackAnimation();
+            AutoZoom.AddStepBackAnimation(pres, slide);
         }
     }
 }

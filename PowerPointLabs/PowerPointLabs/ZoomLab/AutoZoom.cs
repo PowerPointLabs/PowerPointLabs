@@ -15,15 +15,12 @@ namespace PowerPointLabs.ZoomLab
     internal static class AutoZoom
     {
 #pragma warning disable 0618
-        public static void AddDrillDownAnimation()
+        public static void AddDrillDownAnimation(PowerPointPresentation pres, PowerPointSlide slide)
         {
             if (!IsSelectingShapes())
             {
                 return;
             }
-
-            PowerPointPresentation pres = PowerPointPresentation.Current;
-            PowerPointSlide slide = PowerPointCurrentPresentationInfo.CurrentSlide;
 
             ClipboardUtil.RestoreClipboardAfterAction(() =>
             {
@@ -121,15 +118,12 @@ namespace PowerPointLabs.ZoomLab
             }
         }
 
-        public static void AddStepBackAnimation()
+        public static void AddStepBackAnimation(PowerPointPresentation pres, PowerPointSlide slide)
         {
             if (!IsSelectingShapes())
             {
                 return;
             }
-
-            PowerPointPresentation pres = PowerPointPresentation.Current;
-            PowerPointSlide slide = PowerPointCurrentPresentationInfo.CurrentSlide;
 
             ClipboardUtil.RestoreClipboardAfterAction(() =>
             {
