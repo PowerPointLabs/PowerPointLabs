@@ -79,6 +79,19 @@ namespace PowerPointLabs.ColorThemes.Extensions
                 t.Foreground = new SolidColorBrush(theme.foreground);
                 t.Background = Brushes.Transparent;
             }
+            else if (element is CheckBox)
+            {
+                // The background of the CheckBox instance is actually the background of the box that
+                // contains the checkmark (as opposed to the background of the label next to the box).
+                // There is no simple way to change the colour of the check mark itself, so to ensure
+                // the check mark is stil visible, the background of the CheckBox shall remain unchanged.
+                //
+                // To change the check mark colour, we will have to modify the ControlTemplate, which
+                // is a pain. An example is given in the following link:
+                // https://www.eidias.com/blog/2012/6/1/custom-wpf-check-box-with-inner-shadow-effect
+                CheckBox t = element as CheckBox;
+                t.Foreground = new SolidColorBrush(theme.foreground);
+            }
             else if (element is Label)
             {
                 Label l = element as Label;
