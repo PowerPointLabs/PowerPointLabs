@@ -71,6 +71,7 @@ namespace PowerPointLabs.ColorThemes.Extensions
                 TextBox t = element as TextBox;
                 t.Foreground = new SolidColorBrush(theme.foreground);
                 t.Background = Brushes.Transparent;
+                t.CaretBrush = new SolidColorBrush(theme.foreground);
             }
             else if (element is TextBlock)
             {
