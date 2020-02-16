@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Media;
 
-namespace PowerPointLabs.ColorTheme
+namespace PowerPointLabs.ColorThemes
 {
     /// <summary>
     /// The ButtonTheme struct contains the colors that are used for the <see cref="Button"/> control.

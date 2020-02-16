@@ -719,8 +719,8 @@
     <Compile Include="ColorsLab\ColorInformationDialog.xaml.cs">
       <DependentUpon>ColorInformationDialog.xaml</DependentUpon>
     </Compile>
-    <Compile Include="ColorTheme\ActionCommand.cs" />
-    <Compile Include="ColorTheme\ButtonTheme.cs" />
+    <Compile Include="ColorThemes\ActionCommand.cs" />
+    <Compile Include="ColorThemes\ButtonTheme.cs" />
     <Compile Include="Converters\ColorPane\HSLColorToHex.cs" />
     <Compile Include="Converters\ColorPane\SelectedColorShiftByAngle.cs" />
     <Compile Include="Converters\ColorPane\SelectedColorShiftSaturationByFactor.cs" />
@@ -936,15 +936,15 @@
     </Compile>
     <Compile Include="TooltipsLab\TooltipsLabConstants.cs" />
     <Compile Include="TooltipsLab\ConvertToTooltip.cs" />
-    <Compile Include="ColorTheme\ThemeExtensions.cs" />
+    <Compile Include="ColorThemes\ThemeExtensions.cs" />
     <Compile Include="Utils\ClipboardUtil.cs" />
-    <Compile Include="ColorTheme\ColorTheme.cs" />
+    <Compile Include="ColorThemes\ColorTheme.cs" />
     <Compile Include="Utils\ClipboardUtilData.cs" />
     <Compile Include="Utils\IWPFContainer.cs" />
     <Compile Include="Utils\RegistryWatcher.cs" />
     <Compile Include="Utils\ShapeUtil.cs" />
     <Compile Include="Utils\SlideUtil.cs" />
-    <Compile Include="ColorTheme\ThemeManager.cs" />
+    <Compile Include="ColorThemes\ThemeManager.cs" />
     <Compile Include="Views\ErrorDialogBox.xaml.cs">
       <DependentUpon>ErrorDialogBox.xaml</DependentUpon>
     </Compile>
