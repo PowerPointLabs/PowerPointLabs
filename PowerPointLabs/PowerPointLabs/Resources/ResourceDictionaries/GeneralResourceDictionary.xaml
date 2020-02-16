@@ -1,0 +1,27 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <!--
+    To override a button's background on mouse over, it's not enough to create a new Style with a
+    trigger on MouseOver; we need to replace its ControlTemplate. While it's possible to create one
+    from scratch programmatically, it's easier to do it in XAML. So, this ControlTemplate is
+    identical to that of a default Button, except the background changes on mouse over, which will
+    be set programmatically.
+    -->
+    <ControlTemplate x:Key="DefaultButtonControlTemplate" 
+                     TargetType="{x:Type Button}">
+        <Border x:Name="border"
+                BorderBrush="{TemplateBinding BorderBrush}"
+                Background="{TemplateBinding Background}"
+                BorderThickness="{TemplateBinding BorderThickness}"
+                SnapsToDevicePixels="True">
+            <ContentPresenter x:Name="contentPresenter" 
+                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                              HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                              Focusable="False"
+                              ContentSource="Content"
+                              Margin="{TemplateBinding Padding}"
+                              RecognizesAccessKey="True"
+                              SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+        </Border>
+    </ControlTemplate>
+</ResourceDictionary>
