@@ -17,5 +17,10 @@ namespace PowerPointLabs.ColorThemes
         public Color boxBackground;
         public Color headingBackground;
         public Color headingForeground;
+
+        /// <summary>
+        /// The theme for Buttons used in this ColorTheme.
+        /// </summary>
+        public ButtonTheme ButtonTheme { get; set; }
     }
 }

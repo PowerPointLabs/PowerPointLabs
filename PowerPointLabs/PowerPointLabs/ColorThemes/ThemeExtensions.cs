@@ -4,6 +4,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
+using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Media3D;
@@ -16,6 +17,8 @@ namespace PowerPointLabs.ColorThemes.Extensions
 {
     public static class ThemeExtensions
     {
+        public static readonly string PathToResourceDictionaries = "PowerPointLabs;component/Resources/ResourceDictionaries/";
+
         /// <summary>
         /// Shows a thematic dialog and waits for the window to close.
         /// </summary>
@@ -83,14 +86,22 @@ namespace PowerPointLabs.ColorThemes.Extensions
             {
                 // The background of the CheckBox instance is actually the background of the box that
                 // contains the checkmark (as opposed to the background of the label next to the box).
-                // There is no simple way to change the colour of the check mark itself, so to ensure
+                // There is no simple way to change the color of the check mark itself, so to ensure
                 // the check mark is stil visible, the background of the CheckBox shall remain unchanged.
                 //
-                // To change the check mark colour, we will have to modify the ControlTemplate, which
+                // To change the check mark color, we will have to modify the ControlTemplate, which
                 // is a pain. An example is given in the following link:
                 // https://www.eidias.com/blog/2012/6/1/custom-wpf-check-box-with-inner-shadow-effect
+                //
+                // (I say that it's a pain, but it's what I did for Buttons)
                 CheckBox t = element as CheckBox;
                 t.Foreground = new SolidColorBrush(theme.foreground);
+            }
+            else if (element is Button)
+            {
+                Button t = element as Button;
+                var style = CreateButtonStyleFromTheme(theme, t.Style);
+                t.Style = style;
             }
             else if (element is Label)
             {
@@ -171,6 +182,30 @@ namespace PowerPointLabs.ColorThemes.Extensions
             else if (element is Label)
             {
                 return (element as Label).Foreground.IsBrushColor(theme.foreground);
+            }
+            else if (element is Button)
+            {
+                Button b = element as Button;
+                bool isMouseOver = b.IsMouseOver;
+                bool isPressed = b.IsPressed;
+                bool isDisabled = !b.IsEnabled;
+
+                if (isDisabled)
+                {
+                    return b.Background.IsBrushColor(theme.ButtonTheme.DisabledBackground);
+                }
+                else if (isPressed)
+                {
+                    return b.Background.IsBrushColor(theme.ButtonTheme.PressedBackground);
+                }
+                else if (isMouseOver)
+                {
+                    return b.Background.IsBrushColor(theme.ButtonTheme.MouseOverBackground);
+                }
+                else
+                {
+                    return b.Background.IsBrushColor(theme.ButtonTheme.NormalBackground);
+                }
             }
             else if (element is ListBox)
             {
@@ -401,6 +436,85 @@ namespace PowerPointLabs.ColorThemes.Extensions
                     }
                 }
             }
+        }
+
+        /// <summary>
+        /// Retrieves the resource given by the specified key in the Resource Dictionary with the 
+        /// specified name. The Resource Dictionary must be in the Resources/ResourceDictionaries
+        /// directory.
+        /// </summary>
+        /// <param name="resourceDictionaryName">The name of the resource dictionary.</param>
+        /// <param name="key">The key of the resource to retrieve.</param>
+        /// <returns>The resouce to retrieve</returns>
+        private static object GetResourceFromDictionary(string resourceDictionaryName, object key)
+        {
+            // TODO: Find out what happens when the key does not exist.
+            var resourceDictionary = new ResourceDictionary
+            {
+                Source = new Uri(PathToResourceDictionaries + resourceDictionaryName + ".xaml", UriKind.RelativeOrAbsolute)
+            };
+
+            return resourceDictionary[key];
+        }
+
+        /// <summary>
+        /// Construct a new Button Style that applies the given ColorTheme.
+        /// </summary>
+        /// <param name="theme">The ColorTheme to apply</param>
+        /// <param name="basedOnStyle">The Button Style to base off of the returned Style</param>
+        /// <returns>A Button Style that applies the given ColorTheme.</returns>
+        private static Style CreateButtonStyleFromTheme(ColorTheme theme, Style basedOnStyle = null)
+        {
+            // To apply the behaviour of changing the background on mouse over (and other 
+            // conditions), we need to overwrite the Control Template. It's troublesome to create 
+            // the entire Control Template programmatically, so we'll create as much as we can in
+            // XAML.
+            var controlTemplate = GetResourceFromDictionary("GeneralResourceDictionary", "DefaultButtonControlTemplate") as ControlTemplate;
+
+            // Set the behaviour for when the mouse is over the Button.
+            var mouseOverTrigger = new Trigger
+            {
+                Property = UIElement.IsMouseOverProperty,
+                Value = true,
+            };
+            mouseOverTrigger.Setters.Add(new Setter(Control.BackgroundProperty, new SolidColorBrush(theme.ButtonTheme.MouseOverBackground)));
+            mouseOverTrigger.Setters.Add(new Setter(Control.BorderBrushProperty, new SolidColorBrush(theme.ButtonTheme.MouseOverBorderColor)));
+
+            // Set the behaviour for when the Button is pressed.
+            var pressedTrigger = new Trigger
+            {
+                Property = Button.IsPressedProperty,
+                Value = true
+            };
+            pressedTrigger.Setters.Add(new Setter(Control.BackgroundProperty, new SolidColorBrush(theme.ButtonTheme.PressedBackground)));
+            pressedTrigger.Setters.Add(new Setter(Control.BorderBrushProperty, new SolidColorBrush(theme.ButtonTheme.PressedBorderColor)));
+
+            // Set the behaviour for when the Button is disabled.
+            var disabledTrigger = new Trigger
+            {
+                Property = Button.IsEnabledProperty,
+                Value = false
+            };
+            disabledTrigger.Setters.Add(new Setter(Control.BackgroundProperty, new SolidColorBrush(theme.ButtonTheme.DisabledBackground)));
+            disabledTrigger.Setters.Add(new Setter(Control.ForegroundProperty, new SolidColorBrush(theme.ButtonTheme.DisabledForeground)));
+            disabledTrigger.Setters.Add(new Setter(Control.BorderBrushProperty, new SolidColorBrush(theme.ButtonTheme.DisabledBorderColor)));
+
+            // Apply the triggers to the Control Template.
+            controlTemplate.Triggers.Add(mouseOverTrigger);
+            controlTemplate.Triggers.Add(pressedTrigger);
+            controlTemplate.Triggers.Add(disabledTrigger);
+            
+            // Create the output style. 
+            var outputStyle = new Style(typeof(Button))
+            {
+                BasedOn = basedOnStyle
+            };
+            outputStyle.Setters.Add(new Setter(Control.BackgroundProperty, new SolidColorBrush(theme.ButtonTheme.NormalBackground)));
+            outputStyle.Setters.Add(new Setter(Control.ForegroundProperty, new SolidColorBrush(theme.ButtonTheme.NormalForeground)));
+            outputStyle.Setters.Add(new Setter(Control.BorderBrushProperty, new SolidColorBrush(theme.ButtonTheme.NormalBorderColor)));
+            outputStyle.Setters.Add(new Setter(Control.TemplateProperty, controlTemplate));
+
+            return outputStyle;
         }
     }
 }

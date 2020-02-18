@@ -103,6 +103,20 @@ namespace PowerPointLabs.ColorThemes
                     _colorTheme.boxBackground = Color.FromRgb(255, 255, 255);
                     _colorTheme.headingBackground = Color.FromRgb(181, 71, 42);
                     _colorTheme.headingForeground = Color.FromRgb(238, 238, 238);
+                    _colorTheme.ButtonTheme = new ButtonTheme
+                    {
+                        // The following values are obtained from the default Button Style.
+                        NormalBackground = Color.FromRgb(221, 221, 221),
+                        NormalForeground = _colorTheme.foreground,
+                        NormalBorderColor = Color.FromRgb(112, 112, 112),
+                        MouseOverBackground = Color.FromRgb(190, 230, 253),
+                        MouseOverBorderColor = Color.FromRgb(60, 127, 177),
+                        PressedBackground = Color.FromRgb(196, 229, 246),
+                        PressedBorderColor = Color.FromRgb(44, 98, 139),
+                        DisabledBackground = Color.FromRgb(224, 224, 224),
+                        DisabledForeground = Color.FromRgb(131, 131, 131),
+                        DisabledBorderColor = Color.FromRgb(173, 178, 181)
+                    };
                     break;
                 case ColorTheme.WHITE:
                 case ColorTheme.LIGHT_GRAY:
@@ -113,6 +127,19 @@ namespace PowerPointLabs.ColorThemes
                     _colorTheme.boxBackground = Color.FromRgb(230, 230, 230);
                     _colorTheme.headingBackground = Color.FromRgb(181, 71, 42);
                     _colorTheme.headingForeground = Color.FromRgb(238, 238, 238);
+                    _colorTheme.ButtonTheme = new ButtonTheme
+                    {
+                        NormalBackground = Color.FromRgb(212, 212, 212),
+                        NormalForeground = Color.FromRgb(38, 38, 38),
+                        NormalBorderColor = Color.FromRgb(87, 87, 87),
+                        MouseOverBackground = Color.FromRgb(249, 201, 185),
+                        MouseOverBorderColor = Color.FromRgb(235, 117, 59),
+                        PressedBackground = Color.FromRgb(235, 117, 59),
+                        PressedBorderColor = Color.FromRgb(225, 0, 0),
+                        DisabledBackground = Color.FromRgb(212, 212, 212),
+                        DisabledForeground = Color.FromRgb(172, 152, 162),
+                        DisabledBorderColor = Color.FromRgb(195, 195, 195)
+                    };
                     break;
                 case ColorTheme.DARK_GRAY:
                     _colorTheme.title = Color.FromRgb(181, 71, 42);
@@ -121,6 +148,19 @@ namespace PowerPointLabs.ColorThemes
                     _colorTheme.boxBackground = Color.FromRgb(64, 64, 64);
                     _colorTheme.headingBackground = Color.FromRgb(208, 71, 38);
                     _colorTheme.headingForeground = Color.FromRgb(238, 238, 238);
+                    _colorTheme.ButtonTheme = new ButtonTheme
+                    {
+                        NormalBackground = Color.FromRgb(212, 212, 212),
+                        NormalForeground = Color.FromRgb(38, 38, 38),
+                        NormalBorderColor = Color.FromRgb(87, 87, 87),
+                        MouseOverBackground = Color.FromRgb(249, 201, 185),
+                        MouseOverBorderColor = Color.FromRgb(235, 117, 59),
+                        PressedBackground = Color.FromRgb(235, 117, 59),
+                        PressedBorderColor = Color.FromRgb(225, 0, 0),
+                        DisabledBackground = Color.FromRgb(212, 212, 212),
+                        DisabledForeground = Color.FromRgb(172, 152, 162),
+                        DisabledBorderColor = Color.FromRgb(195, 195, 195)
+                    };
                     break;
                 case ColorTheme.BLACK:
                     _colorTheme.title = Color.FromRgb(239, 239, 239);
@@ -129,6 +169,19 @@ namespace PowerPointLabs.ColorThemes
                     _colorTheme.boxBackground = Color.FromRgb(64, 64, 64);
                     _colorTheme.headingBackground = Color.FromRgb(208, 71, 38);
                     _colorTheme.headingForeground = Color.FromRgb(238, 238, 238);
+                    _colorTheme.ButtonTheme = new ButtonTheme
+                    {
+                        NormalBackground = Color.FromRgb(68, 68, 68),
+                        NormalForeground = _colorTheme.foreground,
+                        NormalBorderColor = Color.FromRgb(106, 106, 106),
+                        MouseOverBackground = Color.FromRgb(68, 68, 68),
+                        MouseOverBorderColor = Color.FromRgb(150, 150, 150),
+                        PressedBackground = Color.FromRgb(106, 106, 106),
+                        PressedBorderColor = Color.FromRgb(150, 150, 150),
+                        DisabledBackground = Color.FromRgb(37, 37, 37),
+                        DisabledForeground = Color.FromRgb(73, 90, 82),
+                        DisabledBorderColor = Color.FromRgb(68, 68, 68)
+                    };
                     break;
                 default:
                     Logger.Log("Unknown UI Theme!");
@@ -138,6 +191,19 @@ namespace PowerPointLabs.ColorThemes
                     _colorTheme.boxBackground = Color.FromRgb(255, 255, 255);
                     _colorTheme.headingBackground = Color.FromRgb(181, 71, 42);
                     _colorTheme.headingForeground = Color.FromRgb(238, 238, 238);
+                    _colorTheme.ButtonTheme = new ButtonTheme
+                    {
+                        NormalBackground = Color.FromRgb(221, 221, 221),
+                        NormalForeground = _colorTheme.foreground,
+                        NormalBorderColor = Color.FromRgb(112, 112, 112),
+                        MouseOverBackground = Color.FromRgb(190, 230, 253),
+                        MouseOverBorderColor = Color.FromRgb(60, 127, 177),
+                        PressedBackground = Color.FromRgb(196, 229, 246),
+                        PressedBorderColor = Color.FromRgb(44, 98, 139),
+                        DisabledBackground = Color.FromRgb(224, 224, 224),
+                        DisabledForeground = Color.FromRgb(131, 131, 131),
+                        DisabledBorderColor = Color.FromRgb(173, 178, 181)
+                    };
                     break;
             }
         }
