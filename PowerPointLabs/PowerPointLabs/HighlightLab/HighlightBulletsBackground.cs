@@ -68,6 +68,12 @@ namespace PowerPointLabs.HighlightLab
                     AnimationLabSettings.IsUseFrameAnimation = oldValue;
                     PowerPointPresentation.Current.AddAckSlide();
                 }
+
+                if (currentSlide.HasAnimationForClick(clickNumber: 1))
+                {
+                    Globals.ThisAddIn.Application.CommandBars.ExecuteMso("AnimationPreview");
+                }
+
                 Globals.ThisAddIn.Application.ActiveWindow.Selection.Unselect();
             }
             catch (Exception e)
