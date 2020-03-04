@@ -41,13 +41,12 @@ namespace PowerPointLabs.HighlightLab
                         break;
                     case HighlightTextSelection.kNoneSelected:
                         currentSlide.DeleteIndicator();
-                        currentSlide.DeleteShapesWithPrefix("PPTLabsHighlightBackgroundShape");
                         shapesToUse = GetAllUsableShapesInSlide(currentSlide);
                         break;
                     default:
                         break;
                 }
-                
+
                 if (currentSlide.Name.Contains("PPTLabsHighlightBulletsSlide"))
                 {
                     ProcessExistingHighlightSlide(currentSlide, shapesToUse);
@@ -135,7 +134,6 @@ namespace PowerPointLabs.HighlightLab
         private static void ProcessExistingHighlightSlide(PowerPointSlide currentSlide, List<PowerPoint.Shape> shapesToUse)
         {
             currentSlide.DeleteIndicator();
-            currentSlide.DeleteShapesWithPrefix("PPTLabsHighlightBackgroundShape");
 
             foreach (PowerPoint.Shape tmp in currentSlide.Shapes)
             {

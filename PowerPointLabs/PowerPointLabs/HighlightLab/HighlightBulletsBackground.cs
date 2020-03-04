@@ -43,7 +43,6 @@ namespace PowerPointLabs.HighlightLab
                         break;
                     case HighlightBackgroundSelection.kNoneSelected:
                         currentSlide.DeleteIndicator();
-                        currentSlide.DeleteShapesWithPrefix("PPTLabsHighlightBackgroundShape");
                         shapesToUse = GetAllUsableShapesInSlide(currentSlide);
                         break;
                     default:
@@ -183,11 +182,6 @@ namespace PowerPointLabs.HighlightLab
                         sh.Select(Office.MsoTriState.msoFalse);
                     }
                 }
-                //Remove existing animations for highlight text as well
-                if (sh.Name.Contains("HighlightTextShape"))
-                {
-                    currentSlide.DeleteShapeAnimations(sh);
-                }
             }
 
             if (shapesToDelete.Count > 0)
@@ -211,7 +205,6 @@ namespace PowerPointLabs.HighlightLab
                                     .Where(sh => !sh.Name.Contains("PPTLabsHighlightBackgroundShape")
                                                     && HasText(sh))
                                     .ToList();
-            shapesToUse.ForEach(currentSlide.DeleteShapeAnimations);
             return shapesToUse;
         }
 
@@ -237,12 +230,10 @@ namespace PowerPointLabs.HighlightLab
 
             if (usableShapesWithBullets.Count == 0)
             {
-                allUsableShapes.ForEach(currentSlide.DeleteShapeAnimations);
                 return allUsableShapes;
             }
             else
             {
-                usableShapesWithBullets.ForEach(currentSlide.DeleteShapeAnimations);
                 return usableShapesWithBullets;
             }
         }
