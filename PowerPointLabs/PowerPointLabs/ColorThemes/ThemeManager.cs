@@ -89,7 +89,7 @@ namespace PowerPointLabs.ColorThemes
         private void ThemeChangedHandler(object sender, int newValue)
         {
             UpdateColorTheme(newValue);
-            _ColorThemeChanged(this, _colorTheme);
+            _ColorThemeChanged?.Invoke(this, _colorTheme);
         }
 
         private void UpdateColorTheme(int newValue)
