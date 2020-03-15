@@ -53,18 +53,13 @@ namespace PowerPointLabs.SyncLab.Views
             // if image isn't set, fill the control with the label
             if (image == null)
             {
-                imageBox.Visibility = Visibility.Hidden;
-                label.Margin = new Thickness(30, label.Margin.Top,
-                            label.Margin.Right, label.Margin.Bottom);
-                return;
+                imageBorder.Visibility = Visibility.Collapsed;
             }
             else
             {
+                imageBorder.Visibility = Visibility.Visible;
                 BitmapSource source = GraphicsUtil.BitmapToImageSource(image);
                 imageBox.Source = source;
-                imageBox.Visibility = Visibility.Visible;
-                label.Margin = new Thickness(65, label.Margin.Top,
-                            label.Margin.Right, label.Margin.Bottom);
             }
         }
 

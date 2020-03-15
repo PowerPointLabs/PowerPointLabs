@@ -154,7 +154,20 @@ namespace PowerPointLabs.ColorThemes.Extensions
             }
             else if (element is Border)
             {
-                (element as Border).Background = new SolidColorBrush(theme.background);
+                // There is a problem with this approach, which is that every "Border",
+                // regardless of what kind of Border it is, will have its background set.
+                // This means you can't have a Border that has a custom Background that
+                // differs from the theme. This problem appears for the other types as well.
+                //
+                // A possible solution would be to have all of these styles be placed in a
+                // ResourceDictionary where the colors will be obtained via DynamicResource.
+                // This way, all the controls will use these custom styles by default, but
+                // can still be overridden when needed.
+                //
+                // There is a Border in SyncFormatListItem.xaml which has a White background
+                // regardless of the theme. Hence, this line will be commented out for now.
+                //
+                // (element as Border).Background = new SolidColorBrush(theme.background);
             }
             else if (element is Path)
             {
