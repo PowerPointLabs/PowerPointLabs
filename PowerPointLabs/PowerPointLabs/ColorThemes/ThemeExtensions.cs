@@ -460,6 +460,10 @@ namespace PowerPointLabs.ColorThemes.Extensions
         /// <summary>
         /// Construct a new Button Style that applies the given ColorTheme.
         /// </summary>
+        /// <remarks>
+        /// The basedOnStyle argument is used if the Style's target type is Button or a superclass 
+        /// of Button. Otherwise, it will not be used.
+        /// </remarks>
         /// <param name="theme">The ColorTheme to apply</param>
         /// <param name="basedOnStyle">The Button Style to base off of the returned Style</param>
         /// <returns>A Button Style that applies the given ColorTheme.</returns>
@@ -483,7 +487,7 @@ namespace PowerPointLabs.ColorThemes.Extensions
             // Set the behaviour for when the Button is pressed.
             var pressedTrigger = new Trigger
             {
-                Property = Button.IsPressedProperty,
+                Property = ButtonBase.IsPressedProperty,
                 Value = true
             };
             pressedTrigger.Setters.Add(new Setter(Control.BackgroundProperty, new SolidColorBrush(theme.ButtonTheme.PressedBackground)));
@@ -492,7 +496,7 @@ namespace PowerPointLabs.ColorThemes.Extensions
             // Set the behaviour for when the Button is disabled.
             var disabledTrigger = new Trigger
             {
-                Property = Button.IsEnabledProperty,
+                Property = UIElement.IsEnabledProperty,
                 Value = false
             };
             disabledTrigger.Setters.Add(new Setter(Control.BackgroundProperty, new SolidColorBrush(theme.ButtonTheme.DisabledBackground)));
@@ -503,12 +507,15 @@ namespace PowerPointLabs.ColorThemes.Extensions
             controlTemplate.Triggers.Add(mouseOverTrigger);
             controlTemplate.Triggers.Add(pressedTrigger);
             controlTemplate.Triggers.Add(disabledTrigger);
-            
+
             // Create the output style. 
-            var outputStyle = new Style(typeof(Button))
+            var outputStyle = new Style(typeof(Button));
+            // Base it off of the specified base Style, but only if compatible.
+            if (basedOnStyle != null && basedOnStyle.TargetType.IsAssignableFrom(typeof(Button)))
             {
-                BasedOn = basedOnStyle
+                outputStyle.BasedOn = basedOnStyle;
             };
+
             outputStyle.Setters.Add(new Setter(Control.BackgroundProperty, new SolidColorBrush(theme.ButtonTheme.NormalBackground)));
             outputStyle.Setters.Add(new Setter(Control.ForegroundProperty, new SolidColorBrush(theme.ButtonTheme.NormalForeground)));
             outputStyle.Setters.Add(new Setter(Control.BorderBrushProperty, new SolidColorBrush(theme.ButtonTheme.NormalBorderColor)));
