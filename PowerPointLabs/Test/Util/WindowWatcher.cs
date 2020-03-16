@@ -35,6 +35,11 @@ namespace Test.Util
 
         public static void RevalidateApp()
         {
+            if (process == null)
+            {
+                // headless
+                return;
+            }
             try
             {
                 process.WaitForInputIdle();
@@ -112,13 +117,7 @@ namespace Test.Util
 
         public static void HeadlessSetup(int processId)
         {
-            windowTriggers = new Dictionary<string, WindowOpenTrigger>();
-            if (whitelist == null)
-            {
-                whitelist = new HashSet<string>();
-            }
-            whitelistInstances = new SortedDictionary<string, WindowOpenTrigger>();
-
+            SetupWhitelist();
             handler = GetOpenWindowHandler(processId);
             Automation.AddAutomationEventHandler(
                 WindowPattern.WindowOpenedEvent,
