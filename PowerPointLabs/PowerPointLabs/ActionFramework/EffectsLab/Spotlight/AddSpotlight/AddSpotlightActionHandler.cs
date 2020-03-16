@@ -2,7 +2,9 @@
 using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.ActionFramework.Common.Interface;
 using PowerPointLabs.EffectsLab;
+using PowerPointLabs.Models;
 using PowerPointLabs.TextCollection;
+using PowerPointLabs.Utils;
 
 namespace PowerPointLabs.ActionFramework.EffectsLab
 {
@@ -18,8 +20,14 @@ namespace PowerPointLabs.ActionFramework.EffectsLab
             }
 
             this.StartNewUndoEntry();
+            PowerPointPresentation pres = this.GetCurrentPresentation();
+            PowerPointSlide slide = this.GetCurrentSlide();
 
-            Spotlight.AddSpotlightEffect();
+            ClipboardUtil.RestoreClipboardAfterAction(() =>
+            {
+                Spotlight.AddSpotlightEffect();
+                return ClipboardUtil.ClipboardRestoreSuccess;
+            }, pres, slide);
         }
     }
 }

@@ -32,7 +32,7 @@ namespace PowerPointLabs.EffectsLab
                     spotlightShapes.Add(spotlightShape);
                     PostFormatShapeOnCurrentSlide(currentSlide, spotShape);
                 }
-                
+
                 addedSlide.PrepareForSpotlight();
                 addedSlide.AddSpotlightEffect(spotlightShapes);
                 currentSlide.DeleteShapesWithPrefix("SpotlightShape");

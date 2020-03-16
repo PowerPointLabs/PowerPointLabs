@@ -9,6 +9,7 @@
              mc:Ignorable="d">
     <Control.Resources>
         <BooleanToVisibilityConverter x:Key="BoolToVisibility" />
+        <converters:ShapeNameWidthConverter x:Key="ShapeNameConverter" />
     </Control.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
@@ -16,11 +17,11 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
         <Border Grid.Column="0" Width="30" Height="30" CornerRadius="15"
-                    VerticalAlignment="Top" Background="Black">
+                    VerticalAlignment="Center" Background="Black">
             <Label Content="{Binding ClickNo}" VerticalAlignment="Center" HorizontalAlignment="Center"
                                        FontFamily="Century Gothic" FontWeight="SemiBold" Foreground="White" FontSize="13"/>
         </Border>
-        <ListView Grid.Column="1" ItemsSource="{Binding CustomItems}" BorderThickness="0" Margin="0" IsHitTestVisible="False">
+        <ListView x:Name="list" Grid.Column="1" ItemsSource="{Binding CustomItems}" BorderThickness="0" Margin="0" IsHitTestVisible="False">
             <ListView.ItemTemplate>
                 <DataTemplate DataType="{x:Type data:CustomSubItem}">
                     <Grid>
@@ -29,9 +30,11 @@
                             <ColumnDefinition Width="*" />
                         </Grid.ColumnDefinitions>
                         <Image Grid.Column="0" MinHeight="15" MaxHeight="15" MinWidth="15" MaxWidth="15" VerticalAlignment="Center"
-                   Source="{Binding Type, Converter={converters:AnimationTypeToImageSourceConverter}}" 
+                               Source="{Binding Type, Converter={converters:AnimationTypeToImageSourceConverter}}" 
                                Stretch="Uniform" HorizontalAlignment="Center"/>
-                        <TextBlock Grid.Column="1" Text="{Binding ShapeName}"/>
+                        <TextBlock Grid.Column="1" 
+                                   Width="{Binding ActualWidth, ElementName=list, Converter={StaticResource ShapeNameConverter}}"
+                                   TextWrapping="Wrap"  HorizontalAlignment="Stretch" Text="{Binding ShapeName}"/>
                     </Grid>
                 </DataTemplate>
             </ListView.ItemTemplate>
