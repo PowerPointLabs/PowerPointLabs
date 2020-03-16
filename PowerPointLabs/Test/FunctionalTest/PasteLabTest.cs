@@ -70,26 +70,26 @@ namespace Test.FunctionalTest
         [TestCategory("FT")]
         public void FT_PasteLabTest()
         {
-            //PasteToFillSlide(OriginalPasteToFillSlideSlideNo, ExpectedPasteToFillSlideSlideNo);
-            //PasteToFillSlide(OriginalDiagonalPasteToFillSlideSlideNo, ExpectedDiagonalPasteToFillSlideSlideNo);
-            //PasteToFillSlide(OriginalMultiplePasteToFillSlideSlideNo, ExpectedMultiplePasteToFillSlideSlideNo);
-            //PasteToFillSlide(OriginalGroupPasteToFillSlideSlideNo, ExpectedGroupPasteToFillSlideSlideNo);
+            PasteToFillSlide(OriginalPasteToFillSlideSlideNo, ExpectedPasteToFillSlideSlideNo);
+            PasteToFillSlide(OriginalDiagonalPasteToFillSlideSlideNo, ExpectedDiagonalPasteToFillSlideSlideNo);
+            PasteToFillSlide(OriginalMultiplePasteToFillSlideSlideNo, ExpectedMultiplePasteToFillSlideSlideNo);
+            PasteToFillSlide(OriginalGroupPasteToFillSlideSlideNo, ExpectedGroupPasteToFillSlideSlideNo);
 
-            //PasteAtCursorPosition(OriginalPasteAtCursorSlideNo, ExpectedPasteAtCursorSlideNo);
-            //PasteAtOriginalPosition(OriginalPasteAtOriginalSlideNo, ExpectedPasteAtOriginalSlideNo);
+            PasteAtCursorPosition(OriginalPasteAtCursorSlideNo, ExpectedPasteAtCursorSlideNo);
+            PasteAtOriginalPosition(OriginalPasteAtOriginalSlideNo, ExpectedPasteAtOriginalSlideNo);
 
-            //ReplaceWithClipboard(OriginalReplaceWithClipboardSlideNo, ExpectedReplaceWithClipboardSlideNo);
-            //ReplaceWithClipboard(OriginalGroupReplaceWithClipboardSlideNo, ExpectedGroupReplaceWithClipboardSlideNo);
+            ReplaceWithClipboard(OriginalReplaceWithClipboardSlideNo, ExpectedReplaceWithClipboardSlideNo);
+            ReplaceWithClipboard(OriginalGroupReplaceWithClipboardSlideNo, ExpectedGroupReplaceWithClipboardSlideNo);
 
-            //PasteIntoGroup(OriginalPasteIntoGroupSlideNo, ExpectedPasteIntoGroupSlideNo);
+            PasteIntoGroup(OriginalPasteIntoGroupSlideNo, ExpectedPasteIntoGroupSlideNo);
 
-            //PasteToFitSlide(OriginalPasteToFitSlideSlideNo, ExpectedPasteToFitSlideSlideNo);
-            //PasteToFitSlide(OriginalDiagonalPasteToFitSlideSlideNo, ExpectedDiagonalPasteToFitSlideSlideNo);
-            //PasteToFitSlide(OriginalMultiplePasteToFitSlideSlideNo, ExpectedMultiplePasteToFitSlideSlideNo);
-            //PasteToFitSlide(OriginalGroupPasteToFitSlideSlideNo, ExpectedGroupPasteToFitSlideSlideNo);
+            PasteToFitSlide(OriginalPasteToFitSlideSlideNo, ExpectedPasteToFitSlideSlideNo);
+            PasteToFitSlide(OriginalDiagonalPasteToFitSlideSlideNo, ExpectedDiagonalPasteToFitSlideSlideNo);
+            PasteToFitSlide(OriginalMultiplePasteToFitSlideSlideNo, ExpectedMultiplePasteToFitSlideSlideNo);
+            PasteToFitSlide(OriginalGroupPasteToFitSlideSlideNo, ExpectedGroupPasteToFitSlideSlideNo);
 
-            //IsClipboardRestoredReplaceWithClipboard(OrigIsClipboardRestoredReplaceWithClipboardSlideNo, ExpIsClipboardRestoredReplaceWithClipboardSlideNo);
-            //IsClipboardRestoredPasteIntoGroup(OrigIsClipboardRestoredPasteIntoGroupSlideNo, ExpIsClipboardRestoredPasteIntoGroupSlideNo);
+            IsClipboardRestoredReplaceWithClipboard(OrigIsClipboardRestoredReplaceWithClipboardSlideNo, ExpIsClipboardRestoredReplaceWithClipboardSlideNo);
+            IsClipboardRestoredPasteIntoGroup(OrigIsClipboardRestoredPasteIntoGroupSlideNo, ExpIsClipboardRestoredPasteIntoGroupSlideNo);
 
             IsDegradedAfterReplaceWithClipboard(OriginalReplaceWithClipboardDegradationSlideNo, ReplacedReplaceWithClipboardDegradationSlideNo,
                 DegradedReplaceWithClipboardDegradationSlideNo);
