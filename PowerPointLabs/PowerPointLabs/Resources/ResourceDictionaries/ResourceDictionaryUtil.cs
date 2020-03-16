@@ -9,6 +9,9 @@ namespace PowerPointLabs.Resources.ResourceDictionaries
 {
     public static class ResourceDictionaryUtil
     {
+        /// <summary>
+        /// The path to the ResourceDictionaries folder when used in a Uri.
+        /// </summary>
         public static readonly string PathToResourceDictionaries = "PowerPointLabs;component/Resources/ResourceDictionaries/";
 
         /// <summary>
@@ -17,7 +20,8 @@ namespace PowerPointLabs.Resources.ResourceDictionaries
         /// directory.
         /// </summary>
         /// <remarks>
-        /// If the specified key does not exist in the specified Resource Dictionary, this method will return null.
+        /// If the specified key does not exist in the specified Resource Dictionary, this method
+        /// will return null.
         /// </remarks>
         /// <param name="resourceDictionaryName">The name of the resource dictionary.</param>
         /// <param name="key">The key of the resource to retrieve.</param>
