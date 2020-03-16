@@ -14,7 +14,15 @@
                   VerticalContentAlignment="Center">
             <CheckBox.Content>
                 <StackPanel Orientation="Horizontal">
-                    <Border x:Name="imageBorder" 
+                    <!-- 
+                    The name of this Border is oddly specific because it needs to 
+                    be identified in ThemeExtensions.IsUpdated as a Border to ignore
+                    instead of having its background set to the ColorTheme's 
+                    background color. The background of this Border needs to stay as 
+                    White to ensure the contents are always visible regardless of 
+                    the Color Theme.
+                    -->
+                    <Border x:Name="syncFormatListItem_imageBorder"
                             BorderBrush="Black"
                             BorderThickness="1"
                             Visibility="Visible"

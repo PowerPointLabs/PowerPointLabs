@@ -14,6 +14,15 @@ namespace PowerPointLabs.SyncLab.Views
     /// </summary>
     public partial class SyncFormatListItem : UserControl
     {
+        /// <summary>
+        /// The Name property of the Border around the Image used for this SyncFormatListItem.
+        /// </summary>
+        /// <remarks>
+        /// This property exists so that
+        /// <see cref="ColorThemes.Extensions.ThemeExtensions.IsUpdated(DependencyObject, ColorThemes.ColorTheme)"/>
+        /// can identify this Border so that it does not get its Background property set.
+        /// </remarks>
+        public static readonly string ImageBorderName = nameof(syncFormatListItem_imageBorder);
 
         Bitmap image;
 
@@ -25,22 +34,13 @@ namespace PowerPointLabs.SyncLab.Views
 
         public bool? IsChecked
         {
-            get
-            {
-                return checkBox.IsChecked;
-            }
-            set
-            {
-                checkBox.IsChecked = value;
-            }
+            get => checkBox.IsChecked;
+            set => checkBox.IsChecked = value;
         }
 
         public Bitmap Image
         {
-            get
-            {
-                return image;
-            }
+            get => image;
             set
             {
                 image = value;
@@ -50,29 +50,22 @@ namespace PowerPointLabs.SyncLab.Views
 
         private void UpdateImage()
         {
-            // if image isn't set, fill the control with the label
+            // if image isn't set, hide the image border.
             if (image == null)
             {
-                imageBorder.Visibility = Visibility.Collapsed;
+                syncFormatListItem_imageBorder.Visibility = Visibility.Collapsed;
+                return;
             }
-            else
-            {
-                imageBorder.Visibility = Visibility.Visible;
-                BitmapSource source = GraphicsUtil.BitmapToImageSource(image);
-                imageBox.Source = source;
-            }
+
+            syncFormatListItem_imageBorder.Visibility = Visibility.Visible;
+            BitmapSource source = GraphicsUtil.BitmapToImageSource(image);
+            imageBox.Source = source;
         }
 
-        public String Text
+        public string Text
         {
-            get
-            {
-                return label.Content.ToString();
-            }
-            set
-            {
-                label.Content = value;
-            }
+            get => label.Content.ToString();
+            set => label.Content = value;
         }
     }
 }

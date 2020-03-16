@@ -11,6 +11,7 @@ using System.Windows.Media.Media3D;
 using System.Windows.Shapes;
 
 using PowerPointLabs.ELearningLab.Views;
+using PowerPointLabs.SyncLab.Views;
 using PowerPointLabs.Utils;
 
 namespace PowerPointLabs.ColorThemes.Extensions
@@ -93,7 +94,7 @@ namespace PowerPointLabs.ColorThemes.Extensions
                 // is a pain. An example is given in the following link:
                 // https://www.eidias.com/blog/2012/6/1/custom-wpf-check-box-with-inner-shadow-effect
                 //
-                // (I say that it's a pain, but it's what I did for Buttons)
+                // (I say that it's a pain, but it's basically what I did for Buttons)
                 CheckBox t = element as CheckBox;
                 t.Foreground = new SolidColorBrush(theme.foreground);
             }
@@ -156,7 +157,7 @@ namespace PowerPointLabs.ColorThemes.Extensions
             {
                 // There is a problem with this approach, which is that every "Border",
                 // regardless of what kind of Border it is, will have its background set.
-                // This means you can't have a Border that has a custom Background that
+                // This means it's hard to have a Border that has a custom Background that
                 // differs from the theme. This problem appears for the other types as well.
                 //
                 // A possible solution would be to have all of these styles be placed in a
@@ -165,9 +166,13 @@ namespace PowerPointLabs.ColorThemes.Extensions
                 // can still be overridden when needed.
                 //
                 // There is a Border in SyncFormatListItem.xaml which has a White background
-                // regardless of the theme. Hence, this line will be commented out for now.
-                //
-                // (element as Border).Background = new SolidColorBrush(theme.background);
+                // regardless of the theme. Hence, the temporary solution shall be to ignore
+                // that specific Border which is labelled by its Name property.
+                var b = element as Border;
+                if (!b.Name.Equals(SyncFormatListItem.ImageBorderName))
+                {
+                    b.Background = new SolidColorBrush(theme.background);
+                }
             }
             else if (element is Path)
             {
@@ -188,9 +193,17 @@ namespace PowerPointLabs.ColorThemes.Extensions
         /// <returns></returns>
         public static bool IsUpdated(this DependencyObject element, ColorTheme theme)
         {
-            if (element is TextBlock)
+            if (element is TextBox)
+            {
+                return (element as TextBox).Foreground.IsBrushColor(theme.foreground);
+            }
+            else if (element is TextBlock)
             {
                 return (element as TextBlock).Foreground.IsBrushColor(theme.foreground);
+            }
+            else if (element is CheckBox)
+            {
+                return (element as CheckBox).Foreground.IsBrushColor(theme.foreground);
             }
             else if (element is Label)
             {
@@ -198,27 +211,28 @@ namespace PowerPointLabs.ColorThemes.Extensions
             }
             else if (element is Button)
             {
-                Button b = element as Button;
-                bool isMouseOver = b.IsMouseOver;
-                bool isPressed = b.IsPressed;
-                bool isDisabled = !b.IsEnabled;
+                // Because the Style of a Button is set (as opposed to its Background property,
+                // etc.), the changes to its properties may not be immediately present. Therefore,
+                // checking if the background of a Button matches that of the theme may return
+                // false even though the Button has already been updated with the theme.
+                //
+                // So, we will check the Style instead for the presence of a Setter that sets the
+                // Background property to theme.ButtonTheme.NormalBackground.
+                return (element as Button).Style?.Setters?.Any(setterBase =>
+                {
+                    if (!(setterBase is Setter))
+                    {
+                        return false;
+                    }
 
-                if (isDisabled)
-                {
-                    return b.Background.IsBrushColor(theme.ButtonTheme.DisabledBackground);
-                }
-                else if (isPressed)
-                {
-                    return b.Background.IsBrushColor(theme.ButtonTheme.PressedBackground);
-                }
-                else if (isMouseOver)
-                {
-                    return b.Background.IsBrushColor(theme.ButtonTheme.MouseOverBackground);
-                }
-                else
-                {
-                    return b.Background.IsBrushColor(theme.ButtonTheme.NormalBackground);
-                }
+                    var setter = setterBase as Setter;
+                    if (!setter.Property.Equals(Control.BackgroundProperty) || !(setter.Value is Brush))
+                    {
+                        return false;
+                    }
+
+                    return (setter.Value as Brush).IsBrushColor(theme.ButtonTheme.NormalBackground);
+                }) ?? false;
             }
             else if (element is ListBox)
             {
@@ -240,7 +254,7 @@ namespace PowerPointLabs.ColorThemes.Extensions
             }
             else if (element is Panel)
             {
-                return (element as Panel).Background.IsBrushColor(theme.boxBackground);
+                return (element as Panel).Background.IsBrushColor(theme.background);
             }
             else if (element is Page)
             {
@@ -257,7 +271,15 @@ namespace PowerPointLabs.ColorThemes.Extensions
             }
             else if (element is Border)
             {
-                return (element as Border).Background.IsBrushColor(theme.boxBackground);
+                // Ignore the image border found in the SyncFormatListItem class.
+                // See ApplyTheme() at the "Border" if-block for more information.
+                var b = element as Border;
+                if (b.Name.Equals(SyncFormatListItem.ImageBorderName))
+                {
+                    return true;
+                }
+
+                return b.Background.IsBrushColor(theme.background);
             }
             else if (element is Path)
             {
@@ -456,12 +478,16 @@ namespace PowerPointLabs.ColorThemes.Extensions
         /// specified name. The Resource Dictionary must be in the Resources/ResourceDictionaries
         /// directory.
         /// </summary>
+        /// <remarks>
+        /// If the specified Resource Dictionary Name does not exist, this method will throw an
+        /// <see cref="System.IO.IOException"/>. If the specified key does not exist in the
+        /// Resource Dictionary, this method will return null.
+        /// </remarks>
         /// <param name="resourceDictionaryName">The name of the resource dictionary.</param>
         /// <param name="key">The key of the resource to retrieve.</param>
         /// <returns>The resouce to retrieve</returns>
         private static object GetResourceFromDictionary(string resourceDictionaryName, object key)
         {
-            // TODO: Find out what happens when the key does not exist.
             var resourceDictionary = new ResourceDictionary
             {
                 Source = new Uri(PathToResourceDictionaries + resourceDictionaryName + ".xaml", UriKind.RelativeOrAbsolute)
