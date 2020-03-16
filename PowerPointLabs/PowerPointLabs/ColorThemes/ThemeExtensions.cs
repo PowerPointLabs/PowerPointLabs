@@ -11,6 +11,7 @@ using System.Windows.Media.Media3D;
 using System.Windows.Shapes;
 
 using PowerPointLabs.ELearningLab.Views;
+using PowerPointLabs.Resources.ResourceDictionaries;
 using PowerPointLabs.SyncLab.Views;
 using PowerPointLabs.Utils;
 
@@ -18,8 +19,6 @@ namespace PowerPointLabs.ColorThemes.Extensions
 {
     public static class ThemeExtensions
     {
-        public static readonly string PathToResourceDictionaries = "PowerPointLabs;component/Resources/ResourceDictionaries/";
-
         /// <summary>
         /// Shows a thematic dialog and waits for the window to close.
         /// </summary>
@@ -474,29 +473,6 @@ namespace PowerPointLabs.ColorThemes.Extensions
         }
 
         /// <summary>
-        /// Retrieves the resource given by the specified key in the Resource Dictionary with the 
-        /// specified name. The Resource Dictionary must be in the Resources/ResourceDictionaries
-        /// directory.
-        /// </summary>
-        /// <remarks>
-        /// If the specified Resource Dictionary Name does not exist, this method will throw an
-        /// <see cref="System.IO.IOException"/>. If the specified key does not exist in the
-        /// Resource Dictionary, this method will return null.
-        /// </remarks>
-        /// <param name="resourceDictionaryName">The name of the resource dictionary.</param>
-        /// <param name="key">The key of the resource to retrieve.</param>
-        /// <returns>The resouce to retrieve</returns>
-        private static object GetResourceFromDictionary(string resourceDictionaryName, object key)
-        {
-            var resourceDictionary = new ResourceDictionary
-            {
-                Source = new Uri(PathToResourceDictionaries + resourceDictionaryName + ".xaml", UriKind.RelativeOrAbsolute)
-            };
-
-            return resourceDictionary[key];
-        }
-
-        /// <summary>
         /// Construct a new Button Style that applies the given ColorTheme.
         /// </summary>
         /// <remarks>
@@ -512,7 +488,8 @@ namespace PowerPointLabs.ColorThemes.Extensions
             // conditions), we need to overwrite the Control Template. It's troublesome to create 
             // the entire Control Template programmatically, so we'll create as much as we can in
             // XAML.
-            var controlTemplate = GetResourceFromDictionary("GeneralResourceDictionary", "DefaultButtonControlTemplate") as ControlTemplate;
+            var controlTemplate = ResourceDictionaryUtil.GetResource(
+                ResourceDictionaryName.GeneralResourceDictionary, "DefaultButtonControlTemplate") as ControlTemplate;
 
             // Set the behaviour for when the mouse is over the Button.
             var mouseOverTrigger = new Trigger

@@ -804,6 +804,8 @@
     <Compile Include="ELearningLab\Service\FunctionService\CaptionService.cs" />
     <Compile Include="ELearningLab\Service\ELearningService.cs" />
     <Compile Include="ELearningLab\Service\FunctionService\AudioService.cs" />
+    <Compile Include="Resources\ResourceDictionaries\ResourceDictionaryName.cs" />
+    <Compile Include="Resources\ResourceDictionaries\ResourceDictionaryUtil.cs" />
     <Compile Include="ShapesLab\Views\CustomComboBoxItem.cs" />
     <Compile Include="ShapesLab\Views\CustomMenuItem.cs" />
     <Compile Include="ShapesLab\Views\ShapesLabCategoryInfoDialogBox.xaml.cs">
