@@ -105,17 +105,19 @@ namespace PowerPointLabs.ColorThemes
                     _colorTheme.headingForeground = Color.FromRgb(238, 238, 238);
                     _colorTheme.ButtonTheme = new ButtonTheme
                     {
-                        // The following values are obtained from the default Button Style.
-                        NormalBackground = Color.FromRgb(221, 221, 221),
+                        // The following values are obtained by copying the appearance
+                        // of the "Play All" button from the (standard) PowerPoint 
+                        // Animation pane.
+                        NormalBackground = Color.FromRgb(253, 253, 253),
                         NormalForeground = _colorTheme.foreground,
-                        NormalBorderColor = Color.FromRgb(112, 112, 112),
-                        MouseOverBackground = Color.FromRgb(190, 230, 253),
-                        MouseOverBorderColor = Color.FromRgb(60, 127, 177),
-                        PressedBackground = Color.FromRgb(196, 229, 246),
-                        PressedBorderColor = Color.FromRgb(44, 98, 139),
-                        DisabledBackground = Color.FromRgb(224, 224, 224),
-                        DisabledForeground = Color.FromRgb(131, 131, 131),
-                        DisabledBorderColor = Color.FromRgb(173, 178, 181)
+                        NormalBorderColor = Color.FromRgb(171, 171, 171),
+                        MouseOverBackground = Color.FromRgb(252, 228, 220),
+                        MouseOverBorderColor = Color.FromRgb(245, 186, 157),
+                        PressedBackground = Color.FromRgb(245, 186, 157),
+                        PressedBorderColor = Color.FromRgb(240, 98, 62),
+                        DisabledBackground = Color.FromRgb(253, 253, 253),
+                        DisabledForeground = Color.FromRgb(204, 177, 192),
+                        DisabledBorderColor = Color.FromRgb(225, 225, 225)
                     };
                     break;
                 case ColorTheme.WHITE:

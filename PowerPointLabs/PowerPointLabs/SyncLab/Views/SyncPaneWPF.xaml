@@ -7,7 +7,7 @@
              d:DesignHeight="833" d:DesignWidth="300" 
              Loaded="SyncPaneWPF_Loaded">
     <Grid>
-        <Button x:Name="copyButton" HorizontalAlignment="Left" Height="45" Margin="10,10,0,0" ToolTipService.ShowOnDisabled="True" VerticalAlignment="Top" Width="45" Click="CopyButton_Click" Background="White" IsEnabled="True">
+        <Button x:Name="copyButton" HorizontalAlignment="Left" Height="45" Margin="10,10,0,0" ToolTipService.ShowOnDisabled="True" VerticalAlignment="Top" Width="45" Click="CopyButton_Click" IsEnabled="True">
             <Button.Style>
                 <Style TargetType="Button">
                     <Style.Triggers>
