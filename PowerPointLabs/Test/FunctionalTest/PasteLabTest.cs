@@ -216,15 +216,12 @@ namespace Test.FunctionalTest
             try
             {
                 AssertIsSame(actualSlideNo, expectedSlideNo, similarityTolerance);
-                throw new AssertFailedException("AssertNotSame failed. The slides look similar.");
             }
-            catch (AssertFailedException e)
+            catch (AssertFailedException)
             {
-                if (e.Message.Equals("AssertNotSame failed. The slides look similar."))
-                {
-                    throw e;
-                }
+                return;
             }
+            throw new AssertFailedException("AssertNotSame failed. The slides look similar.");
         }
 
         private Microsoft.Office.Interop.PowerPoint.ShapeRange GetShapesByPrefix(int slideNo, string shapePrefix)
