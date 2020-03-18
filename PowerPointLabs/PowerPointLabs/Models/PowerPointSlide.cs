@@ -685,6 +685,7 @@ namespace PowerPointLabs.Models
 
         public void TransferAnimation(Shape source, Shape destination)
         {
+            Sequence sequence = _slide.TimeLine.MainSequence;
             List<Effect> effectList = sequence.Cast<Effect>().ToList();
 
             foreach (Effect effect in effectList)
