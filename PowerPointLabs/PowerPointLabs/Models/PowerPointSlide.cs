@@ -685,20 +685,14 @@ namespace PowerPointLabs.Models
 
         public void TransferAnimation(Shape source, Shape destination)
         {
-            Sequence sequence = _slide.TimeLine.MainSequence;
-            List<Effect> enumerableSequence = sequence.Cast<Effect>().ToList();
+            List<Effect> effectList = sequence.Cast<Effect>().ToList();
 
-            Effect entryDetails = enumerableSequence.FirstOrDefault(effect => effect.Shape.Equals(source));
-            if (entryDetails != null)
+            foreach (Effect effect in effectList)
             {
-                InsertAnimationAtIndex(destination, entryDetails.Index, entryDetails.EffectType, entryDetails.Timing.TriggerType);
-            }
-
-            Effect exitDetails = enumerableSequence.LastOrDefault(effect => effect.Shape.Equals(source));
-            if (exitDetails != null && !exitDetails.Equals(entryDetails))
-            {
-                InsertAnimationAtIndex(destination, exitDetails.Index, exitDetails.EffectType,
-                    exitDetails.Timing.TriggerType);
+                if (effect.Shape.Equals(source))
+                {
+                    InsertAnimationAtIndex(destination, effect.Index, effect.EffectType, effect.Timing.TriggerType);
+                }
             }
         }
 
