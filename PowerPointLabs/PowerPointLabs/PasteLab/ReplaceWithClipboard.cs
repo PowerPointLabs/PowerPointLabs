@@ -33,6 +33,8 @@ namespace PowerPointLabs.PasteLab
                 slide.DeleteShapeAnimations(pastingShape);
                 slide.TransferAnimation(selectedShape, pastingShape);
                 ShapeUtil.ApplyAllPossibleFormats(selectedShape, pastingShape, formatsToIgnore);
+                // Must remove animations from source shape or else undo will fail
+                slide.RemoveAnimationsForShape(selectedShape);
                 selectedShape.SafeDelete();
 
                 return slide.ToShapeRange(pastingShape);

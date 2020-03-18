@@ -2,6 +2,7 @@
 
 using Microsoft.Office.Interop.PowerPoint;
 
+using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.ActionFramework.Common.Attribute;
 using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.Models;
@@ -22,6 +23,8 @@ namespace PowerPointLabs.ActionFramework.PasteLab
                 MessageBox.Show(TextCollection.PasteLabText.ReplaceWithClipboardActionHandlerReminderText, TextCollection.CommonText.ErrorTitle);
                 return null;
             }
+
+            this.StartNewUndoEntry();
 
             ShapeRange pastingShapes = ClipboardUtil.PasteShapesFromClipboard(presentation, slide);
             if (pastingShapes == null)
