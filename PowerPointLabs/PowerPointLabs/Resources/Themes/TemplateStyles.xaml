@@ -9,7 +9,7 @@
         respective Theme.xaml files.
     -->
     <ResourceDictionary.MergedDictionaries>
-        
+        <ResourceDictionary Source="TemplateStyles/ButtonStyle.xaml"/>
     </ResourceDictionary.MergedDictionaries>
 
 </ResourceDictionary> 

@@ -2,7 +2,7 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
     <ResourceDictionary.MergedDictionaries>
-        <!-- TODO: ColorfulColors.xaml -->
+        <ResourceDictionary Source="Colorful/ColorfulColors.xaml"/>
         <ResourceDictionary Source="TemplateStyles.xaml"/>
     </ResourceDictionary.MergedDictionaries>
 
