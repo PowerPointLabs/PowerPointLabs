@@ -2,7 +2,8 @@
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
     <ResourceDictionary.MergedDictionaries>
-        <!-- TODO: WhiteColors.xaml and DefaultStyles.xaml -->
+        <!-- TODO: WhiteColors.xaml -->
+        <ResourceDictionary Source="TemplateStyles.xaml"/>
     </ResourceDictionary.MergedDictionaries>
 
 </ResourceDictionary> 
