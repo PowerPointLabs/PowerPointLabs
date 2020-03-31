@@ -3,6 +3,7 @@
 
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="ButtonColors.xaml"/>
+        <ResourceDictionary Source="LabelColors.xaml"/>
     </ResourceDictionary.MergedDictionaries>
 
 </ResourceDictionary> 
