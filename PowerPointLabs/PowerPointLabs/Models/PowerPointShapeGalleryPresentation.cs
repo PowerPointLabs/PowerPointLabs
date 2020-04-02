@@ -413,11 +413,7 @@ namespace PowerPointLabs.Models
                 if (Slides.All(category => category.Name.ToLower() != categoryName.ToLower()))
                 {
                     categoryLost = true;
-                    PPLClipboard.Instance.LockAndRelease(() =>
-                    {
-                        // not sure why fromClipboard is true here
-                        AddCategory(categoryName, false, true);
-                    });
+                    AddCategory(categoryName, false, false);
                 }
             }
 
