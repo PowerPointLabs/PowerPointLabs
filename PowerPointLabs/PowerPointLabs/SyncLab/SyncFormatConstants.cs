@@ -12,7 +12,7 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
     public class SyncFormatConstants
     {
 
-        public static readonly Size DisplayImageSize = new Size(30, 30);
+        public static readonly Size DisplayImageSize = new Size(50, 50);
         
         // values for bevel display
         public static readonly float DisplayImageDepth = 15;
@@ -24,7 +24,7 @@ namespace PowerPointLabs.SyncLab.ObjectFormats
         public static readonly string DisplaySizeUnit = "pt";
         public static readonly string DisplayFontString = "Text";
         public static readonly string DisplayDegreeSymbol = "°";
-        public static readonly int DisplayImageFontSize = 12;
+        public static readonly int DisplayImageFontSize = 24;
         public static readonly Font DisplayImageFont = new Font("Arial", DisplayImageFontSize);
 
         public static readonly int ColorBlack = 0;
