@@ -5,6 +5,7 @@
         <ResourceDictionary Source="ButtonColors.xaml"/>
         <ResourceDictionary Source="LabelColors.xaml"/>
         <ResourceDictionary Source="TextBoxColors.xaml"/>
+        <ResourceDictionary Source="TreeViewColors.xaml"/>
     </ResourceDictionary.MergedDictionaries>
 
 </ResourceDictionary> 
