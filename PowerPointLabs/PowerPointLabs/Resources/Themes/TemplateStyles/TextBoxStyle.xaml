@@ -40,7 +40,7 @@
         </Setter>
     </Style>
 
-    <!-- This Style has no Key, so it will be applied to all Buttons by default. -->
+    <!-- This Style has no Key, so it will be applied to all TextBoxes by default. -->
     <Style TargetType="{x:Type TextBox}"
            BasedOn="{StaticResource BaseTextBoxStyle}"/>
 

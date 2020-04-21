@@ -12,7 +12,7 @@
         <Setter Property="Background" Value="{DynamicResource Window.Static.Background}"/>
     </Style>
 
-    <!-- This Style has no Key, so it will be applied to all Buttons by default. -->
+    <!-- This Style has no Key, so it will be applied to all Windows by default. -->
     <Style TargetType="{x:Type Window}"
            BasedOn="{StaticResource BaseWindowStyle}"/>
 

@@ -14,7 +14,7 @@
         <Setter Property="BorderBrush" Value="{DynamicResource TreeView.Static.Border}"/>
     </Style>
 
-    <!-- This Style has no Key, so it will be applied to all Buttons by default. -->
+    <!-- This Style has no Key, so it will be applied to all TreeViews by default. -->
     <Style TargetType="{x:Type TreeView}"
            BasedOn="{StaticResource BaseTreeViewStyle}"/>
 
