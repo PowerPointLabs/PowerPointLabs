@@ -13,6 +13,7 @@
         <ResourceDictionary Source="TemplateStyles/LabelStyle.xaml"/>
         <ResourceDictionary Source="TemplateStyles/TextBoxStyle.xaml"/>
         <ResourceDictionary Source="TemplateStyles/TreeViewStyle.xaml"/>
+        <ResourceDictionary Source="TemplateStyles/WindowStyle.xaml"/>
     </ResourceDictionary.MergedDictionaries>
 
 </ResourceDictionary> 
