@@ -1,0 +1,12 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <SolidColorBrush x:Key="TextBox.Static.Background" Color="#FF444444"/>
+    <SolidColorBrush x:Key="TextBox.Static.Border" Color="#FF686868"/>
+    <SolidColorBrush x:Key="TextBox.Static.Foreground" Color="#FFEEEEEE"/>
+    <SolidColorBrush x:Key="TextBox.Static.CaretBrush" Color="#FFEEEEEE"/>
+    <SolidColorBrush x:Key="TextBox.MouseOver.Background" Color="#FF333337"/>
+    <SolidColorBrush x:Key="TextBox.MouseOver.Border" Color="#FFB5B5B5"/>
+    <SolidColorBrush x:Key="TextBox.Focus.Border" Color="#FF569DE5"/>
+    
+</ResourceDictionary> 
