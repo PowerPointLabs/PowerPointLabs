@@ -1,6 +1,10 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
-    <SolidColorBrush x:Key="Label.Static.Foreground" Color="Black"/>
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="BaseColorfulColors.xaml"/>
+    </ResourceDictionary.MergedDictionaries>
+    
+    <SolidColorBrush x:Key="Label.Static.Foreground" Color="{StaticResource Theme.Foreground}"/>
 
 </ResourceDictionary> 
