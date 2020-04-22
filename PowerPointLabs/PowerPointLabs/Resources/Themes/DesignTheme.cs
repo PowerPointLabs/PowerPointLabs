@@ -32,12 +32,12 @@ namespace PowerPointLabs.Resources.Themes
             {
                 theme = value;
 
-                // Set the Source of the Resource Dictionary only when in Designer mode (and not runtime).
-                //if ((bool)DesignerProperties.IsInDesignModeProperty.GetMetadata(typeof(DependencyObject)).DefaultValue)
-                //{
+                // Set the Source of the Resource Dictionary only when in Designer mode(and not runtime).
+                if ((bool)DesignerProperties.IsInDesignModeProperty.GetMetadata(typeof(DependencyObject)).DefaultValue)
+                {
                     var themeUri = PathToThemesFolder + theme + "Theme.xaml";
                     Source = new Uri(themeUri);
-                //}
+                }
             }
         }
     }

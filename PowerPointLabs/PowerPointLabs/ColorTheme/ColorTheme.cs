@@ -11,6 +11,7 @@ namespace PowerPointLabs.ColorThemes
         public const int BLACK = 4;
         public const int WHITE = 5;
 
+        public int ThemeId;
         public Color title;
         public Color background;
         public Color foreground;

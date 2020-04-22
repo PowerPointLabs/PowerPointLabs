@@ -97,6 +97,7 @@ namespace PowerPointLabs.ColorThemes
             switch (newValue)
             {
                 case ColorTheme.COLORFUL:
+                    _colorTheme.ThemeId = ColorTheme.COLORFUL;
                     _colorTheme.title = Color.FromRgb(181, 71, 42);
                     _colorTheme.background = Color.FromRgb(230, 230, 230);
                     _colorTheme.foreground = Color.FromRgb(37, 37, 37);
@@ -105,8 +106,25 @@ namespace PowerPointLabs.ColorThemes
                     _colorTheme.headingForeground = Color.FromRgb(238, 238, 238);
                     break;
                 case ColorTheme.WHITE:
+                    _colorTheme.ThemeId = ColorTheme.WHITE;
+                    _colorTheme.title = Color.FromRgb(181, 71, 42);
+                    _colorTheme.background = Color.FromRgb(255, 255, 255);
+                    _colorTheme.foreground = Color.FromRgb(37, 37, 37);
+                    _colorTheme.boxBackground = Color.FromRgb(230, 230, 230);
+                    _colorTheme.headingBackground = Color.FromRgb(181, 71, 42);
+                    _colorTheme.headingForeground = Color.FromRgb(238, 238, 238);
+                    break;
                 case ColorTheme.LIGHT_GRAY:
+                    _colorTheme.ThemeId = ColorTheme.LIGHT_GRAY;
+                    _colorTheme.title = Color.FromRgb(181, 71, 42);
+                    _colorTheme.background = Color.FromRgb(255, 255, 255);
+                    _colorTheme.foreground = Color.FromRgb(37, 37, 37);
+                    _colorTheme.boxBackground = Color.FromRgb(230, 230, 230);
+                    _colorTheme.headingBackground = Color.FromRgb(181, 71, 42);
+                    _colorTheme.headingForeground = Color.FromRgb(238, 238, 238);
+                    break;
                 case ColorTheme.DARK_GRAY_ALT:
+                    _colorTheme.ThemeId = ColorTheme.DARK_GRAY_ALT;
                     _colorTheme.title = Color.FromRgb(181, 71, 42);
                     _colorTheme.background = Color.FromRgb(255, 255, 255);
                     _colorTheme.foreground = Color.FromRgb(37, 37, 37);
@@ -115,6 +133,7 @@ namespace PowerPointLabs.ColorThemes
                     _colorTheme.headingForeground = Color.FromRgb(238, 238, 238);
                     break;
                 case ColorTheme.DARK_GRAY:
+                    _colorTheme.ThemeId = ColorTheme.DARK_GRAY;
                     _colorTheme.title = Color.FromRgb(181, 71, 42);
                     _colorTheme.background = Color.FromRgb(102, 102, 102);
                     _colorTheme.foreground = Color.FromRgb(238, 238, 238);
@@ -123,6 +142,7 @@ namespace PowerPointLabs.ColorThemes
                     _colorTheme.headingForeground = Color.FromRgb(238, 238, 238);
                     break;
                 case ColorTheme.BLACK:
+                    _colorTheme.ThemeId = ColorTheme.BLACK;
                     _colorTheme.title = Color.FromRgb(239, 239, 239);
                     _colorTheme.background = Color.FromRgb(37, 37, 37);
                     _colorTheme.foreground = Color.FromRgb(238, 238, 238);
@@ -132,6 +152,7 @@ namespace PowerPointLabs.ColorThemes
                     break;
                 default:
                     Logger.Log("Unknown UI Theme!");
+                    _colorTheme.ThemeId = ColorTheme.COLORFUL;
                     _colorTheme.title = Color.FromRgb(181, 71, 42);
                     _colorTheme.background = Color.FromRgb(230, 230, 230);
                     _colorTheme.foreground = Color.FromRgb(37, 37, 37);

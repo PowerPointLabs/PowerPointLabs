@@ -43,11 +43,102 @@ namespace PowerPointLabs.ColorThemes.Extensions
         }
 
         /// <summary>
+        /// Removes any existing ThemeResourceDictionary in the specified element's Merged Dictionaries and
+        /// prepends a ThemeResourceDictionary based on the specified color theme to the Merged Dictionaries
+        /// </summary>
+        /// <param name="element">The element whose Merged Dictionaries will be updated</param>
+        /// <param name="colorTheme">The current ColorTheme of the Application</param>
+        public static void UpdateThemeResourceDictionary(this FrameworkElement element, ColorTheme colorTheme)
+        {
+            var mergedDictionaries = element.Resources.MergedDictionaries;
+
+            foreach (var resourceDictionary in mergedDictionaries)
+            {
+                if (!(resourceDictionary is ThemeResourceDictionary))
+                {
+                    continue;
+                }
+
+                element.Dispatcher.Invoke(new Action(() => mergedDictionaries.Remove(resourceDictionary)));
+                break;
+            }
+
+            // We are inserting this Theme at the front of the MergedDictionaries because default styles are applied in
+            // the order in which the Resource Dictionaries appear in the MergedDictionaries. If this were appended to
+            // the back of a Window or Pane which uses the MahApps styles, for example, the styles in this theme will
+            // be applied instead of the MahApps' styles, which is (usually) undesirable.
+            var newThemeDictionary = ThemeResourceDictionary.FromColorTheme(colorTheme);
+            element.Dispatcher.Invoke(new Action(() => mergedDictionaries.Insert(0, newThemeDictionary)));
+        }
+
+        /// <summary>
+        /// Updates the MahApps Resource Dictionaries in the specified FrameworkElement based on the specified colorTheme.
+        /// </summary>
+        /// <remarks>
+        /// If the FrameworkElement did not contain any MahApps Resource Dictionaries prior to this method's invocation,
+        /// the FrameworkElement will be left unchanged.
+        /// </remarks>
+        /// <param name="element">The element whose Merged Dictionaries will be updated (if applicable).</param>
+        /// <param name="colorTheme">The current ColorTheme of the Application</param>
+        public static void UpdateMahAppsResourceDictionary(this FrameworkElement element, ColorTheme colorTheme)
+        {
+            // Currently, this method will only set the BaseLight or BaseDark accents based on the ColorTheme.
+            // Any other accents will be left untouched.
+            var mergedDictionaries = element.Resources.MergedDictionaries;
+            for (int i = 0; i < mergedDictionaries.Count; ++i)
+            {
+                var resourceDictionary = mergedDictionaries[i];
+                var source = resourceDictionary.Source?.OriginalString;
+                if (string.IsNullOrEmpty(source))
+                {
+                    continue;
+                }
+
+                // Identify the BaseLight or BaseDark accents by checking the ResourceDictionary's Source
+                // and seeing if it starts with the path to the MahApps's Accents folder, followed by "Base".
+                // Developer note: I realise this isn't the best way to check this. If there is a better method,
+                // do let me know.
+                if (!source.StartsWith("pack://application:,,,/MahApps.Metro;component/Styles/Accents/Base") 
+                    && !source.StartsWith("pack://application:,,,/MahApps.Metro;component/Styles/Accents/base"))
+                {
+                    continue;
+                }
+
+                string newSource;
+                switch (colorTheme.ThemeId)
+                {
+                    case ColorTheme.BLACK:
+                    case ColorTheme.DARK_GRAY:
+                        newSource = "pack://application:,,,/MahApps.Metro;component/Styles/Accents/BaseDark.xaml";
+                        break;
+                    default:
+                        newSource = "pack://application:,,,/MahApps.Metro;component/Styles/Accents/BaseLight.xaml";
+                        break;
+                }
+
+                var newMahAppsDictionary = new ResourceDictionary
+                {
+                    Source = new Uri(newSource)
+                };
+                // Replace this ResourceDictionary with a new one with the appropriate Base Accent.
+                element.Dispatcher.Invoke(new Action(() => mergedDictionaries[i] = newMahAppsDictionary));
+                break;
+            }
+
+        }
+        
+        /// <summary>
         /// Invalidates the visual of the FrameworkElement.
         /// </summary>
         public static void RefreshVisual(this FrameworkElement element, object sender, RoutedEventArgs e)
         {
             element.InvalidateVisual();
+        }
+
+        public static void ApplyTheme(this FrameworkElement element, object sender, ColorTheme theme)
+        {
+            element.UpdateThemeResourceDictionary(theme);
+            element.UpdateMahAppsResourceDictionary(theme);
         }
 
         /// <summary>
