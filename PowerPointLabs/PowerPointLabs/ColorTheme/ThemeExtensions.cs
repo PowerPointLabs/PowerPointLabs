@@ -72,7 +72,7 @@ namespace PowerPointLabs.ColorThemes.Extensions
         }
 
         /// <summary>
-        /// Updates the MahApps Resource Dictionaries in the specified FrameworkElement based on the specified colorTheme.
+        /// Updates the MahApps THeme in the specified FrameworkElement based on the specified colorTheme.
         /// </summary>
         /// <remarks>
         /// If the FrameworkElement did not contain any MahApps Resource Dictionaries prior to this method's invocation,
@@ -80,11 +80,47 @@ namespace PowerPointLabs.ColorThemes.Extensions
         /// </remarks>
         /// <param name="element">The element whose Merged Dictionaries will be updated (if applicable).</param>
         /// <param name="colorTheme">The current ColorTheme of the Application</param>
-        public static void UpdateMahAppsResourceDictionary(this FrameworkElement element, ColorTheme colorTheme)
+        public static void UpdateMahAppsTheme(this FrameworkElement element, ColorTheme colorTheme)
         {
             // Currently, this method will only set the BaseLight or BaseDark accents based on the ColorTheme.
             // Any other accents will be left untouched.
+
+            // First, check if this element's Resources contains MahApps Accent Dictionaries. If not, exit the method.
             var mergedDictionaries = element.Resources.MergedDictionaries;
+            if (mergedDictionaries.All(dictionary => !MahApps.Metro.ThemeManager.IsAccentDictionary(dictionary)))
+            {
+                return;
+            }
+
+            // If the element is a Window, we can use methods that already exists in the MahApps.Metro.ThemeManager class.
+            if (element is Window)
+            {
+                var window = element as Window;
+
+                // Obtain the Accent currently being used.
+                Tuple<MahApps.Metro.AppTheme, MahApps.Metro.Accent> currentStyle;
+                currentStyle = MahApps.Metro.ThemeManager.DetectAppStyle(window);
+                var currentAccent = currentStyle.Item2;
+
+                // Determine the new theme to apply based on the ColorTheme.
+                MahApps.Metro.AppTheme newTheme;
+                switch (colorTheme.ThemeId)
+                {
+                    case ColorTheme.BLACK:
+                    case ColorTheme.DARK_GRAY:
+                        newTheme = MahApps.Metro.ThemeManager.GetAppTheme("BaseDark");
+                        break;
+                    default:
+                        newTheme = MahApps.Metro.ThemeManager.GetAppTheme("BaseLight");
+                        break;
+                }
+
+                // Change the style using the built-in methods.
+                MahApps.Metro.ThemeManager.ChangeAppStyle(window, currentAccent, newTheme);
+                return;
+            }
+
+            // If the element is not a Window, the dictionaries will be changed manually.
             for (int i = 0; i < mergedDictionaries.Count; ++i)
             {
                 var resourceDictionary = mergedDictionaries[i];
@@ -96,9 +132,10 @@ namespace PowerPointLabs.ColorThemes.Extensions
 
                 // Identify the BaseLight or BaseDark accents by checking the ResourceDictionary's Source
                 // and seeing if it starts with the path to the MahApps's Accents folder, followed by "Base".
+                //
                 // Developer note: I realise this isn't the best way to check this. If there is a better method,
                 // do let me know.
-                if (!source.StartsWith("pack://application:,,,/MahApps.Metro;component/Styles/Accents/Base") 
+                if (!source.StartsWith("pack://application:,,,/MahApps.Metro;component/Styles/Accents/Base")
                     && !source.StartsWith("pack://application:,,,/MahApps.Metro;component/Styles/Accents/base"))
                 {
                     continue;
@@ -138,7 +175,7 @@ namespace PowerPointLabs.ColorThemes.Extensions
         public static void ApplyTheme(this FrameworkElement element, object sender, ColorTheme theme)
         {
             element.UpdateThemeResourceDictionary(theme);
-            element.UpdateMahAppsResourceDictionary(theme);
+            element.UpdateMahAppsTheme(theme);
         }
 
         /// <summary>

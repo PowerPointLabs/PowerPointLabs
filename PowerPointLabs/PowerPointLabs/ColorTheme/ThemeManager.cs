@@ -76,7 +76,7 @@ namespace PowerPointLabs.ColorThemes
         {
             if (!Globals.ThisAddIn.IsApplicationVersion2013())
             {
-                return new List<int>() { ColorTheme.COLORFUL };
+                return new List<int>();
             }
             return new List<int>()
             {
