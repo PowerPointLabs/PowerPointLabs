@@ -1,7 +1,11 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
-    <SolidColorBrush x:Key="TreeView.Static.Background" Color="#FF363636"/>
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="BaseDarkGrayColors.xaml"/>
+    </ResourceDictionary.MergedDictionaries>
+
+    <SolidColorBrush x:Key="TreeView.Static.Background" Color="{StaticResource Theme.Background2}"/>
     <SolidColorBrush x:Key="TreeView.Static.Border" Color="#FF828790"/>
     
 </ResourceDictionary> 

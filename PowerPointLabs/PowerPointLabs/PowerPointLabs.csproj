@@ -1742,6 +1742,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
+    <Page Include="Resources\Themes\DarkGray\BaseDarkGrayColors.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="Resources\Themes\DarkGray\DarkGrayColors.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
