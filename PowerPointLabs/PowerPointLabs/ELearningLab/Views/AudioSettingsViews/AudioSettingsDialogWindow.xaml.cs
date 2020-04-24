@@ -82,6 +82,12 @@ namespace PowerPointLabs.ELearningLab.Views
             DataContext = this;
             audioSettingsDialogWindow.AllowsTransparency = true;
             audioSettingsDialogWindow.Opacity = 0;
+
+            // Add this DialogWindow's Resources to the MergedDictionaries of the pages so that
+            // when they get updated due to theme changes, the updates get propagated to the pages.
+            mainPage.Resources.MergedDictionaries.Add(Resources);
+            subAzureLoginPage.Resources.MergedDictionaries.Add(Resources);
+            subWatsonLoginPage.Resources.MergedDictionaries.Add(Resources);
         }
         protected override void OnRenderSizeChanged(SizeChangedInfo sizeInfo)
         {

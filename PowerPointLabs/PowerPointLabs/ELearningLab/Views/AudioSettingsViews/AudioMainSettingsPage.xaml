@@ -80,17 +80,7 @@
                         <Button Cursor="Hand" Grid.Column="2" x:Name="azureVoiceBtn" Content="Click to Log In" Margin="0.333,10,20,0" 
                         Grid.ColumnSpan="2" Click="AzureVoiceBtn_Click"
                         BorderThickness="0" Background="Transparent" FontWeight="Medium"
-                        Width="150" Height="25" VerticalAlignment="Center">
-                            <Button.Style>
-                                <Style TargetType="Button">
-                                    <Style.Triggers>
-                                        <Trigger Property="IsMouseOver" Value="True">
-                                            <Setter Property="Background" Value="Transparent"/>
-                                        </Trigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </Button.Style>
-                        </Button>
+                         Height="25" VerticalAlignment="Center"/>
                     </Grid>
                     <Grid>
                         <Grid.ColumnDefinitions>
@@ -137,18 +127,7 @@
                         <Button Cursor="Hand" Grid.Column="2" x:Name="watsonVoiceLoginBtn" 
                         Content="Click to Log In" Margin="0.333,10,20,0" 
                         Grid.ColumnSpan="2" Click="WatsonVoiceBtn_Click"
-                        BorderThickness="0" Background="Transparent" FontWeight="Medium"
-                        Width="150" Height="25" VerticalAlignment="Center">
-                            <Button.Style>
-                                <Style TargetType="Button">
-                                    <Style.Triggers>
-                                        <Trigger Property="IsMouseOver" Value="True">
-                                            <Setter Property="Background" Value="Transparent"/>
-                                        </Trigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </Button.Style>
-                        </Button>
+                        BorderThickness="0" Background="Transparent" FontWeight="Medium" Height="25" VerticalAlignment="Center"/>
                     </Grid>
                 </StackPanel>
             </Border>
@@ -193,18 +172,9 @@
                         </ListView.ItemTemplate>
                     </ListView>
                     <Button Cursor="Hand" x:Name="updatePreferenceButton"                         
-                    Content="Update" Width="50" HorizontalAlignment="Right"
+                        Content="Update" Width="50" HorizontalAlignment="Right"
                         FontWeight="Thin" Margin="0 0 30 10" 
                         VerticalAlignment="Center" Click="UpdateRankingButton_Clicked">
-                        <Button.Style>
-                            <Style TargetType="Button">
-                                <Style.Triggers>
-                                    <Trigger Property="IsMouseOver" Value="True">
-                                        <Setter Property="Background" Value="Transparent"/>
-                                    </Trigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Button.Style>
                         <Button.ToolTip>
                             <StackPanel FlowDirection="LeftToRight">
                                 <TextBlock FontWeight="Bold" FontSize="14" Margin="0,0,0,5">Update voice preferences</TextBlock>
@@ -248,15 +218,6 @@
                         Content="Edit" Width="50" HorizontalAlignment="Right"
                         FontWeight="Thin" Margin="0 0 30 10" 
                     Click="EditRankingButton_Clicked">
-                        <Button.Style>
-                            <Style TargetType="Button">
-                                <Style.Triggers>
-                                    <Trigger Property="IsMouseOver" Value="True">
-                                        <Setter Property="Background" Value="Transparent"/>
-                                    </Trigger>
-                                </Style.Triggers>
-                            </Style>
-                        </Button.Style>
                         <Button.ToolTip>
                             <StackPanel FlowDirection="LeftToRight">
                                 <TextBlock FontWeight="Bold" FontSize="14" Margin="0,0,0,5">Edit Voice Preferences</TextBlock>
