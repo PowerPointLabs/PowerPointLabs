@@ -1,7 +1,8 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <!-- This is the default background colour of a Pane. -->
+    <Color x:Key="Theme.PaneBackground">#FF666666</Color>
 
-    <!-- Theme.Background is the default background colour of a Pane in PPT. -->
     <Color x:Key="Theme.Background">#FF1E1E1E</Color>
     <Color x:Key="Theme.Background2">#FF363636</Color>
     <Color x:Key="Theme.Background3">#FF5A5A5A</Color>

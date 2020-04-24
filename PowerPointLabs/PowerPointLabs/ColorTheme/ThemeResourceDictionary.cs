@@ -22,6 +22,12 @@ namespace PowerPointLabs.ColorThemes
                 case ColorTheme.COLORFUL:
                     themeName = "Colorful";
                     break;
+                case ColorTheme.DARK_GRAY:
+                    themeName = "DarkGray";
+                    break;
+                case ColorTheme.WHITE:
+                    themeName = "White";
+                    break;
                 default:
                     themeName = "Colorful";
                     break;

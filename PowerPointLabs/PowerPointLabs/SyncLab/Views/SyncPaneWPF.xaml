@@ -15,6 +15,9 @@
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </UserControl.Resources>
+    <UserControl.Background>
+        <SolidColorBrush Color="{DynamicResource Theme.PaneBackground}"/>
+    </UserControl.Background>
     <Grid>
         <Button x:Name="copyButton" HorizontalAlignment="Left" Height="45" Margin="10,10,0,0" ToolTipService.ShowOnDisabled="True" VerticalAlignment="Top" Width="45" Click="CopyButton_Click" IsEnabled="True">
             <Image x:Name="copyImage" Source="..\..\Resources\SyncLabCopyButton.png" Stretch="Fill"/>

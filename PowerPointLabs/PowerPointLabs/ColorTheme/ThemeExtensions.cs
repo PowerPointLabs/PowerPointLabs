@@ -134,9 +134,8 @@ namespace PowerPointLabs.ColorThemes.Extensions
                 // and seeing if it starts with the path to the MahApps's Accents folder, followed by "Base".
                 //
                 // Developer note: I realise this isn't the best way to check this. If there is a better method,
-                // do let me know.
-                if (!source.StartsWith("pack://application:,,,/MahApps.Metro;component/Styles/Accents/Base")
-                    && !source.StartsWith("pack://application:,,,/MahApps.Metro;component/Styles/Accents/base"))
+                // do let me know, or go ahead and implement it yourself.
+                if (!source.StartsWith("pack://application:,,,/MahApps.Metro;component/Styles/Accents/Base", true, null))
                 {
                     continue;
                 }
