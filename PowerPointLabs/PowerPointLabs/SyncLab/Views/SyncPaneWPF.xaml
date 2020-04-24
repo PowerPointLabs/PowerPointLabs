@@ -3,20 +3,20 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:theme="clr-namespace:PowerPointLabs.ColorThemes"
              mc:Ignorable="d" 
              d:DesignHeight="833" d:DesignWidth="300" 
              Loaded="SyncPaneWPF_Loaded">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <theme:DesignTheme Theme="Black"/>
+                <theme:BaseStylesDictionary/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
     <Grid>
-        <Button x:Name="copyButton" HorizontalAlignment="Left" Height="45" Margin="10,10,0,0" ToolTipService.ShowOnDisabled="True" VerticalAlignment="Top" Width="45" Click="CopyButton_Click" Background="White" IsEnabled="True">
-            <Button.Style>
-                <Style TargetType="Button">
-                    <Style.Triggers>
-                        <Trigger Property="IsEnabled" Value="False">
-                            <Setter Property="Opacity" Value="0.3" />
-                        </Trigger>
-                    </Style.Triggers>
-                </Style>
-            </Button.Style>
+        <Button x:Name="copyButton" HorizontalAlignment="Left" Height="45" Margin="10,10,0,0" ToolTipService.ShowOnDisabled="True" VerticalAlignment="Top" Width="45" Click="CopyButton_Click" IsEnabled="True">
             <Image x:Name="copyImage" Source="..\..\Resources\SyncLabCopyButton.png" Stretch="Fill"/>
             <Button.ToolTip>
                 <StackPanel>
@@ -26,8 +26,20 @@
                     </TextBlock>
                 </StackPanel>
             </Button.ToolTip>
+            <Button.Style>
+                <Style TargetType="Button" BasedOn="{StaticResource BaseButtonStyle}">
+                    <Style.Triggers>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="Opacity" Value="0.3"/>
+                        </Trigger>
+                    </Style.Triggers>
+                </Style>
+            </Button.Style>
         </Button>
         <Label x:Name="copyLabel" Content="Copy" HorizontalAlignment="Left" Margin="10,55,0,0" VerticalAlignment="Top" HorizontalContentAlignment="Center" VerticalContentAlignment="Center" Width="45"/>
-        <ListBox x:Name="formatListBox" Margin="10,86,10,10" HorizontalContentAlignment="Stretch"/>
+        <ListBox x:Name="formatListBox" 
+                 Margin="10,86,10,10" 
+                 HorizontalContentAlignment="Stretch"
+                 Background="{DynamicResource Theme.BackgroundBrush2}"/>
     </Grid>
 </UserControl>
