@@ -720,6 +720,7 @@
       <DependentUpon>ColorInformationDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="ColorTheme\ActionCommand.cs" />
+    <Compile Include="ColorTheme\BaseStylesDictionary.cs" />
     <Compile Include="ColorTheme\ThemeResourceDictionary.cs" />
     <Compile Include="ELearningLab\Converters\ShapeNameWidthConverter.cs" />
     <Compile Include="Converters\ColorPane\HSLColorToHex.cs" />

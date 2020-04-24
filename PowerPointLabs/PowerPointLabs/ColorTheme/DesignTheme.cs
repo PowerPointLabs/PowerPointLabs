@@ -15,6 +15,24 @@ namespace PowerPointLabs.ColorThemes
     /// This class will apply the specified theme in the Designer preview, allowing the programmer
     /// to design Windows or User Control .xaml files while being able to freely change the themes.
     /// This ResourceDictionary will have no effect during runtime.
+    /// 
+    /// To use this class in a Control, simply place this class in the Resources' Merged Dictionary.
+    /// For example, to use it in a UserControl,
+    /// 
+    /// <code>
+    /// <UserControl 
+    ///     x:Class="..."
+    ///     xmlns="..."
+    ///     xmlns:theme="clr-namespace:PowerPointLabs.ColorThemes">
+    ///     <UserControl.Resources>
+    ///         <ResourceDictionary>
+    ///             <ResourceDictionary.MergedDictionaries>
+    ///                 <theme:DesignTheme Theme="Dark"/>
+    ///             </ResourceDictionary.MergedDictionaries>    
+    ///         </ResourceDictionary>
+    ///     </UserControl.Resources>
+    /// </UserControl>
+    /// </code>
     /// </remarks>
     public class DesignTheme : ResourceDictionary
     {
