@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace PowerPointLabs.Resources.Themes
+namespace PowerPointLabs.ColorThemes
 {
     /// <summary>
     /// The DesignTheme class is a ResourceDictionary for use in the Designer in Visual Studio.

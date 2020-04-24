@@ -8,6 +8,7 @@
         <ResourceDictionary Source="LabelColors.xaml"/>
         <ResourceDictionary Source="TextBlockColors.xaml"/>
         <ResourceDictionary Source="TextBoxColors.xaml"/>
+        <ResourceDictionary Source="ToolTipColors.xaml"/>
         <ResourceDictionary Source="TreeViewColors.xaml"/>
         <ResourceDictionary Source="WindowColors.xaml"/>
     </ResourceDictionary.MergedDictionaries>

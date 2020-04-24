@@ -1,0 +1,12 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="BaseWhiteColors.xaml"/>
+    </ResourceDictionary.MergedDictionaries>
+
+    <SolidColorBrush x:Key="ToolTip.Static.Background" Color="#FFF1F2F7"/>
+    <SolidColorBrush x:Key="ToolTip.Static.Foreground" Color="{StaticResource Theme.Foreground}"/>
+    <SolidColorBrush x:Key="ToolTip.Static.BorderBrush" Color="#FF767676"/>
+
+</ResourceDictionary> 

@@ -1,0 +1,32 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    
+    <!-- 
+    List of colors to define:
+    - ToolTip.Static.Background
+    - ToolTip.Static.Foreground
+    - ToolTip.Static.BorderBrush
+    -->
+
+    <!-- This style has a Key so that it can be referenced. -->
+    <Style TargetType="{x:Type ToolTip}"
+           x:Key="BaseToolTipStyle">
+        <!-- 
+        The text element of a ToolTip is a TextBlock, and the default style of a TextBlock (as defined
+        in TextBlockStyle.xaml) will be applied. Simply setting the Foreground property will not overwrite
+        this; we need to set a new TextBlock style.
+        -->
+        <Style.Resources>
+            <Style TargetType="TextBlock">
+                <Setter Property="Foreground" Value="{DynamicResource ToolTip.Static.Foreground}"/>
+            </Style>
+        </Style.Resources>
+        <Setter Property="Background" Value="{DynamicResource ToolTip.Static.Background}"/>
+        <Setter Property="BorderBrush" Value="{DynamicResource ToolTip.Static.BorderBrush}"/>
+    </Style>
+
+    <!-- This Style has no Key, so it will be applied to all TextBlocks by default. -->
+    <Style TargetType="{x:Type ToolTip}"
+           BasedOn="{StaticResource BaseToolTipStyle}"/>
+
+</ResourceDictionary> 
