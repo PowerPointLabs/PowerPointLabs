@@ -10,6 +10,8 @@
 
     <Color x:Key="Theme.Foreground">#FF000000</Color>
 
+    <SolidColorBrush x:Key="Theme.PaneBackgroundBrush" Color="{StaticResource Theme.PaneBackground}"/>
+
     <SolidColorBrush x:Key="Theme.BackgroundBrush" Color="{StaticResource Theme.Background1}"/>
     <SolidColorBrush x:Key="Theme.BackgroundBrush2" Color="{StaticResource Theme.Background2}"/>
     <SolidColorBrush x:Key="Theme.BackgroundBrush3" Color="{StaticResource Theme.Background3}"/>
