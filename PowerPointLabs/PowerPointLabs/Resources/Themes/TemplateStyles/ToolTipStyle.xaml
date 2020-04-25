@@ -13,14 +13,13 @@
            x:Key="BaseToolTipStyle">
         <!-- 
         The text element of a ToolTip is a TextBlock, and the default style of a TextBlock (as defined
-        in TextBlockStyle.xaml) will be applied. Simply setting the Foreground property will not overwrite
-        this; we need to set a new TextBlock style.
+        in TextBlockStyle.xaml) will be applied. Hence, this empty style is here to be used by TextBlocks
+        so that it does not overwrite the Foreground property.
         -->
         <Style.Resources>
-            <Style TargetType="TextBlock">
-                <Setter Property="Foreground" Value="{DynamicResource ToolTip.Static.Foreground}"/>
-            </Style>
+            <Style TargetType="TextBlock"/>
         </Style.Resources>
+        <Setter Property="Foreground" Value="{DynamicResource ToolTip.Static.Foreground}"/>
         <Setter Property="Background" Value="{DynamicResource ToolTip.Static.Background}"/>
         <Setter Property="BorderBrush" Value="{DynamicResource ToolTip.Static.BorderBrush}"/>
     </Style>

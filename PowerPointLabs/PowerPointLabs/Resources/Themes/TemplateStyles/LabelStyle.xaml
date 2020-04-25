@@ -9,6 +9,16 @@
     <!-- This style has a Key so that it can be referenced. -->
     <Style TargetType="{x:Type Label}"
            x:Key="BaseLabelStyle">
+        <!-- 
+        If the content is text, the content presenter will be a TextBlock, which will
+        use the BaseTextBlock style defined in TextBlockStyle.xaml, which will use the
+        Foreground set in the style instead of the Foreground set here, or whatever was
+        set by the user. Hence, this empty Style is here for the TextBlock to use so that
+        the Foreground property does not get overwritten.
+        -->
+        <Style.Resources>
+            <Style TargetType="TextBlock"/>
+        </Style.Resources>
         <Setter Property="Foreground" Value="{DynamicResource Label.Static.Foreground}"/>
     </Style>
 
