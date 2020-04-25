@@ -3,7 +3,7 @@
 
     <SolidColorBrush x:Key="Button.Static.Background" Color="#FF444444"/>
     <SolidColorBrush x:Key="Button.Static.Border" Color="#FF6A6A6A"/>
-    <SolidColorBrush x:Key="Button.Static.Foreground" Color="#FFEEEEEE"/>
+    <SolidColorBrush x:Key="Button.Static.Foreground" Color="#FFFFFFFF"/>
     <SolidColorBrush x:Key="Button.MouseOver.Background" Color="#FF444444"/>
     <SolidColorBrush x:Key="Button.MouseOver.Border" Color="#FF969696"/>
     <SolidColorBrush x:Key="Button.Pressed.Background" Color="#FF6A6A6A"/>
