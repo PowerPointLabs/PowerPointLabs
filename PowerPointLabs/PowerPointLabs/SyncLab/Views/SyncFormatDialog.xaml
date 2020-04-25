@@ -36,7 +36,7 @@
     
     <Grid>
         <TextBox x:Name="nameTextBox" Height="23" Margin="10,10,10,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top"/>
-        <TreeView x:Name="treeView" Margin="10,38,10,35" HorizontalContentAlignment="Stretch"/>
+        <TreeView x:Name="treeView" Margin="10,38,10,35" HorizontalContentAlignment="Stretch" />
         <Button x:Name="okButton" IsDefault="True" Content="OK" Margin="0,0,90,10" HorizontalAlignment="Right" Width="75" Height="20" VerticalAlignment="Bottom" Grid.ColumnSpan="2" Click="OkButton_Click" Grid.Row="1"/>
         <Button x:Name="cancelButton" IsCancel="True" Content="Cancel" Margin="0,0,10,10" HorizontalAlignment="Right" Width="75" Height="20" VerticalAlignment="Bottom" Grid.Column="1" Grid.Row="1"/>
     </Grid>
