@@ -1,0 +1,26 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="BaseBlackColors.xaml"/>
+    </ResourceDictionary.MergedDictionaries>
+
+    <SolidColorBrush x:Key="OptionMark.Static.Background" Color="#FF444444"/>
+    <SolidColorBrush x:Key="OptionMark.Static.Border" Color="#FF9E9E9E"/>
+    <SolidColorBrush x:Key="OptionMark.Static.Glyph" Color="#FFFFFFFF"/>
+    
+    <SolidColorBrush x:Key="OptionMark.MouseOver.Background" Color="#FF6A6A6A"/>
+    <SolidColorBrush x:Key="OptionMark.MouseOver.Border" Color="#FFAEAEAE"/>
+    <SolidColorBrush x:Key="OptionMark.MouseOver.Glyph" Color="#FFFFFFFF"/>
+    
+    <SolidColorBrush x:Key="OptionMark.Disabled.Background" Color="#FF252525"/>
+    <SolidColorBrush x:Key="OptionMark.Disabled.Border" Color="#FF444444"/>
+    <SolidColorBrush x:Key="OptionMark.Disabled.Glyph" Color="#FF444444"/>
+    
+    <SolidColorBrush x:Key="OptionMark.Pressed.Background" Color="#FFAEAEAE"/>
+    <SolidColorBrush x:Key="OptionMark.Pressed.Border" Color="#FFAEAEAE"/>
+    <SolidColorBrush x:Key="OptionMark.Pressed.Glyph" Color="#FFFFFFFF"/>
+    
+    <SolidColorBrush x:Key="CheckBox.Static.Foreground" Color="{StaticResource Theme.Foreground}"/>
+
+</ResourceDictionary> 

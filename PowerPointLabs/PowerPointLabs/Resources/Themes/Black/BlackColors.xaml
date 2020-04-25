@@ -3,8 +3,9 @@
 
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="BaseBlackColors.xaml"/>
-        
+
         <ResourceDictionary Source="ButtonColors.xaml"/>
+        <ResourceDictionary Source="CheckBoxColors.xaml"/>
         <ResourceDictionary Source="LabelColors.xaml"/>
         <ResourceDictionary Source="TextBlockColors.xaml"/>
         <ResourceDictionary Source="TextBoxColors.xaml"/>
