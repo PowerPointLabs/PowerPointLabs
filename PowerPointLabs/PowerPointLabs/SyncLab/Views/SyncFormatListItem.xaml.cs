@@ -14,7 +14,6 @@ namespace PowerPointLabs.SyncLab.Views
     /// </summary>
     public partial class SyncFormatListItem : UserControl
     {
-
         Bitmap image;
 
         public SyncFormatListItem()
@@ -25,22 +24,13 @@ namespace PowerPointLabs.SyncLab.Views
 
         public bool? IsChecked
         {
-            get
-            {
-                return checkBox.IsChecked;
-            }
-            set
-            {
-                checkBox.IsChecked = value;
-            }
+            get => checkBox.IsChecked;
+            set => checkBox.IsChecked = value;
         }
 
         public Bitmap Image
         {
-            get
-            {
-                return image;
-            }
+            get => image;
             set
             {
                 image = value;
@@ -50,34 +40,22 @@ namespace PowerPointLabs.SyncLab.Views
 
         private void UpdateImage()
         {
-            // if image isn't set, fill the control with the label
+            // if image isn't set, hide the image border.
             if (image == null)
             {
-                imageBox.Visibility = Visibility.Hidden;
-                label.Margin = new Thickness(30, label.Margin.Top,
-                            label.Margin.Right, label.Margin.Bottom);
+                imageBorder.Visibility = Visibility.Collapsed;
                 return;
             }
-            else
-            {
-                BitmapSource source = GraphicsUtil.BitmapToImageSource(image);
-                imageBox.Source = source;
-                imageBox.Visibility = Visibility.Visible;
-                label.Margin = new Thickness(65, label.Margin.Top,
-                            label.Margin.Right, label.Margin.Bottom);
-            }
+
+            imageBorder.Visibility = Visibility.Visible;
+            BitmapSource source = GraphicsUtil.BitmapToImageSource(image);
+            imageBox.Source = source;
         }
 
-        public String Text
+        public string Text
         {
-            get
-            {
-                return label.Content.ToString();
-            }
-            set
-            {
-                label.Content = value;
-            }
+            get => label.Content.ToString();
+            set => label.Content = value;
         }
     }
 }

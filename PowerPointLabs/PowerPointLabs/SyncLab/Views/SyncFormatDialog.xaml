@@ -7,7 +7,7 @@
         xmlns:theme="clr-namespace:PowerPointLabs.ColorThemes"
         mc:Ignorable="d" 
         Title="Copy Format"
-        d:DesignHeight="600" d:DesignWidth="300" Height="600"  Width="307">
+        d:DesignHeight="600" d:DesignWidth="300" Height="600"  Width="320">
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>

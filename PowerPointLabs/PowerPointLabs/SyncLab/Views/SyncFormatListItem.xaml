@@ -5,11 +5,44 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:PowerPointLabs.SyncLab.Views"
              mc:Ignorable="d" 
-             d:DesignHeight="50" d:DesignWidth="300">
-    <Grid x:Name="grid">
-        <CheckBox x:Name="checkBox" HorizontalAlignment="Left" Margin="5,5,0,5" VerticalAlignment="Center"/>
-        <Image x:Name="imageBox" Margin="30,2,0,2" OpacityMask="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" HorizontalAlignment="Left" Width="30" Height="30"/>
-        <Label x:Name="label" Margin="65,2,10,2" HorizontalContentAlignment="Left" VerticalContentAlignment="Center"/>
-
-    </Grid>
+             d:DesignWidth="300">
+    <CheckBox x:Name="checkBox" 
+              Margin="5, 3" 
+              VerticalAlignment="Center"
+              HorizontalContentAlignment="Stretch"
+              VerticalContentAlignment="Center">
+        <CheckBox.Content>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Border x:Name="imageBorder"
+                            Grid.Column="0"
+                            BorderBrush="Black"
+                            BorderThickness="1"
+                            Visibility="Visible"
+                            Background="White"
+                            Margin="5,0"
+                            Width="34"
+                            Height="34"
+                            HorizontalAlignment="Left"
+                            VerticalAlignment="Center"
+                            Padding="1">
+                    <Image x:Name="imageBox" 
+                               OpacityMask="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" 
+                               HorizontalAlignment="Center"
+                               VerticalAlignment="Center"/>
+                </Border>
+                <Label x:Name="label" 
+                           Grid.Column="1"
+                           Margin="5,0" 
+                           Padding="0"
+                           MinHeight="34"
+                           HorizontalAlignment="Left" 
+                           VerticalAlignment="Center"
+                           VerticalContentAlignment="Center"/>
+            </Grid>
+        </CheckBox.Content>
+    </CheckBox>
 </UserControl>
