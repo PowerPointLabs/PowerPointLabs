@@ -3,13 +3,13 @@
     <!-- This is the default background colour of a Pane. -->
     <Color x:Key="Theme.PaneBackground">#FFFFFFFF</Color>
 
-    <Color x:Key="Theme.Background">#FFE6E6E6</Color>
-    <Color x:Key="Theme.Background2">#FFDCDCDC</Color>
-    <Color x:Key="Theme.Background3">#FFC5C5C5</Color>
+    <Color x:Key="Theme.Background1">#FFFFFFFF</Color>
+    <Color x:Key="Theme.Background2">#FFFFFFFF</Color>
+    <Color x:Key="Theme.Background3">#FFEBEBEB</Color>
 
     <Color x:Key="Theme.Foreground">#FF000000</Color>
 
-    <SolidColorBrush x:Key="Theme.BackgroundBrush" Color="{StaticResource Theme.Background}"/>
+    <SolidColorBrush x:Key="Theme.BackgroundBrush" Color="{StaticResource Theme.Background1}"/>
     <SolidColorBrush x:Key="Theme.BackgroundBrush2" Color="{StaticResource Theme.Background2}"/>
     <SolidColorBrush x:Key="Theme.BackgroundBrush3" Color="{StaticResource Theme.Background3}"/>
 

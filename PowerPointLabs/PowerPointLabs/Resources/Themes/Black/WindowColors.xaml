@@ -5,6 +5,6 @@
         <ResourceDictionary Source="BaseBlackColors.xaml"/>
     </ResourceDictionary.MergedDictionaries>
 
-    <SolidColorBrush x:Key="Window.Static.Background" Color="{StaticResource Theme.Background}"/>
+    <SolidColorBrush x:Key="Window.Static.Background" Color="{StaticResource Theme.Background1}"/>
     
 </ResourceDictionary> 
