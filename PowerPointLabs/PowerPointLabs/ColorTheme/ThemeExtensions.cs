@@ -16,6 +16,8 @@ namespace PowerPointLabs.ColorThemes.Extensions
 {
     public static class ThemeExtensions
     {
+        public static string PathToMahAppsAccents = "pack://application:,,,/MahApps.Metro;component/Styles/Accents/";
+
         /// <summary>
         /// Shows a thematic dialog and waits for the window to close.
         /// </summary>
@@ -135,7 +137,7 @@ namespace PowerPointLabs.ColorThemes.Extensions
                 //
                 // Developer note: I realise this isn't the best way to check this. If there is a better method,
                 // do let me know, or go ahead and implement it yourself.
-                if (!source.StartsWith("pack://application:,,,/MahApps.Metro;component/Styles/Accents/Base", true, null))
+                if (!source.StartsWith(PathToMahAppsAccents + "Base", true, null))
                 {
                     continue;
                 }
@@ -145,10 +147,10 @@ namespace PowerPointLabs.ColorThemes.Extensions
                 {
                     case ColorTheme.BLACK:
                     case ColorTheme.DARK_GRAY:
-                        newSource = "pack://application:,,,/MahApps.Metro;component/Styles/Accents/BaseDark.xaml";
+                        newSource = PathToMahAppsAccents + "BaseDark.xaml";
                         break;
                     default:
-                        newSource = "pack://application:,,,/MahApps.Metro;component/Styles/Accents/BaseLight.xaml";
+                        newSource = PathToMahAppsAccents + "BaseLight.xaml";
                         break;
                 }
 
@@ -171,10 +173,26 @@ namespace PowerPointLabs.ColorThemes.Extensions
             element.InvalidateVisual();
         }
 
+        /// <summary>
+        /// Applies a theme to the specified FrameworkElement by updating its Resources.
+        /// </summary>
+        /// <param name="element">The WPF FrameworkElement to apply the theme to.</param>
+        /// <param name="sender">The object that triggered the event.</param>
+        /// <param name="theme">The ColorTheme to apply.</param>
         public static void ApplyTheme(this FrameworkElement element, object sender, ColorTheme theme)
         {
+            // Three things to update:
+            // 1. The ThemeResourceDictionary at the front of the element's Resources.
+            // 2. MahApps resorce dictionaries if the element has them.
+            // 3. Calling the element's own OnThemeChanged method if it implements INotifyOnThemeChanged.
+
             element.UpdateThemeResourceDictionary(theme);
             element.UpdateMahAppsTheme(theme);
+
+            if (element is INotifyOnThemeChanged)
+            {
+                element.Dispatcher.Invoke(new Action(() => (element as INotifyOnThemeChanged).OnThemeChanged(theme)));
+            }
         }
 
         /// <summary>
