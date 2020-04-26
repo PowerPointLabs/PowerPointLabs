@@ -121,7 +121,7 @@
                     </DataTemplate>
                     <DataTemplate DataType="{x:Type model:ExplanationItem}">
                         <StackPanel Margin="2 2 2 2">
-                            <Border BorderThickness="0.2" BorderBrush="{DynamicResource Theme.BackgroundBrush3}" CornerRadius="4" Background="{DynamicResource Theme.BackgroundBrush3}">
+                            <Border BorderThickness="0.2" BorderBrush="{DynamicResource Theme.BackgroundBrush3}" CornerRadius="4" Background="{DynamicResource Theme.BackgroundBrush2}">
                                 <StackPanel Margin="5 5 5 5">
                                     <views:ExplanationItemView DataContext="{Binding}"/>
                                 </StackPanel>
