@@ -1,14 +1,16 @@
-﻿<UserControl
-             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+﻿<UserControl xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:WPF="clr-namespace:PowerPointLabs.WPF" x:Class="PowerPointLabs.PositionsLab.PositionsPaneWpf"
+             xmlns:WPF="clr-namespace:PowerPointLabs.WPF"
+             xmlns:theme="clr-namespace:PowerPointLabs.ColorThemes"
+             x:Class="PowerPointLabs.PositionsLab.PositionsPaneWpf"
              mc:Ignorable="d" Height="725" Width="310"
              x:Name="positionLabPane" FocusVisualStyle="{x:Null}">
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
+                <theme:DesignTheme Theme="Colorful"/>
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Colors.xaml" />
@@ -20,6 +22,9 @@
             </Style>
         </ResourceDictionary>
     </UserControl.Resources>
+    <UserControl.Background>
+        <DynamicResource ResourceKey="Theme.PaneBackgroundBrush"/>
+    </UserControl.Background>
     <UserControl.InputBindings>
         <KeyBinding Key="LeftCtrl"/>
     </UserControl.InputBindings>
