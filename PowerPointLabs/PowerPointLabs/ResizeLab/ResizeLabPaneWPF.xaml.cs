@@ -49,6 +49,8 @@ namespace PowerPointLabs.ResizeLab
             Focusable = true;
         }
 
+        #region INotifyOnThemeChanged Interface methods
+
         /// <summary>
         /// Changes the MahApps accent of this pane based on the Color Theme.
         /// </summary>
@@ -56,7 +58,7 @@ namespace PowerPointLabs.ResizeLab
         /// The Steel accent will be used on all themes, except for the DarkGray
         /// theme, which will use the Teal accent.
         /// </remarks>
-        /// <param name="updatedColorTheme"></param>
+        /// <param name="updatedColorTheme">The new color theme</param>
         public void OnThemeChanged(ColorTheme updatedColorTheme)
         {
             // The Steel accent doesn't look good on the DarkGray background.
@@ -71,6 +73,8 @@ namespace PowerPointLabs.ResizeLab
                     break;
             }
         }
+
+        #endregion
 
         #region Initialise
         internal void InitialiseLogicInstance()
