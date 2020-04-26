@@ -48,6 +48,10 @@
         <Canvas x:Name="categoryBoxHolder" Margin="10,106,10,700">
             <ComboBox x:Name="categoryBox" SelectionChanged="CategoryBoxSelectedIndexChanged" Width="{Binding ActualWidth, ElementName=categoryBoxHolder}" Foreground="Black">
                 <ComboBox.Resources>
+                    <!-- 
+                    Prevent the ComboBox elements from following the TextBlock styles defined
+                    in the theme. This way, the foreground remains Black.
+                    -->
                     <Style TargetType="TextBlock"/>
                 </ComboBox.Resources>
             </ComboBox>
