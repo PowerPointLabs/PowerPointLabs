@@ -74,7 +74,7 @@ namespace PowerPointLabs.ColorThemes.Extensions
         }
 
         /// <summary>
-        /// Updates the MahApps THeme in the specified FrameworkElement based on the specified colorTheme.
+        /// Updates the MahApps Theme in the specified FrameworkElement based on the specified colorTheme.
         /// </summary>
         /// <remarks>
         /// If the FrameworkElement did not contain any MahApps Resource Dictionaries prior to this method's invocation,
@@ -162,7 +162,68 @@ namespace PowerPointLabs.ColorThemes.Extensions
                 element.Dispatcher.Invoke(new Action(() => mergedDictionaries[i] = newMahAppsDictionary));
                 break;
             }
+        }
 
+        /// <summary>
+        /// Changes the mahApps Accent in the specified framework element.
+        /// </summary>
+        /// <remarks>
+        /// If the specified element did not contain any MahApps Resource Dictionaries prior to this method's invocation,
+        /// the FrameworkElement will be left unchanged.
+        /// </remarks>
+        /// <param name="element">The element whose accent is to updated.</param>
+        /// <param name="accentName">The name of the new MahApps Accent.</param>
+        public static void ChangeMahAppsAccent(this FrameworkElement element, string accentName)
+        {
+            // First, check if this element's Resources contains MahApps Accent Dictionaries. If not, exit the method.
+            var mergedDictionaries = element.Resources.MergedDictionaries;
+            if (mergedDictionaries.All(dictionary => !MahApps.Metro.ThemeManager.IsAccentDictionary(dictionary)))
+            {
+                return;
+            }
+
+            // If the element is a Window, we can use methods that already exists in the MahApps.Metro.ThemeManager class.
+            if (element is Window)
+            {
+                var window = element as Window;
+
+                // Obtain the Theme currently being used.
+                Tuple<MahApps.Metro.AppTheme, MahApps.Metro.Accent> currentStyle;
+                currentStyle = MahApps.Metro.ThemeManager.DetectAppStyle(window);
+                var currentTheme = currentStyle.Item1;
+
+
+                var newAccent = MahApps.Metro.ThemeManager.GetAccent(accentName);
+                
+                // Change the style using the built-in methods.
+                MahApps.Metro.ThemeManager.ChangeAppStyle(window, newAccent, currentTheme);
+                return;
+            }
+
+            // If the element is not a Window, the dicionaries will be changed manually
+            for (int i = 0; i < mergedDictionaries.Count; ++i)
+            {
+                var resourceDictionary = mergedDictionaries[i];
+                var source = resourceDictionary.Source?.OriginalString;
+                if (string.IsNullOrEmpty(source))
+                {
+                    continue;
+                }
+
+                // The MahApps Colors resource dictionary is also considered an AccentDictionary,
+                // which is why the former check is required.
+                if (!source.StartsWith(PathToMahAppsAccents) || !MahApps.Metro.ThemeManager.IsAccentDictionary(resourceDictionary))
+                {
+                    continue;
+                }
+
+                var newSource = PathToMahAppsAccents + accentName + ".xaml";
+                var newAccentDictionary = new ResourceDictionary
+                {
+                    Source = new Uri(newSource)
+                };
+                element.Dispatcher.Invoke(new Action(() => mergedDictionaries[i] = newAccentDictionary));
+            }
         }
         
         /// <summary>
