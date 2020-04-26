@@ -7,6 +7,7 @@
         <ResourceDictionary Source="ButtonColors.xaml"/>
         <ResourceDictionary Source="CheckBoxColors.xaml"/>
         <ResourceDictionary Source="LabelColors.xaml"/>
+        <ResourceDictionary Source="HyperlinkColors.xaml"/>
         <ResourceDictionary Source="TextBlockColors.xaml"/>
         <ResourceDictionary Source="TextBoxColors.xaml"/>
         <ResourceDictionary Source="ToolTipColors.xaml"/>
