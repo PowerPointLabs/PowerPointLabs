@@ -11,7 +11,7 @@
     <Window.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
-                <theme:DesignTheme Theme="Black"/>
+                <theme:DesignTheme Theme="Colorful"/>
                 <theme:BaseStylesDictionary/>
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
