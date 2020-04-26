@@ -3,10 +3,22 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:theme="clr-namespace:PowerPointLabs.ColorThemes"
              mc:Ignorable="d" 
              d:DesignHeight="833" d:DesignWidth="300"
              MouseDown="ClickOutsideShapeList"
              Loaded="CustomShapePaneWPF_Loaded">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <theme:DesignTheme Theme="DarkGray"/>
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </UserControl.Resources>
+    <UserControl.Background>
+        <DynamicResource ResourceKey="Theme.PaneBackgroundBrush"/>
+    </UserControl.Background>
+    
     <Grid x:Name="grid" IsHitTestVisible="True" Background="Transparent">
         <Button x:Name="addShapeButton" HorizontalAlignment="Left" Height="45" Margin="10,10,0,0" ToolTipService.ShowOnDisabled="True" VerticalAlignment="Top" Width="45" Click="AddShapeButton_Click" Background="White" IsEnabled="True">
             <Button.Style>
@@ -34,10 +46,13 @@
             </Hyperlink>
         </TextBlock>
         <Canvas x:Name="categoryBoxHolder" Margin="10,106,10,700">
-            <ComboBox x:Name="categoryBox" SelectionChanged="CategoryBoxSelectedIndexChanged" Width="{Binding ActualWidth, ElementName=categoryBoxHolder}">
+            <ComboBox x:Name="categoryBox" SelectionChanged="CategoryBoxSelectedIndexChanged" Width="{Binding ActualWidth, ElementName=categoryBoxHolder}" Foreground="Black">
+                <ComboBox.Resources>
+                    <Style TargetType="TextBlock"/>
+                </ComboBox.Resources>
             </ComboBox>
         </Canvas>
-        <ListBox x:Name="shapeList" Margin="10,146,10,10" SelectionMode="Extended" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+        <ListBox x:Name="shapeList" Margin="10,146,10,10" SelectionMode="Extended" ScrollViewer.HorizontalScrollBarVisibility="Disabled" Background="{DynamicResource Theme.BackgroundBrush2}">
             <ListBox.ItemsPanel>
                 <ItemsPanelTemplate>
                     <WrapPanel x:Name="wrapPanel" Orientation="Horizontal" Loaded="WrapPanelLoaded"></WrapPanel>
