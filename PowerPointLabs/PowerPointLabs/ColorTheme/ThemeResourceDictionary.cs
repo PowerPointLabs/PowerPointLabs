@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PowerPointLabs.ActionFramework.Common.Log;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -38,6 +39,7 @@ namespace PowerPointLabs.ColorThemes
                     themeName = "White";
                     break;
                 default:
+                    Logger.Log("Unknown UI Theme!");
                     themeName = "Colorful";
                     break;
             }
