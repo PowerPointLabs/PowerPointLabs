@@ -86,7 +86,21 @@ namespace PowerPointLabs.ColorThemes
 
         private void UpdateColorTheme(int newValue)
         {
-            _colorTheme.ThemeId = newValue;
+            switch (newValue)
+            {
+                case ColorTheme.BLACK:
+                case ColorTheme.COLORFUL:
+                case ColorTheme.DARK_GRAY:
+                case ColorTheme.DARK_GRAY_ALT:
+                case ColorTheme.LIGHT_GRAY:
+                case ColorTheme.WHITE:
+                    _colorTheme.ThemeId = newValue;
+                    break;
+                default:
+                    Logger.Log("Unknown UI Theme!");
+                    _colorTheme.ThemeId = ColorTheme.COLORFUL;
+                    break;
+            }
         }
     }
 }
