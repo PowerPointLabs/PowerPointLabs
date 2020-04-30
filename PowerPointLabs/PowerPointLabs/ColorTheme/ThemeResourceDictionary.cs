@@ -7,6 +7,15 @@ using System.Windows;
 
 namespace PowerPointLabs.ColorThemes
 {
+    /// <summary>
+    /// The ThemeResourceDictionary class is a Resource Dictionary representing a Color Theme, to be added to the
+    /// resources of a <see cref="FrameworkElement"/>.
+    /// </summary>
+    /// <remarks>
+    /// The purpose of this class is to be able to uniquely identify the resource dictionary in a
+    /// <see cref="FrameworkElement"/>'s resources that represents a Color Theme, so that it can be
+    /// replaced when the Application's Color Theme changes.
+    /// </remarks>
     public class ThemeResourceDictionary : ResourceDictionary
     {
         public static readonly string PathToThemesFolder = "pack://application:,,,/PowerPointLabs;component/Resources/Themes/";
