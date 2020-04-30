@@ -1,7 +1,6 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
 
-    <!-- Currently, these values are copied from the Colorful Theme. -->
     <SolidColorBrush x:Key="Button.Static.Background" Color="#FFFDFDFD"/>
     <SolidColorBrush x:Key="Button.Static.Border" Color="#FFABABAB"/>
     <SolidColorBrush x:Key="Button.Static.Foreground" Color="#FF252525"/>
