@@ -16,7 +16,7 @@ namespace PowerPointLabs.ColorThemes.Extensions
 {
     public static class ThemeExtensions
     {
-        public static string PathToMahAppsAccents = "pack://application:,,,/MahApps.Metro;component/Styles/Accents/";
+        public static readonly string PathToMahAppsAccents = "pack://application:,,,/MahApps.Metro;component/Styles/Accents/";
 
         /// <summary>
         /// Shows a thematic dialog and waits for the window to close.
