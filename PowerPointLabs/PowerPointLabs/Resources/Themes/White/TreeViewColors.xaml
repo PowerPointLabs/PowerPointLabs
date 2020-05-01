@@ -3,5 +3,5 @@
 
     <SolidColorBrush x:Key="TreeView.Static.Background" Color="White"/>
     <SolidColorBrush x:Key="TreeView.Static.Border" Color="#FFABABAB"/>
-    
-</ResourceDictionary> 
+
+</ResourceDictionary>

@@ -5,4 +5,4 @@
     <SolidColorBrush x:Key="Hyperlink.MouseOver.Foreground" Color="#FFFF0000"/>
     <SolidColorBrush x:Key="Hyperlink.Disabled.Foreground" Color="#FFAAAAAA"/>
 
-</ResourceDictionary> 
+</ResourceDictionary>

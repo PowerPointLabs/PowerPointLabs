@@ -7,4 +7,4 @@
 
     <SolidColorBrush x:Key="Label.Static.Foreground" Color="{StaticResource Theme.Foreground}"/>
 
-</ResourceDictionary> 
+</ResourceDictionary>

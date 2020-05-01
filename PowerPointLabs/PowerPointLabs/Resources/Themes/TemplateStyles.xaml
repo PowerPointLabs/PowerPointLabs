@@ -20,4 +20,4 @@
         <ResourceDictionary Source="TemplateStyles/WindowStyle.xaml"/>
     </ResourceDictionary.MergedDictionaries>
 
-</ResourceDictionary> 
+</ResourceDictionary>

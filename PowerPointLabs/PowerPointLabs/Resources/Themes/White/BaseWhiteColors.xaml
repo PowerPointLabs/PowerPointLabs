@@ -1,6 +1,6 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-    
+
     <!-- This is the default background colour of a Pane. -->
     <Color x:Key="Theme.PaneBackground">#FFFFFFFF</Color>
 
@@ -18,4 +18,4 @@
 
     <SolidColorBrush x:Key="Theme.ForegroundBrush" Color="{StaticResource Theme.Foreground}"/>
 
-</ResourceDictionary> 
+</ResourceDictionary>

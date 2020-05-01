@@ -9,4 +9,4 @@
     <SolidColorBrush x:Key="ToolTip.Static.Foreground" Color="{StaticResource Theme.Foreground}"/>
     <SolidColorBrush x:Key="ToolTip.Static.BorderBrush" Color="#FFBEBEBE"/>
 
-</ResourceDictionary> 
+</ResourceDictionary>
