@@ -7,4 +7,4 @@
 
     <SolidColorBrush x:Key="Window.Static.Background" Color="{StaticResource Theme.Background1}"/>
     
-</ResourceDictionary> 
+</ResourceDictionary>

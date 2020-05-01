@@ -7,4 +7,4 @@
 
     <SolidColorBrush x:Key="TextBlock.Static.Foreground" Color="{StaticResource Theme.Foreground}"/>
 
-</ResourceDictionary> 
+</ResourceDictionary>
