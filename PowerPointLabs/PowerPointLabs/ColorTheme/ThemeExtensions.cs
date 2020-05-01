@@ -54,7 +54,7 @@ namespace PowerPointLabs.ColorThemes.Extensions
         {
             // Three things to update:
             // 1. The ThemeResourceDictionary at the front of the element's Resources.
-            // 2. MahApps resorce dictionaries if the element has them.
+            // 2. MahApps resource dictionaries if the element has them.
             // 3. Calling the element's own OnThemeChanged method if it implements INotifyOnThemeChanged.
 
             element.UpdateThemeResourceDictionary(theme);
