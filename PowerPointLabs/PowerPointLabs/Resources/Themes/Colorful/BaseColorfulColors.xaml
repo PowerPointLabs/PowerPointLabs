@@ -18,4 +18,4 @@
 
     <SolidColorBrush x:Key="Theme.ForegroundBrush" Color="{StaticResource Theme.Foreground}"/>
 
-</ResourceDictionary> 
+</ResourceDictionary>

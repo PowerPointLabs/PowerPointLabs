@@ -12,4 +12,4 @@
     <SolidColorBrush x:Key="Button.Disabled.Border" Color="#FFE1E1E1"/>
     <SolidColorBrush x:Key="Button.Disabled.Foreground" Color="#FFCCB1BF"/>
     
-</ResourceDictionary> 
+</ResourceDictionary>
