@@ -7,5 +7,5 @@
 
     <SolidColorBrush x:Key="TreeView.Static.Background" Color="{StaticResource Theme.Background2}"/>
     <SolidColorBrush x:Key="TreeView.Static.Border" Color="#FF828790"/>
-    
-</ResourceDictionary> 
+
+</ResourceDictionary>

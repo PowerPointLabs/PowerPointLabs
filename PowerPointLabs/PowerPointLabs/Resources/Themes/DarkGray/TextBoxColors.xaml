@@ -12,5 +12,5 @@
     <SolidColorBrush x:Key="TextBox.MouseOver.Background" Color="#FF333337"/>
     <SolidColorBrush x:Key="TextBox.MouseOver.Border" Color="#FFB5B5B5"/>
     <SolidColorBrush x:Key="TextBox.Focus.Border" Color="#FF569DE5"/>
-    
-</ResourceDictionary> 
+
+</ResourceDictionary>

@@ -23,4 +23,4 @@
     
     <SolidColorBrush x:Key="CheckBox.Static.Foreground" Color="{StaticResource Theme.Foreground}"/>
 
-</ResourceDictionary> 
+</ResourceDictionary>
