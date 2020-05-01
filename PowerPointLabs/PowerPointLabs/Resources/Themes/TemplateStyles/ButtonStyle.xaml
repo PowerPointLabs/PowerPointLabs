@@ -1,6 +1,6 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-    
+
     <!-- 
     List of colors to define:
     - Button.Static.Background
@@ -14,7 +14,7 @@
     - Button.Disabled.Border
     - Button.Disabled.Foreground
     -->
-    
+
     <!-- This style has a Key so that it can be referenced. -->
     <Style TargetType="{x:Type Button}"
            x:Key="BaseButtonStyle">
@@ -64,4 +64,4 @@
     <Style TargetType="{x:Type Button}"
            BasedOn="{StaticResource BaseButtonStyle}"/>
 
-</ResourceDictionary> 
+</ResourceDictionary>

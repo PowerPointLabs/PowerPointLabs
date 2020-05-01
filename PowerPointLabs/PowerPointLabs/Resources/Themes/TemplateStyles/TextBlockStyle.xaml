@@ -1,6 +1,6 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
                     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-    
+
     <!-- 
     List of colors to define:
     - TextBlock.Static.Foreground
@@ -16,4 +16,4 @@
     <Style TargetType="{x:Type TextBlock}"
            BasedOn="{StaticResource BaseTextBlockStyle}"/>
 
-</ResourceDictionary> 
+</ResourceDictionary>
