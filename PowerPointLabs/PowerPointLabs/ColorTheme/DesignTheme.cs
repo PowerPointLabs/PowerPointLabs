@@ -27,7 +27,7 @@ namespace PowerPointLabs.ColorThemes
     ///     <UserControl.Resources>
     ///         <ResourceDictionary>
     ///             <ResourceDictionary.MergedDictionaries>
-    ///                 <theme:DesignTheme Theme="Dark"/>
+    ///                 <theme:DesignTheme Theme="Black"/>
     ///             </ResourceDictionary.MergedDictionaries>    
     ///         </ResourceDictionary>
     ///     </UserControl.Resources>
