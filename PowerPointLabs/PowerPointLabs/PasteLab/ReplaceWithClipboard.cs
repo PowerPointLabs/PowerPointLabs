@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 
 using Microsoft.Office.Interop.PowerPoint;
 using PowerPointLabs.ActionFramework.Common.Extension;
@@ -15,7 +15,14 @@ namespace PowerPointLabs.PasteLab
         {
             // ignore height & width, it doesn't always make sense to sync the height & width especially for circles, squares
             List<Format> formatsToIgnore = new List<Format> {new PositionHeightFormat(), new PositionWidthFormat()};
-            
+
+            // the following effects are not useful for pictures and cause degradation of picture quality
+            List<Format> formatsToIgnoreIfPicture = new List<Format>
+            {
+                new ContourColorFormat(), new ContourWidthFormat(), new DepthSizeFormat(), new LightingAngleFormat(),
+                new MaterialEffectFormat(), new PositionHeightFormat(), new PositionWidthFormat(), new ThreeDRotationEffectFormat()
+            };
+
             // Replacing individual shape
             if (selectedChildShapes.Count == 0)
             {
@@ -32,9 +39,18 @@ namespace PowerPointLabs.PasteLab
 
                 slide.DeleteShapeAnimations(pastingShape);
                 slide.TransferAnimation(selectedShape, pastingShape);
-                ShapeUtil.ApplyAllPossibleFormats(selectedShape, pastingShape, formatsToIgnore);
+
+                if (pastingShape.IsPicture())
+                {
+                    ShapeUtil.ApplyAllPossibleFormats(selectedShape, pastingShape, formatsToIgnoreIfPicture);
+                }
+                else
+                {
+                    ShapeUtil.ApplyAllPossibleFormats(selectedShape, pastingShape, formatsToIgnore);
+                }
                 // Must remove animations from source shape or else undo will fail
                 slide.RemoveAnimationsForShape(selectedShape);
+
                 selectedShape.SafeDelete();
 
                 return slide.ToShapeRange(pastingShape);
@@ -76,10 +92,17 @@ namespace PowerPointLabs.PasteLab
 
                 List<Format> positionFormats = new List<Format> {new PositionXFormat(), new PositionYFormat()};
                 formatsToIgnore.AddRange(positionFormats);
-                
+
                 for (int i = 1; i <= pastingShapes.Count; i++)
                 {
-                    ShapeUtil.ApplyAllPossibleFormats(selectedChildShape, pastingShapes[i], formatsToIgnore);
+                    if (pastingShapes[i].IsPicture())
+                    {
+                        ShapeUtil.ApplyAllPossibleFormats(selectedChildShape, pastingShapes[i], formatsToIgnoreIfPicture);
+                    }
+                    else
+                    {
+                        ShapeUtil.ApplyAllPossibleFormats(selectedChildShape, pastingShapes[i], formatsToIgnore);
+                    }
                 }
 
                 // Remove selected child since it is being replaced

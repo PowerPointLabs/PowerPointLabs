@@ -7,9 +7,9 @@
              mc:Ignorable="d" 
              d:DesignHeight="50" d:DesignWidth="300">
     <Grid x:Name="grid">
-        <CheckBox x:Name="checkBox" HorizontalAlignment="Left" Margin="5,17,0,18" VerticalAlignment="Center"/>
-        <Image x:Name="imageBox" Margin="30,10,0,10" OpacityMask="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" HorizontalAlignment="Left" Width="30" Height="30"/>
-        <Label x:Name="label" Margin="65,7,10,7" HorizontalContentAlignment="Left" VerticalContentAlignment="Center"/>
+        <CheckBox x:Name="checkBox" HorizontalAlignment="Left" Margin="5,5,0,5" VerticalAlignment="Center"/>
+        <Image x:Name="imageBox" Margin="30,2,0,2" OpacityMask="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" HorizontalAlignment="Left" Width="30" Height="30"/>
+        <Label x:Name="label" Margin="65,2,10,2" HorizontalContentAlignment="Left" VerticalContentAlignment="Center"/>
 
     </Grid>
 </UserControl>
