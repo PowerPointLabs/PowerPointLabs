@@ -1,0 +1,16 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="BaseWhiteColors.xaml"/>
+    </ResourceDictionary.MergedDictionaries>
+
+    <SolidColorBrush x:Key="TextBox.Static.Background" Color="White"/>
+    <SolidColorBrush x:Key="TextBox.Static.Border" Color="#FFABABAB"/>
+    <SolidColorBrush x:Key="TextBox.Static.Foreground" Color="{StaticResource Theme.Foreground}"/>
+    <SolidColorBrush x:Key="TextBox.Static.CaretBrush" Color="{StaticResource Theme.Foreground}"/>
+    <SolidColorBrush x:Key="TextBox.MouseOver.Background" Color="White"/>
+    <SolidColorBrush x:Key="TextBox.MouseOver.Border" Color="#FFF5BA9D"/>
+    <SolidColorBrush x:Key="TextBox.Focus.Border" Color="#FFDC5939"/>
+
+</ResourceDictionary>

@@ -1,0 +1,23 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <!-- 
+        The TemplateStyles Resource Dictionary contains the Styles of different 
+        controls, such as Button or Label, but without the properties related to
+        color, such as Background or Foreground. Instead, they are obtained as
+        DynamicResources from other ResourceDictionaries, linked together by the
+        respective Theme.xaml files.
+    -->
+    <ResourceDictionary.MergedDictionaries>
+        <ResourceDictionary Source="TemplateStyles/ButtonStyle.xaml"/>
+        <ResourceDictionary Source="TemplateStyles/CheckBoxStyle.xaml"/>
+        <ResourceDictionary Source="TemplateStyles/HyperlinkStyle.xaml"/>
+        <ResourceDictionary Source="TemplateStyles/LabelStyle.xaml"/>
+        <ResourceDictionary Source="TemplateStyles/TextBlockStyle.xaml"/>
+        <ResourceDictionary Source="TemplateStyles/TextBoxStyle.xaml"/>
+        <ResourceDictionary Source="TemplateStyles/ToolTipStyle.xaml"/>
+        <ResourceDictionary Source="TemplateStyles/TreeViewStyle.xaml"/>
+        <ResourceDictionary Source="TemplateStyles/WindowStyle.xaml"/>
+    </ResourceDictionary.MergedDictionaries>
+
+</ResourceDictionary>
