@@ -34,3 +34,8 @@ cov-report.xml
 # StyleCop
 PowerPointLabs/PowerPointLabs/StyleCop.Cache
 PowerPointLabs/.vs/
+
+# Test Configuration
+PowerPointLabs/Test/Properties/*
+PowerPointLabs/Test/app.config
+
