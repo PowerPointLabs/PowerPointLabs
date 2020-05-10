@@ -109,6 +109,14 @@ namespace PowerPointLabs.CropLab
                 double newY = startY + (1 - inverseRatio) / 2 * width;
                 double newX = startX + (1 - inverseRatio) / 2 * width;
 
+                const string officeVersion2010 = "14.0";
+                if (Globals.ThisAddIn.Application.Version == officeVersion2010)
+                {
+                    newWidth *= 0.928;
+                    newHeight *= 0.999;
+                    newX *= 0.932;
+                }
+
                 Graphics inputGraphics = Graphics.FromImage(outputImage);
                 inputGraphics.DrawImage(original,
                     new Rectangle(0, 0, (int)width, (int)height),
