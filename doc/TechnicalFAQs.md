@@ -24,6 +24,13 @@ If better solutions to any issue are found, or if there is a need for any clarif
 1. Try to download and install from the [standalone version](https://www.google.com/url?q=http%3A%2F%2Fwww.comp.nus.edu.sg%2F~pptlabs%2Fdownload-78563%2FPowerPointLabsInstaller.zip)
 1. If standalone is not working, click OK for the batch file and install again
 1. Else, verify admin permission and install again
+1. If error persists after above steps, launch PowerPoint and go to File > Options > Certificate
+    <img src="../doc/images/TechnicalFAQ/certificate-error1.png" width="200"/><br>
+    <img src="../doc/images/TechnicalFAQ/certificate-error2.png" width="200"/>
+1. A window should open. Go to Trust Center > Trust Center Settings
+![Alt text](../doc/images/TechnicalFAQ/certificate-error3.png)
+1. In the new window, go to Add-ins. Uncheck "Require Application Add-ins to be signed by Trusted Publisher"
+![Alt text](../doc/images/TechnicalFAQ/certificate-error4.png)
 
 ## VSTO Installer Config Error<a name="vsto-installer-config"></a>
 #### Error Message
