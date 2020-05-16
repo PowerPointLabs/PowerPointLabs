@@ -61,7 +61,7 @@ namespace PowerPointLabs.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("6.1.0.0")]
+        [global::System.Configuration.DefaultSettingValueAttribute("6.1.0.2")]
         public string Version {
             get {
                 return ((string)(this["Version"]));
@@ -70,7 +70,7 @@ namespace PowerPointLabs.Properties {
         
         [global::System.Configuration.ApplicationScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("8 May 2020")]
+        [global::System.Configuration.DefaultSettingValueAttribute("16 May 2020")]
         public string ReleaseDate {
             get {
                 return ((string)(this["ReleaseDate"]));
