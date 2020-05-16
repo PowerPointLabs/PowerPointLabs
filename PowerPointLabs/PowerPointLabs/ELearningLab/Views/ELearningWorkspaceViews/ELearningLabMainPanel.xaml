@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:theme="clr-namespace:PowerPointLabs.ColorThemes"
              xmlns:views="clr-namespace:PowerPointLabs.ELearningLab.Views"
              xmlns:model="clr-namespace:PowerPointLabs.ELearningLab.ELearningWorkspace.Model"
              xmlns:converters="clr-namespace:PowerPointLabs.ELearningLab.Converters"
@@ -12,15 +13,29 @@
              views:ExplanationItemView.TriggerTypeSelectionChangedHandler="HandleTriggerTypeComboBoxSelectionChangedEvent"
              mc:Ignorable="d"  d:DesignHeight="700" d:DesignWidth="600">
     <UserControl.Resources>
-        <ContextMenu x:Key="ItemContextMenu">
-            <MenuItem Header="Add Explanation Above" 
-                      Click="AddItemAboveContextMenu_Click"
-                      CommandParameter="{Binding}"/>
-            <MenuItem Header="Add Explanation Below" 
-                      Click="AddItemBelowContextMenu_Click"
-                      CommandParameter="{Binding}"/>
-        </ContextMenu>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <theme:DesignTheme Theme="Colorful"/>
+                <theme:BaseStylesDictionary/>
+            </ResourceDictionary.MergedDictionaries>
+            <ContextMenu x:Key="ItemContextMenu">
+                <MenuItem Header="Add Explanation Above" 
+                          Click="AddItemAboveContextMenu_Click"
+                          CommandParameter="{Binding}"/>
+                <MenuItem Header="Add Explanation Below" 
+                          Click="AddItemBelowContextMenu_Click"
+                          CommandParameter="{Binding}"/>
+            </ContextMenu>
+            <Style x:Key="ImageButtonStyle" TargetType="Button">
+                <Setter Property="Background" Value="#FFDDDDDD"/>
+            </Style>
+        </ResourceDictionary>
     </UserControl.Resources>
+
+    <UserControl.Background>
+        <DynamicResource ResourceKey="Theme.PaneBackgroundBrush"/>
+    </UserControl.Background>
+    
     <Grid x:Name="grid">
         <Grid.RowDefinitions>
             <RowDefinition Height="40" />
@@ -29,7 +44,7 @@
         <StackPanel Grid.Row="0" Orientation="Horizontal" FlowDirection="LeftToRight">
             <StackPanel Margin="10,0,20,0" Orientation="Horizontal">
                 <Button x:Name="createButton" Height="35" 
-                VerticalAlignment="Center" Width="35" Padding="5" Click="CreateButton_Click">
+                VerticalAlignment="Center" Width="35" Padding="5" Click="CreateButton_Click" Style="{StaticResource ImageButtonStyle}">
                     <Image x:Name="createImage" Stretch="Fill"/>
                     <Button.ToolTip>
                         <StackPanel FlowDirection="LeftToRight">
@@ -48,7 +63,7 @@
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <Button x:Name="syncButton" Height="35" 
-                VerticalAlignment="Center" Width="35" Padding="5" Click="SyncButton_Click">
+                VerticalAlignment="Center" Width="35" Padding="5" Click="SyncButton_Click" Style="{StaticResource ImageButtonStyle}">
                     <Image x:Name="syncImage" Stretch="Fill"/>
                     <Button.ToolTip>
                         <StackPanel FlowDirection="LeftToRight">
@@ -71,7 +86,7 @@
         <DockPanel Grid.Row="1" x:Name="eLLPane">
             <ListView x:Name="listView" ItemsSource="{Binding Items}"
                   BorderThickness="0" Margin="0" SelectionMode="Single"
-                      ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                      ScrollViewer.HorizontalScrollBarVisibility="Disabled" Background="{DynamicResource Theme.PaneBackgroundBrush}">
                 <ListView.ItemContainerStyle>
                     <Style TargetType="{x:Type ListViewItem}" >
                         <Setter Property="ContextMenu" Value="{StaticResource ItemContextMenu}" />
@@ -86,7 +101,7 @@
                                     <Setter.Value>
                                         <ControlTemplate>
                                             <DockPanel>
-                                                <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center"
+                                                <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="{DynamicResource Theme.ForegroundBrush}"
                                                        FontWeight="Bold" FontSize="20">
                                                 No items to display
                                                 </TextBlock>
@@ -106,7 +121,7 @@
                     </DataTemplate>
                     <DataTemplate DataType="{x:Type model:ExplanationItem}">
                         <StackPanel Margin="2 2 2 2">
-                            <Border BorderThickness="0.2" BorderBrush="LightGray" CornerRadius="4" Background="WhiteSmoke">
+                            <Border BorderThickness="0.2" BorderBrush="{DynamicResource Theme.BackgroundBrush3}" CornerRadius="4" Background="{DynamicResource Theme.BackgroundBrush2}">
                                 <StackPanel Margin="5 5 5 5">
                                     <views:ExplanationItemView DataContext="{Binding}"/>
                                 </StackPanel>

@@ -20,6 +20,14 @@ This section will go through: the basic prerequisites needed to develop for Powe
 
 ## Testing
 1. Click Build (menu) >> Rebuild Solution
+1. Under the solution explorer, open `Test`, and double click on the `Properties` to open the Test properties menu.
+1. In the open Test properties window, click on the `settings` on the left column. 
+1. Click on the text "This project does not contain a default settings file. Click here to create one." to create a new default settings file.
+1. Create and save a new setting entry as follows:
+    - Name: PowerPoint_path
+    - Type: string
+    - Scope: User
+    - Value: The path of Powerpoint executable to be used. Example: `C:\Program Files\Microsoft Office\Office14\POWERPNT.EXE`
 1. Click Test (menu) >> Windows >> Test Explorer
 1. In the open Test Explorer window, click `Group by Traits` >> right click `FT` >> click `Run Selected Tests`. During the test, *DO NOT move the mouse & ensure the Windows UI is in English*
 1. In the open Test Explorer window, click `Group by Traits` >> right click `UT` >> click `Run Selected Tests`

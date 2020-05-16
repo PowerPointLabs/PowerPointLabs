@@ -57,6 +57,10 @@ namespace Test.FunctionalTest
         private const int OrigIsClipboardRestoredPasteIntoGroupSlideNo = 37;
         private const int ExpIsClipboardRestoredPasteIntoGroupSlideNo = 38;
 
+        private const int OriginalReplaceWithClipboardDegradationSlideNo = 39;
+        private const int ReplacedReplaceWithClipboardDegradationSlideNo = 40;
+        private const int DegradedReplaceWithClipboardDegradationSlideNo = 41;
+
         protected override string GetTestingSlideName()
         {
             return "PasteLab\\PasteLab.pptx";
@@ -86,6 +90,9 @@ namespace Test.FunctionalTest
 
             IsClipboardRestoredReplaceWithClipboard(OrigIsClipboardRestoredReplaceWithClipboardSlideNo, ExpIsClipboardRestoredReplaceWithClipboardSlideNo);
             IsClipboardRestoredPasteIntoGroup(OrigIsClipboardRestoredPasteIntoGroupSlideNo, ExpIsClipboardRestoredPasteIntoGroupSlideNo);
+
+            IsDegradedAfterReplaceWithClipboard(OriginalReplaceWithClipboardDegradationSlideNo, ReplacedReplaceWithClipboardDegradationSlideNo,
+                DegradedReplaceWithClipboardDegradationSlideNo);
         }
 
         private void PasteToFillSlide(int originalSlideNo, int expSlideNo)
@@ -180,13 +187,41 @@ namespace Test.FunctionalTest
             }, originalSlideNo, ShapeToCopyPrefix, expSlideNo, "", ShapeToCompareCopied);
         }
 
-        private void AssertIsSame(int actualSlideNo, int expectedSlideNo)
+        private void IsDegradedAfterReplaceWithClipboard(int originalSlideNo, int replacedSlideNo, int degradedSlideNo)
+        {
+            Microsoft.Office.Interop.PowerPoint.ShapeRange shapes = GetShapesByPrefix(replacedSlideNo, ShapeToCopyPrefix);
+            shapes.Cut();
+
+            PpOperations.SelectShapes(new List<string> { ShapeToReplace });
+            PplFeatures.ReplaceWithClipboard();
+
+            // Degradation results in subtle differences, therefore comparison threshold must be stricter
+            AssertIsSame(originalSlideNo, replacedSlideNo, 0.999999999);
+            
+            // Verify that the degradation is detectable
+            AssertNotSame(originalSlideNo, degradedSlideNo, 0.999999999);
+        }
+
+        private void AssertIsSame(int actualSlideNo, int expectedSlideNo, double similarityTolerance = 0.95)
         {
             Microsoft.Office.Interop.PowerPoint.Slide actualSlide = PpOperations.SelectSlide(actualSlideNo);
             Microsoft.Office.Interop.PowerPoint.Slide expectedSlide = PpOperations.SelectSlide(expectedSlideNo);
 
-            SlideUtil.IsSameLooking(expectedSlide, actualSlide);
+            SlideUtil.IsSameLooking(expectedSlide, actualSlide, similarityTolerance);
             SlideUtil.IsSameAnimations(expectedSlide, actualSlide);
+        }
+
+        private void AssertNotSame(int actualSlideNo, int expectedSlideNo, double similarityTolerance = 0.95)
+        {
+            try
+            {
+                AssertIsSame(actualSlideNo, expectedSlideNo, similarityTolerance);
+            }
+            catch (AssertFailedException)
+            {
+                return;
+            }
+            throw new AssertFailedException("AssertNotSame failed. The slides look similar.");
         }
 
         private Microsoft.Office.Interop.PowerPoint.ShapeRange GetShapesByPrefix(int slideNo, string shapePrefix)

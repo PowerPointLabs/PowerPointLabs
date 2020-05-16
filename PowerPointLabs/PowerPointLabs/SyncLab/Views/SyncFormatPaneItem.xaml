@@ -7,6 +7,17 @@
              mc:Ignorable="d" 
              d:DesignHeight="60" d:DesignWidth="300"
              MouseDoubleClick="OnMouseDoubleClick">
+    <UserControl.Resources>
+        <ResourceDictionary>
+            <!-- 
+            Because the buttons use black-coloured images, the background should stay light even
+            in a Dark theme. By setting an explicit style, it will not be changed between ColorThemes.
+            -->
+            <Style TargetType="Button" x:Key="ImageButtonStyle">
+                <Setter Property="Background" Value="WhiteSmoke"/>
+            </Style>
+        </ResourceDictionary>
+    </UserControl.Resources>
     <Grid x:Name="grid" ClipToBounds="True" Background="Transparent">
         <Grid.ToolTip>
             <StackPanel>
@@ -20,11 +31,18 @@
             <ColumnDefinition x:Name="col2" Width="*"/>
             <ColumnDefinition x:Name="col3" Width="100" MaxWidth="100"/>
         </Grid.ColumnDefinitions>
-        <Image x:Name="imageBox" Grid.Column="0" Margin="10,10,0,10" OpacityMask="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" HorizontalAlignment="Left" Width="40" Height="40"/>
-        <Canvas x:Name="canvas" Grid.Column="1" >
-            <TextBlock x:Name="textBlock" Margin="0,20,0,20" MaxWidth="{Binding ActualWidth, ElementName=canvas}" HorizontalAlignment="Stretch" VerticalAlignment="Center" TextTrimming="CharacterEllipsis" IsHitTestVisible="False"/>
-        </Canvas>
-        <Button x:Name="pasteButton" Grid.Column="2" Margin="0,10,65,10" Click="PasteButton_Click" HorizontalAlignment="Right" MinWidth="25" MaxWidth="25" MinHeight="25" MaxHeight="25">
+        <Border Grid.Column="0" 
+                Margin="5" 
+                Padding="3"
+                BorderBrush="Black"
+                BorderThickness="2"
+                Background="White">
+            <Image x:Name="imageBox" OpacityMask="{DynamicResource {x:Static SystemColors.ControlBrushKey}}" HorizontalAlignment="Left" Width="40" Height="40" />
+        </Border>
+        <Grid x:Name="canvas" Grid.Column="1" >
+            <TextBlock x:Name="textBlock"  MaxWidth="{Binding ActualWidth, ElementName=canvas}" HorizontalAlignment="Stretch" VerticalAlignment="Center" TextTrimming="CharacterEllipsis" IsHitTestVisible="False"/>
+        </Grid>
+        <Button x:Name="pasteButton" Grid.Column="2" Margin="0,10,65,10" Click="PasteButton_Click" HorizontalAlignment="Right" MinWidth="25" MaxWidth="25" MinHeight="25" MaxHeight="25" Style="{StaticResource ImageButtonStyle}">
             <Image x:Name="pasteImage" Source="pack://siteoforigin:,,,/Resources/SyncLabPasteButton.png" Stretch="Fill"/>
             <Button.ToolTip>
                 <StackPanel>
@@ -36,7 +54,7 @@
                 </StackPanel>
             </Button.ToolTip>
         </Button>
-        <Button x:Name="editButton" Grid.Column="2" Margin="0,10,35,10" Click="EditButton_Click" HorizontalAlignment="Right" MinWidth="25" MaxWidth="25" MinHeight="25" MaxHeight="25">
+        <Button x:Name="editButton" Grid.Column="2" Margin="0,10,35,10" Click="EditButton_Click" HorizontalAlignment="Right" MinWidth="25" MaxWidth="25" MinHeight="25" MaxHeight="25" Style="{StaticResource ImageButtonStyle}">
             <Image x:Name="editImage" Source="pack://siteoforigin:,,,/Resources/SyncLabEditButton.png" Stretch="Fill"/>
             <Button.ToolTip>
                 <StackPanel>
@@ -50,7 +68,7 @@
                 </StackPanel>
             </Button.ToolTip>
         </Button>
-        <Button x:Name="deleteButton" Grid.Column="2" Margin="0,10,5,10" Click="DeleteButton_Click" HorizontalAlignment="Right" MinWidth="25" MaxWidth="25" MinHeight="25" MaxHeight="25">
+        <Button x:Name="deleteButton" Grid.Column="2" Margin="0,10,5,10" Click="DeleteButton_Click" HorizontalAlignment="Right" MinWidth="25" MaxWidth="25" MinHeight="25" MaxHeight="25" Style="{StaticResource ImageButtonStyle}">
             <Image x:Name="deleteImage" Source="pack://siteoforigin:,,,/Resources/SyncLabDeleteButton.png" Stretch="Fill"/>
             <Button.ToolTip>
                 <StackPanel>

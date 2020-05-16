@@ -202,11 +202,11 @@ namespace PowerPointLabs.PictureSlidesLab.Util
         {
             try
             {
-                Resources.Loading.Save(LoadingImgPath);
-                Resources.ChoosePicturesIcon.Save(ChoosePicturesImgPath);
-                Resources.DefaultPicture.Save(NoPicturePlaceholderImgPath);
-                Resources.PslSample1.Save(SampleImg1Path);
-                Resources.PslSample2.Save(SampleImg2Path);
+                Properties.Resources.Loading.Save(LoadingImgPath);
+                Properties.Resources.ChoosePicturesIcon.Save(ChoosePicturesImgPath);
+                Properties.Resources.DefaultPicture.Save(NoPicturePlaceholderImgPath);
+                Properties.Resources.PslSample1.Save(SampleImg1Path);
+                Properties.Resources.PslSample2.Save(SampleImg2Path);
             }
             catch
             {

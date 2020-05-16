@@ -47,10 +47,7 @@ namespace PowerPointLabs.ColorThemes
         {
             add
             {
-                if (!themeWatcher.IsDefaultKey)
-                {
-                    value(this, _colorTheme);
-                }
+                value(this, _colorTheme);
                 _ColorThemeChanged += value;
             }
             remove
@@ -66,24 +63,11 @@ namespace PowerPointLabs.ColorThemes
 
         private ThemeManager()
         {
-            themeWatcher = new RegistryWatcher<int>(ThemeRegistryPath, ThemeRegistryKey, GetDefaultKeys());
+            // The ThemeWatcher will have no default keys.
+            themeWatcher = new RegistryWatcher<int>(ThemeRegistryPath, ThemeRegistryKey, new List<int>());
             themeWatcher.ValueChanged += ThemeChangedHandler;
             themeWatcher.Fire();
             themeWatcher.Start();
-        }
-
-        private List<int> GetDefaultKeys()
-        {
-            if (!Globals.ThisAddIn.IsApplicationVersion2013())
-            {
-                return new List<int>() { ColorTheme.COLORFUL };
-            }
-            return new List<int>()
-            {
-                ColorTheme.WHITE,
-                ColorTheme.LIGHT_GRAY,
-                ColorTheme.DARK_GRAY
-            };
         }
 
         private void ThemeChangedHandler(object sender, int newValue)
@@ -96,48 +80,17 @@ namespace PowerPointLabs.ColorThemes
         {
             switch (newValue)
             {
-                case ColorTheme.COLORFUL:
-                    _colorTheme.title = Color.FromRgb(181, 71, 42);
-                    _colorTheme.background = Color.FromRgb(230, 230, 230);
-                    _colorTheme.foreground = Color.FromRgb(37, 37, 37);
-                    _colorTheme.boxBackground = Color.FromRgb(255, 255, 255);
-                    _colorTheme.headingBackground = Color.FromRgb(181, 71, 42);
-                    _colorTheme.headingForeground = Color.FromRgb(238, 238, 238);
-                    break;
-                case ColorTheme.WHITE:
-                case ColorTheme.LIGHT_GRAY:
-                case ColorTheme.DARK_GRAY_ALT:
-                    _colorTheme.title = Color.FromRgb(181, 71, 42);
-                    _colorTheme.background = Color.FromRgb(255, 255, 255);
-                    _colorTheme.foreground = Color.FromRgb(37, 37, 37);
-                    _colorTheme.boxBackground = Color.FromRgb(230, 230, 230);
-                    _colorTheme.headingBackground = Color.FromRgb(181, 71, 42);
-                    _colorTheme.headingForeground = Color.FromRgb(238, 238, 238);
-                    break;
-                case ColorTheme.DARK_GRAY:
-                    _colorTheme.title = Color.FromRgb(181, 71, 42);
-                    _colorTheme.background = Color.FromRgb(102, 102, 102);
-                    _colorTheme.foreground = Color.FromRgb(238, 238, 238);
-                    _colorTheme.boxBackground = Color.FromRgb(64, 64, 64);
-                    _colorTheme.headingBackground = Color.FromRgb(208, 71, 38);
-                    _colorTheme.headingForeground = Color.FromRgb(238, 238, 238);
-                    break;
                 case ColorTheme.BLACK:
-                    _colorTheme.title = Color.FromRgb(239, 239, 239);
-                    _colorTheme.background = Color.FromRgb(37, 37, 37);
-                    _colorTheme.foreground = Color.FromRgb(238, 238, 238);
-                    _colorTheme.boxBackground = Color.FromRgb(64, 64, 64);
-                    _colorTheme.headingBackground = Color.FromRgb(208, 71, 38);
-                    _colorTheme.headingForeground = Color.FromRgb(238, 238, 238);
+                case ColorTheme.COLORFUL:
+                case ColorTheme.DARK_GRAY:
+                case ColorTheme.DARK_GRAY_ALT:
+                case ColorTheme.LIGHT_GRAY:
+                case ColorTheme.WHITE:
+                    _colorTheme.ThemeId = newValue;
                     break;
                 default:
                     Logger.Log("Unknown UI Theme!");
-                    _colorTheme.title = Color.FromRgb(181, 71, 42);
-                    _colorTheme.background = Color.FromRgb(230, 230, 230);
-                    _colorTheme.foreground = Color.FromRgb(37, 37, 37);
-                    _colorTheme.boxBackground = Color.FromRgb(255, 255, 255);
-                    _colorTheme.headingBackground = Color.FromRgb(181, 71, 42);
-                    _colorTheme.headingForeground = Color.FromRgb(238, 238, 238);
+                    _colorTheme.ThemeId = ColorTheme.COLORFUL;
                     break;
             }
         }

@@ -1,0 +1,29 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    
+    <!-- 
+    List of colors to define:
+    - Label.Static.Foreground
+    -->
+
+    <!-- This style has a Key so that it can be referenced. -->
+    <Style TargetType="{x:Type Label}"
+           x:Key="BaseLabelStyle">
+        <!-- 
+        If the content is text, the content presenter will be a TextBlock, which will
+        use the BaseTextBlock style defined in TextBlockStyle.xaml, which will use the
+        Foreground set in the style instead of the Foreground set here, or whatever was
+        set by the user. Hence, this empty Style is here for the TextBlock to use so that
+        the Foreground property does not get overwritten.
+        -->
+        <Style.Resources>
+            <Style TargetType="TextBlock"/>
+        </Style.Resources>
+        <Setter Property="Foreground" Value="{DynamicResource Label.Static.Foreground}"/>
+    </Style>
+
+    <!-- This Style has no Key, so it will be applied to all Labels by default. -->
+    <Style TargetType="{x:Type Label}"
+           BasedOn="{StaticResource BaseLabelStyle}"/>
+
+</ResourceDictionary> 

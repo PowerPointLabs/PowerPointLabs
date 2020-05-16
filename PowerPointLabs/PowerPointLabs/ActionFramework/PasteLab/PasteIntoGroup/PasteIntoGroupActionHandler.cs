@@ -3,6 +3,7 @@
 using Microsoft.Office.Interop.PowerPoint;
 
 using PowerPointLabs.ActionFramework.Common.Attribute;
+using PowerPointLabs.ActionFramework.Common.Extension;
 using PowerPointLabs.ActionFramework.Common.Log;
 using PowerPointLabs.Models;
 using PowerPointLabs.PasteLab;
@@ -28,6 +29,8 @@ namespace PowerPointLabs.ActionFramework.PasteLab
                 Logger.Log("PasteIntoGroup failed. Selection is only a single shape.");
                 return null;
             }
+
+            this.StartNewUndoEntry();
 
             ShapeRange pastingShapes = ClipboardUtil.PasteShapesFromClipboard(presentation, slide);
             if (pastingShapes == null)

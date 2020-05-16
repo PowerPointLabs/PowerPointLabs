@@ -132,20 +132,27 @@ namespace PowerPointLabs.AgendaLab
                                                     AgendaLabText.GeneratingDialogContent);
                 currentWindow.ViewType = PpViewType.ppViewNormal;
 
-                switch (type)
-                {
-                    case Type.Beam:
-                        CreateBeamAgenda(slideTracker);
-                        break;
-                    case Type.Bullet:
-                        CreateBulletAgenda(slideTracker);
-                        break;
-                    case Type.Visual:
-                        CreateVisualAgenda(slideTracker);
-                        break;
-                }
+                PowerPointPresentation pres = PowerPointPresentation.Current;
+                PowerPointSlide slide = PowerPointCurrentPresentationInfo.CurrentSlide;
 
-                PowerPointPresentation.Current.AddAckSlide();
+                ClipboardUtil.RestoreClipboardAfterAction(() =>
+                {
+                    switch (type)
+                    {
+                        case Type.Beam:
+                            CreateBeamAgenda(slideTracker);
+                            break;
+                        case Type.Bullet:
+                            CreateBulletAgenda(slideTracker);
+                            break;
+                        case Type.Visual:
+                            CreateVisualAgenda(slideTracker);
+                            break;
+                    }
+                    return ClipboardUtil.ClipboardRestoreSuccess;
+                }, pres, slide);
+
+                pres.AddAckSlide();
                 SelectOriginalSlide(slideTracker.UserCurrentSlide, PowerPointPresentation.Current.FirstSlide);
             }
             finally
@@ -233,20 +240,27 @@ namespace PowerPointLabs.AgendaLab
                 
                 SlideUtil.CopyToDesign("Agenda Template", refSlide);
 
-                switch (type)
-                {
-                    case Type.Beam:
-                        SyncBeamAgenda(slideTracker, refSlide);
-                        break;
-                    case Type.Bullet:
-                        SyncBulletAgenda(slideTracker, refSlide);
-                        break;
-                    case Type.Visual:
-                        SyncVisualAgenda(slideTracker, refSlide);
-                        break;
-                }
+                PowerPointPresentation pres = PowerPointPresentation.Current;
+                PowerPointSlide slide = PowerPointCurrentPresentationInfo.CurrentSlide;
 
-                PowerPointPresentation.Current.AddAckSlide();
+                ClipboardUtil.RestoreClipboardAfterAction(() =>
+                {
+                    switch (type)
+                    {
+                        case Type.Beam:
+                            SyncBeamAgenda(slideTracker, refSlide);
+                            break;
+                        case Type.Bullet:
+                            SyncBulletAgenda(slideTracker, refSlide);
+                            break;
+                        case Type.Visual:
+                            SyncVisualAgenda(slideTracker, refSlide);
+                            break;
+                    }
+                    return ClipboardUtil.ClipboardRestoreSuccess;
+                }, pres, slide);
+
+                pres.AddAckSlide();
                 SelectOriginalSlide(slideTracker.UserCurrentSlide, PowerPointPresentation.Current.FirstSlide);
             }
             finally

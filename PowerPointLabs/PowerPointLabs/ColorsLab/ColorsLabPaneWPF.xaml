@@ -7,12 +7,14 @@
              xmlns:textCollection="clr-namespace:PowerPointLabs.TextCollection"
              xmlns:converter="clr-namespace:PowerPointLabs.Converters.ColorPane"
              xmlns:Controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+             xmlns:theme="clr-namespace:PowerPointLabs.ColorThemes"
              mc:Ignorable="d" 
              Loaded="ColorsLabPaneWPF_Loaded"
              Height="725" Width="300">
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
+                <theme:DesignTheme Theme="Colorful"/>
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Colors.xaml" />
@@ -26,6 +28,9 @@
             </ContextMenu>
         </ResourceDictionary>
     </UserControl.Resources>
+    <UserControl.Background>
+        <DynamicResource ResourceKey="Theme.PaneBackgroundBrush"/>
+    </UserControl.Background>
     <ScrollViewer x:Name="PaneScroll" >
         <Grid>
             <Grid.RowDefinitions>

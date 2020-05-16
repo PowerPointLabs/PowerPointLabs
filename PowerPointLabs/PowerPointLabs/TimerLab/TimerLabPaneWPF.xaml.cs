@@ -6,6 +6,8 @@ using System.Windows.Controls;
 using System.Windows.Input;
 
 using PowerPointLabs.ActionFramework.Common.Extension;
+using PowerPointLabs.ColorThemes;
+using PowerPointLabs.ColorThemes.Extensions;
 using PowerPointLabs.Utils;
 
 using PowerPoint = Microsoft.Office.Interop.PowerPoint;
@@ -16,7 +18,7 @@ namespace PowerPointLabs.TimerLab
     /// <summary>
     /// Interaction logic for TimerLabPaneWPF.xaml
     /// </summary>
-    public partial class TimerLabPaneWPF : UserControl
+    public partial class TimerLabPaneWPF : UserControl, INotifyOnThemeChanged
     {
         Shape timerBody = null;
         Shape lineMarkerGroup = null;
@@ -30,7 +32,34 @@ namespace PowerPointLabs.TimerLab
         {
             InitializeComponent();
         }
-        
+
+        #region INotifyOnThemeChanged Interface methods
+
+        /// <summary>
+        /// Changes the MahApps accent of this pane based on the Color Theme.
+        /// </summary>
+        /// <remarks>
+        /// The Steel accent will be used on all themes, except for the DarkGray
+        /// theme, which will use the Teal accent.
+        /// </remarks>
+        /// <param name="updatedColorTheme">The new color theme</param>
+        public void OnThemeChanged(ColorTheme updatedColorTheme)
+        {
+            // The Steel accent doesn't look good on the DarkGray background.
+            // The closest accent that looks okay is Teal.
+            switch (updatedColorTheme.ThemeId)
+            {
+                case ColorTheme.DARK_GRAY:
+                    ThemeExtensions.ChangeMahAppsAccent(this, "Teal");
+                    break;
+                default:
+                    ThemeExtensions.ChangeMahAppsAccent(this, "Steel");
+                    break;
+            }
+        }
+
+        #endregion
+
         #region Timer Properties
         private int Duration()
         {

@@ -25,7 +25,6 @@ namespace PowerPointLabs.SyncLab
     /// </summary>
     public sealed class SyncLabShapeStorage : PowerPointPresentation
     {
-
         public const int FormatStorageSlide = 0;
 
         private int nextKey = 0;
@@ -99,22 +98,34 @@ namespace PowerPointLabs.SyncLab
         /// <returns>identifier of copied shape</returns>
         public string CopyShape(Shape shape, Format[] formats)
         {
+            #pragma warning disable 618
+            PowerPointPresentation pres = PowerPointPresentation.Current;
+            PowerPointSlide slide = PowerPointCurrentPresentationInfo.CurrentSlide;
             Shape copiedShape = null;
             if (shape.Type == MsoShapeType.msoPlaceholder)
             {
-                copiedShape = ShapeUtil.CopyMsoPlaceHolder(formats, shape, GetTemplateShapes());
+                ClipboardUtil.RestoreClipboardAfterAction(() =>
+                {
+                    copiedShape = ShapeUtil.CopyMsoPlaceHolder(formats, shape, GetTemplateShapes());
+                    return ClipboardUtil.ClipboardRestoreSuccess;
+                }, pres, slide);
             }
             else
             {
                 try
                 {
-                    copiedShape = Slides[0].Shapes.SafeCopyPlaceholder(shape);
+                    ClipboardUtil.RestoreClipboardAfterAction(() =>
+                    {
+                        copiedShape = Slides[0].Shapes.SafeCopyPlaceholder(shape);
+                        return ClipboardUtil.ClipboardRestoreSuccess;
+                    }, pres, slide);
                 }
                 catch
                 {
                     copiedShape = null;
                 }
             }
+            #pragma warning restore 618
 
             if (copiedShape == null)
             {
@@ -142,6 +153,7 @@ namespace PowerPointLabs.SyncLab
             
             ForceSave();
             return shapeKey;
+
         }
 
         public Shape GetShape(string shapeKey)
