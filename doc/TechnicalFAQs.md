@@ -16,6 +16,7 @@ If better solutions to any issue are found, or if there is a need for any clarif
 1. [Corrupted Zip Installer](#corrupted-zip)
 1. [Installation Error due to Preexisting Similar Application](#preexisting-application)
 1. [Error Loading Manifest from MahApps.Metro.dll](#error-manifest)
+1. [Application already installed with different application identity](#different-app-identity)
 
 ## Certificate Not Trusted<a name="cert-not-trusted"></a>
 #### Error Message
@@ -121,7 +122,8 @@ Unable to unzip the installer and/or error message associated with operation of 
 1. Type in `%LocalAppData%\Apps\2.0` in the navigation bar and press `Enter`
 1. Using the search bar on the top-right corner, locate the `Manifests` folder
 1. Delete all files starting with `powe...` as shown in the below image
-![Alt text](../doc/images/TechnicalFAQ/preexisting-app2.png)
+<br>![Alt text](../doc/images/TechnicalFAQ/preexisting-app2.png)
+1. If the error still persists after the above steps, open `cmd` and run: `rundll32 dfshim CleanOnlineAppCache`
 
 ## Error Loading Manifest from MahApps.Metro.dll<a name="error-manifest"></a>
 #### Error Message
@@ -133,3 +135,14 @@ Unable to unzip the installer and/or error message associated with operation of 
 1. Type in `tasklist.exe /m MahApps.Metro.dll`
 1. Determine which process is using the dll and end it if possible
 1. Else, temporarily disable any anti-virus software that may be preventing the use of the .dll file and then delete folder `%LocalAppData%\Temp\Deployment`, before reinstalling PowerPointLabs again
+
+## Application already installed with different application identity<a name="different-app-identity"></a>
+#### Error Message
+![Alt text](../doc/images/TechnicalFAQ/application-different-identity.png)<br>
+This error might occur due to re-deployment of PowerPointLabs with the same version, causing end-users to encounter this issue when PowerPointLabs attempts to update.
+#### Solution
+1. Open `Start`
+1. Type `cmd` and press `Enter`
+1. Run `rundll32 dfshim CleanOnlineAppCache`
+1. Deploy PowerPointLabs again with a different version
+1. Error should resolve for the end-users
