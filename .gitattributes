@@ -1,6 +1,0 @@
-# Auto detect text files and perform LF normalization
-* text=auto
-
-*.csproj text eol=crlf
-*.cs text eol=crlf
-
