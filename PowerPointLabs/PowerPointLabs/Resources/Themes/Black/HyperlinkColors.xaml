@@ -1,8 +1,0 @@
-﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-
-    <SolidColorBrush x:Key="Hyperlink.Static.Foreground" Color="#3CA4FF"/>
-    <SolidColorBrush x:Key="Hyperlink.MouseOver.Foreground" Color="#FF378AD4"/>
-    <SolidColorBrush x:Key="Hyperlink.Disabled.Foreground" Color="#FFAAAAAA"/>
-
-</ResourceDictionary>
